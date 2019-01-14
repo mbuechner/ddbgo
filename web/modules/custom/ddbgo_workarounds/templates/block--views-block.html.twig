@@ -1,0 +1,16 @@
+{#
+/**
+ */
+#}
+<fieldset{{ attributes }}>
+  {{ title_prefix }}
+  {% if label %}
+  <legend>
+    <span class="fieldset-legend">{{ label }}</span>
+  </legend>
+  {% endif %}
+  {{ title_suffix }}
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</div>

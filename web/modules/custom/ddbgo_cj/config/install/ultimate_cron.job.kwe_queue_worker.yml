@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  module:
+  - ddbgo_cj
+  - ultimate_cron
+title: 'DDBgo KWE Updater'
+id: kwe_queue_worker
+module: ddbgo_cj
+callback: ddbgo_cj_kwe_queue_worker
+scheduler:
+  id: crontab
+  configuration:
+    rules:
+      - '0 4 * * *'
+    catch_up: 0
+launcher:
+  id: serial
+logger:
+  id: database

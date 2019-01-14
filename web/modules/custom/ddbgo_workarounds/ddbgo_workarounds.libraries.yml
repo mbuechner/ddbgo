@@ -1,0 +1,5 @@
+ddbgo_workarounds:
+  version: 1.x
+  js:
+  css:
+  dependencies:

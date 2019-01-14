@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Add job for every KWE into queue. This is scheduled by Ultimate Cron, e.g. once a day.
+ */
+function ddbgo_cj_kwe_queue_worker() {
+
+  //xdebug_break();
+
+  // get all IDs of KWE which are published
+  $nids = \Drupal::entityQuery('node')
+    ->condition('status', 1)
+    ->condition('type', 'kwe')
+    ->addMetaData('account', \Drupal\user\Entity\User::load(1))
+    ->execute();
+
+  $queue_factory = \Drupal::service('queue');
+  $queue = $queue_factory->get('kwe_queue_worker');
+  $queue->createQueue();
+
+  foreach ($nids as $nid) {
+    $queue->createItem($nid);
+  }
+}
+
+/**
+ * Update every KWE after saving. This will only add a new job into queue.
+ * @param \EntityInterface $entity
+ */
+function ddbgo_cj_node_postsave($node) {
+
+  if ($node instanceof \Drupal\node\Entity\Node) {
+    $entity_type = $node->getType();
+    if ($entity_type === 'kwe') {
+      $nid = $node->id();
+      $queue_factory = \Drupal::service('queue');
+      $queue = $queue_factory->get('kwe_queue_worker');
+      $queue->createQueue();
+      $queue->createItem($nid);
+    }
+  }
+
+}

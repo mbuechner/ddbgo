@@ -1,0 +1,11 @@
+name: DDBgo Cron Job
+type: module
+description: Cron Job for updating KWEs
+dependencies:
+  - drupal:ultimate_cron
+  - drupal:hook_post_action
+package: ddbgo
+version: '8.x-1.6'
+core: 8.x
+project: 'ddbgo_cj'
+datestamp: 1540974381

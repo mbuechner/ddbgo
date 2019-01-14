@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Add DatetimePicker JS library to content type 'kwe' and 'aggregator'.
+ * This is needed because KWE and Aggreagtor is only added optionally
+ * via Paragraphs and Drupal doesn't add the JS libraries via AJAX.
+ * @param array $attachments
+ */
+function ddbgo_workarounds_page_attachments(array &$attachments) {
+  $node_type = \Drupal::request()->attributes->get('node_type');
+  if ($node_type instanceof \Drupal\node\NodeTypeInterface) {
+    if ($node_type->id() === 'aggregator' || $node_type->id() === 'kwe') {
+      $attachments['#attached']['library'][] = 'single_datetime/datetimepicker';
+    }
+  }
+}
+
+/**
+ * Add custom theme for blocks. See module folder templates/.
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ *
+ * @return array
+ */
+function ddbgo_workarounds_theme($existing, $type, $theme, $path) {
+  return [
+    'block__views_block' => [
+      'render element' => 'elements',
+      'base hook' => 'block',
+    ],
+  ];
+}
+?>

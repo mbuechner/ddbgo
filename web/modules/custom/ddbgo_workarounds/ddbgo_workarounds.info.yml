@@ -1,0 +1,10 @@
+name: DDBgo Work-a-Rounds
+type: module
+description: Some smaller work-a-rounds to enable some stuff for DDBgo
+dependencies:
+  - drupal:single_datetime
+package: ddbgo
+version: '8.x-1.6'
+core: 8.x
+project: 'ddbgo_workarounds'
+datestamp: 1540974381

@@ -1,0 +1,19 @@
+{
+  "name": "ddbkultur/ddbgo_cj",
+  "description": "DDBgo module. Cron Job for updating KWEs.",
+  "type": "drupal-module",
+  "keywords": ["Drupal", "Toolbar"],
+  "homepage": "http://drupal.org/",
+  "license": "Apache2",
+  "authors": [
+    {
+      "name": "Michael Büchner",
+      "homepage": "https://github.com/mbuechner",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/",
+    "source": "http://cgit.drupalcode.org/"
+  }
+}
