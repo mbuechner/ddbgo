@@ -76,15 +76,18 @@ RUN { \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
 
-# Clean system
-RUN rm -rf /var/lib/apt/lists/*
-
-## Add cronjob for Ultimate Cron
+# Add cron (every minute) for Ultimate Cron module
+RUN apt-get update && apt-get install -y cron
 RUN { \
-		echo "*/1 * * * *  /usr/bin/flock -n /tmp/ddbgocron.lock /var/www/html/vendor/bin/drush --root /var/www/html/web core-cron"; \
+		echo "*/1 * * * * www-data /usr/bin/flock -n /tmp/ddbgocron.lock /var/www/html/vendor/bin/drush --root /var/www/html/web core-cron"; \
 	} > /etc/cron.d/ddbgo-cron
 RUN chmod 0644 /etc/cron.d/ddbgo-cron
 RUN crontab /etc/cron.d/ddbgo-cron
+RUN service cron start
+
+# Clean system
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
