@@ -79,6 +79,13 @@ RUN { \
 # Clean system
 RUN rm -rf /var/lib/apt/lists/*
 
+## Add cronjob for Ultimate Cron
+RUN { \
+		*/1 * * * *  /usr/bin/flock -n /tmp/ddbgocron.lock /var/www/html/vendor/bin/drush --root /var/www/html/web core-cron \
+	} > /etc/cron.d/ddbgo-cron
+RUN chmod 0644 /etc/cron.d/ddbgo-cron
+RUN crontab /etc/cron.d/ddbgo-cron
+
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
 HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost/ || exit 1
