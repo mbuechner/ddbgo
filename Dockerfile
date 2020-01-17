@@ -61,7 +61,7 @@ RUN { \
 
 WORKDIR /var/www/html
 COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
-COPY docker-php-entrypoint-drupal /usr/local/bin/
+COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
 RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal
 RUN find . -type d -exec chmod 755 {} \;
 RUN find . -type f -exec chmod 644 {} \;
