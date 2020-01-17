@@ -1,21 +1,31 @@
 version: '2'
 services:
-  cdv:
-    image: codingsdavinci/relaunch2018:latest
-    container_name: "cdv_drupal"
+  ddbgo:
+    image: mbuechner/ddbgo:latest
+    container_name: "ddbgo"
     restart: always
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=drupal"
+#      - "traefik.frontend.rule=Host:go-t.ddb.de"
     environment:
-      MYSQL_HOSTNAME: "cdv.example.com"
-      MYSQL_DATABASE: "mycdvdatabase"
-      MYSQL_USER: "mycdvuser"
-      MYSQL_PASSWORD: "mycdvpassword"
+      MYSQL_HOSTNAME: "ddbgo.example.com"
+      MYSQL_DATABASE: "myddbgodatabase"
+      MYSQL_USER: "myddbgouser"
+      MYSQL_PASSWORD: "myddbgopassword"
       MYSQL_PORT: "3306"
-      HASH_SALT: "myverysecretcdvhashsalt"
+      HASH_SALT: "myverysecretddbgohashsalt"
       UPDATE_FREE_ACCESS: "FALSE"
       FILE_PUBLIC_PATH: "sites/default/files"
-      TRUSTED_HOST_PATTERNS: "^localhost$$, ^127.0.0.1$$, ^test.codingdavinci.de$$"
+      TRUSTED_HOST_PATTERNS: "^localhost$$, ^127.0.0.1$$, ^go-t.ddb.de$$"
       APACHE_LOG_DIR: "/var/www/html/web/sites/default/files/logs"
     volumes:
-      - cdv:/var/www/html/web/sites/default/files
+      - ddbgo:/var/www/html/web/sites/default/files
     ports:
-      - "80:80"
+      - 80
+#    networks:
+#      - traefik
+#networks:
+#  traefik:
+#    external:
+#      name: traefik
