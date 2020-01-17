@@ -81,7 +81,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ## Add cronjob for Ultimate Cron
 RUN { \
-		*/1 * * * *  /usr/bin/flock -n /tmp/ddbgocron.lock /var/www/html/vendor/bin/drush --root /var/www/html/web core-cron \
+		echo "*/1 * * * *  /usr/bin/flock -n /tmp/ddbgocron.lock /var/www/html/vendor/bin/drush --root /var/www/html/web core-cron"; \
 	} > /etc/cron.d/ddbgo-cron
 RUN chmod 0644 /etc/cron.d/ddbgo-cron
 RUN crontab /etc/cron.d/ddbgo-cron
