@@ -1,212 +1,212 @@
 {
-  "name": "drupal-composer/drupal-project",
-  "description": "Project template for Drupal 8 projects with composer",
-  "type": "project",
-  "license": "GPL-2.0-or-later",
-  "authors": [{
-      "name": "",
-      "role": ""
-    }
-  ],
-  "repositories": [{
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/fontawesome",
-        "version": "5.9.3",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://use.fontawesome.com/releases/v5.6.3/fontawesome-free-5.6.3-web.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
+    "name": "drupal-composer/drupal-project",
+    "description": "Project template for Drupal 8 projects with composer",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "authors": [{
+            "name": "",
+            "role": ""
         }
-      }
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/datetimepicker",
-        "version": "2.5.20",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/xdan/datetimepicker/archive/2.5.20.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
-        }
-      }
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/fontawesome-iconpicker",
-        "version": "3.2.0",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/farbelous/fontawesome-iconpicker/archive/3.2.0.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
-        }
-      }
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/jquery-simple-color",
-        "version": "1.2.2",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/recurser/jquery-simple-color/archive/v1.2.2.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
-        }
-      }
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/select2",
-        "version": "4.0.5",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/select2/select2/archive/4.0.5.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
-        }
-      }
-    }, {
-      "type": "package",
-      "package": {
-        "name": "ddbgolib/spectrum",
-        "version": "1.8.0",
-        "type": "drupal-library",
-        "dist": {
-          "url": "https://github.com/bgrins/spectrum/archive/1.8.0.zip",
-          "type": "zip"
-        },
-        "require": {
-          "composer/installers": "^1.2"
-        }
-      }
-    }
-  ],
-  "require": {
-    "balbuf/drupal-libraries-installer": "^1.0",
-    "composer/installers": "^1.2",
-    "cweagans/composer-patches": "^1.6.5",
-    "ddbgolib/datetimepicker": "^2.5",
-    "ddbgolib/fontawesome": "^5.9",
-    "ddbgolib/fontawesome-iconpicker": "^3.2",
-    "ddbgolib/jquery-simple-color": "^1.2",
-    "ddbgolib/select2": "^4.0",
-    "ddbgolib/spectrum": "^1.8",
-    "drupal-composer/drupal-scaffold": "^2.5",
-    "drupal/admin_toolbar": "^1.25",
-    "drupal/adminimal_admin_toolbar": "^1.8",
-    "drupal/adminimal_theme": "^1.3",
-    "drupal/auto_entitylabel": "^2.1@beta",
-    "drupal/better_exposed_filters": "^3.0@alpha",
-    "drupal/color_field": "^2.0",
-    "drupal/conditional_fields": "1.x-dev",
-    "drupal/console": "^1.0.2",
-    "drupal/core": "^8.6.0",
-    "drupal/css_editor": "^1.2",
-    "drupal/custom_formatters": "^3.0@alpha",
-    "drupal/devel": "^1.2",
-    "drupal/devel_debug_log": "^1.0@beta",
-    "drupal/empty_fields": "^1.0@alpha",
-    "drupal/entity_reference_revisions": "^1.6",
-    "drupal/exclude_node_title": "^1.0@beta",
-    "drupal/facets": "^1.2",
-    "drupal/field_group": "3.x-dev",
-    "drupal/flag": "^4.0@alpha",
-    "drupal/fontawesome": "^2.9",
-    "drupal/fontawesome_menu_icons": "^1.5",
-    "drupal/hook_post_action": "^1.0",
-    "drupal/ldap": "^3.0@beta",
-    "drupal/libraries": "^3.0@alpha",
-    "drupal/menu_block": "^1.5",
-    "drupal/node_view_permissions": "^1.2",
-    "drupal/noreqnewpass": "^1.1",
-    "drupal/paragraphs": "^1.5",
-    "drupal/rfv": "^1.5",
-    "drupal/search_api": "1.11",
-    "drupal/select2": "^1.1",
-    "drupal/semanticviews": "^2.2",
-    "drupal/single_datetime": "^1.7",
-    "drupal/token": "^1.5",
-    "drupal/toolbar_menu": "^2.1",
-    "drupal/toolbar_menu_clean": "^1.0",
-    "drupal/ultimate_cron": "^2.0@alpha",
-    "drupal/unused_modules": "^1.0",
-    "drupal/userprotect": "^1.0",
-    "drupal/viewsreference": "^1.4",
-    "vlucas/phpdotenv": "^2.4",
-    "webflo/drupal-finder": "^1.0.0",
-    "webmozart/path-util": "^2.3"
-  },
-  "require-dev": {
-    "webflo/drupal-core-require-dev": "^8.6.0"
-  },
-  "conflict": {
-    "drupal/drupal": "*"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true
-  },
-  "autoload": {
-    "classmap": [
-      "scripts/composer/ScriptHandler.php"
     ],
-    "files": ["load.environment.php"]
-  },
-  "scripts": {
-    "pre-install-cmd": [
-      "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+    "repositories": [{
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/fontawesome",
+                "version": "5.9.3",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://use.fontawesome.com/releases/v5.6.3/fontawesome-free-5.6.3-web.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/datetimepicker",
+                "version": "2.5.20",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/xdan/datetimepicker/archive/2.5.20.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/fontawesome-iconpicker",
+                "version": "3.2.0",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/farbelous/fontawesome-iconpicker/archive/3.2.0.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/jquery-simple-color",
+                "version": "1.2.2",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/recurser/jquery-simple-color/archive/v1.2.2.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/select2",
+                "version": "4.0.5",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/select2/select2/archive/4.0.5.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
+                "name": "ddbgolib/spectrum",
+                "version": "1.8.0",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/bgrins/spectrum/archive/1.8.0.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.2"
+                }
+            }
+        }
     ],
-    "pre-update-cmd": [
-      "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
-    ],
-    "post-install-cmd": [
-      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ],
-    "post-update-cmd": [
-      "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
-    ]
-  },
-  "extra": {
-    "patchLevel": {
-      "drupal/core": "-p2"
+    "require": {
+        "composer/installers": "^1.7",
+        "ddbgolib/datetimepicker": "^2.5",
+        "ddbgolib/fontawesome": "^5.9",
+        "ddbgolib/fontawesome-iconpicker": "^3.2",
+        "ddbgolib/jquery-simple-color": "^1.2",
+        "ddbgolib/select2": "^4.0",
+        "ddbgolib/spectrum": "^1.8",
+        "drupal-composer/drupal-scaffold": "^2.6",
+        "drupal/admin_toolbar": "^2.0",
+        "drupal/adminimal_admin_toolbar": "^1.10",
+        "drupal/adminimal_theme": "^1.5",
+        "drupal/auto_entitylabel": "^3.0@beta",
+        "drupal/better_exposed_filters": "^4.0@alpha",
+        "drupal/color_field": "^2.0",
+        "drupal/conditional_fields": "^1.0@alpha",
+        "drupal/core-recommended": "^8.8.1",
+        "drupal/css_editor": "^1.2",
+        "drupal/custom_formatters": "^3.0@alpha",
+        "drupal/devel": "^2.1",
+        "drupal/devel_debug_log": "^1.0@beta",
+        "drupal/empty_fields": "^1.0@alpha",
+        "drupal/entity_browser": "^2.3",
+        "drupal/entity_reference_revisions": "^1.7",
+        "drupal/exclude_node_title": "^1.0@beta",
+        "drupal/facets": "^1.4",
+        "drupal/field_group": "^3.0",
+        "drupal/flag": "^4.0@beta",
+        "drupal/fontawesome": "^2.15",
+        "drupal/fontawesome_menu_icons": "^1.8",
+        "drupal/hook_post_action": "^1.0",
+        "drupal/ldap": "^3.0@beta",
+        "drupal/libraries": "^3.0@alpha",
+        "drupal/menu_block": "^1.5",
+        "drupal/node_view_permissions": "^1.2",
+        "drupal/noreqnewpass": "^1.1",
+        "drupal/paragraphs": "^1.10",
+        "drupal/rfv": "^1.5",
+        "drupal/search_api": "^1.15",
+        "drupal/search_api_autocomplete": "^1.2",
+        "drupal/select2": "^1.6",
+        "drupal/semanticviews": "^2.2",
+        "drupal/single_datetime": "^1.7",
+        "drupal/token": "^1.6",
+        "drupal/toolbar_menu": "^2.1",
+        "drupal/toolbar_menu_clean": "^1.2",
+        "drupal/ultimate_cron": "^2.0@alpha",
+        "drupal/unused_modules": "^1.0",
+        "drupal/userprotect": "^1.1",
+        "drupal/viewsreference": "^1.4",
+        "drush/drush": "^10.1",
+        "henrikbjorn/lurker": "^1.2",
+        "natxet/cssmin": "^3.0",
+        "patchwork/jsqueeze": "^2.0",
+        "vlucas/phpdotenv": "^4.1",
+        "webflo/drupal-finder": "^1.2",
+        "webmozart/path-util": "^2.3"
     },
-    "installer-paths": {
-      "web/core": ["type:drupal-core"],
-      "web/libraries/{$name}": ["type:drupal-library"],
-      "web/modules/contrib/{$name}": ["type:drupal-module"],
-      "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-      "web/themes/contrib/{$name}": ["type:drupal-theme"],
-      "web/libraries/datetimepicker": ["ddbgolib/datetimepicker"],
-      "web/libraries/fontawesome": ["ddbgolib/fontawesome"],
-      "web/libraries/fontawesome-iconpicker": ["ddbgolib/fontawesome-iconpicker"],
-      "web/libraries/jquery-simple-color": ["ddbgolib/jquery-simple-color"],
-      "web/libraries/select2": ["ddbgolib/select2"],
-      "web/libraries/spectrum": ["ddbgolib/spectrum"],
-
-      "drush/Commands/{$name}": ["type:drupal-drush"]
+    "require-dev": {},
+    "conflict": {
+        "drupal/drupal": "*"
     },
-    "drupal-scaffold": {
-      "initial": {
-        ".editorconfig": "../.editorconfig",
-        ".gitattributes": "../.gitattributes"
-      }
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "classmap": [
+            "scripts/composer/ScriptHandler.php"
+        ],
+        "files": ["load.environment.php"]
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "pre-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::checkComposerVersion"
+        ],
+        "post-install-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ],
+        "post-update-cmd": [
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
+        ]
+    },
+    "extra": {
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "installer-paths": {
+            "web/core": ["type:drupal-core"],
+            "web/libraries/{$name}": ["type:drupal-library"],
+            "web/modules/contrib/{$name}": ["type:drupal-module"],
+            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "web/themes/contrib/{$name}": ["type:drupal-theme"],
+            "web/libraries/datetimepicker": ["ddbgolib/datetimepicker"],
+            "web/libraries/fontawesome": ["ddbgolib/fontawesome"],
+            "web/libraries/fontawesome-iconpicker": ["ddbgolib/fontawesome-iconpicker"],
+            "web/libraries/jquery-simple-color": ["ddbgolib/jquery-simple-color"],
+            "web/libraries/select2": ["ddbgolib/select2"],
+            "web/libraries/spectrum": ["ddbgolib/spectrum"],
+            "drush/Commands/{$name}": ["type:drupal-drush"]
+        },
+        "drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            }
+        }
     }
-  }
 }
