@@ -121,6 +121,7 @@
         "drupal/devel_debug_log": "^1.0@beta",
         "drupal/empty_fields": "^1.0@alpha",
         "drupal/entity_browser": "^2.3",
+        "drupal/entity_reference_integrity": "^1.0@RC",
         "drupal/entity_reference_revisions": "^1.7",
         "drupal/exclude_node_title": "^1.0@beta",
         "drupal/facets": "^1.4",

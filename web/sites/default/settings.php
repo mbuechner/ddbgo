@@ -543,7 +543,7 @@ $settings['file_public_path'] = getenv('FILE_PUBLIC_PATH');
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-$settings['file_private_path'] = getenv('FILE_PUBLIC_PATH') . '/private';
+$settings['file_private_path'] = getenv('FILE_PRIVATE_PATH');
 
 /**
  * Session write interval:
