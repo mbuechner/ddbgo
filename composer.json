@@ -114,6 +114,7 @@
         "drupal/cancel_button": "^1.1",
         "drupal/color_field": "^2.2.0",
         "drupal/conditional_fields": "^1.0@alpha",
+        "drupal/content_lock": "^2.0",
         "drupal/core-recommended": "^8.8.1",
         "drupal/css_editor": "^1.2",
         "drupal/custom_formatters": "^3.0@alpha",
