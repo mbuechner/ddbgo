@@ -1,3 +1,5 @@
+![Docker Image CI](https://github.com/mbuechner/ddbgo/workflows/Docker%20Image%20CI/badge.svg)
+
 ## Find update-able packages
 composer outdated --direct
 
