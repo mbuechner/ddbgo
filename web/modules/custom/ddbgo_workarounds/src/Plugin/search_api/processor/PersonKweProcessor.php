@@ -4,6 +4,7 @@ namespace Drupal\ddbgo_workarounds\Plugin\search_api\processor;
 
 use Drupal;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\ddbgo_workarounds\Plugin\search_api\processor\Property\EntityProcessorProperty;
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
@@ -12,7 +13,6 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\search_api\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\ddbgo_workarounds\Plugin\search_api\processor\Property\EntityProcessorProperty;
 
 /**
  * Adds the user's soul mate node for indexing.
@@ -57,56 +57,6 @@ class PersonKweProcessor extends ProcessorPluginBase
     $processor->setFieldsHelper($container->get('search_api.fields_helper'));
 
     return $processor;
-  }
-
-  /**
-   * Retrieves the entity type manager.
-   *
-   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
-   *   The entity type manager.
-   */
-  public function getEntityTypeManager()
-  {
-    return $this->entityTypeManager ?: Drupal::entityTypeManager();
-  }
-
-  /**
-   * Sets the entity type manager.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The new entity type manager.
-   *
-   * @return $this
-   */
-  public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager)
-  {
-    $this->entityTypeManager = $entity_type_manager;
-    return $this;
-  }
-
-  /**
-   * Retrieves the fields helper.
-   *
-   * @return \Drupal\search_api\Utility\FieldsHelperInterface
-   *   The fields helper.
-   */
-  public function getFieldsHelper()
-  {
-    return $this->fieldsHelper ?: Drupal::service('search_api.fields_helper');
-  }
-
-  /**
-   * Sets the fields helper.
-   *
-   * @param \Drupal\search_api\Utility\FieldsHelperInterface $fields_helper
-   *   The new fields helper.
-   *
-   * @return $this
-   */
-  public function setFieldsHelper(FieldsHelperInterface $fields_helper)
-  {
-    $this->fieldsHelper = $fields_helper;
-    return $this;
   }
 
   /**
@@ -192,6 +142,58 @@ class PersonKweProcessor extends ProcessorPluginBase
       }
       unset($to_extract['']);
     }
-    $this->getFieldsHelper()->extractFields($nodes[array_key_first($nodes)]->getTypedData(), $to_extract, $item->getLanguage());
+    foreach ($nodes as $node) {
+      $this->getFieldsHelper()->extractFields($node->getTypedData(), $to_extract, $item->getLanguage());
+    }
+  }
+
+  /**
+   * Retrieves the entity type manager.
+   *
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   The entity type manager.
+   */
+  public function getEntityTypeManager()
+  {
+    return $this->entityTypeManager ?: Drupal::entityTypeManager();
+  }
+
+  /**
+   * Sets the entity type manager.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The new entity type manager.
+   *
+   * @return $this
+   */
+  public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager)
+  {
+    $this->entityTypeManager = $entity_type_manager;
+    return $this;
+  }
+
+  /**
+   * Retrieves the fields helper.
+   *
+   * @return \Drupal\search_api\Utility\FieldsHelperInterface
+   *   The fields helper.
+   */
+  public function getFieldsHelper()
+  {
+    return $this->fieldsHelper ?: Drupal::service('search_api.fields_helper');
+  }
+
+  /**
+   * Sets the fields helper.
+   *
+   * @param \Drupal\search_api\Utility\FieldsHelperInterface $fields_helper
+   *   The new fields helper.
+   *
+   * @return $this
+   */
+  public function setFieldsHelper(FieldsHelperInterface $fields_helper)
+  {
+    $this->fieldsHelper = $fields_helper;
+    return $this;
   }
 }

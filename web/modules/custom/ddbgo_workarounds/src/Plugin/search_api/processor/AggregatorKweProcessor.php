@@ -202,6 +202,8 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       }
       unset($to_extract['']);
     }
-    $this->getFieldsHelper()->extractFields($nodes[array_key_first($nodes)]->getTypedData(), $to_extract, $item->getLanguage());
+    foreach ($nodes as $node) {
+      $this->getFieldsHelper()->extractFields($node->getTypedData(), $to_extract, $item->getLanguage());
+    }
   }
 }
