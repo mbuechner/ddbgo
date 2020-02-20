@@ -128,7 +128,7 @@ class PersonKweProcessor extends ProcessorPluginBase
       ->condition('field_personen.entity:paragraph.field_person.target_id', $original_entity->id())
       ->execute();
 
-    $nodes = $this->getEntityTypeManager()
+    $nodesTmp = $this->getEntityTypeManager()
       ->getStorage('node')
       ->loadMultiple($nids);
 
@@ -143,7 +143,10 @@ class PersonKweProcessor extends ProcessorPluginBase
       unset($to_extract['']);
     }
     foreach ($nodes as $node) {
-      $this->getFieldsHelper()->extractFields($node->getTypedData(), $to_extract, $item->getLanguage());
+      $title = $node->getTitle() . " (TEST)";
+      $node->setTitle($title);
+      $td = $node->getTypedData();
+      $this->getFieldsHelper()->extractFields($td, $to_extract, $item->getLanguage());
     }
   }
 
