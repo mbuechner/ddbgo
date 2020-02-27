@@ -1,34 +1,70 @@
 <?php
-/**
- * @file
- * Contains \Drupal\ddbgo_cj\Plugin\QueueWorker\KweQueueWorker.
- */
 
-namespace Drupal\ddbgo_cj\Plugin\QueueWorker;
+namespace Drupal\ddbgo_cj;
 
-use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\Core\Session\AccountProxy;
 
 /**
  * KWE Queue Worker which is doing the update work.
  *
- * @QueueWorker(
- *   id = "kwe_queue_worker",
- *   title = @Translation("KWE Queue Worker which in updating one specific node of type KWE."),
- *   cron = {"time" = 60}
- * )
  */
-class KweQueueWorker extends QueueWorkerBase {
+class KweQueueWorker {
+
+  /**
+   * The node storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  private $nodeStorage;
+
+  /**
+   * The queue.
+   *
+   * @var \Drupal\Core\Queue\DatabaseQueue
+   */
+  private $queue;
+
+  /**
+   * @var Current User
+   */
+  private $currentUser;
+
+  /**
+   * Content lock service.
+   *
+   * @var \Drupal\content_lock\ContentLock\ContentLock
+   */
+  private $lockService;
+
+  public function __construct(AccountProxy $currentUser) {
+    $this->nodeStorage = \Drupal::service('entity.manager')->getStorage('node');
+    $this->lockService = \Drupal::service('content_lock');
+    $this->queue = \Drupal::service('queue')->get('kwe_queue_worker');
+    $this->currentUser = $currentUser;
+  }
 
   /**
    * {@inheritdoc}
    */
   public function processItem($nid) {
 
-    $node = \Drupal\node\Entity\Node::load($nid);
+    $node = $this->nodeStorage->load($nid);
     // get DDB-URI
     if (!isset($node) || !$node->hasField("field_ddburi") || empty($node->get("field_ddburi")->value)) {
-      return;
+      return TRUE; // we can't do anything here: don't re-run.
     }
+
+    // if node is locked, queue it again and do nothing
+    $is_locked = $this->lockService->fetchLock($nid, $node->language()->getId());
+    if ($is_locked) {
+      \Drupal::logger('ddbgo_cj')        ->warning("Node " . $node->id() . " is locked. ");
+      return FALSE; // we can do something there later
+    }
+    self::process($node);
+    return TRUE;
+  }
+
+  private static function process($node = NULL) {
 
     // FROM: https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5
     // TO: https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
@@ -38,12 +74,14 @@ class KweQueueWorker extends QueueWorkerBase {
         $node->get('field_ddburi')->value)
       . "/source/record";
 
-    $xml = $this->loadxmlfromurl($nid, trim($url));
+    $xml = self::loadxmlfromurl($node->id(), trim($url));
     // check if we got data from xml
     if (!isset($xml) || $xml === FALSE) {
+      \Drupal::logger('ddbgo_cj')
+        ->error("Node " . $node->id() . " could not parse data from " . trim($url) . ". ");
       return;
     }
-    $results = $this->parseddborg($xml);
+    $results = self::parseddborg($xml);
 
     // indicator if anything has been changed
     $any_changes = FALSE;
@@ -170,14 +208,18 @@ class KweQueueWorker extends QueueWorkerBase {
     if ($any_changes) {
       if ($node->getEntityType()->isRevisionable()) {
         $node->setNewRevision();
-        $node->setRevisionLogMessage("Automatic Update from " . $url);
+        $node->setRevisionLogMessage("Automatic Update from " . $url) . ". ";
       }
       $node->save();
-      \Drupal::logger('ddbgo_cj')->info("Node " . $nid . " was successfully updated from " . $url);
-    } else {
-      \Drupal::logger('ddbgo_cj')->info("Node " . $nid . " is already up-to-date.");
+      \Drupal::logger('ddbgo_cj')
+        ->info("Node " . $node->id() . " was successfully updated from " . $url . ". ");
+    }
+    else {
+      \Drupal::logger('ddbgo_cj')
+        ->info("Node " . $node->id() . " is already up-to-date. ");
     }
   }
+
 
   /**
    * Load data from an URL and return SimpleXMLElement.
@@ -187,7 +229,7 @@ class KweQueueWorker extends QueueWorkerBase {
    *
    * @return \SimpleXMLElement Parsed XML document
    */
-  private function loadxmlfromurl($nid = '<unknown>', $url) {
+  private static function loadxmlfromurl($nid = '<unknown>', $url) {
     // check if url exists
     $headers = get_headers($url);
     if (strpos($headers[0], '404') === FALSE) {
@@ -205,12 +247,12 @@ class KweQueueWorker extends QueueWorkerBase {
         return simplexml_load_string(file_get_contents($url, FALSE, $context));
       } catch (Exception $e) {
         \Drupal::logger('ddbgo_cj')
-          ->error("Error while download information from " . $url . ". Cannot update node " . $nid . ". " . $e->getMessage());
+          ->error("Error while download information from " . $url . ". Cannot update node " . $nid . ". " . $e->getMessage() . ". ");
       }
     }
     else {
       \Drupal::logger('ddbgo_cj')
-        ->warning($url . " seems to be NOT a valid DDB URI. Cannot update node " . $nid);
+        ->warning($url . " seems to be NOT a valid DDB URI. Cannot update node " . $nid . ". ");
     }
   }
 
@@ -225,7 +267,7 @@ class KweQueueWorker extends QueueWorkerBase {
    * abbreviation, street, houseIdentifier, postalCode, city, state, country,
    * sector, telephone, email, url.
    */
-  private function parseddborg($xml) {
+  private static function parseddborg($xml) {
     $results = [];
 
     if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="id"]')) && isset($result[0])) {

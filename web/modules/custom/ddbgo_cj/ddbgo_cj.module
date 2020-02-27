@@ -1,11 +1,12 @@
 <?php
 
-/**
- * Add job for every KWE into queue. This is scheduled by Ultimate Cron, e.g. once a day.
- */
-function ddbgo_cj_kwe_queue_worker() {
+use Drupal\ddbgo_cj\Plugin\QueueWorker\KweQueueWorker;
 
-  //xdebug_break();
+/**
+ * Add job for every KWE into queue. This is scheduled by Ultimate Cron, e.g.
+ * once a day.
+ */
+function ddbgo_cj_kwe_daily_queue_worker() {
 
   // get all IDs of KWE which are published
   $nids = \Drupal::entityQuery('node')
@@ -16,28 +17,93 @@ function ddbgo_cj_kwe_queue_worker() {
 
   $queue_factory = \Drupal::service('queue');
   $queue = $queue_factory->get('kwe_queue_worker');
-  $queue->createQueue();
+  // $queue->createQueue();
+
+  $in_queue = [];
+  $in_queue_item = [];
+  while ($item = $queue->claimItem(60)) {
+    array_push($in_queue_item, $item);
+    array_push($in_queue, $item->data);
+  }
+
+  // release all!
+  foreach ($in_queue_item as $item) {
+    $queue->releaseItem($item);
+  }
+  $in_queue_item = NULL;
 
   foreach ($nids as $nid) {
-    $queue->createItem($nid);
+    if (!in_array($nid, $in_queue)) {
+      $queue->createItem($nid);
+    }
+  }
+}
+
+/**
+ * This is processing the 'kwe_queue_worker' queue.
+ */
+function ddbgo_cj_kwe_queue_worker() {
+
+  $queue_factory = \Drupal::service('queue');
+  $queue = $queue_factory->get('kwe_queue_worker');
+
+  $in_queue_item = [];
+  $in_queue_item_to_delete = [];
+  while ($item = $queue->claimItem(600)) {
+    array_push($in_queue_item, $item);
+  }
+
+  try {
+    $kweworker = \Drupal::service('ddbgo_cj.kwe_queue_worker');
+
+    foreach ($in_queue_item as $item) {
+      if ($kweworker->processItem($item->data)) {
+        array_push($in_queue_item_to_delete, $item);
+      }
+    }
+  } finally {
+    // release or delete items
+    foreach ($in_queue_item as $item) {
+      if (in_array($item, $in_queue_item_to_delete)) {
+        $queue->deleteItem($item);
+      }
+      else {
+        $queue->releaseItem($item);
+      }
+    }
   }
 }
 
 /**
  * Update every KWE after saving. This will only add a new job into queue.
+ *
  * @param \EntityInterface $entity
  */
 function ddbgo_cj_node_postsave($node) {
 
-  if ($node instanceof \Drupal\node\Entity\Node) {
-    $entity_type = $node->getType();
-    if ($entity_type === 'kwe') {
-      $nid = $node->id();
-      $queue_factory = \Drupal::service('queue');
-      $queue = $queue_factory->get('kwe_queue_worker');
-      $queue->createQueue();
-      $queue->createItem($nid);
-    }
+  if (!($node instanceof Node) || $node->getType() !== 'kwe') {
+    return;
   }
 
+  $queue_factory = \Drupal::service('queue');
+  $queue = $queue_factory->get('kwe_queue_worker');
+  // $queue->createQueue();
+
+  $in_queue = [];
+  $in_queue_item = [];
+  while ($item = $queue->claimItem(60)) {
+    array_push($in_queue_item, $item);
+    array_push($in_queue, $item->data);
+  }
+
+  // release all!
+  foreach ($in_queue_item as $item) {
+    $queue->releaseItem($item);
+  }
+  $in_queue_item = NULL;
+
+  $nid = $node->id();
+  if (!in_array($nid, $in_queue)) {
+    $queue->createItem($nid);
+  }
 }

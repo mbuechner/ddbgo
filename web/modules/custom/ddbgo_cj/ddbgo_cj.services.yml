@@ -1,0 +1,4 @@
+services:
+  ddbgo_cj.kwe_queue_worker:
+    class: Drupal\ddbgo_cj\KweQueueWorker
+    arguments: ['@current_user']

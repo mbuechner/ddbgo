@@ -5,15 +5,15 @@ dependencies:
   - ddbgo_cj
   - ultimate_cron
   - content_lock
-title: 'DDBgo KWE Updater'
-id: kwe_queue_worker
+title: 'DDBgo KWE Daily Updater'
+id: kwe_daily_queue_worker
 module: ddbgo_cj
-callback: ddbgo_cj_kwe_queue_worker
+callback: ddbgo_cj_kwe_daily_queue_worker
 scheduler:
-  id: simple
+  id: crontab
   configuration:
     rules:
-      - '*/15+@ * * * *'
+      - '0 4 * * *'
 launcher:
   id: serial
   configuration:
