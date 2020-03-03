@@ -4,7 +4,7 @@ namespace Drupal\ddbgo_search\Plugin\search_api\processor;
 
 use Drupal;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\ddbgo_workarounds\Plugin\search_api\processor\Property\EntityProcessorProperty;
+use Drupal\ddbgo_search\Plugin\search_api\processor\Property\EntityProcessorProperty;
 use Drupal\node\Entity\Node;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
