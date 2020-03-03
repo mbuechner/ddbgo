@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\ddbgo_workarounds\Plugin\search_api\processor;
+namespace Drupal\ddbgo_search\Plugin\search_api\processor;
 
 use Drupal;
 use Drupal\Core\Entity\EntityTypeManagerInterface;

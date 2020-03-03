@@ -26,4 +26,4 @@ logger:
   configuration:
     method: '3'
     expire: 604800
-    retain: 100
+    retain: 10000

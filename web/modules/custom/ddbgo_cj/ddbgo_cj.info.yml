@@ -6,7 +6,7 @@ dependencies:
   - drupal:hook_post_action
   - drupal:content_lock
 package: ddbgo
-version: '8.x-1.6'
+version: '8.x-1.0'
 core: 8.x
 project: 'ddbgo_cj'
-datestamp: 1540974381
+datestamp: 1583236854
