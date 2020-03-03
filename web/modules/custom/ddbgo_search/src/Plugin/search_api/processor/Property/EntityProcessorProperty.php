@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\ddbgo_workarounds\Plugin\search_api\processor\Property;
+namespace Drupal\ddbgo_search\Plugin\search_api\processor\Property;
 
 use Drupal\Core\Entity\TypedData\EntityDataDefinition;
 use Drupal\search_api\Processor\ProcessorPropertyInterface;

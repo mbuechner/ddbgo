@@ -1,0 +1,11 @@
+name: DDBgo Search
+type: module
+description: Extentions (processors) for Search API module for DDBgo
+dependencies:
+  - drupal:search_api
+  - drupal:paragraphs
+package: ddbgo
+version: '8.x-1.0'
+core: 8.x
+project: 'ddbgo_search'
+datestamp: 1583236800
