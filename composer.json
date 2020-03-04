@@ -133,6 +133,7 @@
         "drupal/noreqnewpass": "^1.1",
         "drupal/paragraphs": "^1.10",
         "drupal/rfv": "^1.5",
+        "drupal/role_delegation": "^1.1",
         "drupal/search_api": "^1.15",
         "drupal/select2": "^1.6",
         "drupal/semanticviews": "^2.2",
