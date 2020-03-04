@@ -1,6 +1,6 @@
 name: DDBgo Search
 type: module
-description: Extentions (processors) for Search API module for DDBgo
+description: Extensions (processors) for Search API module for DDBgo
 dependencies:
   - drupal:search_api
   - drupal:paragraphs
