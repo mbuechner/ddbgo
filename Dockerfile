@@ -66,7 +66,7 @@ COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
 RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal
 RUN find . -type d -exec chmod 755 {} \;
 RUN find . -type f -exec chmod 644 {} \;
-RUN chown -R www-data:www-data web/sites web/modules web/themes web/tmp
+RUN chown -R www-data:www-data web/sites web/modules web/themes
 RUN chmod +x /var/www/html/vendor/drush/drush/drush
 RUN { \
 		echo "<VirtualHost *:80>"; \
