@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b68de75ae77681d8f9a6b2d2a08bd3de",
+    "content-hash": "29dbc2f3ecd9b168a07983a326eeafc7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3313,6 +3313,103 @@
             "homepage": "https://www.drupal.org/project/menu_block",
             "support": {
                 "source": "https://git.drupalcode.org/project/menu_block"
+            }
+        },
+        {
+            "name": "drupal/minifyhtml",
+            "version": "1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/minifyhtml.git",
+                "reference": "8.x-1.9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/minifyhtml-8.x-1.9.zip",
+                "reference": "8.x-1.9",
+                "shasum": "6852e6e52d77c06f51783876a4f4ab38fd1a1fb2"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.9",
+                    "datestamp": "1576075986",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "slydevil",
+                    "homepage": "https://www.drupal.org/user/1846786"
+                }
+            ],
+            "description": "Minify the contents of the Drupal page",
+            "homepage": "https://www.drupal.org/project/minifyhtml",
+            "support": {
+                "source": "https://git.drupalcode.org/project/minifyhtml"
+            }
+        },
+        {
+            "name": "drupal/minifyjs",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/minifyjs.git",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/minifyjs-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "357a2af105bf8cc807aedf40bd3d82e685fa3100"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "patchwork/jsqueeze": "~2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.0",
+                    "datestamp": "1576867388",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Scott Joudry",
+                    "homepage": "https://www.drupal.org/user/1846786",
+                    "email": "sj@slydevil.com"
+                }
+            ],
+            "description": "Allows an administrator to minify any javascript file in Drupal and use that version rather than the original.",
+            "homepage": "https://www.drupal.org/project/minifyjs",
+            "support": {
+                "source": "https://git.drupalcode.org/project/minifyjs",
+                "issues": "https://www.drupal.org/project/issues/minifyjs"
             }
         },
         {
