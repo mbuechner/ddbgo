@@ -58,6 +58,7 @@ RUN { \
 		echo "max_execution_time = 600"; \
 		echo "max_input_vars = 5000"; \
 	} > /usr/local/etc/php/conf.d/0-upload_large_dumps.ini
+RUN a2enmod http2
 
 WORKDIR /var/www/html
 COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
@@ -73,6 +74,7 @@ RUN { \
 		echo "  DocumentRoot /var/www/html/web"; \
 		echo "  ErrorLog ${APACHE_LOG_DIR}/error.log"; \
 		echo "  CustomLog ${APACHE_LOG_DIR}/access.log combined"; \
+		echo "  Protocols h2 http/1.1"; \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
 
