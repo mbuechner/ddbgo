@@ -3,15 +3,18 @@
     "description": "DDBgo <https://go.ddb.de/> composer project for Deutsche Digitale Bibliothek <https://www.deutsche-digitale-bibliothek.de/>",
     "type": "project",
     "license": "Apache-2.0",
-    "authors": [{
+    "authors": [
+        {
             "name": "Michael Büchner <m.buechner@dnb.de>",
             "role": "Developer"
         }
     ],
-    "repositories": [{
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/fontawesome",
@@ -25,7 +28,8 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/datetimepicker",
@@ -39,7 +43,8 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/fontawesome-iconpicker",
@@ -53,7 +58,8 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/jquery-simple-color",
@@ -67,7 +73,8 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/select2",
@@ -81,7 +88,8 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
+        },
+        {
             "type": "package",
             "package": {
                 "name": "ddbgolib/spectrum",
@@ -99,6 +107,7 @@
     ],
     "require": {
         "composer/installers": "^1.7",
+        "cweagans/composer-patches": "^1.6",
         "ddbgolib/datetimepicker": "^2.5",
         "ddbgolib/fontawesome": "^5.9",
         "ddbgolib/fontawesome-iconpicker": "^3.2",
@@ -164,13 +173,16 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
+        "preferred-install": "source",
         "sort-packages": true
     },
     "autoload": {
         "classmap": [
             "scripts/composer/ScriptHandler.php"
         ],
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": [
@@ -191,23 +203,52 @@
             "drupal/core": "-p2"
         },
         "installer-paths": {
-            "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
-            "web/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "web/libraries/datetimepicker": ["ddbgolib/datetimepicker"],
-            "web/libraries/fontawesome": ["ddbgolib/fontawesome"],
-            "web/libraries/fontawesome-iconpicker": ["ddbgolib/fontawesome-iconpicker"],
-            "web/libraries/jquery-simple-color": ["ddbgolib/jquery-simple-color"],
-            "web/libraries/select2": ["ddbgolib/select2"],
-            "web/libraries/spectrum": ["ddbgolib/spectrum"],
-            "drush/Commands/{$name}": ["type:drupal-drush"]
+            "web/core": [
+                "type:drupal-core"
+            ],
+            "web/libraries/{$name}": [
+                "type:drupal-library"
+            ],
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "web/libraries/datetimepicker": [
+                "ddbgolib/datetimepicker"
+            ],
+            "web/libraries/fontawesome": [
+                "ddbgolib/fontawesome"
+            ],
+            "web/libraries/fontawesome-iconpicker": [
+                "ddbgolib/fontawesome-iconpicker"
+            ],
+            "web/libraries/jquery-simple-color": [
+                "ddbgolib/jquery-simple-color"
+            ],
+            "web/libraries/select2": [
+                "ddbgolib/select2"
+            ],
+            "web/libraries/spectrum": [
+                "ddbgolib/spectrum"
+            ],
+            "drush/Commands/{$name}": [
+                "type:drupal-drush"
+            ]
         },
         "drupal-scaffold": {
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
+            }
+        },
+        "patches": {
+            "drupal/select2": {
+                "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
             }
         }
     }
