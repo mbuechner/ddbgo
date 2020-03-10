@@ -111,8 +111,10 @@ class PersonKweProcessor extends ProcessorPluginBase {
             continue;
           }
           $rolle = $par->get("field_rolle")->entity;
-          $rolesText .= $rolle->getName();
-          $rolesText .= ", ";
+          if ($rolle !== NULL) {
+            $rolesText .= $rolle->getName();
+            $rolesText .= ", ";
+          }
         }
 
         if (strlen($rolesText) >= 2) {
