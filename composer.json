@@ -141,6 +141,8 @@
         "drupal/select2": "^1.6",
         "drupal/semanticviews": "^2.2",
         "drupal/single_datetime": "^1.7",
+        "drupal/taxonomy_unique": "^2.2",
+        "drupal/term_merge": "^1.0",
         "drupal/token": "^1.6",
         "drupal/toolbar_menu": "^2.1",
         "drupal/toolbar_menu_clean": "^1.2",
