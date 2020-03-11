@@ -14,6 +14,7 @@ See folder [web/modules/custom/ddbgo_search](web/modules/custom/ddbgo_search/).
 See folder [patches/](patches/).
 1. [Changed_tokenSeparator_in_Select2_module.patch](patches/Changed_tokenSeparator_in_Select2_module.patch)
 2. [DDBgo-improvements_in_unique_field_ajax_module.patch](patches/DDBgo-improvements_in_unique_field_ajax_module.patch)
+   https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
 
 ## Composer
 DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Plaese make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
