@@ -1,0 +1,11 @@
+uuid: 5b40d055-9a47-4dcf-bfdd-9dd9fdba63d6
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.kultursparte
+id: taxonomy_term.kultursparte
+target_entity_type_id: taxonomy_term
+target_bundle: kultursparte
+default_langcode: site_default
+language_alterable: false

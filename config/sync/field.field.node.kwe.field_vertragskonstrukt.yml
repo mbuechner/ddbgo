@@ -1,0 +1,38 @@
+uuid: 7e026951-6861-47e8-8a66-ff767b2ce5ff
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertragskonstrukt
+    - node.type.kwe
+    - taxonomy.vocabulary.vertragskonstrukt
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.kwe.field_vertragskonstrukt
+field_name: field_vertragskonstrukt
+entity_type: node
+bundle: kwe
+label: Vertragskonstrukt
+description: 'Haben wir mit dieser Kultur- oder Wissenseinrichtung einen Kooperationsvertrag oder einen Aggregationsvertrag abgeschlossen?'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      vertragskonstrukt: vertragskonstrukt
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,29 @@
+uuid: 0b5e64db-acb7-4932-b742-f6984bc8407f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_europeana_lieferung_enum
+    - node.type.bestand
+    - taxonomy.vocabulary.europeana
+id: node.bestand.field_europeana_lieferung_enum
+field_name: field_europeana_lieferung_enum
+entity_type: node
+bundle: bestand
+label: 'Werden bereits Daten an Europeana geliefert?'
+description: 'Wird der Bestand bereits, z.B. über ein Europeana-Projekt wie Europeana Fashion, an Europeana geliefert?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      europeana: europeana
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

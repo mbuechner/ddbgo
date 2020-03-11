@@ -1,0 +1,39 @@
+uuid: 25fc69b6-efd3-4667-af13-d3cb5b30dc5f
+langcode: de
+status: true
+dependencies:
+  enforced:
+    module:
+      - flag_bookmark
+  module:
+    - node
+_core:
+  default_config_hash: vuzrLaRZ3xV-FmT127t2gLy_p8JDLMWtsKsnCwdWR2Y
+id: bookmark
+label: Lesezeichen
+bundles:
+  - aggregator
+  - bestand
+  - kwe
+  - person
+entity_type: node
+global: false
+weight: 0
+flag_short: '<i class="far fa-bookmark"></i>'
+flag_long: 'Diesen Beitrag zu den Lesezeichen hinzufügen.'
+flag_message: ''
+unflag_short: '<i class="fas fa-bookmark"></i>'
+unflag_long: 'Diesen Beitrag aus den Lesezeichen entfernen'
+unflag_message: ''
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: ajax_link
+flagTypeConfig:
+  show_in_links:
+    full: full
+  show_as_field: true
+  show_on_form: false
+  show_contextual_link: false
+  extra_permissions:
+    owner: '0'
+linkTypeConfig: {  }

@@ -1,0 +1,14 @@
+uuid: 45c7e514-2149-4e60-9e4e-38061c07df2c
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.ddb_team_login_admin
+  module:
+    - user
+id: user_remove_role_action.ddb_team_login_admin
+label: 'Den ausgewählten Benutzern die Rolle DDB-Team-Login-Admin entziehen'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: ddb_team_login_admin

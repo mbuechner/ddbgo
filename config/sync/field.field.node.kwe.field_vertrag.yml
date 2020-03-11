@@ -1,0 +1,27 @@
+uuid: 40066ede-011a-4c4d-975e-f652a1f1cf7e
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertrag
+    - node.type.kwe
+  module:
+    - file
+id: node.kwe.field_vertrag
+field_name: field_vertrag
+entity_type: node
+bundle: kwe
+label: Vertrag
+description: 'Vertrag und ggf. Zusatzvereinbarung als PDF-Datei'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: pdf
+  max_filesize: '32 MB'
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

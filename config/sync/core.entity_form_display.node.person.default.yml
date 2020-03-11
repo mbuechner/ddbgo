@@ -1,0 +1,102 @@
+uuid: 6ebf8aa7-7931-496b-b12d-fb96403de8c8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.person.field_bemerkung
+    - field.field.node.person.field_email
+    - field.field.node.person.field_nachname
+    - field.field.node.person.field_telefonnummer
+    - field.field.node.person.field_titel
+    - field.field.node.person.field_vorname
+    - node.type.person
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_allgemeines:
+      children:
+        - field_titel
+        - title
+        - field_vorname
+        - field_nachname
+        - field_email
+        - field_telefonnummer
+        - field_bemerkung
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Allgemeines
+      region: content
+id: node.person.default
+targetEntityType: node
+bundle: person
+mode: default
+content:
+  field_bemerkung:
+    weight: 32
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_email:
+    weight: 30
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_nachname:
+    weight: 29
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_telefonnummer:
+    weight: 31
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_titel:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_vorname:
+    weight: 28
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  title:
+    type: string_textfield
+    weight: 27
+    region: content
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

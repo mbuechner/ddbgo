@@ -1,0 +1,8 @@
+uuid: 66d81d76-7de9-467c-ab0e-63fba8abf47e
+langcode: de
+status: true
+dependencies: {  }
+name: Region/Ort
+vid: region_ort
+description: 'Region/ Ort der geografischen Ausrichtung eines Aggregators (Nutzung bei Aggregator)'
+weight: 0

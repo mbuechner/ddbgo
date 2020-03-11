@@ -1,0 +1,27 @@
+uuid: 6edbd554-745f-4f0a-b1a7-9b85f4154e0a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertrag
+    - node.type.aggregator
+  module:
+    - file
+id: node.aggregator.field_vertrag
+field_name: field_vertrag
+entity_type: node
+bundle: aggregator
+label: Vertrag
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'doc docx pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

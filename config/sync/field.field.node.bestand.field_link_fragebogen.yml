@@ -1,0 +1,23 @@
+uuid: b5abf0b7-0d18-4428-a510-95e55dfdc045
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_fragebogen
+    - node.type.bestand
+  module:
+    - link
+id: node.bestand.field_link_fragebogen
+field_name: field_link_fragebogen
+entity_type: node
+bundle: bestand
+label: 'Link zum Fragebogen'
+description: 'Link zum Lime-Survey-Fragebogen.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

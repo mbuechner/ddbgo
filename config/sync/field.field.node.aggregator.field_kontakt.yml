@@ -1,0 +1,43 @@
+uuid: 7b7f2c72-25a3-42ed-a1f1-116ad2984e4e
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kontakt
+    - node.type.aggregator
+    - paragraphs.paragraphs_type.kontakt
+  module:
+    - entity_reference_revisions
+id: node.aggregator.field_kontakt
+field_name: field_kontakt
+entity_type: node
+bundle: aggregator
+label: Kontakt
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      kontakt: kontakt
+    target_bundles_drag_drop:
+      ddb_objekte:
+        weight: 6
+        enabled: false
+      kontakt:
+        enabled: true
+        weight: 7
+      person_aggregator:
+        weight: 8
+        enabled: false
+      person_bestand:
+        weight: 9
+        enabled: false
+      person_kwe:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

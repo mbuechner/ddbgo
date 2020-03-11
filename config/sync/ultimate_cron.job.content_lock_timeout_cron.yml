@@ -1,0 +1,17 @@
+uuid: f060130a-0932-4517-ac89-2c4f005a2d9c
+langcode: de
+status: true
+dependencies:
+  module:
+    - content_lock_timeout
+title: 'Standardverarbeitungsroutine für Cron'
+id: content_lock_timeout_cron
+weight: 0
+module: content_lock_timeout
+callback: content_lock_timeout_cron
+scheduler:
+  id: simple
+launcher:
+  id: serial
+logger:
+  id: database

@@ -1,0 +1,29 @@
+uuid: 546fae8b-b3cc-4f9e-b06e-50b0b9bb7124
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sparte
+    - node.type.kwe
+    - taxonomy.vocabulary.kultursparte
+id: node.kwe.field_sparte
+field_name: field_sparte
+entity_type: node
+bundle: kwe
+label: Sparte
+description: 'Die DDB-Sparte für die KWE (wie in der Registrierung).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      kultursparte: kultursparte
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

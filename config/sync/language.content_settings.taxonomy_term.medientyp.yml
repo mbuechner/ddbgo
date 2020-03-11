@@ -1,0 +1,11 @@
+uuid: 2a9a0476-b641-43fe-bcc3-c6bbe0e87016
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.medientyp
+id: taxonomy_term.medientyp
+target_entity_type_id: taxonomy_term
+target_bundle: medientyp
+default_langcode: site_default
+language_alterable: false

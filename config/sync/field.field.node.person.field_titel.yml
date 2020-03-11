@@ -1,0 +1,29 @@
+uuid: 619540ff-c711-420b-af08-c8f72a55fb35
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_titel
+    - node.type.person
+    - taxonomy.vocabulary.akademischer_titel
+id: node.person.field_titel
+field_name: field_titel
+entity_type: node
+bundle: person
+label: Titel
+description: 'Akademischer Titel'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      akademischer_titel: akademischer_titel
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

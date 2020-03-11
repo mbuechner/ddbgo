@@ -1,0 +1,14 @@
+uuid: 99c9dbe2-9339-4d86-8078-5ff1d06bc0e0
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.ddb_team_login_admin
+  module:
+    - user
+id: user_add_role_action.ddb_team_login_admin
+label: 'Den ausgewählten Benutzern die Rolle DDB-Team-Login-Admin zuweisen'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: ddb_team_login_admin

@@ -1,0 +1,38 @@
+uuid: 779769d0-0f07-446c-93dc-f99b299e367d
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.ddb_objekte.field_anzahl_der_objekte
+    - field.field.paragraph.ddb_objekte.field_medientyp
+    - paragraphs.paragraphs_type.ddb_objekte
+  module:
+    - empty_fields
+id: paragraph.ddb_objekte.default
+targetEntityType: paragraph
+bundle: ddb_objekte
+mode: default
+content:
+  field_anzahl_der_objekte:
+    weight: 1
+    label: inline
+    settings:
+      thousand_separator: .
+      prefix_suffix: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: number_integer
+    region: content
+  field_medientyp:
+    weight: 0
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+hidden:
+  search_api_excerpt: true

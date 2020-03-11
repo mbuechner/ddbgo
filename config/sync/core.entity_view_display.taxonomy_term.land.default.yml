@@ -1,0 +1,33 @@
+uuid: e325f529-01b0-4bd5-b29c-1a9a06591bb8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.land.field_kuerzel
+    - field.field.taxonomy_term.land.field_uri
+    - taxonomy.vocabulary.land
+id: taxonomy_term.land.default
+targetEntityType: taxonomy_term
+bundle: land
+mode: default
+content:
+  field_kuerzel:
+    weight: 0
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uri:
+    weight: 1
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  description: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,11 @@
+uuid: 2b596cdf-586d-4ab0-ac10-0d947dc138b7
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.personenrolle
+id: taxonomy_term.personenrolle
+target_entity_type_id: taxonomy_term
+target_bundle: personenrolle
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,9 @@
+uuid: 049e10ac-e911-4033-a832-dc28cdd38323
+langcode: de
+status: true
+dependencies: {  }
+id: person_kwe
+label: 'Person in der KWE'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

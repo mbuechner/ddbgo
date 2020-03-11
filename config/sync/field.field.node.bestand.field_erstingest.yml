@@ -1,0 +1,21 @@
+uuid: fc0b393a-86e7-4149-9946-c7eaccf133d5
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_erstingest
+    - node.type.bestand
+  module:
+    - datetime
+id: node.bestand.field_erstingest
+field_name: field_erstingest
+entity_type: node
+bundle: bestand
+label: 'Erster Ingest in die DDB'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

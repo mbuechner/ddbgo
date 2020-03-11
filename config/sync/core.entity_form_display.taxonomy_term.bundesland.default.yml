@@ -1,0 +1,57 @@
+uuid: 317cfc08-6b7d-4ae3-802a-f8e66e3d62e9
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.bundesland.field_hauptstadt
+    - field.field.taxonomy_term.bundesland.field_kuerzel
+    - field.field.taxonomy_term.bundesland.field_uri
+    - taxonomy.vocabulary.bundesland
+id: taxonomy_term.bundesland.default
+targetEntityType: taxonomy_term
+bundle: bundesland
+mode: default
+content:
+  field_hauptstadt:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_kuerzel:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uri:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 100
+    region: content
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true

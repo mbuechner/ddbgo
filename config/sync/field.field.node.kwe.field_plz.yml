@@ -1,0 +1,26 @@
+uuid: da0a6170-0ae5-4d90-a547-f94101f84782
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_plz
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/[0-9]{3,5}/'
+    error_message: 'Bitte eine gültige Postleitzahl ohne Länderkennung eingeben.'
+id: node.kwe.field_plz
+field_name: field_plz
+entity_type: node
+bundle: kwe
+label: PLZ
+description: 'Postleitzahl ohne Länderkennung (z.B. „60320“)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,38 @@
+uuid: bec730c3-c157-4cdb-9511-3d8ede1da667
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_europeanastatus
+    - node.type.bestand
+    - taxonomy.vocabulary.europeanastatus
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_europeanastatus
+field_name: field_europeanastatus
+entity_type: node
+bundle: bestand
+label: 'Status der Europeana-Lieferung'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      europeanastatus: europeanastatus
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

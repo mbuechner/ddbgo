@@ -1,0 +1,21 @@
+uuid: 2de2716c-e0b3-4aa4-87df-e8830471e37b
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_ueber_welchen_weg
+field_name: field_ueber_welchen_weg
+entity_type: node
+type: string
+settings:
+  max_length: 512
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

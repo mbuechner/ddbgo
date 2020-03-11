@@ -1,0 +1,191 @@
+uuid: 86ffb7cf-9a55-4aaf-9fc0-fb8a95f54b9f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_aggregator
+    - field.storage.node.field_datenformat
+    - field.storage.node.field_jira_europeana
+    - field.storage.node.field_jira_hauptticket
+    - field.storage.node.field_kwe
+    - field.storage.node.field_link_zu_ddbdash
+    - field.storage.node.field_status
+    - field.storage.node.field_europeanastatus
+    - search_api.server.default_server
+  module:
+    - taxonomy
+    - node
+    - search_api
+id: bestand
+name: Bestand
+description: ''
+read_only: false
+field_settings:
+  field_aggregator:
+    label: Aggregator
+    datasource_id: 'entity:node'
+    property_path: field_aggregator
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_aggregator
+  field_datenformat:
+    label: Datenformat
+    datasource_id: 'entity:node'
+    property_path: field_datenformat
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_datenformat
+  field_jira_europeana:
+    label: 'JIRA-Ticket für Europeanalieferung'
+    datasource_id: 'entity:node'
+    property_path: field_jira_europeana
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_jira_europeana
+  field_jira_hauptticket:
+    label: JIRA-Hauptticket
+    datasource_id: 'entity:node'
+    property_path: field_jira_hauptticket
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_jira_hauptticket
+  field_kwe:
+    label: 'Kultur- oder Wissenseinrichtung'
+    datasource_id: 'entity:node'
+    property_path: field_kwe
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_kwe
+  field_link_zu_ddbdash:
+    label: 'Link zu DDBdash'
+    datasource_id: 'entity:node'
+    property_path: field_link_zu_ddbdash
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_link_zu_ddbdash
+  field_status:
+    label: Status
+    datasource_id: 'entity:node'
+    property_path: field_status
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_status
+  name:
+    label: 'Datenformat » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_datenformat:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_datenformat
+      module:
+        - taxonomy
+        - taxonomy
+  name_1:
+    label: 'Status der Europeana-Lieferung » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_europeanastatus:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_europeanastatus
+      module:
+        - taxonomy
+        - taxonomy
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
+  title:
+    label: Titel
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    boost: !!float 13
+    dependencies:
+      module:
+        - node
+  title_aggregator:
+    label: 'Aggregator » Inhalt » Titel'
+    datasource_id: 'entity:node'
+    property_path: 'field_aggregator:entity:title'
+    type: text
+    boost: !!float 2
+    dependencies:
+      config:
+        - field.storage.node.field_aggregator
+      module:
+        - node
+        - node
+  title_kwe:
+    label: 'Kultur- oder Wissenseinrichtung » Inhalt » Titel'
+    datasource_id: 'entity:node'
+    property_path: 'field_kwe:entity:title'
+    type: text
+    boost: !!float 8
+    dependencies:
+      config:
+        - field.storage.node.field_kwe
+      module:
+        - node
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - bestand
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  ignorecase:
+    all_fields: false
+    fields:
+      - field_jira_hauptticket
+      - name
+      - name_1
+      - nid
+      - title
+      - title_aggregator
+      - title_kwe
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  language_with_fallback: {  }
+  rendered_item: {  }
+  tokenizer:
+    all_fields: false
+    fields:
+      - name
+      - name_1
+      - nid
+      - title
+      - title_aggregator
+      - title_kwe
+    spaces: ''
+    overlap_cjk: 1
+    minimum_word_size: '3'
+    weights:
+      preprocess_index: -6
+      preprocess_query: -6
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: default_server

@@ -1,0 +1,26 @@
+uuid: ee3bbc8c-7785-4717-85ce-ffe01184b745
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ablehnungsgrund
+    - node.type.bestand
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.bestand.field_ablehnungsgrund
+field_name: field_ablehnungsgrund
+entity_type: node
+bundle: bestand
+label: Ablehnungsgrund
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

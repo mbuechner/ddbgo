@@ -1,0 +1,26 @@
+uuid: 6c030e1f-3826-4a5f-a1d5-40babc1635e3
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung_archivportal
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_bemerkung_archivportal
+field_name: field_bemerkung_archivportal
+entity_type: node
+bundle: kwe
+label: 'Bemerkung für Archivportal Europa-Lieferung'
+description: 'Weitere Bermerkungen zur Archivportal Europa-Lieferung. '
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

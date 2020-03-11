@@ -1,0 +1,11 @@
+uuid: 6b3718af-d452-4136-9fc8-7abc243787be
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.datenformat
+id: taxonomy_term.datenformat
+target_entity_type_id: taxonomy_term
+target_bundle: datenformat
+default_langcode: site_default
+language_alterable: false

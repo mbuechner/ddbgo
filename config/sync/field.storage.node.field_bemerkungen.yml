@@ -1,0 +1,19 @@
+uuid: 4dff768a-67d2-4e28-92bc-256131858a4a
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_bemerkungen
+field_name: field_bemerkungen
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+uuid: f99e04f7-26ab-4ebf-8642-4b5db1cce9f1
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ddb_id
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_ddb_id
+field_name: field_ddb_id
+entity_type: node
+bundle: kwe
+label: DDB-ID
+description: 'Interne ID der DDB'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

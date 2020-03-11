@@ -1,0 +1,37 @@
+uuid: 7fed7f83-56ff-45d8-8b7a-cfba8e7833af
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.person_aggregator.field_person
+    - field.field.paragraph.person_aggregator.field_rolle
+    - paragraphs.paragraphs_type.person_aggregator
+  module:
+    - empty_fields
+id: paragraph.person_aggregator.default
+targetEntityType: paragraph
+bundle: person_aggregator
+mode: default
+content:
+  field_person:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      empty_fields:
+        handler: ''
+    type: entity_reference_label
+    region: content
+  field_rolle:
+    weight: 0
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: ''
+    type: entity_reference_label
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,0 +1,14 @@
+uuid: 5e214158-d04c-4231-b061-d06890f7e164
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: komma_getrennte_aufzaehlung
+label: 'Semikolon-getrennte Aufzählung'
+type: twig
+description: ''
+field_types:
+  - entity_reference
+data: "{% for item in items %}\r\n {{ item.entity.label }}{% if not loop.last %}; {% endif %}\r\n{% endfor %}"

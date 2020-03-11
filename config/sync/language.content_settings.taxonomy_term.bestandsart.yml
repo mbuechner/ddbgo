@@ -1,0 +1,11 @@
+uuid: 4ae6a783-abc8-4306-a3ed-c0345a294b49
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.bestandsart
+id: taxonomy_term.bestandsart
+target_entity_type_id: taxonomy_term
+target_bundle: bestandsart
+default_langcode: site_default
+language_alterable: false

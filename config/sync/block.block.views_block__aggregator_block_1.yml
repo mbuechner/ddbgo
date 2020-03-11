@@ -1,0 +1,39 @@
+uuid: 50515454-b968-439d-97fc-290292d1a52b
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.aggregator
+  module:
+    - node
+    - system
+    - views
+  theme:
+    - adminimal_theme
+id: views_block__aggregator_block_1
+theme: adminimal_theme
+region: content
+weight: 1
+provider: null
+plugin: 'views_block:aggregator-block_1'
+settings:
+  id: 'views_block:aggregator-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      aggregator: aggregator
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: '/node/*/*'
+    negate: true
+    context_mapping: {  }

@@ -1,0 +1,20 @@
+uuid: 0e10606b-6c4e-48da-9c6a-9fe629cd8bba
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_vertragsstatus
+field_name: field_vertragsstatus
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

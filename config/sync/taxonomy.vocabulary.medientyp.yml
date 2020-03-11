@@ -1,0 +1,8 @@
+uuid: abb4a916-fd01-4214-bfee-39286fb233a0
+langcode: de
+status: true
+dependencies: {  }
+name: Medientyp
+vid: medientyp
+description: 'Medientyp der digitalen Objekte eines Bestandes (Nutzung bei Bestand)'
+weight: 0

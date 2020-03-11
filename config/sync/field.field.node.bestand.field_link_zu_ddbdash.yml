@@ -1,0 +1,23 @@
+uuid: 1ac7f27b-5a7e-4ac9-b331-b7d9f2a62afe
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_zu_ddbdash
+    - node.type.bestand
+  module:
+    - link
+id: node.bestand.field_link_zu_ddbdash
+field_name: field_link_zu_ddbdash
+entity_type: node
+bundle: bestand
+label: 'Link zu DDBdash'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

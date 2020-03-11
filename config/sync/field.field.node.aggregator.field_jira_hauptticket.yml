@@ -1,0 +1,26 @@
+uuid: 300003c4-64c6-4263-a818-e64a89015e05
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_jira_hauptticket
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/[A-Z]+\-[0-9]+/'
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+id: node.aggregator.field_jira_hauptticket
+field_name: field_jira_hauptticket
+entity_type: node
+bundle: aggregator
+label: JIRA-Hauptticket
+description: 'Bitte das Haupttickets des Bestands angeben, z.B.: DDBDATA-3361'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,23 @@
+uuid: 8b059fea-2970-4437-9ea5-dff4bbfc0c67
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_zu_ddbpro
+    - node.type.aggregator
+  module:
+    - link
+id: node.aggregator.field_link_zu_ddbpro
+field_name: field_link_zu_ddbpro
+entity_type: node
+bundle: aggregator
+label: 'Link zu DDBpro'
+description: 'Link auf das Aggregatorenprofil bei DDBpro'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

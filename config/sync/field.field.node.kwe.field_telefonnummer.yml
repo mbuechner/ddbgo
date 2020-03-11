@@ -1,0 +1,26 @@
+uuid: e3d31d78-da33-4120-93de-fa793367de6e
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_telefonnummer
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: '/\+[1-9][0-9]*\s?[1-9][0-9]*\s?[0-9]+(?:\-[0-9]*)?/'
+    error_message: 'Bitte eine Telefonummer im Format +49 69 1525-0 eingeben. Die führende Null muss von der Vorwahl entfernt werden.'
+id: node.kwe.field_telefonnummer
+field_name: field_telefonnummer
+entity_type: node
+bundle: kwe
+label: Telefonnummer
+description: 'Telefonnummer der KWE in der Form „+49 69 1525-0“.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

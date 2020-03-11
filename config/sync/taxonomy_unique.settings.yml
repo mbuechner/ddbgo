@@ -1,0 +1,6 @@
+personenrolle: 1
+personenrolle_message: 'Die Rolle ''%term'' existiert bereits und kann nicht noch einmal angelegt werden. Bitte die existierende Rolle nutzen!'
+region_ort: 1
+region_ort_message: 'Die Region/ der Ort ''%term'' existiert bereits und kann nicht noch einmal angelegt werden.'
+bestandsart: 1
+bestandsart_message: 'Die Bestandsart ''%term'' existiert bereits und kann nicht noch einmal angelegt werden. Bitte die existierende Bestandsart nutzen!'

@@ -1,0 +1,75 @@
+uuid: f5beba28-33f1-4b14-b953-9893fbbcba63
+langcode: de
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.aggregator.field_ablehnungsgrund
+    - field.field.node.aggregator.field_ausrichtung_nach_bestandsa
+    - field.field.node.aggregator.field_ausrichtung_nach_sparte
+    - field.field.node.aggregator.field_bemerkung
+    - field.field.node.aggregator.field_beschreibung
+    - field.field.node.aggregator.field_bestandsart
+    - field.field.node.aggregator.field_datenformat
+    - field.field.node.aggregator.field_ddburi
+    - field.field.node.aggregator.field_field_ausrichtung_geo
+    - field.field.node.aggregator.field_jira_hauptticket
+    - field.field.node.aggregator.field_kontakt
+    - field.field.node.aggregator.field_kurzname
+    - field.field.node.aggregator.field_link_fragebogen
+    - field.field.node.aggregator.field_link_zu_ddbdash
+    - field.field.node.aggregator.field_link_zu_ddbpro
+    - field.field.node.aggregator.field_personen
+    - field.field.node.aggregator.field_region_ort
+    - field.field.node.aggregator.field_sparten
+    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_status_fragebogen
+    - field.field.node.aggregator.field_url
+    - field.field.node.aggregator.field_vertrag
+    - field.field.node.aggregator.field_vertragskonstrukt
+    - field.field.node.aggregator.field_vertragsstatus
+    - node.type.aggregator
+  module:
+    - user
+id: node.aggregator.full
+targetEntityType: node
+bundle: aggregator
+mode: full
+content:
+  flag_bookmark:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_ablehnungsgrund: true
+  field_ausrichtung_nach_bestandsa: true
+  field_ausrichtung_nach_sparte: true
+  field_bemerkung: true
+  field_beschreibung: true
+  field_bestandsart: true
+  field_datenformat: true
+  field_ddburi: true
+  field_field_ausrichtung_geo: true
+  field_jira_hauptticket: true
+  field_kontakt: true
+  field_kurzname: true
+  field_link_fragebogen: true
+  field_link_zu_ddbdash: true
+  field_link_zu_ddbpro: true
+  field_personen: true
+  field_region_ort: true
+  field_sparten: true
+  field_status: true
+  field_status_fragebogen: true
+  field_url: true
+  field_vertrag: true
+  field_vertragskonstrukt: true
+  field_vertragsstatus: true
+  langcode: true
+  search_api_excerpt: true

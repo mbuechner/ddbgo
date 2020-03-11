@@ -1,0 +1,20 @@
+uuid: 06e92b5a-aa83-4f3b-b034-7c7664df8084
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_bestandsart
+field_name: field_bestandsart
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

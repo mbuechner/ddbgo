@@ -1,0 +1,23 @@
+uuid: 25f656fd-e70c-4f30-bddb-ec30d7f93326
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_zu_ddbdash
+    - node.type.aggregator
+  module:
+    - link
+id: node.aggregator.field_link_zu_ddbdash
+field_name: field_link_zu_ddbdash
+entity_type: node
+bundle: aggregator
+label: 'Link zu DDBdash'
+description: 'Bitte die komplette URL der „Insitutionenseite“ angeben, z.B.: https://dash.deutsche-digitale-bibliothek.de/dataset/overview?orgId=oid1525352926006.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

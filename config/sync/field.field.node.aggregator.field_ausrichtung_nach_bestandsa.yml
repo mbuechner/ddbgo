@@ -1,0 +1,29 @@
+uuid: c5e8033e-ff44-4ef7-a55c-93495661ba42
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ausrichtung_nach_bestandsa
+    - node.type.aggregator
+    - taxonomy.vocabulary.ja_nein_feld
+id: node.aggregator.field_ausrichtung_nach_bestandsa
+field_name: field_ausrichtung_nach_bestandsa
+entity_type: node
+bundle: aggregator
+label: 'Ausrichtung nach Bestandsart'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

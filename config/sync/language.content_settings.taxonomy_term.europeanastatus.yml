@@ -1,0 +1,11 @@
+uuid: 24af711b-e219-4dfb-8626-21fa08c4b83a
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.europeanastatus
+id: taxonomy_term.europeanastatus
+target_entity_type_id: taxonomy_term
+target_bundle: europeanastatus
+default_langcode: site_default
+language_alterable: false

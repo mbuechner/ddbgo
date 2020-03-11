@@ -1,0 +1,11 @@
+uuid: 9a84fee0-52bd-4d69-b7c3-70e9c69a574c
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.person_kwe
+id: paragraph.person_kwe
+target_entity_type_id: paragraph
+target_bundle: person_kwe
+default_langcode: site_default
+language_alterable: false

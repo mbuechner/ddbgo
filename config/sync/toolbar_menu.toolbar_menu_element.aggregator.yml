@@ -1,0 +1,9 @@
+uuid: 7ef447d6-fcae-4929-8696-a63adfe91907
+langcode: de
+status: true
+dependencies: {  }
+id: aggregator
+label: Aggregator
+weight: -8
+menu: aggregator
+rewrite_label: false

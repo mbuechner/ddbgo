@@ -1,0 +1,8 @@
+uuid: 31d54c8d-3750-4392-94ad-6a3eef4a1788
+langcode: de
+status: true
+dependencies: {  }
+name: Fragebogen
+vid: fragebogen
+description: 'Status des Fragebogen an der Kultur- oder Wissenseinrichtung (Nutzung bei Bestand)'
+weight: 0

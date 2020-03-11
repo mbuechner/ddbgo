@@ -1,0 +1,30 @@
+uuid: b6084de5-1675-42e2-a29c-6544151092f2
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.ddb_objekte.field_anzahl_der_objekte
+    - field.field.paragraph.ddb_objekte.field_medientyp
+    - paragraphs.paragraphs_type.ddb_objekte
+id: paragraph.ddb_objekte.default
+targetEntityType: paragraph
+bundle: ddb_objekte
+mode: default
+content:
+  field_anzahl_der_objekte:
+    weight: 1
+    settings:
+      placeholder: '12345'
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_medientyp:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

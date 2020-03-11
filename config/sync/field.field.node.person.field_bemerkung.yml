@@ -1,0 +1,26 @@
+uuid: a7b42e33-ed1f-4562-adf5-2464f117a243
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung
+    - node.type.person
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.person.field_bemerkung
+field_name: field_bemerkung
+entity_type: node
+bundle: person
+label: Bemerkung
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

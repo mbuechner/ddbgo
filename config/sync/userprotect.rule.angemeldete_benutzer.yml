@@ -1,0 +1,37 @@
+uuid: d0f29eef-008f-4c62-ba47-cbfd69388ef5
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.authenticated
+  module:
+    - user
+name: angemeldete_benutzer
+label: 'Angemeldete Benutzer'
+protectedEntityTypeId: user_role
+protectedEntityId: authenticated
+protections:
+  user_mail:
+    id: user_mail
+    provider: userprotect
+    status: true
+  user_name:
+    id: user_name
+    provider: userprotect
+    status: true
+  user_delete:
+    id: user_delete
+    provider: userprotect
+    status: true
+  user_edit:
+    id: user_edit
+    provider: userprotect
+    status: true
+  user_roles:
+    id: user_roles
+    provider: userprotect
+    status: true
+  user_status:
+    id: user_status
+    provider: userprotect
+    status: true

@@ -1,0 +1,29 @@
+uuid: 7cde4941-6304-41d0-a8c0-6ac9a150b77c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_archivportal_lieferung
+    - node.type.kwe
+    - taxonomy.vocabulary.ja_nein_teilweise_feld
+id: node.kwe.field_archivportal_lieferung
+field_name: field_archivportal_lieferung
+entity_type: node
+bundle: kwe
+label: 'Archivportal Europa-Lieferung'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_teilweise_feld: ja_nein_teilweise_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

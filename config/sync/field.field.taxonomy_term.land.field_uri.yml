@@ -1,0 +1,26 @@
+uuid: 9300a667-2631-4667-b5b2-07e21f7323a3
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_uri
+    - taxonomy.vocabulary.land
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: taxonomy_term.land.field_uri
+field_name: field_uri
+entity_type: taxonomy_term
+bundle: land
+label: URI
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

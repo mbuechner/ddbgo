@@ -1,0 +1,11 @@
+uuid: 4f40dd47-d215-4e44-a455-39541933cfb1
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.fragebogen
+id: taxonomy_term.fragebogen
+target_entity_type_id: taxonomy_term
+target_bundle: fragebogen
+default_langcode: site_default
+language_alterable: false

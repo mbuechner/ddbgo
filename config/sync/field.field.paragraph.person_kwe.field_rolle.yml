@@ -1,0 +1,38 @@
+uuid: 38b1cca6-39eb-4df2-8eef-d753eab50e52
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_rolle
+    - paragraphs.paragraphs_type.person_kwe
+    - taxonomy.vocabulary.personenrolle
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: paragraph.person_kwe.field_rolle
+field_name: field_rolle
+entity_type: paragraph
+bundle: person_kwe
+label: Rolle
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      personenrolle: personenrolle
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: personenrolle_aggregator
+field_type: entity_reference

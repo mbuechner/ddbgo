@@ -1,0 +1,138 @@
+uuid: 4ab8aec7-dd76-4749-9657-58cf95acd203
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_email
+    - field.storage.node.field_nachname
+    - field.storage.node.field_telefonnummer
+    - field.storage.node.field_vorname
+    - search_api.server.default_server
+  module:
+    - node
+    - search_api
+    - ddbgo_search
+id: personen
+name: Person
+description: ''
+read_only: false
+field_settings:
+  ddbgo_person_aggregator:
+    label: 'DDBgo Person Aggregator nodes'
+    property_path: ddbgo_person_aggregator
+    type: text
+    configuration:
+      roles:
+        - anonymous
+      view_mode: {  }
+  ddbgo_person_kwe:
+    label: 'DDBgo Person KWE nodes'
+    property_path: ddbgo_person_kwe
+    type: text
+    configuration:
+      roles:
+        - anonymous
+      view_mode: {  }
+  field_email:
+    label: E-Mail
+    datasource_id: 'entity:node'
+    property_path: field_email
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_email
+  field_nachname:
+    label: Nachname
+    datasource_id: 'entity:node'
+    property_path: field_nachname
+    type: text
+    boost: !!float 3
+    dependencies:
+      config:
+        - field.storage.node.field_nachname
+  field_telefonnummer:
+    label: Telefonnummer
+    datasource_id: 'entity:node'
+    property_path: field_telefonnummer
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_telefonnummer
+  field_vorname:
+    label: Vorname
+    datasource_id: 'entity:node'
+    property_path: field_vorname
+    type: text
+    boost: !!float 3
+    dependencies:
+      config:
+        - field.storage.node.field_vorname
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  title:
+    label: Titel
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - person
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  ddbgo_person_aggregator: {  }
+  ddbgo_person_kwe: {  }
+  ignorecase:
+    all_fields: true
+    fields:
+      - ddbgo_person_aggregator
+      - ddbgo_person_kwe
+      - field_email
+      - field_nachname
+      - field_telefonnummer
+      - field_vorname
+      - title
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  language_with_fallback: {  }
+  rendered_item: {  }
+  reverse_entity_references: {  }
+  tokenizer:
+    all_fields: true
+    fields:
+      - ddbgo_person_aggregator
+      - ddbgo_person_kwe
+      - field_email
+      - field_nachname
+      - field_telefonnummer
+      - field_vorname
+      - title
+    spaces: ' '
+    overlap_cjk: 1
+    minimum_word_size: '2'
+    weights:
+      preprocess_index: -6
+      preprocess_query: -6
+tracker_settings:
+  default:
+    indexing_order: lifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: default_server

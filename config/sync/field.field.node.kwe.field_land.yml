@@ -1,0 +1,33 @@
+uuid: e8a2a860-0576-4d2e-86a9-712fdd345c02
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_land
+    - node.type.kwe
+    - taxonomy.vocabulary.land
+  content:
+    - 'taxonomy_term:land:ef456c06-340a-4763-b4a6-bddd2040337e'
+id: node.kwe.field_land
+field_name: field_land
+entity_type: node
+bundle: kwe
+label: Land
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    target_uuid: ef456c06-340a-4763-b4a6-bddd2040337e
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      land: land
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

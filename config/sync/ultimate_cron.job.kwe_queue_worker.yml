@@ -1,0 +1,31 @@
+uuid: 4715a9bd-e2fc-4e9d-84d8-642c21f52d08
+langcode: de
+status: true
+dependencies:
+  module:
+    - ddbgo_cj
+_core:
+  default_config_hash: zaMSUiXXS6b9PGf3hCDtWgosOlhmk-KJZKpDA-2WbE4
+title: 'DDBgo KWE Updater'
+id: kwe_queue_worker
+weight: 0
+module: ddbgo_cj
+callback: ddbgo_cj_kwe_queue_worker
+scheduler:
+  id: simple
+  configuration:
+    rules:
+      - '*/15+@ * * * *'
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 604800
+    retain: 10000

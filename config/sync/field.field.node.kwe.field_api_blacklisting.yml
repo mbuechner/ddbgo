@@ -1,0 +1,29 @@
+uuid: cd280c25-1b94-4de4-af8e-940b77fda23d
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_api_blacklisting
+    - node.type.kwe
+    - taxonomy.vocabulary.ja_nein_feld
+id: node.kwe.field_api_blacklisting
+field_name: field_api_blacklisting
+entity_type: node
+bundle: kwe
+label: API-Blacklisting
+description: 'Sollen die Daten der KWE geblacklisted werden (nicht über das API weitergegeben werden)?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

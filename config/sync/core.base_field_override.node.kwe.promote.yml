@@ -1,0 +1,22 @@
+uuid: 3d0d0fec-62a7-44a3-aa96-e725380cbbb0
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.kwe
+id: node.kwe.promote
+field_name: promote
+entity_type: node
+bundle: kwe
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,28 @@
+uuid: 55698444-8acc-4fb3-ba75-7e7f0faa5c93
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_person
+    - node.type.person
+    - paragraphs.paragraphs_type.person_aggregator
+id: paragraph.person_aggregator.field_person
+field_name: field_person
+entity_type: paragraph
+bundle: person_aggregator
+label: Person
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

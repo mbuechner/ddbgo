@@ -1,0 +1,48 @@
+uuid: 4729811d-eaac-4149-9e72-2f2e4d7aa391
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.kultursparte.field_uri
+    - taxonomy.vocabulary.kultursparte
+  module:
+    - text
+id: taxonomy_term.kultursparte.default
+targetEntityType: taxonomy_term
+bundle: kultursparte
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_uri:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 100
+    region: content
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  path: true

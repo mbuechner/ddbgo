@@ -1,0 +1,8 @@
+uuid: 3c3f088d-d71f-40e7-ae49-e09d9a30058f
+langcode: de
+status: true
+dependencies: {  }
+name: Europeana
+vid: europeana
+description: 'Wird der Bestand bereits, z.B. über ein Europeana-Projekt wie Europeana Fashion, an Europeana geliefert? (Nutzung bei Bestand)'
+weight: 0

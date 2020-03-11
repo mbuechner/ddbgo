@@ -1,0 +1,34 @@
+uuid: 381ef53d-e43f-4226-9aa8-9499aaff1bb5
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
+id: authenticated
+label: 'Angemeldeter Benutzer'
+weight: -9
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access toolbar'
+  - 'can change your own password'
+  - 'override page published option'
+  - 'use exclude node title'
+  - userprotect.account.edit
+  - userprotect.pass.edit
+  - 'view aggregator in toolbar'
+  - 'view any aggregator content'
+  - 'view any bestand content'
+  - 'view any kwe content'
+  - 'view any page content'
+  - 'view any person content'
+  - 'view bestand in toolbar'
+  - 'view kwe in toolbar'
+  - 'view media'
+  - 'view own aggregator content'
+  - 'view own bestand content'
+  - 'view own kwe content'
+  - 'view own page content'
+  - 'view own person content'
+  - 'view person in toolbar'
+  - 'view start in toolbar'

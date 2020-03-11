@@ -1,0 +1,26 @@
+uuid: 53cf6527-dd54-46a7-93ed-bafb56d9b8b8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung
+    - node.type.bestand
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.bestand.field_bemerkung
+field_name: field_bemerkung
+entity_type: node
+bundle: bestand
+label: Bemerkung
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

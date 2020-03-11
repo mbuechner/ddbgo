@@ -1,0 +1,26 @@
+uuid: adbc88ef-d13c-4528-bb3b-0822e3cad314
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_uri
+    - taxonomy.vocabulary.kultursparte
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: taxonomy_term.kultursparte.field_uri
+field_name: field_uri
+entity_type: taxonomy_term
+bundle: kultursparte
+label: URI
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

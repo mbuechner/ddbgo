@@ -1,0 +1,26 @@
+uuid: bda83d9f-860f-4daa-9dba-53574632429c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_beschreibung
+    - node.type.bestand
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.bestand.field_beschreibung
+field_name: field_beschreibung
+entity_type: node
+bundle: bestand
+label: Beschreibung
+description: 'Beschreibung des Bestandes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

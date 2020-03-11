@@ -1,0 +1,26 @@
+uuid: 6b4d4d38-3c5d-4037-9b4c-d37b64df16ce
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_stadt
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_stadt
+field_name: field_stadt
+entity_type: node
+bundle: kwe
+label: Stadt
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

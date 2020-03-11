@@ -1,0 +1,25 @@
+uuid: 517b0f76-ee41-4a62-9db8-cafa1a3be1f0
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:ffb8f560-8897-4d72-b83f-6b447f55f892'
+  module:
+    - block_content
+  theme:
+    - adminimal_theme
+id: freespace
+theme: adminimal_theme
+region: breadcrumb
+weight: -5
+provider: null
+plugin: 'block_content:ffb8f560-8897-4d72-b83f-6b447f55f892'
+settings:
+  id: 'block_content:ffb8f560-8897-4d72-b83f-6b447f55f892'
+  label: 'Free Space'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }

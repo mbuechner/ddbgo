@@ -1,0 +1,34 @@
+uuid: 62994f6e-7991-4a1d-a1a3-557392a131eb
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kontakt
+    - node.type.kwe
+    - paragraphs.paragraphs_type.kontakt
+  module:
+    - entity_reference_revisions
+id: node.kwe.field_kontakt
+field_name: field_kontakt
+entity_type: node
+bundle: kwe
+label: Kontakt
+description: 'Datum des (Erst-) Kontaktes mit der KWE und Name des DDB-Teammitgliedes sowie weitere Bemerkungen.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      kontakt: kontakt
+    target_bundles_drag_drop:
+      kontakt:
+        enabled: true
+        weight: 3
+      ddb_objekte:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,38 @@
+uuid: b76be940-ca1d-4c22-85b5-751393fb4629
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertragsstatus
+    - node.type.aggregator
+    - taxonomy.vocabulary.vertragsstatus
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.aggregator.field_vertragsstatus
+field_name: field_vertragsstatus
+entity_type: node
+bundle: aggregator
+label: Vertragsstatus
+description: 'Status des Vertrags'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      vertragsstatus: vertragsstatus
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

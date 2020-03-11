@@ -1,0 +1,23 @@
+uuid: 78540dc9-fa12-4378-b18c-210c3169fb24
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_fragebogen
+    - node.type.aggregator
+  module:
+    - link
+id: node.aggregator.field_link_fragebogen
+field_name: field_link_fragebogen
+entity_type: node
+bundle: aggregator
+label: 'Link zum Fragebogen'
+description: 'Link zum ausgefüllten Aggregatoren-Fragebogen in Lime-Survey.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

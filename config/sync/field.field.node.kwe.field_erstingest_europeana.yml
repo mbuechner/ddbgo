@@ -1,0 +1,21 @@
+uuid: 324d3f2a-f13c-4135-8054-1b268d37c901
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_erstingest_europeana
+    - node.type.kwe
+  module:
+    - datetime
+id: node.kwe.field_erstingest_europeana
+field_name: field_erstingest_europeana
+entity_type: node
+bundle: kwe
+label: 'Erster Ingest in Europeana'
+description: 'Wann erfolgte der erste Ingest der KWE in die Europeana?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

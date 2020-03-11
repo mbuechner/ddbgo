@@ -1,0 +1,9 @@
+uuid: fc764ae3-6332-458a-9852-152cafcb48e6
+langcode: de
+status: true
+dependencies: {  }
+id: person_bestand
+label: 'Person für Bestand'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

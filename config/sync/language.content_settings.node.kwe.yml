@@ -1,0 +1,11 @@
+uuid: c62317fd-83b8-4a54-aa6f-fe273fa5d21c
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.kwe
+id: node.kwe
+target_entity_type_id: node
+target_bundle: kwe
+default_langcode: site_default
+language_alterable: false

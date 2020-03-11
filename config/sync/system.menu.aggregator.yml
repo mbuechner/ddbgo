@@ -1,0 +1,8 @@
+uuid: b4382171-aa84-4681-8459-fefd60fc8abf
+langcode: de
+status: true
+dependencies: {  }
+id: aggregator
+label: Aggregator
+description: ''
+locked: false

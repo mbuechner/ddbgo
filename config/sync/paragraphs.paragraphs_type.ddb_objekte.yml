@@ -1,0 +1,9 @@
+uuid: a7236db3-bea6-4a08-a2c9-54247294954e
+langcode: de
+status: true
+dependencies: {  }
+id: ddb_objekte
+label: DDB-Objekte
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -1,0 +1,29 @@
+uuid: 1fe496bb-f023-4840-a39a-9b9ef56d292c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_archivportal_lieferung
+    - node.type.bestand
+    - taxonomy.vocabulary.ja_nein_feld
+id: node.bestand.field_archivportal_lieferung
+field_name: field_archivportal_lieferung
+entity_type: node
+bundle: bestand
+label: 'Archivportal Europa-Lieferung'
+description: 'Sollen Archivdaten (in Zukunft) über die DDB an das Archivportal Europa geliefert werden?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

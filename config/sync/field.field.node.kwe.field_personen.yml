@@ -1,0 +1,37 @@
+uuid: 6962812e-fbe5-4e36-9be4-e2fccabe56ca
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_personen
+    - node.type.kwe
+    - paragraphs.paragraphs_type.person_kwe
+  module:
+    - entity_reference_revisions
+id: node.kwe.field_personen
+field_name: field_personen
+entity_type: node
+bundle: kwe
+label: Personen
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      person_kwe: person_kwe
+    target_bundles_drag_drop:
+      person_kwe:
+        enabled: true
+        weight: 4
+      ddb_objekte:
+        weight: 5
+        enabled: false
+      kontakt:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions

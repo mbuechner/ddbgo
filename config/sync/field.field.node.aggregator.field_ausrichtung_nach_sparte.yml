@@ -1,0 +1,29 @@
+uuid: 59d45078-7748-4a8c-8213-f21280d6a1e0
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ausrichtung_nach_sparte
+    - node.type.aggregator
+    - taxonomy.vocabulary.ja_nein_feld
+id: node.aggregator.field_ausrichtung_nach_sparte
+field_name: field_ausrichtung_nach_sparte
+entity_type: node
+bundle: aggregator
+label: 'Ausrichtung nach Sparte'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,29 @@
+uuid: 38888a9e-5d06-4394-b380-46c7c721f9bd
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_datenformat
+    - node.type.aggregator
+    - taxonomy.vocabulary.datenformat
+id: node.aggregator.field_datenformat
+field_name: field_datenformat
+entity_type: node
+bundle: aggregator
+label: Datenformat
+description: 'Welche Metadatenformate liefert der Aggregator? Mehrfachauswahl möglich.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      datenformat: datenformat
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,8 @@
+uuid: a2ba7f20-e9d6-4f1c-84e5-89ea3d75bbb6
+langcode: de
+status: true
+dependencies: {  }
+name: Datenformat
+vid: datenformat
+description: 'Das Datenformat/ die Datenformate, in dem der Bestand vorliegt. (Nutzung bei Bestand, Aggregator)'
+weight: 0

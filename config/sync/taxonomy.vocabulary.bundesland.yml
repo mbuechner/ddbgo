@@ -1,0 +1,8 @@
+uuid: da94bc1d-12c7-4f1b-ad42-098b44d16fcb
+langcode: de
+status: true
+dependencies: {  }
+name: Bundesland
+vid: bundesland
+description: 'Die Länder Deutschlands. (Nutzung bei Aggregator)'
+weight: 0

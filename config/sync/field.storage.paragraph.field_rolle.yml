@@ -1,0 +1,20 @@
+uuid: e81a1116-eb6c-4716-a43d-8a30d37f1e42
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_rolle
+field_name: field_rolle
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+uuid: 7eeef68f-1161-48f9-80a9-5b2dbae5b321
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_telefonnummer
+    - node.type.person
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/\+[1-9][0-9]*\s[1-9][0-9]*\s[0-9]+(?:\-[0-9]*)?/'
+    error_message: 'Bitte eine Telefonummer im Format +49 69 1525-1774 eingeben. Die führende Null muss von der Vorwahl entfernt werden.'
+id: node.person.field_telefonnummer
+field_name: field_telefonnummer
+entity_type: node
+bundle: person
+label: Telefonnummer
+description: 'Persönliche Telefonnummer der Person in der Form „+49 69 1525-1774“.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

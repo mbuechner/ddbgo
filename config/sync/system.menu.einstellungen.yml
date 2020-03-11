@@ -1,0 +1,8 @@
+uuid: 1dc764c9-d6c2-4162-b1b3-c9d24f0d3a51
+langcode: de
+status: true
+dependencies: {  }
+id: einstellungen
+label: Einstellungen
+description: ''
+locked: false

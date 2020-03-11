@@ -1,0 +1,9 @@
+uuid: d8f22d77-0a2d-4a64-bcdb-8effba1a12fb
+langcode: de
+status: true
+dependencies: {  }
+id: person
+label: Person
+weight: -7
+menu: person
+rewrite_label: false

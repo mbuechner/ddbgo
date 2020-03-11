@@ -1,0 +1,26 @@
+uuid: e782d146-ab5d-4a2e-bf7c-3f1d2a60c984
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_bemerkung
+    - paragraphs.paragraphs_type.kontakt
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: paragraph.kontakt.field_bemerkung
+field_name: field_bemerkung
+entity_type: paragraph
+bundle: kontakt
+label: Bemerkung
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

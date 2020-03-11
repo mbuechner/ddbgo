@@ -1,0 +1,26 @@
+uuid: 10a0e956-d84f-4abb-88dd-850eda3bf540
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_strasse
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_strasse
+field_name: field_strasse
+entity_type: node
+bundle: kwe
+label: Straße/Hausnummer
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

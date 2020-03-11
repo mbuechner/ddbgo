@@ -1,0 +1,9 @@
+uuid: 2382d0c9-ffc0-4df2-ac11-03d2a61f82f2
+langcode: de
+status: true
+dependencies: {  }
+id: person_aggregator
+label: 'Person beim Aggregator'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

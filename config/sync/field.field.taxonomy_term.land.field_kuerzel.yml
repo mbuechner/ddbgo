@@ -1,0 +1,26 @@
+uuid: f841deb8-e4ef-4ccc-8378-13a87c950bf8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_kuerzel
+    - taxonomy.vocabulary.land
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: taxonomy_term.land.field_kuerzel
+field_name: field_kuerzel
+entity_type: taxonomy_term
+bundle: land
+label: Kürzel
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

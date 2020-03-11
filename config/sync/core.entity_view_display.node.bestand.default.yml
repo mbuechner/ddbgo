@@ -1,0 +1,430 @@
+uuid: 0228a288-3f9f-42c6-b77d-2c02362145a3
+langcode: de
+status: true
+dependencies:
+  config:
+    - custom_formatters.formatter.jira_link
+    - custom_formatters.formatter.komma_getrennte_aufzaehlung
+    - field.field.node.bestand.field_ablehnungsgrund
+    - field.field.node.bestand.field_aggregator
+    - field.field.node.bestand.field_archivportal_lieferung
+    - field.field.node.bestand.field_bemerkung
+    - field.field.node.bestand.field_bemerkung_europeana_liefer
+    - field.field.node.bestand.field_beschreibung
+    - field.field.node.bestand.field_datenformat
+    - field.field.node.bestand.field_ddb_objekte
+    - field.field.node.bestand.field_erstingest
+    - field.field.node.bestand.field_europeana_lieferung
+    - field.field.node.bestand.field_europeana_lieferung_enum
+    - field.field.node.bestand.field_europeanastatus
+    - field.field.node.bestand.field_fragebogen
+    - field.field.node.bestand.field_jira_europeana
+    - field.field.node.bestand.field_jira_hauptticket
+    - field.field.node.bestand.field_kwe
+    - field.field.node.bestand.field_lieferweg
+    - field.field.node.bestand.field_link_fragebogen
+    - field.field.node.bestand.field_link_zu_ddbdash
+    - field.field.node.bestand.field_personen
+    - field.field.node.bestand.field_status
+    - field.field.node.bestand.field_status_fragebogen
+    - field.field.node.bestand.field_ueber_welchen_weg
+    - field.field.node.bestand.field_url
+    - node.type.bestand
+  module:
+    - color_field
+    - custom_formatters
+    - datetime
+    - empty_fields
+    - entity_reference_revisions
+    - field_group
+    - file
+    - link
+    - user
+third_party_settings:
+  field_group:
+    group_allgemeines:
+      children:
+        - flag_bookmark
+        - field_url
+        - field_datenformat
+        - field_lieferweg
+        - field_beschreibung
+        - field_bemerkung
+      parent_name: ''
+      weight: 2
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Allgemeines
+      region: content
+    group_dd:
+      children:
+        - field_ddb_objekte
+      parent_name: ''
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: DDB-Objekte
+      region: content
+    group_kultur:
+      children:
+        - field_kwe
+      parent_name: ''
+      weight: 4
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: 'Kultur- oder Wissenseinrichtung'
+      region: content
+    group_aggregator:
+      children:
+        - field_aggregator
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Aggregator
+      region: content
+    group_personen:
+      children:
+        - field_personen
+      parent_name: ''
+      weight: 6
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Personen
+      region: content
+    group_europeana_archivportal:
+      children:
+        - field_europeana_lieferung_enum
+        - field_ueber_welchen_weg
+        - field_jira_europeana
+        - field_europeana_lieferung
+        - field_europeanastatus
+        - field_archivportal_lieferung
+        - field_bemerkung_europeana_liefer
+      parent_name: ''
+      weight: 9
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: 'Europeana/ Archivportal'
+      region: content
+    group_fragebogen:
+      children:
+        - field_status_fragebogen
+        - field_link_fragebogen
+        - field_fragebogen
+      parent_name: ''
+      weight: 8
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Fragebogen
+      region: content
+    group_informationen:
+      children:
+        - field_link_zu_ddbdash
+        - field_jira_hauptticket
+        - field_erstingest
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Informationen
+      region: content
+    group_status:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Status
+id: node.bestand.default
+targetEntityType: node
+bundle: bestand
+mode: default
+content:
+  field_ablehnungsgrund:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_aggregator:
+    weight: 16
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_archivportal_lieferung:
+    weight: 6
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_bemerkung:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_bemerkung_europeana_liefer:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_beschreibung:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_datenformat:
+    weight: 12
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    region: content
+  field_ddb_objekte:
+    type: entity_reference_revisions_entity_view
+    weight: 21
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+  field_erstingest:
+    weight: 25
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: datetime_default
+    region: content
+  field_europeana_lieferung:
+    weight: 4
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_europeana_lieferung_enum:
+    weight: 1
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_europeanastatus:
+    weight: 5
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_fragebogen:
+    weight: 10
+    label: inline
+    settings:
+      use_description_as_link_text: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: file_default
+    region: content
+  field_jira_europeana:
+    weight: 3
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:jira_link'
+    region: content
+  field_jira_hauptticket:
+    weight: 24
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:jira_link'
+    region: content
+  field_kwe:
+    weight: 9
+    label: hidden
+    settings:
+      link: true
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_lieferweg:
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 13
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+  field_link_fragebogen:
+    weight: 9
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: true
+      target: _blank
+      url_plain: false
+      rel: '0'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: link
+    region: content
+  field_link_zu_ddbdash:
+    weight: 23
+    label: inline
+    settings:
+      trim_length: 80
+      target: _blank
+      url_only: false
+      url_plain: false
+      rel: '0'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: link
+    region: content
+  field_personen:
+    weight: 10
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_revisions_entity_view
+    region: content
+  field_status:
+    weight: 1
+    label: hidden
+    settings:
+      shape: square
+      width: '50'
+      height: '50'
+      opacity: '1'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: color_field_formatter_swatch
+    region: content
+  field_status_fragebogen:
+    weight: 8
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_ueber_welchen_weg:
+    weight: 2
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_url:
+    type: link
+    weight: 11
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: true
+      target: _blank
+      url_plain: false
+      rel: '0'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+  flag_bookmark:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  links: true
+  search_api_excerpt: true

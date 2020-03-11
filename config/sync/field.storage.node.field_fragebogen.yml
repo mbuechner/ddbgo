@@ -1,0 +1,23 @@
+uuid: 1e31d49a-b3a8-4c99-b188-a5edc544f12f
+langcode: de
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_fragebogen
+field_name: field_fragebogen
+entity_type: node
+type: file
+settings:
+  display_field: false
+  display_default: false
+  uri_scheme: private
+  target_type: file
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

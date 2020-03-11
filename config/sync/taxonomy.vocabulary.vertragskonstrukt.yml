@@ -1,0 +1,8 @@
+uuid: c285871a-cc1d-4d33-ae69-c544dd1482e2
+langcode: de
+status: true
+dependencies: {  }
+name: Vertragskonstrukt
+vid: vertragskonstrukt
+description: 'Art des Vertrages der Kultur- oder Wisseneinrichtung/ Aggregators mit der DDB (Nutzung bei Aggregator, KWE)'
+weight: 0

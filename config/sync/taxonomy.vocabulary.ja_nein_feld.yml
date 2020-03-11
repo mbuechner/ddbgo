@@ -1,0 +1,8 @@
+uuid: 20bc6010-158f-42b3-b99c-39316efa37c8
+langcode: de
+status: true
+dependencies: {  }
+name: Ja/Nein-Feld
+vid: ja_nein_feld
+description: ''
+weight: 0

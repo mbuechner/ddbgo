@@ -1,0 +1,20 @@
+uuid: 73220fb5-59a3-422a-846d-c2384d54729b
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_europeanastatus
+field_name: field_europeanastatus
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

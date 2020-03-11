@@ -1,0 +1,31 @@
+uuid: 8d5e0902-1d72-46fc-b3ed-2004e79dddec
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ddb_objekte
+    - node.type.bestand
+    - paragraphs.paragraphs_type.ddb_objekte
+  module:
+    - entity_reference_revisions
+id: node.bestand.field_ddb_objekte
+field_name: field_ddb_objekte
+entity_type: node
+bundle: bestand
+label: DDB-Objekte
+description: 'Aus wie vielen Objekten besteht der Bestand? Hier bitte nach den verschiedenen Medientypen aufschlüsseln.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      ddb_objekte: ddb_objekte
+    target_bundles_drag_drop:
+      ddb_objekte:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions

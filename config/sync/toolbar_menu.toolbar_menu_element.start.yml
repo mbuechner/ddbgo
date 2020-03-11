@@ -1,0 +1,9 @@
+uuid: 75e46d18-24cf-4f40-bc5a-53594ed0d331
+langcode: de
+status: true
+dependencies: {  }
+id: start
+label: DDBgo
+weight: -10
+menu: start
+rewrite_label: false

@@ -1,0 +1,26 @@
+uuid: 5788b925-d726-49ea-a253-e6e8e0b0a142
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_bemerkung
+field_name: field_bemerkung
+entity_type: node
+bundle: aggregator
+label: Bemerkung
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

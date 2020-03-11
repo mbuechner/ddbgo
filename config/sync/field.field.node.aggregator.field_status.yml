@@ -1,0 +1,22 @@
+uuid: bb669188-4eb4-43c8-8c6e-b11c3d3fa81e
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_status
+    - node.type.aggregator
+  module:
+    - color_field
+id: node.aggregator.field_status
+field_name: field_status
+entity_type: node
+bundle: aggregator
+label: Status
+description: 'Rot = Abgelehnt, gelb = in Bearbeitung, grün = ingestiert, weiß = keine Angabe.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  opacity: 0
+field_type: color_field_type

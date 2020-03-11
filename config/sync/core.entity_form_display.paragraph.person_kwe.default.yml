@@ -1,0 +1,39 @@
+uuid: 22d9bac5-13f8-48ad-9ecd-d7fb1e5c4fc9
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.person_kwe.field_person
+    - field.field.paragraph.person_kwe.field_rolle
+    - paragraphs.paragraphs_type.person_kwe
+  module:
+    - select2
+id: paragraph.person_kwe.default
+targetEntityType: paragraph
+bundle: person_kwe
+mode: default
+content:
+  field_person:
+    weight: 0
+    settings:
+      width: 100%
+      match_operator: CONTAINS
+      autocomplete: false
+      match_limit: 10
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+  field_rolle:
+    weight: 1
+    settings:
+      width: 100%
+      match_operator: CONTAINS
+      match_limit: 10
+      autocomplete: false
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true
