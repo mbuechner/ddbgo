@@ -6,7 +6,8 @@ use Drupal\ddbgo_cj\Plugin\QueueWorker\KweQueueWorker;
  * Add job for every KWE into queue. This is scheduled by Ultimate Cron, e.g.
  * once a day.
  */
-function ddbgo_cj_kwe_daily_queue_worker() {
+function ddbgo_cj_kwe_daily_queue_worker()
+{
 
   // get all IDs of KWE which are published
   $nids = \Drupal::entityQuery('node')
@@ -42,7 +43,8 @@ function ddbgo_cj_kwe_daily_queue_worker() {
 /**
  * This is processing the 'kwe_queue_worker' queue.
  */
-function ddbgo_cj_kwe_queue_worker() {
+function ddbgo_cj_kwe_queue_worker()
+{
 
   $queue_factory = \Drupal::service('queue');
   $queue = $queue_factory->get('kwe_queue_worker');
@@ -66,8 +68,7 @@ function ddbgo_cj_kwe_queue_worker() {
     foreach ($in_queue_item as $item) {
       if (in_array($item, $in_queue_item_to_delete)) {
         $queue->deleteItem($item);
-      }
-      else {
+      } else {
         $queue->releaseItem($item);
       }
     }
@@ -79,7 +80,8 @@ function ddbgo_cj_kwe_queue_worker() {
  *
  * @param \EntityInterface $entity
  */
-function ddbgo_cj_node_postsave($node) {
+function ddbgo_cj_node_postsave($node)
+{
 
   if (!($node instanceof Node) || $node->getType() !== 'kwe') {
     return;
@@ -106,4 +108,14 @@ function ddbgo_cj_node_postsave($node) {
   if (!in_array($nid, $in_queue)) {
     $queue->createItem($nid);
   }
+}
+
+/**
+ * Disbale Drupal's module updates
+ *
+ * @param $projects
+ */
+function ddbgo_cj_update_projects_alter(&$projects)
+{
+  unset($projects['ddbgo_cj']);
 }

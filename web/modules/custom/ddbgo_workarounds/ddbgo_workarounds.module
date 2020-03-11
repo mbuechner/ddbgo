@@ -3,8 +3,9 @@
 /**
  * Disable browser's autocomplete for some search fields in expose forms.
  */
-function ddbgo_workarounds_form_views_exposed_form_alter(&$form, &$form_state, $form_id) {
-  if($form_id === 'views_exposed_form') {
+function ddbgo_workarounds_form_views_exposed_form_alter(&$form, &$form_state, $form_id)
+{
+  if ($form_id === 'views_exposed_form') {
     $form['query']['#attributes']['autocomplete'] = 'off';
   }
 }
@@ -15,7 +16,8 @@ function ddbgo_workarounds_form_views_exposed_form_alter(&$form, &$form_state, $
  * via Paragraphs and Drupal doesn't add the JS libraries via AJAX.
  * @param array $attachments
  */
-function ddbgo_workarounds_page_attachments(array &$attachments) {
+function ddbgo_workarounds_page_attachments(array &$attachments)
+{
   $node_type = \Drupal::request()->attributes->get('node_type');
   if ($node_type instanceof \Drupal\node\NodeTypeInterface) {
     if ($node_type->id() === 'aggregator' || $node_type->id() === 'kwe') {
@@ -33,7 +35,8 @@ function ddbgo_workarounds_page_attachments(array &$attachments) {
  *
  * @return array
  */
-function ddbgo_workarounds_theme($existing, $type, $theme, $path) {
+function ddbgo_workarounds_theme($existing, $type, $theme, $path)
+{
   return [
     'block__views_block' => [
       'render element' => 'elements',
@@ -41,4 +44,13 @@ function ddbgo_workarounds_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
-?>
+
+/**
+ * Disbale Drupal's module updates
+ *
+ * @param $projects
+ */
+function ddbgo_workarounds_update_projects_alter(&$projects)
+{
+  unset($projects['ddbgo_workarounds']);
+}

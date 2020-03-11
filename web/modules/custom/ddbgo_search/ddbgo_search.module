@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Disbale Drupal's module updates
+ *
+ * @param $projects
+ */
+function ddbgo_search_update_projects_alter(&$projects)
+{
+  unset($projects['ddbgo_search']);
+}
