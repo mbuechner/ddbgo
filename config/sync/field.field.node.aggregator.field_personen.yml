@@ -1,0 +1,40 @@
+uuid: 6f13aa90-c3a8-4e61-ba74-571223380791
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_personen
+    - node.type.aggregator
+    - paragraphs.paragraphs_type.person_aggregator
+  module:
+    - entity_reference_revisions
+id: node.aggregator.field_personen
+field_name: field_personen
+entity_type: node
+bundle: aggregator
+label: Personen
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      person_aggregator: person_aggregator
+    target_bundles_drag_drop:
+      ddb_objekte:
+        weight: 5
+        enabled: false
+      kontakt:
+        weight: 6
+        enabled: false
+      person_aggregator:
+        enabled: true
+        weight: 7
+      person_kwe:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,11 @@
+uuid: fbf8beab-801f-4e61-a7c9-6092917cf52d
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.bestand
+id: node.bestand
+target_entity_type_id: node
+target_bundle: bestand
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,11 @@
+uuid: e8a9a9ed-bbf0-4520-90b8-244b8dd99ef2
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.kontakt
+id: paragraph.kontakt
+target_entity_type_id: paragraph
+target_bundle: kontakt
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,20 @@
+uuid: 835c600c-b9eb-4b9d-883d-3ef8113024e0
+langcode: de
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_erstingest_europeana
+field_name: field_erstingest_europeana
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

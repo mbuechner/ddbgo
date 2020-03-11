@@ -1,0 +1,8 @@
+uuid: 7b50e4bd-a58d-415b-b359-616c0425e3c0
+langcode: de
+status: true
+dependencies: {  }
+name: Personenrolle
+vid: personenrolle
+description: 'Rolle einer Person im Bezug zum Aggregator, Kultur- und Wissenseinrichtung oder Bestand (Nutzung bei Aggregator, KWE, Bestand)'
+weight: 0

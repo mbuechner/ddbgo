@@ -1,0 +1,18 @@
+uuid: 77f791b8-39a9-4dc6-a1d3-9cf9a5e63531
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.aggregator
+id: node.aggregator.title
+field_name: title
+entity_type: node
+bundle: aggregator
+label: 'Name des Dienstes'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

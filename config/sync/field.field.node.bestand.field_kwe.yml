@@ -1,0 +1,28 @@
+uuid: 8d832a0f-de7d-496d-8acc-db7ba3d8d882
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kwe
+    - node.type.bestand
+    - node.type.kwe
+id: node.bestand.field_kwe
+field_name: field_kwe
+entity_type: node
+bundle: bestand
+label: 'Kultur- oder Wissenseinrichtung'
+description: 'Zu welcher Kultur- oder Wissenseinrichtung gehört der Bestand?'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      kwe: kwe
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

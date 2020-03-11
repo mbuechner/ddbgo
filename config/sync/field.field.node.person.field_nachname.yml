@@ -1,0 +1,33 @@
+uuid: 3e73ee84-202f-4614-9a49-7f85c6672c02
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_nachname
+    - node.type.person
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+  unique_field_ajax:
+    unique: true
+    warn_only: true
+    per_lang: false
+    use_ajax: true
+    message: 'Dieser Nachname ist bereits in DDBgo vorhanden. Bitte prüfen, ob die Person schon vorhanden ist.'
+id: node.person.field_nachname
+field_name: field_nachname
+entity_type: node
+bundle: person
+label: Nachname
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,39 @@
+uuid: 6314bf95-9364-43a5-8e09-0905da93121f
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.person
+  module:
+    - node
+    - system
+    - views
+  theme:
+    - adminimal_theme
+id: views_block__person_person_bestand
+theme: adminimal_theme
+region: content
+weight: -3
+provider: null
+plugin: 'views_block:person-person_bestand'
+settings:
+  id: 'views_block:person-person_bestand'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      person: person
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: "/node/*/edit\r\n/node/*/delete\r\n/node/*/revisions"
+    negate: true
+    context_mapping: {  }

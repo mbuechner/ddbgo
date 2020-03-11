@@ -1,0 +1,37 @@
+menu_link_icons:
+  'views_view:views_personen_page_1':
+    icon: fa-bars
+    appearance: before
+  'views_view:views_personensuche_page_1':
+    icon: 'fas fa-search'
+    appearance: before
+  'views_view:views_personensuche_page':
+    icon: 'fas fa-bars'
+    appearance: before
+  'views_view:views_suche_kwe_page':
+    icon: 'fas fa-search'
+    appearance: before
+  'views_view:views_flag_bookmark_page':
+    icon: 'far fa-bookmark'
+    appearance: before
+  'views_view:views_suche_bestand_page':
+    icon: 'fas fa-bars'
+    appearance: before
+  'views_view:views_suche_kwe_page_1':
+    icon: fa-bars
+    prefix: fas
+    tag: i
+    appearance: before
+  'views_view:views_suche_aggregator_page_1':
+    icon: fa-bars
+    prefix: fas
+    tag: i
+    appearance: before
+  'views_view:views_suche_page_1':
+    icon: fa-search
+    prefix: fas
+    tag: i
+    appearance: before
+_core:
+  default_config_hash: 5TDl2QyTY-mHHJ0_VrmcxVDwhp4oqkLTzDI03yXvhAI
+langcode: de

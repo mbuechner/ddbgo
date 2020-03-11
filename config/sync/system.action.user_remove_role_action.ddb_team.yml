@@ -1,0 +1,14 @@
+uuid: f936367e-fdb9-4e4a-9ec3-34d39e266d16
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.ddb_team
+  module:
+    - user
+id: user_remove_role_action.ddb_team
+label: 'Den ausgewählten Benutzern die Rolle DDB-Team entziehen'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: ddb_team

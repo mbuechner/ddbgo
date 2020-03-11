@@ -1,0 +1,29 @@
+uuid: 4a8d9a4a-bc31-4f16-8900-494f52c39764
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_europeana_lieferung
+    - node.type.kwe
+    - taxonomy.vocabulary.ja_nein_teilweise_feld
+id: node.kwe.field_europeana_lieferung
+field_name: field_europeana_lieferung
+entity_type: node
+bundle: kwe
+label: Europeana-Lieferung
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_teilweise_feld: ja_nein_teilweise_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ja_nein_feld
+field_type: entity_reference

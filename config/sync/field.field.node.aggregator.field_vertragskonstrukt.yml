@@ -1,0 +1,29 @@
+uuid: b066f2bf-45b5-4ed5-b8d1-3301663cf316
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertragskonstrukt
+    - node.type.aggregator
+    - taxonomy.vocabulary.vertragskonstrukt
+id: node.aggregator.field_vertragskonstrukt
+field_name: field_vertragskonstrukt
+entity_type: node
+bundle: aggregator
+label: Vertragskonstrukt
+description: 'Haben wir mit diesem Aggregator einen Kooperationsvertrag oder einen Aggregatorenvertrag abgeschlossen?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      vertragskonstrukt: vertragskonstrukt
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

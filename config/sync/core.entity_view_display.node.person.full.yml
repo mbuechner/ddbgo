@@ -1,0 +1,49 @@
+uuid: 26ead15e-ca81-4f50-8250-06a9d66e32b3
+langcode: de
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.person.field_bemerkung
+    - field.field.node.person.field_email
+    - field.field.node.person.field_nachname
+    - field.field.node.person.field_telefonnummer
+    - field.field.node.person.field_titel
+    - field.field.node.person.field_vorname
+    - node.type.person
+  module:
+    - user
+id: node.person.full
+targetEntityType: node
+bundle: person
+mode: full
+content:
+  field_nachname:
+    weight: 0
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_vorname:
+    weight: 1
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  flag_bookmark:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_bemerkung: true
+  field_email: true
+  field_telefonnummer: true
+  field_titel: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

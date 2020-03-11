@@ -1,0 +1,8 @@
+uuid: 35fbd8b2-36a7-4b4b-aac9-be5b2dd99558
+langcode: de
+status: true
+dependencies: {  }
+name: Ja/Nein/Teilweise-Feld
+vid: ja_nein_teilweise_feld
+description: ''
+weight: 0

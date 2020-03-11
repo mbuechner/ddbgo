@@ -1,0 +1,21 @@
+uuid: e0672d7d-ae2c-4d72-9a64-f035183cc7ed
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_erstingest_archivportal
+    - node.type.kwe
+  module:
+    - datetime
+id: node.kwe.field_erstingest_archivportal
+field_name: field_erstingest_archivportal
+entity_type: node
+bundle: kwe
+label: 'Erster Ingest in das Archivportal Europa'
+description: 'Wann erfolgte der erste Ingest der KWE in das Archivportal Europa?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

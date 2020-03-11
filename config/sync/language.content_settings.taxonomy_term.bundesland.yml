@@ -1,0 +1,11 @@
+uuid: 6f7254f2-5eaf-472f-92a6-124ea9a15f10
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.bundesland
+id: taxonomy_term.bundesland
+target_entity_type_id: taxonomy_term
+target_bundle: bundesland
+default_langcode: site_default
+language_alterable: false

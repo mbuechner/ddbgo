@@ -1,0 +1,26 @@
+uuid: e207b1f2-06fd-40c7-ab1b-423b50dd0a53
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ablehnungsgrund
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_ablehnungsgrund
+field_name: field_ablehnungsgrund
+entity_type: node
+bundle: aggregator
+label: Ablehnungsgrund
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

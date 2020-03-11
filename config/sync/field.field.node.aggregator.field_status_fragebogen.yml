@@ -1,0 +1,29 @@
+uuid: 101ed269-a0d4-4c6d-83d5-61cee4060f8a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_status_fragebogen
+    - node.type.aggregator
+    - taxonomy.vocabulary.fragebogen
+id: node.aggregator.field_status_fragebogen
+field_name: field_status_fragebogen
+entity_type: node
+bundle: aggregator
+label: 'Status des Fragebogens'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      fragebogen: fragebogen
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

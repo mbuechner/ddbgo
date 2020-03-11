@@ -1,0 +1,8 @@
+uuid: b88616bd-a655-42fa-be0f-fddbfebc0c95
+langcode: de
+status: true
+dependencies: {  }
+name: Bestandsart
+vid: bestandsart
+description: 'Inhaltliche Stichwörter, auf welche Art von Beständen der Aggregator spezialisiert ist, z.B. Münzen. (Nutzung bei Aggregator)'
+weight: 0

@@ -1,0 +1,29 @@
+uuid: 0f4efae9-2fdd-44b2-802e-e5a2bc59e22b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bundesland
+    - node.type.kwe
+    - taxonomy.vocabulary.bundesland
+id: node.kwe.field_bundesland
+field_name: field_bundesland
+entity_type: node
+bundle: kwe
+label: Bundesland
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      bundesland: bundesland
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

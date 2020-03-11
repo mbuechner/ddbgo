@@ -1,0 +1,8 @@
+uuid: d228e7c1-e020-4331-b66b-1ae07f3aa059
+langcode: de
+status: true
+dependencies: {  }
+name: Favoritenkarussell
+vid: favorienkarussell
+description: 'Status des Favoritenkarussells auf der Organisationenseite (Nutzung bei KWE)'
+weight: 0

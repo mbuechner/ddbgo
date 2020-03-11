@@ -1,0 +1,14 @@
+uuid: 1924be87-7d1b-4a76-ba19-d78a449a5b92
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: jira_link
+label: JIRA-Link
+type: twig
+description: ''
+field_types:
+  - string
+data: "{% for item in items %}\r\n {{ link(item.value, 'https://jira.deutsche-digitale-bibliothek.de/browse/' ~ item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

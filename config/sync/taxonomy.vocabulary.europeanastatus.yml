@@ -1,0 +1,8 @@
+uuid: e14e3fc0-26c3-4450-9a22-d1b3aac09528
+langcode: de
+status: true
+dependencies: {  }
+name: Europeanastatus
+vid: europeanastatus
+description: 'Status in dem Sich die Daten für die Lieferung an Europeana befinden. (Nutzung bei Bestand)'
+weight: 0

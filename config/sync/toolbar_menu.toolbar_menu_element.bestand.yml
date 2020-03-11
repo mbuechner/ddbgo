@@ -1,0 +1,9 @@
+uuid: 3004c87c-4764-49cc-8736-6d38a99fd293
+langcode: de
+status: true
+dependencies: {  }
+id: bestand
+label: Bestand
+weight: -6
+menu: bestand
+rewrite_label: false

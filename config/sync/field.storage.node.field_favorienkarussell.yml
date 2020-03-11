@@ -1,0 +1,20 @@
+uuid: 7a7d31b2-ca7d-4ffe-b7e4-0940d637ef18
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_favorienkarussell
+field_name: field_favorienkarussell
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

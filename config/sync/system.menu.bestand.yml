@@ -1,0 +1,8 @@
+uuid: 34642898-cea5-4337-b852-3c272a3c2d82
+langcode: de
+status: true
+dependencies: {  }
+id: bestand
+label: Bestand
+description: ''
+locked: false

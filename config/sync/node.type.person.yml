@@ -1,0 +1,23 @@
+uuid: 95c96ddc-9ba2-4557-b67c-2dc0c009ad3b
+langcode: de
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - unique_field_ajax
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+  unique_field_ajax:
+    unique_title: true
+    warn_only: true
+    use_ajax: true
+    message: 'Diese Person ist schon vorhanden!'
+name: Person
+type: person
+description: 'Personen in unterschiedlichen Rollen'
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false

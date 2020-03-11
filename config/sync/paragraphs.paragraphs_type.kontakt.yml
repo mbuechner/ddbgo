@@ -1,0 +1,9 @@
+uuid: 696645b6-6530-457e-ba19-6e5a67fa0def
+langcode: de
+status: true
+dependencies: {  }
+id: kontakt
+label: Kontakt
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

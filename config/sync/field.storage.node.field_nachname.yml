@@ -1,0 +1,21 @@
+uuid: 542a09a8-5622-463e-b738-23c4537be226
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_nachname
+field_name: field_nachname
+entity_type: node
+type: string
+settings:
+  max_length: 128
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

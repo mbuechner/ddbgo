@@ -1,0 +1,32 @@
+uuid: c79b4494-0062-4c0e-80d3-50a38f34f079
+langcode: de
+status: true
+dependencies:
+  module:
+    - ddbgo_cj
+_core:
+  default_config_hash: 15jrFzrAmJqRYWUNjb-4xJhzv-oA5YP3xKbA2AASfmc
+title: 'DDBgo KWE Daily Updater'
+id: kwe_daily_queue_worker
+weight: 0
+module: ddbgo_cj
+callback: ddbgo_cj_kwe_daily_queue_worker
+scheduler:
+  id: crontab
+  configuration:
+    rules:
+      - '0 4 * * *'
+    catch_up: 0
+launcher:
+  id: serial
+  configuration:
+    timeouts:
+      lock_timeout: 3600
+    launcher:
+      thread: 0
+logger:
+  id: database
+  configuration:
+    method: '3'
+    expire: 604800
+    retain: 10000

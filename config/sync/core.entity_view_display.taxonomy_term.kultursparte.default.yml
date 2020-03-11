@@ -1,0 +1,32 @@
+uuid: c31118d5-f212-426e-ace2-f7711e44024e
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.kultursparte.field_uri
+    - taxonomy.vocabulary.kultursparte
+  module:
+    - text
+id: taxonomy_term.kultursparte.default
+targetEntityType: taxonomy_term
+bundle: kultursparte
+mode: default
+content:
+  description:
+    label: above
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uri:
+    weight: 0
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

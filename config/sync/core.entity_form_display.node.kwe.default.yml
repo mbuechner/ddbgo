@@ -1,0 +1,704 @@
+uuid: 0bb2aaab-b248-4fcf-a933-cb4efb5beed7
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.kwe.field_ablehnungsgrund
+    - field.field.node.kwe.field_api_blacklisting
+    - field.field.node.kwe.field_api_blacklisting_jira_tick
+    - field.field.node.kwe.field_archivportal_lieferung
+    - field.field.node.kwe.field_bemerkung
+    - field.field.node.kwe.field_bemerkung_archivportal
+    - field.field.node.kwe.field_bemerkung_europeana_liefer
+    - field.field.node.kwe.field_bemerkungen
+    - field.field.node.kwe.field_bundesland
+    - field.field.node.kwe.field_ddb_id
+    - field.field.node.kwe.field_ddburi
+    - field.field.node.kwe.field_email
+    - field.field.node.kwe.field_erstingest_archivportal
+    - field.field.node.kwe.field_erstingest_europeana
+    - field.field.node.kwe.field_europeana_lieferung
+    - field.field.node.kwe.field_favorienkarussell
+    - field.field.node.kwe.field_isil
+    - field.field.node.kwe.field_kontakt
+    - field.field.node.kwe.field_kurzname
+    - field.field.node.kwe.field_land
+    - field.field.node.kwe.field_personen
+    - field.field.node.kwe.field_plz
+    - field.field.node.kwe.field_sparte
+    - field.field.node.kwe.field_stadt
+    - field.field.node.kwe.field_status
+    - field.field.node.kwe.field_strasse
+    - field.field.node.kwe.field_telefonnummer
+    - field.field.node.kwe.field_url
+    - field.field.node.kwe.field_vertrag
+    - field.field.node.kwe.field_vertragskonstrukt
+    - field.field.node.kwe.field_vertragsstatus
+    - node.type.kwe
+  module:
+    - color_field
+    - conditional_fields
+    - field_group
+    - file
+    - link
+    - paragraphs
+    - single_datetime
+third_party_settings:
+  field_group:
+    group_allgemeines:
+      children:
+        - title
+        - field_ddburi
+        - field_ddb_id
+        - field_isil
+        - field_kurzname
+        - field_strasse
+        - field_plz
+        - field_stadt
+        - field_bundesland
+        - field_land
+        - field_sparte
+        - field_telefonnummer
+        - field_email
+        - field_url
+        - field_bemerkung
+      parent_name: ''
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        description: ''
+        id: ''
+        classes: ''
+        required_fields: false
+      label: Allgemeines
+      region: content
+    group_einstellungen:
+      children:
+        - field_api_blacklisting
+        - field_api_blacklisting_jira_tick
+        - field_europeana_lieferung
+        - field_erstingest_europeana
+        - field_bemerkung_europeana_liefer
+        - field_archivportal_lieferung
+        - field_erstingest_archivportal
+        - field_bemerkung_archivportal
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      format_settings:
+        description: ''
+        id: ''
+        classes: ''
+        required_fields: false
+      label: Einstellungen
+      region: content
+    group_informationen:
+      children:
+        - field_vertragsstatus
+        - field_vertragskonstrukt
+        - field_vertrag
+        - field_favorienkarussell
+        - field_bemerkungen
+      parent_name: ''
+      weight: 6
+      format_type: fieldset
+      format_settings:
+        description: ''
+        id: ''
+        classes: ''
+        required_fields: false
+      label: Informationen
+      region: content
+    group_kontakt:
+      children:
+        - field_kontakt
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Kontakt
+      region: content
+    group_personen:
+      children:
+        - field_personen
+      parent_name: ''
+      weight: 4
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Personen
+      region: content
+    group_s:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: Status
+id: node.kwe.default
+targetEntityType: node
+bundle: kwe
+mode: default
+content:
+  field_ablehnungsgrund:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        09457cba-a3e2-47d1-bdb2-abf4defb1c96:
+          dependee: field_status
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 4
+            value: ''
+            values: '#D2222D'
+            value_form:
+              -
+                color: ''
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textarea
+    region: content
+  field_api_blacklisting:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_api_blacklisting_jira_tick:
+    weight: 27
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        e598b469-91d1-44b6-b50b-8b59b5ff881a:
+          dependee: field_api_blacklisting
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '616'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_archivportal_lieferung:
+    weight: 31
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_bemerkung:
+    weight: 28
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_bemerkung_archivportal:
+    weight: 33
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_bemerkung_europeana_liefer:
+    weight: 30
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_bemerkungen:
+    weight: 39
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_bundesland:
+    weight: 22
+    settings: {  }
+    third_party_settings:
+      conditional_fields:
+        57bce020-847d-4635-bca0-b6225b42984f:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: options_select
+    region: content
+  field_ddb_id:
+    type: string_textfield
+    weight: 16
+    region: content
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        c17aaab6-8d42-4be0-88c4-639047dcb5d9:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                value: ''
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+  field_ddburi:
+    weight: 15
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_email:
+    weight: 26
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        10bc8a24-7bbb-46e0-859d-b0d4228d9e6d:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: email_default
+    region: content
+  field_erstingest_archivportal:
+    weight: 32
+    settings:
+      hour_format: 24h
+      allow_times: '15'
+      allowed_hours: ''
+      disable_days:
+        6: '6'
+        7: '7'
+        1: 0
+        2: 0
+        3: 0
+        4: 0
+        5: 0
+      exclude_date: ''
+      datetimepicker_theme: default
+      min_date: ''
+      max_date: ''
+      year_start: ''
+      year_end: ''
+      inline: 0
+      mask: 0
+    third_party_settings:
+      conditional_fields:
+        863f8c99-a1a5-4c64-90b0-8de052f721a3:
+          dependee: field_archivportal_lieferung
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 4
+            value: ''
+            values: "904\r\n906"
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: single_date_time_widget
+    region: content
+  field_erstingest_europeana:
+    weight: 29
+    settings:
+      hour_format: 24h
+      allow_times: '15'
+      allowed_hours: ''
+      disable_days:
+        6: '6'
+        7: '7'
+        1: 0
+        2: 0
+        3: 0
+        4: 0
+        5: 0
+      exclude_date: ''
+      datetimepicker_theme: default
+      min_date: ''
+      max_date: ''
+      year_start: ''
+      year_end: ''
+      inline: 0
+      mask: 0
+    third_party_settings:
+      conditional_fields:
+        1441de84-3668-4b95-802f-01fdeb96f54f:
+          dependee: field_europeana_lieferung
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 4
+            value: ''
+            values: "904\r\n906"
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: single_date_time_widget
+    region: content
+  field_europeana_lieferung:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_favorienkarussell:
+    weight: 38
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_isil:
+    weight: 17
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        6f8c9fbe-3eb4-4cbc-9153-532d24b73a67:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_kontakt:
+    type: entity_reference_paragraphs
+    weight: 31
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_kurzname:
+    weight: 18
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        ecb558c0-9c06-46b6-9957-6950afa59424:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_land:
+    weight: 23
+    settings: {  }
+    third_party_settings:
+      conditional_fields:
+        2d987d11-c67f-468f-8698-9c42a3fa42e7:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: options_select
+    region: content
+  field_personen:
+    type: entity_reference_paragraphs
+    weight: 29
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_plz:
+    weight: 20
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        dd1d57d6-7e51-4116-8e1f-bef923d621a2:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_sparte:
+    weight: 24
+    settings: {  }
+    third_party_settings:
+      conditional_fields:
+        e8d6a2c0-e1ce-48e0-82dc-567ec78d5888:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: options_select
+    region: content
+  field_stadt:
+    weight: 21
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        7395e484-c476-493e-8a7c-ed954717a782:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_status:
+    weight: 1
+    settings:
+      default_colors: '#D2222D,#FFBF00,#238823'
+    third_party_settings: {  }
+    type: color_field_widget_box
+    region: content
+  field_strasse:
+    weight: 19
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        93f5ecec-e931-4e3d-9220-20e3d15cdd70:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_telefonnummer:
+    weight: 25
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        63869a4d-2dee-44b6-ab6e-162a15d6dbb7:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: string_textfield
+    region: content
+  field_url:
+    weight: 27
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings:
+      conditional_fields:
+        d20131df-e26e-4c04-bce1-f7ffff061876:
+          dependee: field_ddburi
+          settings:
+            state: disabled
+            condition: '!empty'
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form: {  }
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: kwe
+    type: link_default
+    region: content
+  field_vertrag:
+    weight: 37
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  field_vertragskonstrukt:
+    weight: 36
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_vertragsstatus:
+    weight: 35
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  title:
+    type: string_textfield
+    weight: 14
+    region: content
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

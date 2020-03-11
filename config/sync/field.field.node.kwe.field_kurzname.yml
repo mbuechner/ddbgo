@@ -1,0 +1,26 @@
+uuid: db53b3c4-fa74-4e1b-b255-8aa61cc72f19
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kurzname
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_kurzname
+field_name: field_kurzname
+entity_type: node
+bundle: kwe
+label: Kurzname
+description: 'Offizielle Abkürzung für den KWE-Namen, falls vorhanden (z.B. „DNB“ für Deutsche Nationalbibliothek).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

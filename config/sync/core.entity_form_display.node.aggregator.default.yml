@@ -1,0 +1,460 @@
+uuid: 6c012227-d0b3-4707-98b2-3ea00a16fbfb
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.node.aggregator.field_ablehnungsgrund
+    - field.field.node.aggregator.field_ausrichtung_nach_bestandsa
+    - field.field.node.aggregator.field_ausrichtung_nach_sparte
+    - field.field.node.aggregator.field_bemerkung
+    - field.field.node.aggregator.field_beschreibung
+    - field.field.node.aggregator.field_bestandsart
+    - field.field.node.aggregator.field_datenformat
+    - field.field.node.aggregator.field_ddburi
+    - field.field.node.aggregator.field_field_ausrichtung_geo
+    - field.field.node.aggregator.field_jira_hauptticket
+    - field.field.node.aggregator.field_kontakt
+    - field.field.node.aggregator.field_kurzname
+    - field.field.node.aggregator.field_link_fragebogen
+    - field.field.node.aggregator.field_link_zu_ddbdash
+    - field.field.node.aggregator.field_link_zu_ddbpro
+    - field.field.node.aggregator.field_personen
+    - field.field.node.aggregator.field_region_ort
+    - field.field.node.aggregator.field_sparten
+    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_status_fragebogen
+    - field.field.node.aggregator.field_url
+    - field.field.node.aggregator.field_vertrag
+    - field.field.node.aggregator.field_vertragskonstrukt
+    - field.field.node.aggregator.field_vertragsstatus
+    - node.type.aggregator
+  module:
+    - color_field
+    - conditional_fields
+    - field_group
+    - file
+    - link
+    - paragraphs
+    - select2
+third_party_settings:
+  field_group:
+    group_allgemeines:
+      children:
+        - title
+        - field_kurzname
+        - field_url
+        - field_ddburi
+        - field_link_zu_ddbpro
+        - field_datenformat
+        - field_vertragsstatus
+        - field_vertragskonstrukt
+        - field_vertrag
+        - field_beschreibung
+        - field_bemerkung
+      parent_name: ''
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        description: ''
+        id: ''
+        classes: ''
+        required_fields: false
+      label: Allgemeines
+      region: content
+    group_informationen:
+      children:
+        - field_link_zu_ddbdash
+        - field_status_fragebogen
+        - field_link_fragebogen
+        - field_jira_hauptticket
+      parent_name: ''
+      weight: 7
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Informationen
+      region: content
+    group_personen:
+      children:
+        - field_personen
+      parent_name: ''
+      weight: 4
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Personen
+      region: content
+    group_kontakt:
+      children:
+        - field_kontakt
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: false
+      label: Kontakt
+      region: content
+    group_ausrichtung:
+      children:
+        - field_field_ausrichtung_geo
+        - field_region_ort
+        - field_ausrichtung_nach_sparte
+        - field_sparten
+        - field_ausrichtung_nach_bestandsa
+        - field_bestandsart
+      parent_name: ''
+      weight: 6
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: Ausrichtung
+      region: content
+    group_status:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+      parent_name: ''
+      weight: 0
+      format_type: fieldset
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        required_fields: true
+      label: Status
+id: node.aggregator.default
+targetEntityType: node
+bundle: aggregator
+mode: default
+content:
+  field_ablehnungsgrund:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings:
+      conditional_fields:
+        caa98ec2-aa07-42bd-864e-0a9174c212a7:
+          dependee: field_status
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 4
+            value: ''
+            values: '#D2222D'
+            value_form:
+              -
+                color: ''
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+    type: string_textarea
+    region: content
+  field_ausrichtung_nach_bestandsa:
+    weight: 49
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_ausrichtung_nach_sparte:
+    weight: 47
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_bemerkung:
+    weight: 46
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_beschreibung:
+    weight: 45
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_bestandsart:
+    weight: 50
+    settings:
+      width: 100%
+      match_operator: CONTAINS
+      autocomplete: false
+      match_limit: 10
+    third_party_settings:
+      conditional_fields:
+        e6de2833-1d01-487d-87fc-de0028678e6b:
+          dependee: field_ausrichtung_nach_bestandsa
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '616'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+    type: select2_entity_reference
+    region: content
+  field_datenformat:
+    weight: 41
+    settings:
+      match_operator: CONTAINS
+      autocomplete: false
+      width: 100%
+      match_limit: 10
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+  field_ddburi:
+    weight: 39
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_field_ausrichtung_geo:
+    weight: 45
+    settings: {  }
+    third_party_settings:
+      conditional_fields: {  }
+    type: options_select
+    region: content
+  field_jira_hauptticket:
+    weight: 51
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_kontakt:
+    weight: 53
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    type: entity_reference_paragraphs
+    region: content
+  field_kurzname:
+    weight: 37
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_link_fragebogen:
+    weight: 35
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings:
+      conditional_fields:
+        9aa480da-2ebc-432c-b746-cbd7306f2767:
+          dependee: field_status_fragebogen
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '619'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+        25ca3108-f7e8-4a8d-8ed1-b821aec67599:
+          dependee: field_status_fragebogen
+          settings:
+            state: required
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '619'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+    type: link_default
+    region: content
+  field_link_zu_ddbdash:
+    weight: 33
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_link_zu_ddbpro:
+    weight: 40
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_personen:
+    weight: 42
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    type: entity_reference_paragraphs
+    region: content
+  field_region_ort:
+    weight: 46
+    settings:
+      width: 100%
+      match_operator: CONTAINS
+      autocomplete: false
+      match_limit: 10
+    third_party_settings:
+      conditional_fields:
+        618bb74e-21f0-4760-b79a-fc26f5acfcd9:
+          dependee: field_field_ausrichtung_geo
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '616'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+    type: select2_entity_reference
+    region: content
+  field_sparten:
+    weight: 48
+    settings:
+      match_operator: CONTAINS
+      autocomplete: false
+      width: 100%
+      match_limit: 10
+    third_party_settings:
+      conditional_fields:
+        f81427c6-f10d-4b0d-98b5-fecf399b950e:
+          dependee: field_ausrichtung_nach_sparte
+          settings:
+            state: '!disabled'
+            condition: value
+            grouping: AND
+            values_set: 1
+            value: ''
+            values: {  }
+            value_form:
+              -
+                target_id: '616'
+            effect: show
+            effect_options: {  }
+            selector: ''
+          entity_type: node
+          bundle: aggregator
+    type: select2_entity_reference
+    region: content
+  field_status:
+    weight: 1
+    settings:
+      default_colors: '#D2222D,#FFBF00,#238823'
+    third_party_settings: {  }
+    type: color_field_widget_box
+    region: content
+  field_status_fragebogen:
+    weight: 34
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_url:
+    weight: 38
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_vertrag:
+    weight: 44
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
+    region: content
+  field_vertragskonstrukt:
+    weight: 43
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_vertragsstatus:
+    weight: 42
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  title:
+    type: string_textfield
+    weight: 36
+    region: content
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  uid: true

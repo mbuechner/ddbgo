@@ -1,0 +1,11 @@
+uuid: 5e3361b7-56d1-427c-b5fd-5dd49d7b2305
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.person_aggregator
+id: paragraph.person_aggregator
+target_entity_type_id: paragraph
+target_bundle: person_aggregator
+default_langcode: site_default
+language_alterable: false

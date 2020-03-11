@@ -1,0 +1,20 @@
+uuid: 603b7f4c-343b-403b-9d8c-e16510d73a24
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_field_ausrichtung_geo
+field_name: field_field_ausrichtung_geo
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

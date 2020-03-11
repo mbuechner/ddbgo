@@ -1,0 +1,26 @@
+uuid: 9bc304fb-a515-482b-9fa1-726e64a2cbf4
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ueber_welchen_weg
+    - node.type.bestand
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.bestand.field_ueber_welchen_weg
+field_name: field_ueber_welchen_weg
+entity_type: node
+bundle: bestand
+label: 'Über welchen Weg?'
+description: 'Wie wird der Bestand an Europeana geliefert?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

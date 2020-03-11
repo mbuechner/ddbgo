@@ -1,0 +1,13 @@
+uuid: 99b4890b-c977-4f1f-99a4-2431c48f1420
+langcode: de
+status: true
+dependencies:
+  module:
+    - flag
+_core:
+  default_config_hash: Z9dGFmjyQgZjDwdsI-Mmgd2tZkUsjYi7cOSUPqjXPtw
+id: flag_delete_flagging
+label: 'Kennzeichnung entfernen'
+type: flagging
+plugin: flag_delete_flagging
+configuration: {  }

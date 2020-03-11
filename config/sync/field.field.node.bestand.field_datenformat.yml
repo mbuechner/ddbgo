@@ -1,0 +1,29 @@
+uuid: 6ab440ba-8170-4318-a4a0-21bba0e3c66c
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_datenformat
+    - node.type.bestand
+    - taxonomy.vocabulary.datenformat
+id: node.bestand.field_datenformat
+field_name: field_datenformat
+entity_type: node
+bundle: bestand
+label: Datenformat
+description: 'Das Datenformat/die Datenformate, in dem der Bestand vorliegt.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      datenformat: datenformat
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

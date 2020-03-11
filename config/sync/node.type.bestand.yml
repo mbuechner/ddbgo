@@ -1,0 +1,23 @@
+uuid: d636e9d1-5f6c-40e8-985a-05e2e69ef9e0
+langcode: de
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - unique_field_ajax
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+  unique_field_ajax:
+    unique_title: true
+    warn_only: true
+    use_ajax: true
+    message: 'Dieser Bestandstitel ist bereits vorhanden!'
+name: Bestand
+type: bestand
+description: ''
+help: ''
+new_revision: true
+preview_mode: 0
+display_submitted: false

@@ -1,0 +1,19 @@
+uuid: 6aa82aef-942b-4500-8c5a-84c1bdc064bf
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_email
+    - node.type.kwe
+id: node.kwe.field_email
+field_name: field_email
+entity_type: node
+bundle: kwe
+label: E-Mail
+description: 'Die allgemeine E-Mail Adresse der KWE (z.B. „info@...“ oder „service@...“).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

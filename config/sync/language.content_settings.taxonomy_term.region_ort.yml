@@ -1,0 +1,11 @@
+uuid: aeb84fad-d5a9-45bd-bff0-2f4fb7a964e2
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.region_ort
+id: taxonomy_term.region_ort
+target_entity_type_id: taxonomy_term
+target_bundle: region_ort
+default_langcode: site_default
+language_alterable: false

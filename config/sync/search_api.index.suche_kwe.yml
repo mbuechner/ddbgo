@@ -1,0 +1,122 @@
+uuid: f2dafc83-46dd-45d5-87bc-c0c2104f1f48
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+    - search_api
+  config:
+    - field.storage.node.field_stadt
+    - field.storage.node.field_status
+    - field.storage.node.field_vertragsstatus
+    - search_api.server.default_server
+id: suche_kwe
+name: KWE
+description: ''
+read_only: false
+field_settings:
+  field_stadt:
+    label: Stadt
+    datasource_id: 'entity:node'
+    property_path: field_stadt
+    type: text
+    boost: !!float 2
+    dependencies:
+      config:
+        - field.storage.node.field_stadt
+  field_status:
+    label: Status
+    datasource_id: 'entity:node'
+    property_path: field_status
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_status
+  name:
+    label: 'Vertragsstatus » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragsstatus:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_vertragsstatus
+      module:
+        - taxonomy
+        - taxonomy
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
+  status:
+    label: status
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    dependencies:
+      module:
+        - node
+  title:
+    label: Titel
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    boost: !!float 3
+    dependencies:
+      module:
+        - node
+  uid:
+    label: uid
+    datasource_id: 'entity:node'
+    property_path: uid
+    type: integer
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - kwe
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  ignorecase:
+    all_fields: true
+    fields:
+      - field_stadt
+      - field_status
+      - name
+      - title
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  language_with_fallback: {  }
+  rendered_item: {  }
+  tokenizer:
+    all_fields: true
+    fields:
+      - field_stadt
+      - name
+      - title
+    spaces: ''
+    overlap_cjk: 1
+    minimum_word_size: '3'
+    weights:
+      preprocess_index: -6
+      preprocess_query: -6
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: default_server

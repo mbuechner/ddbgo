@@ -1,0 +1,29 @@
+uuid: 04129f73-4675-4103-b6c5-c9268e308053
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bestandsart
+    - node.type.aggregator
+    - taxonomy.vocabulary.bestandsart
+id: node.aggregator.field_bestandsart
+field_name: field_bestandsart
+entity_type: node
+bundle: aggregator
+label: Bestandsart
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      bestandsart: bestandsart
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

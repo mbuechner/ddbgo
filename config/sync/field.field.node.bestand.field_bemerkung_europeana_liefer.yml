@@ -1,0 +1,26 @@
+uuid: 6f47d68f-5ec3-4ae9-8775-9108563744c5
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung_europeana_liefer
+    - node.type.bestand
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.bestand.field_bemerkung_europeana_liefer
+field_name: field_bemerkung_europeana_liefer
+entity_type: node
+bundle: bestand
+label: 'Bemerkung für Europeana-Lieferung'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

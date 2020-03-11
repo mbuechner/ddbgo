@@ -1,0 +1,11 @@
+uuid: b5813101-63b1-4bdc-a177-561a4a66d9ac
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.europeana
+id: taxonomy_term.europeana
+target_entity_type_id: taxonomy_term
+target_bundle: europeana
+default_langcode: site_default
+language_alterable: false

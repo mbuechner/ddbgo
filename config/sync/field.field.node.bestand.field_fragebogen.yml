@@ -1,0 +1,27 @@
+uuid: d124faaf-4ea7-4c29-a46d-a28c6757a8fc
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fragebogen
+    - node.type.bestand
+  module:
+    - file
+id: node.bestand.field_fragebogen
+field_name: field_fragebogen
+entity_type: node
+bundle: bestand
+label: Fragebogen
+description: 'Alter Fragebogen aus Zeiten vor LimeSurvey'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'doc docx pdf'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

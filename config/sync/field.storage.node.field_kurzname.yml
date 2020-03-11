@@ -1,0 +1,21 @@
+uuid: fe4c294c-6679-4393-91c9-e41f9b9d42d1
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_kurzname
+field_name: field_kurzname
+entity_type: node
+type: string
+settings:
+  max_length: 128
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

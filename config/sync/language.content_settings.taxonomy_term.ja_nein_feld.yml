@@ -1,0 +1,11 @@
+uuid: 87a3e4a2-36ad-46c5-bd87-d6496cd0df5e
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ja_nein_feld
+id: taxonomy_term.ja_nein_feld
+target_entity_type_id: taxonomy_term
+target_bundle: ja_nein_feld
+default_langcode: site_default
+language_alterable: false

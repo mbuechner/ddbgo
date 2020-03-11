@@ -1,0 +1,60 @@
+uuid: bd8662a5-088b-457c-bb1d-dfc0c4d9b256
+langcode: de
+status: true
+dependencies: {  }
+id: ddb_team_login_admin
+label: DDBgo-Benutzerverwaltung
+weight: -6
+is_admin: null
+permissions:
+  - 'access taxonomy overview'
+  - 'access user profiles'
+  - 'administer account settings'
+  - 'administer users'
+  - 'assign ddb_team role'
+  - 'assign ddb_team_login_admin role'
+  - 'cancel account'
+  - 'change own username'
+  - 'create page content'
+  - 'create terms in akademischer_titel'
+  - 'create terms in bestandsart'
+  - 'create terms in datenformat'
+  - 'create terms in europeana'
+  - 'create terms in lieferweg'
+  - 'create terms in medientyp'
+  - 'create terms in personenrolle'
+  - 'create terms in personenrolle_aggregator'
+  - 'create terms in personenrolle_bestand'
+  - 'create terms in personenrolle_kwe'
+  - 'create terms in region_ort'
+  - 'delete own page content'
+  - 'delete page revisions'
+  - 'delete terms in akademischer_titel'
+  - 'delete terms in bestandsart'
+  - 'delete terms in datenformat'
+  - 'delete terms in lieferweg'
+  - 'delete terms in medientyp'
+  - 'delete terms in personenrolle'
+  - 'delete terms in personenrolle_aggregator'
+  - 'delete terms in personenrolle_bestand'
+  - 'delete terms in personenrolle_kwe'
+  - 'delete terms in region_ort'
+  - 'edit any page content'
+  - 'edit own page content'
+  - 'edit terms in akademischer_titel'
+  - 'edit terms in bestandsart'
+  - 'edit terms in datenformat'
+  - 'edit terms in lieferweg'
+  - 'edit terms in medientyp'
+  - 'edit terms in personenrolle'
+  - 'edit terms in personenrolle_aggregator'
+  - 'edit terms in personenrolle_bestand'
+  - 'edit terms in personenrolle_kwe'
+  - 'edit terms in region_ort'
+  - 'merge taxonomy terms'
+  - 'revert page revisions'
+  - 'select account cancellation method'
+  - 'use text format basic_html'
+  - userprotect.angemeldete_benutzer.bypass
+  - userprotect.ddbgo_editor.bypass
+  - 'view page revisions'

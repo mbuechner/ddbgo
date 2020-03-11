@@ -1,0 +1,29 @@
+uuid: 5f600a2f-fe4c-44d3-876d-f8bd6300cfdf
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_field_ausrichtung_geo
+    - node.type.aggregator
+    - taxonomy.vocabulary.ja_nein_feld
+id: node.aggregator.field_field_ausrichtung_geo
+field_name: field_field_ausrichtung_geo
+entity_type: node
+bundle: aggregator
+label: 'Geografische Ausrichtung'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

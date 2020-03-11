@@ -1,0 +1,8 @@
+uuid: b8518044-1d93-49cb-aa09-2d8cb84a18e2
+langcode: de
+status: true
+dependencies: {  }
+name: Lieferweg
+vid: lieferweg
+description: 'Lieferweg auf dem die Daten an die Deutsche Digitale Bibliothek geliefert werden. (Nutzung bei Bestand)'
+weight: 0

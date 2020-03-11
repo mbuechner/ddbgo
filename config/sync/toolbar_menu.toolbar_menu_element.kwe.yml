@@ -1,0 +1,9 @@
+uuid: a1f4f048-86d5-4e01-bfe7-04b14ea2c959
+langcode: de
+status: true
+dependencies: {  }
+id: kwe
+label: KWE
+weight: -9
+menu: kwe
+rewrite_label: false

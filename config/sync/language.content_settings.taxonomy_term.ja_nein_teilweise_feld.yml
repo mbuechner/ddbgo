@@ -1,0 +1,11 @@
+uuid: 8abd4b0b-a877-4c12-b684-41b22a3468e9
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ja_nein_teilweise_feld
+id: taxonomy_term.ja_nein_teilweise_feld
+target_entity_type_id: taxonomy_term
+target_bundle: ja_nein_teilweise_feld
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,8 @@
+uuid: 292ff297-e5aa-4890-aba1-ae911d34e3b6
+langcode: de
+status: true
+dependencies: {  }
+name: 'Akademischer Titel'
+vid: akademischer_titel
+description: 'Akademischer Titel einer Person, z.B. Dr. (Nutzung bei Person)'
+weight: 0

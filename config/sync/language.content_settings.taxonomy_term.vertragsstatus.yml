@@ -1,0 +1,11 @@
+uuid: b2a4a6d1-d0f7-43b3-836b-d7d1d77cfaa7
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.vertragsstatus
+id: taxonomy_term.vertragsstatus
+target_entity_type_id: taxonomy_term
+target_bundle: vertragsstatus
+default_langcode: site_default
+language_alterable: false

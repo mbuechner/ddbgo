@@ -1,0 +1,475 @@
+uuid: 71295190-1a5c-4404-a3c2-f2ce9597ed1e
+langcode: de
+status: true
+dependencies:
+  config:
+    - custom_formatters.formatter.jira_link
+    - custom_formatters.formatter.label_als_link
+    - field.field.node.kwe.field_ablehnungsgrund
+    - field.field.node.kwe.field_api_blacklisting
+    - field.field.node.kwe.field_api_blacklisting_jira_tick
+    - field.field.node.kwe.field_archivportal_lieferung
+    - field.field.node.kwe.field_bemerkung
+    - field.field.node.kwe.field_bemerkung_archivportal
+    - field.field.node.kwe.field_bemerkung_europeana_liefer
+    - field.field.node.kwe.field_bemerkungen
+    - field.field.node.kwe.field_bundesland
+    - field.field.node.kwe.field_ddb_id
+    - field.field.node.kwe.field_ddburi
+    - field.field.node.kwe.field_email
+    - field.field.node.kwe.field_erstingest_archivportal
+    - field.field.node.kwe.field_erstingest_europeana
+    - field.field.node.kwe.field_europeana_lieferung
+    - field.field.node.kwe.field_favorienkarussell
+    - field.field.node.kwe.field_isil
+    - field.field.node.kwe.field_kontakt
+    - field.field.node.kwe.field_kurzname
+    - field.field.node.kwe.field_land
+    - field.field.node.kwe.field_personen
+    - field.field.node.kwe.field_plz
+    - field.field.node.kwe.field_sparte
+    - field.field.node.kwe.field_stadt
+    - field.field.node.kwe.field_status
+    - field.field.node.kwe.field_strasse
+    - field.field.node.kwe.field_telefonnummer
+    - field.field.node.kwe.field_url
+    - field.field.node.kwe.field_vertrag
+    - field.field.node.kwe.field_vertragskonstrukt
+    - field.field.node.kwe.field_vertragsstatus
+    - node.type.kwe
+  module:
+    - color_field
+    - custom_formatters
+    - datetime
+    - empty_fields
+    - entity_reference_revisions
+    - field_group
+    - file
+    - link
+    - user
+third_party_settings:
+  field_group:
+    group_kontakt:
+      children:
+        - field_kontakt
+      parent_name: ''
+      weight: 4
+      format_type: fieldset
+      format_settings:
+        open: true
+        id: ''
+        classes: ''
+        description: ''
+      label: Kontakt
+      region: content
+    group_personen:
+      children:
+        - field_personen
+      parent_name: ''
+      weight: 3
+      format_type: fieldset
+      format_settings:
+        open: true
+        id: ''
+        classes: ''
+        description: ''
+      label: Personen
+      region: content
+    group_informationen:
+      children:
+        - field_vertragsstatus
+        - field_vertragskonstrukt
+        - field_vertrag
+        - field_favorienkarussell
+        - field_bemerkungen
+      parent_name: ''
+      weight: 5
+      format_type: fieldset
+      format_settings:
+        open: true
+        id: ''
+        classes: ''
+        description: ''
+      label: Informationen
+      region: content
+    group_einstellungen:
+      children:
+        - field_api_blacklisting
+        - field_api_blacklisting_jira_tick
+        - field_europeana_lieferung
+        - field_erstingest_europeana
+        - field_bemerkung_europeana_liefer
+        - field_archivportal_lieferung
+        - field_erstingest_archivportal
+        - field_bemerkung_archivportal
+      parent_name: ''
+      weight: 6
+      format_type: fieldset
+      format_settings:
+        open: true
+        id: ''
+        classes: ''
+        description: ''
+      label: Einstellungen
+      region: content
+    group_status:
+      children:
+        - flag_bookmark
+        - field_status
+        - field_ablehnungsgrund
+      parent_name: ''
+      weight: 1
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Status
+      region: content
+    group_allgemeines:
+      children:
+        - field_ddburi
+        - field_ddb_id
+        - field_isil
+        - field_kurzname
+        - field_strasse
+        - field_plz
+        - field_stadt
+        - field_bundesland
+        - field_land
+        - field_sparte
+        - field_telefonnummer
+        - field_email
+        - field_url
+        - field_bemerkung
+      parent_name: ''
+      weight: 2
+      format_type: fieldset
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+      label: Allgemeines
+      region: content
+id: node.kwe.default
+targetEntityType: node
+bundle: kwe
+mode: default
+content:
+  field_ablehnungsgrund:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_api_blacklisting:
+    weight: 15
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_api_blacklisting_jira_tick:
+    weight: 16
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:jira_link'
+    region: content
+  field_archivportal_lieferung:
+    weight: 20
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_bemerkung:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_bemerkung_archivportal:
+    weight: 22
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_bemerkung_europeana_liefer:
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: basic_string
+    region: content
+  field_bemerkungen:
+    weight: 28
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_bundesland:
+    weight: 11
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_ddb_id:
+    weight: 5
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_ddburi:
+    weight: 4
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:label_als_link'
+    region: content
+  field_email:
+    weight: 15
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: email_mailto
+    region: content
+  field_erstingest_archivportal:
+    weight: 21
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: datetime_default
+    region: content
+  field_erstingest_europeana:
+    weight: 18
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: datetime_default
+    region: content
+  field_europeana_lieferung:
+    weight: 17
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_favorienkarussell:
+    weight: 27
+    label: inline
+    settings:
+      link: true
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_isil:
+    weight: 6
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: 'custom_formatters:label_als_link'
+    region: content
+  field_kontakt:
+    type: entity_reference_revisions_entity_view
+    weight: 22
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    region: content
+  field_kurzname:
+    weight: 7
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_land:
+    weight: 12
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_personen:
+    type: entity_reference_revisions_entity_view
+    weight: 20
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    region: content
+  field_plz:
+    weight: 9
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_sparte:
+    weight: 13
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_stadt:
+    weight: 10
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_status:
+    weight: 1
+    label: hidden
+    settings:
+      shape: square
+      width: '50'
+      height: '50'
+      opacity: '1'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: color_field_formatter_swatch
+    region: content
+  field_strasse:
+    weight: 8
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_telefonnummer:
+    weight: 14
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: string
+    region: content
+  field_url:
+    weight: 16
+    label: inline
+    settings:
+      trim_length: 80
+      target: _blank
+      url_only: false
+      url_plain: false
+      rel: '0'
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: link
+    region: content
+  field_vertrag:
+    weight: 26
+    label: inline
+    settings:
+      use_description_as_link_text: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: file_default
+    region: content
+  field_vertragskonstrukt:
+    weight: 25
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  field_vertragsstatus:
+    weight: 24
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    type: entity_reference_label
+    region: content
+  flag_bookmark:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
+  links: true
+  search_api_excerpt: true

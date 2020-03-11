@@ -1,0 +1,11 @@
+uuid: 3ae35c24-0e5c-411d-be68-bba8bf9cbf84
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.person_bestand
+id: paragraph.person_bestand
+target_entity_type_id: paragraph
+target_bundle: person_bestand
+default_langcode: site_default
+language_alterable: false

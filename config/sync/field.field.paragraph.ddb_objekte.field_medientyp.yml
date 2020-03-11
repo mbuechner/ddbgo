@@ -1,0 +1,29 @@
+uuid: e722fcc3-3c1f-426f-aa8a-ee95d4bd9b73
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_medientyp
+    - paragraphs.paragraphs_type.ddb_objekte
+    - taxonomy.vocabulary.medientyp
+id: paragraph.ddb_objekte.field_medientyp
+field_name: field_medientyp
+entity_type: paragraph
+bundle: ddb_objekte
+label: Medientyp
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      medientyp: medientyp
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

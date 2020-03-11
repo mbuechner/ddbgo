@@ -1,0 +1,23 @@
+uuid: fa0d098f-83f2-4026-8c8c-1189f799a8dd
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_anzahl_der_objekte
+    - paragraphs.paragraphs_type.ddb_objekte
+id: paragraph.ddb_objekte.field_anzahl_der_objekte
+field_name: field_anzahl_der_objekte
+entity_type: paragraph
+bundle: ddb_objekte
+label: 'Anzahl der Objekte'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

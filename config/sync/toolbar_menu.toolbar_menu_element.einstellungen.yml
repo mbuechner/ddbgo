@@ -1,0 +1,9 @@
+uuid: 7489810e-d8d0-443b-bf2f-3dac50ac03cd
+langcode: de
+status: true
+dependencies: {  }
+id: einstellungen
+label: Einstellungen
+weight: -5
+menu: einstellungen
+rewrite_label: false

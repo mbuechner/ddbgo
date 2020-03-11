@@ -1,0 +1,29 @@
+uuid: d851edde-c637-4cfa-84da-37f0202c7826
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_vertragsstatus
+    - node.type.kwe
+    - taxonomy.vocabulary.vertragsstatus
+id: node.kwe.field_vertragsstatus
+field_name: field_vertragsstatus
+entity_type: node
+bundle: kwe
+label: Vertragsstatus
+description: 'Status des Vertrags (aus der Dropdown Liste bitte auswählen).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      vertragsstatus: vertragsstatus
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

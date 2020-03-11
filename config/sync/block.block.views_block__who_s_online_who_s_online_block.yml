@@ -1,0 +1,38 @@
+uuid: cf32afe1-783f-4138-a01f-6c595028bceb
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.who_s_online
+  module:
+    - node
+    - system
+    - views
+  theme:
+    - adminimal_theme
+id: views_block__who_s_online_who_s_online_block
+theme: adminimal_theme
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:who_s_online-who_s_online_block'
+settings:
+  id: 'views_block:who_s_online-who_s_online_block'
+  label: 'Wer ist online?'
+  provider: views
+  label_display: visible
+  views_label: 'Wer ist online?'
+  items_per_page: none
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

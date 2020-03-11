@@ -1,0 +1,8 @@
+uuid: 7e54b508-3f3b-4467-9e63-26d0aed17a13
+langcode: de
+status: true
+dependencies: {  }
+id: person
+label: Person
+description: Person-Menü
+locked: false

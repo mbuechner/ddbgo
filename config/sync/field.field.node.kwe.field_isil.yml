@@ -1,0 +1,26 @@
+uuid: c88d64f4-e189-4fc4-823f-1e43c21d9950
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_isil
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/(http:\/\/ld\.zdb-services\.de\/resource\/organisations\/|http:\/\/w3id\.org\/isil\/)\D{1,4}\-[A-Za-z\-0-9:]{1,11}/'
+    error_message: 'Bitte einen gültigen ISIL-URI eingeben.'
+id: node.kwe.field_isil
+field_name: field_isil
+entity_type: node
+bundle: kwe
+label: ISIL
+description: 'Der von der ISIL-Stelle vergebene eindeutige URI (z.B. „http://ld.zdb-services.de/resource/organisations/DE-101“)'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

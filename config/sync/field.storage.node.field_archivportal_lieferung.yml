@@ -1,0 +1,20 @@
+uuid: 0aac5a36-4786-4657-bad7-4b5fa7ee0ccc
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_archivportal_lieferung
+field_name: field_archivportal_lieferung
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

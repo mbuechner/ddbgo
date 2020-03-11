@@ -1,0 +1,33 @@
+uuid: a9bf8e23-e3ec-4f6e-b6c0-f6080ccc4c13
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_jira_europeana
+    - node.type.bestand
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/[A-Z]+\-[0-9]+/'
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_jira_europeana
+field_name: field_jira_europeana
+entity_type: node
+bundle: bestand
+label: 'JIRA-Ticket für Europeanalieferung'
+description: 'Bitte das JIRA-Tickets der Lieferung des Bestands an Europeana angeben, z.B.: DDBDATA-3361'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

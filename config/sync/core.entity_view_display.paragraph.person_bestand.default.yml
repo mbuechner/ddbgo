@@ -1,0 +1,35 @@
+uuid: a21894a3-4b64-4212-bbb2-10f6ec0cdcce
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.person_bestand.field_person
+    - field.field.paragraph.person_bestand.field_rolle
+    - paragraphs.paragraphs_type.person_bestand
+  module:
+    - empty_fields
+id: paragraph.person_bestand.default
+targetEntityType: paragraph
+bundle: person_bestand
+mode: default
+content:
+  field_person:
+    weight: 1
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_rolle:
+    weight: 0
+    label: hidden
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: ''
+    type: entity_reference_label
+    region: content
+hidden:
+  search_api_excerpt: true

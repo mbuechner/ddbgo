@@ -1,0 +1,11 @@
+uuid: ed1f38ef-e9cf-4f46-843a-cd18cd2c1131
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.favorienkarussell
+id: taxonomy_term.favorienkarussell
+target_entity_type_id: taxonomy_term
+target_bundle: favorienkarussell
+default_langcode: site_default
+language_alterable: false

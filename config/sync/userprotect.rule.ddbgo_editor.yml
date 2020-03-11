@@ -1,0 +1,37 @@
+uuid: 5055ac26-1f76-4cf5-b950-bdff76b944a1
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.ddb_team
+  module:
+    - user
+name: ddbgo_editor
+label: DDBgo-Editor
+protectedEntityTypeId: user_role
+protectedEntityId: ddb_team
+protections:
+  user_delete:
+    id: user_delete
+    provider: userprotect
+    status: true
+  user_edit:
+    id: user_edit
+    provider: userprotect
+    status: true
+  user_mail:
+    id: user_mail
+    provider: userprotect
+    status: true
+  user_roles:
+    id: user_roles
+    provider: userprotect
+    status: true
+  user_status:
+    id: user_status
+    provider: userprotect
+    status: true
+  user_name:
+    id: user_name
+    provider: userprotect
+    status: true

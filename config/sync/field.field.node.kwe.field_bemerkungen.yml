@@ -1,0 +1,26 @@
+uuid: 57d743e4-0bd3-44a1-930f-d45ae99f359f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkungen
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_bemerkungen
+field_name: field_bemerkungen
+entity_type: node
+bundle: kwe
+label: Bemerkungen
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

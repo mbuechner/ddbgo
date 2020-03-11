@@ -1,0 +1,33 @@
+uuid: 8986f347-dff8-48cc-bccb-59ce2384ac1b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_ddburi
+    - node.type.kwe
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/^https:\/\/www\.deutsche-digitale-bibliothek\.de\/organization\/[A-Z0-9]{32}$/'
+    error_message: 'Bitte einen URI in der Form https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5 eingeben.'
+  unique_field_ajax:
+    unique: true
+    warn_only: false
+    per_lang: false
+    use_ajax: true
+    message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden!'
+id: node.kwe.field_ddburi
+field_name: field_ddburi
+entity_type: node
+bundle: kwe
+label: DDB-URI
+description: 'URI bei der Deutschen Digitale Bibliothek, z.B. https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

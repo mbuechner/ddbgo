@@ -1,0 +1,29 @@
+uuid: b4a69577-ef35-4267-80b5-1879627aa684
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sparten
+    - node.type.aggregator
+    - taxonomy.vocabulary.kultursparte
+id: node.aggregator.field_sparten
+field_name: field_sparten
+entity_type: node
+bundle: aggregator
+label: Sparten
+description: 'Mehrfachauswahl möglich.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      kultursparte: kultursparte
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

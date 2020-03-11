@@ -1,0 +1,8 @@
+uuid: e0a1a9cd-6f9a-43d5-8b86-d311cbd61b34
+langcode: de
+status: true
+dependencies: {  }
+id: kwe
+label: KWE
+description: KWE-Menü
+locked: false

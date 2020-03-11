@@ -1,0 +1,26 @@
+uuid: 22df22f7-ebbf-4f9e-9ad4-66a7509ec96b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkung_europeana_liefer
+    - node.type.kwe
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.kwe.field_bemerkung_europeana_liefer
+field_name: field_bemerkung_europeana_liefer
+entity_type: node
+bundle: kwe
+label: 'Bemerkung für Europeana-Lieferung'
+description: 'Weitere Bermerkungen zur Europeanalieferung.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

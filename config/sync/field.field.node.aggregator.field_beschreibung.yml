@@ -1,0 +1,26 @@
+uuid: d7e2a2fd-3f49-4445-8768-b6afa931615a
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_beschreibung
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_beschreibung
+field_name: field_beschreibung
+entity_type: node
+bundle: aggregator
+label: Beschreibung
+description: 'Kurze inhaltliche Beschreibung des Aggregators.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

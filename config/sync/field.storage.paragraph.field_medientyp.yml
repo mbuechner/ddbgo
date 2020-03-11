@@ -1,0 +1,20 @@
+uuid: 67c69855-307e-4406-950d-7ee1e4df3c1c
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - taxonomy
+id: paragraph.field_medientyp
+field_name: field_medientyp
+entity_type: paragraph
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,8 @@
+uuid: 80cf6de5-f084-4456-b3e4-70ca535b8851
+langcode: de
+status: true
+dependencies: {  }
+name: Vertragsstatus
+vid: vertragsstatus
+description: 'Status des Vertrags mit Kultur- oder Wisseneinrichtung/ Aggregators mit der DDB (Nutzung bei KWE)'
+weight: 0

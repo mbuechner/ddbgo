@@ -1,0 +1,22 @@
+uuid: fe47f757-086c-4725-afc5-fc730ee32b48
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.bestand
+id: node.bestand.promote
+field_name: promote
+entity_type: node
+bundle: bestand
+label: 'Promoted to front page'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

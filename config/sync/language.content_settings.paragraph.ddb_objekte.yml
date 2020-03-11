@@ -1,0 +1,11 @@
+uuid: 13767c30-6f67-4718-b090-c7489739d741
+langcode: de
+status: true
+dependencies:
+  config:
+    - paragraphs.paragraphs_type.ddb_objekte
+id: paragraph.ddb_objekte
+target_entity_type_id: paragraph
+target_bundle: ddb_objekte
+default_langcode: site_default
+language_alterable: false

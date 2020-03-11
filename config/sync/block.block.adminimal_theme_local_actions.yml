@@ -1,0 +1,20 @@
+uuid: cc5177de-d99c-4526-8be3-ec89e1bfede4
+langcode: de
+status: true
+dependencies:
+  theme:
+    - adminimal_theme
+_core:
+  default_config_hash: ik4PTMlBD0MWansnSMpSXq5SUlWRJ1IVVt6C7AIbQmc
+id: adminimal_theme_local_actions
+theme: adminimal_theme
+region: content
+weight: -7
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primäre Verwaltungsaktionen'
+  provider: core
+  label_display: '0'
+visibility: {  }

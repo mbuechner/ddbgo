@@ -1,0 +1,38 @@
+uuid: c7c74cf3-24e7-4c18-b3dd-6afe54e0d8c3
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_favorienkarussell
+    - node.type.kwe
+    - taxonomy.vocabulary.favorienkarussell
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.kwe.field_favorienkarussell
+field_name: field_favorienkarussell
+entity_type: node
+bundle: kwe
+label: Favoritenkarussell
+description: 'Ist ein Favoritenkarussell auf der Organisationenseite der Kultur- oder Wissenseinrichtung vorhanden?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      favorienkarussell: favorienkarussell
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

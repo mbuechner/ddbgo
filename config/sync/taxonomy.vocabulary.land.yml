@@ -1,0 +1,8 @@
+uuid: 56ccf272-8bd6-41e6-a9ec-eeac26845ae8
+langcode: de
+status: true
+dependencies: {  }
+name: Land
+vid: land
+description: 'Die Staaten der Welt. (Nutzung bei Aggregatoren)'
+weight: 0

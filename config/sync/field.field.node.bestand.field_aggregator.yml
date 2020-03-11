@@ -1,0 +1,29 @@
+uuid: 3949db06-13f5-41ea-804c-6fe33c7df774
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_aggregator
+    - node.type.aggregator
+    - node.type.bestand
+id: node.bestand.field_aggregator
+field_name: field_aggregator
+entity_type: node
+bundle: bestand
+label: Aggregator
+description: 'Werden die Daten aktuell über einen Aggregator an die DDB geliefert? Über welchen?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      aggregator: aggregator
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

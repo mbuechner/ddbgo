@@ -1,0 +1,11 @@
+uuid: b493e924-7eaf-4677-ae6a-109cd04dbe3e
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.akademischer_titel
+id: taxonomy_term.akademischer_titel
+target_entity_type_id: taxonomy_term
+target_bundle: akademischer_titel
+default_langcode: site_default
+language_alterable: false

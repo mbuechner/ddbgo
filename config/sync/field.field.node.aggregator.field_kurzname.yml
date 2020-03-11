@@ -1,0 +1,26 @@
+uuid: daa92300-8cb9-4603-92df-07ec1d2b03c8
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kurzname
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_kurzname
+field_name: field_kurzname
+entity_type: node
+bundle: aggregator
+label: Kurzname
+description: 'Offizielle Abkürzung für den Aggregator-Namen, falls vorhanden (z.B. „d:kult“ für Digitales Kunst- und Kulturarchiv).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

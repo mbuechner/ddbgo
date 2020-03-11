@@ -1,0 +1,11 @@
+uuid: 4ba214c2-e7b3-4702-b3b9-a982774b4eb2
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.lieferweg
+id: taxonomy_term.lieferweg
+target_entity_type_id: taxonomy_term
+target_bundle: lieferweg
+default_langcode: site_default
+language_alterable: false

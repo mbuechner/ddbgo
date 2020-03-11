@@ -1,0 +1,14 @@
+uuid: 6d4fec7f-e125-4f25-bf2d-eb91af66d646
+langcode: de
+status: true
+dependencies:
+  config:
+    - user.role.ddb_team
+  module:
+    - user
+id: user_add_role_action.ddb_team
+label: 'Den ausgewählten Benutzern die Rolle DDB-Team zuweisen'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: ddb_team

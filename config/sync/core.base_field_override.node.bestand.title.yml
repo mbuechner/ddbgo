@@ -1,0 +1,18 @@
+uuid: fae7b462-c26d-48ef-ab00-4f738e079b12
+langcode: de
+status: true
+dependencies:
+  config:
+    - node.type.bestand
+id: node.bestand.title
+field_name: title
+entity_type: node
+bundle: bestand
+label: 'Name des Bestandes'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

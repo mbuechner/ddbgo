@@ -1,0 +1,26 @@
+uuid: 052a820c-2d79-482a-83b7-3f622f9e4317
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_hauptstadt
+    - taxonomy.vocabulary.bundesland
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: taxonomy_term.bundesland.field_hauptstadt
+field_name: field_hauptstadt
+entity_type: taxonomy_term
+bundle: bundesland
+label: Hauptstadt
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

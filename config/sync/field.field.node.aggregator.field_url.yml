@@ -1,0 +1,23 @@
+uuid: 3bb49a89-aa3e-4e5e-823f-a6cac522277d
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_url
+    - node.type.aggregator
+  module:
+    - link
+id: node.aggregator.field_url
+field_name: field_url
+entity_type: node
+bundle: aggregator
+label: Webseite
+description: 'Webseite des Aggregators'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

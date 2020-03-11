@@ -1,0 +1,19 @@
+uuid: 43a18857-de3d-482c-921f-7e2cbd121318
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_aggregator
+field_name: field_aggregator
+entity_type: node
+type: entity_reference
+settings:
+  target_type: node
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,8 @@
+uuid: 97358d51-84b6-42c3-8969-a18e8c70eede
+langcode: de
+status: true
+dependencies: {  }
+id: langes_datum_ohne_uhrzeit
+label: 'Langes Datum ohne Uhrzeit'
+locked: false
+pattern: 'l, j. F Y'

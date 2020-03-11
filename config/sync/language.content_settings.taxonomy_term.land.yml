@@ -1,0 +1,11 @@
+uuid: 8e613f6c-b4d3-4458-a7a0-a0d6807526da
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.land
+id: taxonomy_term.land
+target_entity_type_id: taxonomy_term
+target_bundle: land
+default_langcode: site_default
+language_alterable: false
