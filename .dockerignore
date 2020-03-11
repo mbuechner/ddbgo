@@ -1,0 +1,6 @@
+# we don't need the config/sync in the Docker container
+config/
+# images not needed in Docker container
+images/
+# patches are applied by Composer, not needed in Docker container
+patches/
