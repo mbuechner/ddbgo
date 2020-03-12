@@ -11,11 +11,11 @@ use Drupal\Core\Session\AccountProxy;
 class KweQueueWorker {
 
   /**
-   * The node storage.
+   * The Entity storage.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface|null
    */
-  private $nodeStorage;
+  protected $entityStorage;
 
   /**
    * The queue.
@@ -37,18 +37,20 @@ class KweQueueWorker {
   private $lockService;
 
   public function __construct(AccountProxy $currentUser) {
-    $this->nodeStorage = \Drupal::service('entity.manager')->getStorage('node');
+    $this->entityStorage = \Drupal::entityTypeManager()->getStorage('node');
     $this->lockService = \Drupal::service('content_lock');
     $this->queue = \Drupal::service('queue')->get('kwe_queue_worker');
     $this->currentUser = $currentUser;
   }
+
 
   /**
    * {@inheritdoc}
    */
   public function processItem($nid) {
 
-    $node = $this->nodeStorage->load($nid);
+    $node = $this->entityStorage->load($nid);
+
     // get DDB-URI
     if (!isset($node) || !$node->hasField("field_ddburi") || empty($node->get("field_ddburi")->value)) {
       return TRUE; // we can't do anything here: don't re-run.
@@ -57,14 +59,14 @@ class KweQueueWorker {
     // if node is locked, queue it again and do nothing
     $is_locked = $this->lockService->fetchLock($nid, $node->language()->getId());
     if ($is_locked) {
-      \Drupal::logger('ddbgo_cj')        ->warning("Node " . $node->id() . " is locked. ");
+      \Drupal::logger('ddbgo_cj')->warning("Node " . $node->id() . " is locked. ");
       return FALSE; // we can do something there later
     }
-    self::process($node);
+    self::process($node, $this->currentUser->id());
     return TRUE;
   }
 
-  private static function process($node = NULL) {
+  private static function process($node = NULL, $user_id) {
 
     // FROM: https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5
     // TO: https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
@@ -207,8 +209,10 @@ class KweQueueWorker {
 
     if ($any_changes) {
       if ($node->getEntityType()->isRevisionable()) {
-        $node->setNewRevision();
-        $node->setRevisionLogMessage("Automatic Update from " . $url) . ". ";
+        $node->setNewRevision(TRUE);
+        $node->setRevisionLogMessage("Automatic Update from '" . $url . "'.");
+        $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+        $node->setRevisionUserId($user_id);
       }
       $node->save();
       \Drupal::logger('ddbgo_cj')
