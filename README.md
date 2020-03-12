@@ -3,6 +3,10 @@
 # DDBgo
 DDBgo ist eine Datenbank der [Deutsche Digitalen Bibliothek](https://www.deutsche-digitale-bibliothek.de/) auf Basis des Content Management Systems [Drupal](https://www.drupal.org/), die Informationen zu Kultur- und Wissenseinrichtungen, Beständen, Aggregatoren und AnsprechpartnerInnen bereithält. Es können alle relevanten Informationen, die die Entitäten betreffen, eingetragen und nachgesehen werden. Zusätzlich werden die Beziehungen der Entitäten zueinander dargestellt. DDBgo ist ein internes Verwaltungs- und Arbeitsinstrument der [Servicestelle und der Fachstellen der Deutschen Digitalen Bibliothek](https://pro.deutsche-digitale-bibliothek.de/).
 
+<p align="center">
+  <a href="images/DDBgo_Screenshot.png"><img src="images/DDBgo_Screenshot.png" width="512" title="DDBgo Screenshot"></a>
+</p>
+
 ## Drupal modules
 ### DDBgo Work-a-rounds
 See folder [web/modules/custom/ddbgo_workarounds/](web/modules/custom/ddbgo_workarounds/).
