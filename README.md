@@ -14,6 +14,7 @@ See folder [web/modules/custom/ddbgo_search](web/modules/custom/ddbgo_search/).
 See folder [patches/](patches/).
 1. [Changed_tokenSeparator_in_Select2_module.patch](patches/Changed_tokenSeparator_in_Select2_module.patch)
 2. [DDBgo-improvements_in_unique_field_ajax_module.patch](patches/DDBgo-improvements_in_unique_field_ajax_module.patch)
+   
    https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
 
 ## Composer
@@ -39,29 +40,29 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
 If you start with a blank database you need to import all configuration with [Drush](https://www.drush.org/), which is stored in the folder [config/sync](config/sync). Therefor run `vendor/drush/drush/drush config:import`.
 
 ### Composer project maintenance
-1. Find update-able packages
+1. Find update-able packages: 
    `composer outdated --direct`
-2. Show available package versions for a package
+2. Show available package versions for a package: 
    `composer show --all drupal/facets`
-3. Install new packages
+3. Install new packages: 
    `composer require drupal/facets` or `composer require 'drupal/facets:^1.4'`
-4. Update specific package
+4. Update specific package: 
    `composer update drupal/facets` or `composer update 'drupal/facets:^1.4'`
-5. Update all packages to newest version
+5. Update all packages to newest version: 
    `composer update`
-6. Update to new major version
+6. Update to new major version: 
    `composer require drupal/core-recommended:^8.8 --update-with-dependencies --no-plugins`
 
 ### Drush commands
-1. Update Drupal's database
+1. Update Drupal's database: 
    `vendor/drush/drush/drush updatedb`
-2. Rebuild cache
+2. Rebuild cache: 
    `vendor/drush/drush/drush cr`
-3. Runs PHP's built-in HTTP server (for development only)
+3. Runs PHP's built-in HTTP server (for development only): 
    `vendor/drush/drush/drush rs`
-4. Export all configuration to folder [config/sync](config/sync)
+4. Export all configuration to folder [config/sync](config/sync): 
    `vendor/drush/drush/drush config:export`.
-5. Import all configuration from folder [config/sync](config/sync)
+5. Import all configuration from folder [config/sync](config/sync): 
    `vendor/drush/drush/drush config:import`.
 
 ## Docker
@@ -70,8 +71,13 @@ Yes, there's a docker container for DDBgo available at [DockerHub](https://hub.d
 docker pull mbuechner/ddbgo:latest
 ```
 ## Container build
-1. Checkout GitHub repository: `git clone https://github.com/mbuechner/ddbgo`
-2. Go into folder: `cd ddbgo`
-3. Run `docker build -t ddbgo .`
-4. Start container with: `docker run -d -p 8080 -P ddbgo`
-5. Open browser: http://localhost:8080/
+1. Checkout GitHub repository:
+   `git clone https://github.com/mbuechner/ddbgo`
+2. Go into folder:
+  `cd ddbgo`
+3. Run
+   `docker build -t ddbgo .`
+4. Start container with:
+   `docker run -d -p 8080 -P ddbgo`
+5. Open browser:
+   http://localhost:8080/
