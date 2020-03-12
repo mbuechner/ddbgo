@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\ddbgo_cj\Plugin\QueueWorker\KweQueueWorker;
+use Drupal\node\Entity\Node;
 
 /**
  * Add job for every KWE into queue. This is scheduled by Ultimate Cron, e.g.
@@ -81,7 +82,7 @@ function ddbgo_cj_kwe_queue_worker()
  */
 function ddbgo_cj_node_postsave($node)
 {
-
+  xdebug_break();
   if (!($node instanceof Node) || $node->getType() !== 'kwe') {
     return;
   }
