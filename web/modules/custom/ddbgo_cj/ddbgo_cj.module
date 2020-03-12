@@ -45,7 +45,6 @@ function ddbgo_cj_kwe_daily_queue_worker()
  */
 function ddbgo_cj_kwe_queue_worker()
 {
-
   $queue_factory = \Drupal::service('queue');
   $queue = $queue_factory->get('kwe_queue_worker');
 
