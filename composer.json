@@ -126,6 +126,7 @@
         "drupal/facets": "^1.4",
         "drupal/field_group": "3.x-dev",
         "drupal/flag": "^4.0@beta",
+        "drupal/flood_unblock": "^2.0",
         "drupal/fontawesome": "^2.15",
         "drupal/fontawesome_menu_icons": "^1.8",
         "drupal/hook_post_action": "^1.0",
