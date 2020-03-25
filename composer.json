@@ -204,6 +204,7 @@
                 ".gitattributes": "../.gitattributes"
             }
         },
+        "composer-exit-on-patch-failure": true,
         "patches": {
             "drupal/select2": {
                 "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
