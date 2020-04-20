@@ -119,7 +119,7 @@
         "drupal/css_editor": "^1.2",
         "drupal/custom_formatters": "^3.0@alpha",
         "drupal/db_maintenance": "^1.4",
-        "drupal/empty_fields": "1.x-dev",
+        "drupal/empty_fields": "^1.0",
         "drupal/entity_reference_integrity": "^1.0@RC",
         "drupal/entity_reference_revisions": "^1.7",
         "drupal/exclude_node_title": "^1.0@beta",
@@ -206,6 +206,9 @@
         },
         "composer-exit-on-patch-failure": true,
         "patches": {
+            "drupal/empty_fields": {
+                "Changed character to a dash in Empty Fields module": "patches/Changed_character_to_a_dash_in_Empty_Fields_module.patch"
+            },
             "drupal/select2": {
                 "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
             },
