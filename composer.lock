@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ef2deb26be9e86b06d16357d56054cc",
+    "content-hash": "6476c4e5493591a61f487c0715e4dcfd",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2702,14 +2702,20 @@
         },
         {
             "name": "drupal/empty_fields",
-            "version": "dev-1.x",
+            "version": "1.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/empty_fields.git",
-                "reference": "a310b7c01eec59d1c61829ec48de523e72857b77"
+                "reference": "8.x-1.0-alpha1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/empty_fields-8.x-1.0-alpha1.zip",
+                "reference": "8.x-1.0-alpha1",
+                "shasum": "c7d0d152a503525ae14f8134b9a8168e6d97a1d9"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9"
+                "drupal/core": "~8.0"
             },
             "type": "drupal-module",
             "extra": {
@@ -2717,11 +2723,11 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha1+2-dev",
-                    "datestamp": "1512852185",
+                    "version": "8.x-1.0-alpha1",
+                    "datestamp": "1469609939",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2755,8 +2761,7 @@
             "homepage": "https://www.drupal.org/project/empty_fields",
             "support": {
                 "source": "https://git.drupalcode.org/project/empty_fields"
-            },
-            "time": "2020-01-14T21:27:23+00:00"
+            }
         },
         {
             "name": "drupal/entity_reference_integrity",
@@ -8396,7 +8401,6 @@
         "drupal/better_exposed_filters": 15,
         "drupal/conditional_fields": 15,
         "drupal/custom_formatters": 15,
-        "drupal/empty_fields": 20,
         "drupal/entity_reference_integrity": 5,
         "drupal/exclude_node_title": 10,
         "drupal/field_group": 20,
