@@ -7,7 +7,7 @@ WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
 
 # from https://github.com/docker-library/drupal/blob/master/8.7/apache/Dockerfile
-FROM php:7.3-apache
+FROM php:7.4-apache
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 RUN set -eux; \
 	if command -v a2enmod; then \
