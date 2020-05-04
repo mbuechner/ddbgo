@@ -17,14 +17,13 @@ RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		libfreetype6-dev \
-		libjpeg-dev \
+		libjpeg62-turbo-dev \
 		libpng-dev \
 		libpq-dev \
 		libzip-dev; \
 	docker-php-ext-configure gd \
-		--with-freetype-dir=/usr \
-		--with-jpeg-dir=/usr \
-		--with-png-dir=/usr; \
+		--with-freetype \
+		--with-jpeg; \
 	docker-php-ext-install -j "$(nproc)" \
 		gd \
 		opcache \
