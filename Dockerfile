@@ -30,6 +30,8 @@ RUN set -eux; \
 		pdo_mysql \
 		pdo_pgsql \
 		zip; \
+	pecl install uploadprogress; \
+	docker-php-ext-enable uploadprogress; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
