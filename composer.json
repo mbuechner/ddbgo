@@ -206,9 +206,6 @@
         },
         "composer-exit-on-patch-failure": true,
         "patches": {
-            "drupal/empty_fields": {
-                "Changed character to a dash in Empty Fields module": "patches/Changed_character_to_a_dash_in_Empty_Fields_module.patch"
-            },
             "drupal/select2": {
                 "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
             },
