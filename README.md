@@ -1,4 +1,4 @@
-![Docker](https://github.com/mbuechner/ddbgo/workflows/Docker/badge.svg)
+![PHP Composer](https://github.com/mbuechner/ddbgo/workflows/PHP%20Composer/badge.svg) ![Docker](https://github.com/mbuechner/ddbgo/workflows/Docker/badge.svg)
 
 # DDBgo
 DDBgo ist eine Datenbank der [Deutsche Digitalen Bibliothek](https://www.deutsche-digitale-bibliothek.de/) auf Basis des Content Management Systems [Drupal](https://www.drupal.org/), die Informationen zu Kultur- und Wissenseinrichtungen, Beständen, Aggregatoren und AnsprechpartnerInnen bereithält. Es können alle relevanten Informationen, die die Entitäten betreffen, eingetragen und nachgesehen werden. Zusätzlich werden die Beziehungen der Entitäten zueinander dargestellt. DDBgo ist ein internes Verwaltungs- und Arbeitsinstrument der [Servicestelle und der Fachstellen der Deutschen Digitalen Bibliothek](https://pro.deutsche-digitale-bibliothek.de/).
