@@ -3,7 +3,6 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeTypeInterface;
 use Symfony\Component\String\UnicodeString;
-use function Symfony\Component\String\u;
 
 /**
  * Disable browser's autocomplete for some search fields in expose forms.
@@ -109,7 +108,7 @@ function ddbgo_workarounds_trim_value(&$value) {
     }
   }
   elseif (is_string($value)) {
-    $unicodeString = u($value);
+    $unicodeString = new UnicodeString($value);
     $unicodeString->trim();
     $unicodeString->normalize(UnicodeString::NFC);
     $value = $unicodeString->toString();
