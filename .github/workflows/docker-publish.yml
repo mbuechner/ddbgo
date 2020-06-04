@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
         
       - name: Install PHP extension intl
-        run: apt install php-intl
+        run: sudo apt-get install php-intl
 
       - name: Run tests
         run: |
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install PHP extension intl
-        run: apt install php-intl
+        run: sudo apt-get install php-intl
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
