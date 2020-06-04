@@ -159,7 +159,8 @@
         "patchwork/jsqueeze": "^2.0",
         "vlucas/phpdotenv": "^4.1",
         "webflo/drupal-finder": "^1.2",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "ext-intl": "*"
     },
     "require-dev": {},
     "conflict": {
