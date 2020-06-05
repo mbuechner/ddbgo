@@ -22,7 +22,7 @@ See folder [patches/](patches/).
    https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
 
 ## Composer
-DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Plaese make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
+DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Please make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
 
 ### Run DDBgo localy
 1. Run `composer install` to install the project in your local directory
