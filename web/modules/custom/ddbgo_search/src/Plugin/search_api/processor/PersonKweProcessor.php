@@ -17,8 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @SearchApiProcessor(
  *   id = "ddbgo_person_kwe",
  *   label = @Translation("DDBgo Person KWE nodes"),
- *   description = @Translation("DDBgo KWEs which are linked to Persons, used
- *   in Person's search"), stages = {
+ *   description = @Translation("DDBgo KWEs which are linked to Persons, used in Person's search"),
+ *   stages = {
  *     "add_properties" = 20,
  *   },
  *   locked = FALSE,
