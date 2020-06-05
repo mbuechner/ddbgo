@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * Install, update & uninstall for ddbgo_workarounds module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function ddbgo_workarounds_install() {
+  // Set a large weight in order to go last (and so validate first).
+  module_set_weight('ddbgo_workarounds', 1001);
+}

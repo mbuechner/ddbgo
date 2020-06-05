@@ -17,8 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @SearchApiProcessor(
  *   id = "ddbgo_person_aggregator",
  *   label = @Translation("DDBgo Person Aggregator nodes"),
- *   description = @Translation("DDBgo Aggregators which are linked to Persons,
- *   used in Person's search"), stages = {
+ *   description = @Translation("DDBgo Aggregators which are linked to Persons, used in Person's search"),
+ *   stages = {
  *     "add_properties" = 20,
  *   },
  *   locked = FALSE,
