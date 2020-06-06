@@ -108,9 +108,9 @@ function ddbgo_workarounds_trim_value(&$value) {
     }
   }
   elseif (is_string($value)) {
-    $unicodeString = new UnicodeString($value);
-    $unicodeString->normalize(UnicodeString::NFC);
-    $unicodeString->trim();
+    $unicodeString = (new UnicodeString($value))
+      ->normalize(UnicodeString::NFC)
+      ->trim();
     $value = $unicodeString->toString();
   }
 }
