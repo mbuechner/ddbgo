@@ -191,7 +191,7 @@ class KweQueueWorker {
     // Sparte: $results['sector']	- field_sparte
     if ($node->hasField('field_sparte') && isset($results['sector'])) {
       $term_nids = \Drupal::entityQuery('taxonomy_term')
-        ->condition('vid', 'kultursparte')
+        ->condition('vid', 'kultursparte_kwe')
         ->condition('field_uri', $results['sector'], '=')
         ->addMetaData('account', \Drupal\user\Entity\User::load(1))
         ->execute();

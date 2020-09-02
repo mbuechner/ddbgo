@@ -123,7 +123,7 @@
         "drupal/entity_reference_integrity": "^1.0@RC",
         "drupal/entity_reference_revisions": "^1.7",
         "drupal/exclude_node_title": "^1.0@beta",
-        "drupal/facets": "^1.4",
+        "drupal/facets": "^1.5",
         "drupal/field_group": "3.x-dev",
         "drupal/flag": "^4.0@beta",
         "drupal/flood_unblock": "^2.0",
