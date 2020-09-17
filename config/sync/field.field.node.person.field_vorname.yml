@@ -7,11 +7,18 @@ dependencies:
     - node.type.person
   module:
     - regex_field_validation
+    - unique_field_ajax
 third_party_settings:
   regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
+    enable: 1
+    regex: '/.{2,}/'
+    error_message: 'Bitte mindestens zwei Buchstaben eingeben!'
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
 id: node.person.field_vorname
 field_name: field_vorname
 entity_type: node

@@ -1,0 +1,38 @@
+uuid: 9276ae78-bb7e-4c95-8e7c-03387ace2360
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.statistik_dateien
+  module:
+    - node
+    - system
+    - views
+  theme:
+    - adminimal_theme
+id: views_block__statistik_dateien_block_1
+theme: adminimal_theme
+region: content
+weight: 2
+provider: null
+plugin: 'views_block:statistik_dateien-block_1'
+settings:
+  id: 'views_block:statistik_dateien-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      page: page
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

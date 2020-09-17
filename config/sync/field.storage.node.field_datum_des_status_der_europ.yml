@@ -1,0 +1,20 @@
+uuid: ba82a19d-c396-451f-a642-1c134e4808ca
+langcode: de
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_datum_des_status_der_europ
+field_name: field_datum_des_status_der_europ
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

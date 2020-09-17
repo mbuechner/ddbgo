@@ -16,7 +16,7 @@ id: node.aggregator.field_bemerkung
 field_name: field_bemerkung
 entity_type: node
 bundle: aggregator
-label: Bemerkung
+label: Bemerkungen
 description: ''
 required: false
 translatable: true

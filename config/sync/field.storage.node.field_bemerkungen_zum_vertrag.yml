@@ -1,0 +1,19 @@
+uuid: 0bcd97ab-2860-4279-84df-06198e182426
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_bemerkungen_zum_vertrag
+field_name: field_bemerkungen_zum_vertrag
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

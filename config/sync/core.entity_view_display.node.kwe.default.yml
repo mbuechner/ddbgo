@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
+    - custom_formatters.formatter.isil_link
     - custom_formatters.formatter.jira_link
     - custom_formatters.formatter.label_als_link
     - field.field.node.kwe.field_ablehnungsgrund
@@ -54,12 +55,17 @@ third_party_settings:
         - field_kontakt
       parent_name: ''
       weight: 4
-      format_type: fieldset
+      format_type: html_element
       format_settings:
-        open: true
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
+        classes: fieldgroup_kontakt
       label: Kontakt
       region: content
     group_personen:
@@ -67,12 +73,17 @@ third_party_settings:
         - field_personen
       parent_name: ''
       weight: 3
-      format_type: fieldset
+      format_type: html_element
       format_settings:
-        open: true
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
+        classes: fieldgroup_personen
       label: Personen
       region: content
     group_informationen:
@@ -81,21 +92,26 @@ third_party_settings:
         - field_vertragskonstrukt
         - field_vertrag
         - field_favorienkarussell
+        - field_api_blacklisting
+        - field_api_blacklisting_jira_tick
         - field_bemerkungen
       parent_name: ''
       weight: 5
-      format_type: fieldset
+      format_type: html_element
       format_settings:
-        open: true
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
+        classes: fieldgroup_informationen
       label: Informationen
       region: content
     group_einstellungen:
       children:
-        - field_api_blacklisting
-        - field_api_blacklisting_jira_tick
         - field_europeana_lieferung
         - field_erstingest_europeana
         - field_bemerkung_europeana_liefer
@@ -104,13 +120,18 @@ third_party_settings:
         - field_bemerkung_archivportal
       parent_name: ''
       weight: 6
-      format_type: fieldset
+      format_type: html_element
       format_settings:
-        open: true
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
-      label: Einstellungen
+        classes: fieldgroup_europeana
+      label: 'Europeana/ Archivportal'
       region: content
     group_status:
       children:
@@ -119,11 +140,17 @@ third_party_settings:
         - field_ablehnungsgrund
       parent_name: ''
       weight: 1
-      format_type: fieldset
+      format_type: html_element
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: slow
+        id: fieldgroup_kwe_status
+        classes: fieldgroup_status
       label: Status
       region: content
     group_allgemeines:
@@ -144,11 +171,17 @@ third_party_settings:
         - field_bemerkung
       parent_name: ''
       weight: 2
-      format_type: fieldset
+      format_type: html_element
       format_settings:
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
+        classes: fieldgroup_allgemeines
       label: Allgemeines
       region: content
 id: node.kwe.default
@@ -164,22 +197,26 @@ content:
     type: basic_string
     region: content
   field_api_blacklisting:
-    weight: 15
+    weight: 28
     label: inline
     settings:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_api_blacklisting_jira_tick:
-    weight: 16
+    weight: 29
     label: inline
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: 'custom_formatters:jira_link'
     region: content
   field_archivportal_lieferung:
@@ -189,7 +226,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_bemerkung:
@@ -198,7 +237,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: basic_string
     region: content
   field_bemerkung_archivportal:
@@ -207,7 +248,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: basic_string
     region: content
   field_bemerkung_europeana_liefer:
@@ -216,14 +259,20 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: basic_string
     region: content
   field_bemerkungen:
-    weight: 28
+    weight: 30
     label: above
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
     type: basic_string
     region: content
   field_bundesland:
@@ -233,7 +282,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_ddb_id:
@@ -243,7 +294,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_ddburi:
@@ -252,7 +305,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: 'custom_formatters:label_als_link'
     region: content
   field_email:
@@ -261,7 +316,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: email_mailto
     region: content
   field_erstingest_archivportal:
@@ -272,7 +329,9 @@ content:
       format_type: html_date
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: datetime_default
     region: content
   field_erstingest_europeana:
@@ -283,7 +342,9 @@ content:
       format_type: html_date
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: datetime_default
     region: content
   field_europeana_lieferung:
@@ -293,17 +354,21 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_favorienkarussell:
     weight: 27
     label: inline
     settings:
-      link: true
+      link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_isil:
@@ -312,8 +377,10 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
-    type: 'custom_formatters:label_als_link'
+        handler: text
+        settings:
+          empty_text: –
+    type: 'custom_formatters:isil_link'
     region: content
   field_kontakt:
     type: entity_reference_revisions_entity_view
@@ -324,7 +391,9 @@ content:
       link: ''
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: 'keine Kontakte'
     region: content
   field_kurzname:
     weight: 7
@@ -333,7 +402,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_land:
@@ -343,7 +414,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_personen:
@@ -355,7 +428,9 @@ content:
       link: ''
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: 'keine Personen'
     region: content
   field_plz:
     weight: 9
@@ -364,7 +439,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_sparte:
@@ -374,7 +451,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_stadt:
@@ -384,7 +463,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_status:
@@ -397,7 +478,9 @@ content:
       opacity: '1'
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: color_field_formatter_swatch
     region: content
   field_strasse:
@@ -407,7 +490,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_telefonnummer:
@@ -417,21 +502,25 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_url:
     weight: 16
     label: inline
     settings:
-      trim_length: 80
+      trim_length: 255
       target: _blank
       url_only: false
       url_plain: false
       rel: '0'
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: link
     region: content
   field_vertrag:
@@ -441,7 +530,9 @@ content:
       use_description_as_link_text: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: file_default
     region: content
   field_vertragskonstrukt:
@@ -451,7 +542,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_vertragsstatus:
@@ -461,7 +554,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   flag_bookmark:

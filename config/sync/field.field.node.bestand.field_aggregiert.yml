@@ -1,0 +1,40 @@
+uuid: 4a33471a-6c2b-4fc4-a87f-785154d1f5fb
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_aggregiert
+    - node.type.bestand
+    - taxonomy.vocabulary.aggregiert
+    - taxonomy.vocabulary.ja_nein_feld
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_aggregiert
+field_name: field_aggregiert
+entity_type: node
+bundle: bestand
+label: Aggregiert
+description: 'Werden die Daten aktuell über einen Aggregator an die DDB geliefert?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      aggregiert: aggregiert
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: aggregiert
+field_type: entity_reference

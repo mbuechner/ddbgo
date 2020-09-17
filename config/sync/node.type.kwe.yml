@@ -17,7 +17,7 @@ third_party_settings:
 name: KWE
 type: kwe
 description: 'Kultur- und Wissenseinrichtung'
-help: ''
+help: 'Bitte Namen von der DDB-Organisationenseite übernehmen, wenn vorhanden.'
 new_revision: true
 preview_mode: 0
 display_submitted: false

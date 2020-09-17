@@ -1,0 +1,33 @@
+uuid: 8490b807-d321-4b0b-85bc-74417973b82b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_uri
+    - taxonomy.vocabulary.kultursparte_kwe
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: taxonomy_term.kultursparte_kwe.field_uri
+field_name: field_uri
+entity_type: taxonomy_term
+bundle: kultursparte_kwe
+label: URI
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

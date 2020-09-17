@@ -1,0 +1,8 @@
+uuid: 335e4834-f971-4c91-8203-11e55421079f
+langcode: de
+status: true
+dependencies: {  }
+name: Bestandstags
+vid: bestandstags
+description: 'Schlagworte zum Bestand'
+weight: 0

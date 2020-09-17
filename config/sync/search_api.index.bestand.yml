@@ -4,17 +4,25 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_aggregator
+    - field.storage.node.field_bestandstags
+    - field.storage.node.field_coding_da_vinci_event
+    - field.storage.node.field_coding_da_vinci_teilnahme
     - field.storage.node.field_datenformat
-    - field.storage.node.field_jira_europeana
+    - field.storage.node.field_datum_des_status_der_europ
+    - field.storage.node.field_europeana_lieferung
     - field.storage.node.field_jira_hauptticket
+    - field.storage.node.field_jira_ticket_bei_europeana
+    - field.storage.node.field_jira_europeana
     - field.storage.node.field_kwe
     - field.storage.node.field_link_zu_ddbdash
     - field.storage.node.field_status
     - field.storage.node.field_europeanastatus
+    - field.storage.node.field_europeana_lieferung_enum
+    - field.storage.node.field_ueber_welchen_weg
     - search_api.server.default_server
   module:
-    - taxonomy
     - node
+    - taxonomy
     - search_api
 id: bestand
 name: Bestand
@@ -29,6 +37,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_aggregator
+  field_bestandstags:
+    label: Bestandstags
+    datasource_id: 'entity:node'
+    property_path: field_bestandstags
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_bestandstags
+  field_coding_da_vinci_teilnahme:
+    label: 'Coding da Vinci-Teilnahme'
+    datasource_id: 'entity:node'
+    property_path: field_coding_da_vinci_teilnahme
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_coding_da_vinci_teilnahme
   field_datenformat:
     label: Datenformat
     datasource_id: 'entity:node'
@@ -37,6 +61,30 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_datenformat
+  field_datum_des_status_der_europ:
+    label: 'Datum des Status'' der Europeana-Lieferung'
+    datasource_id: 'entity:node'
+    property_path: field_datum_des_status_der_europ
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_datum_des_status_der_europ
+  field_europeana_lieferung:
+    label: Europeana-Lieferung
+    datasource_id: 'entity:node'
+    property_path: field_europeana_lieferung
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_europeana_lieferung
+  field_europeana_lieferung_enum:
+    label: 'Werden bereits Daten an Europeana geliefert?'
+    datasource_id: 'entity:node'
+    property_path: field_europeana_lieferung_enum
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_europeana_lieferung_enum
   field_jira_europeana:
     label: 'JIRA-Ticket für Europeanalieferung'
     datasource_id: 'entity:node'
@@ -53,6 +101,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_jira_hauptticket
+  field_jira_ticket_bei_europeana:
+    label: 'JIRA-Ticket bei Europeana'
+    datasource_id: 'entity:node'
+    property_path: field_jira_ticket_bei_europeana
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_jira_ticket_bei_europeana
   field_kwe:
     label: 'Kultur- oder Wissenseinrichtung'
     datasource_id: 'entity:node'
@@ -77,6 +133,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_status
+  field_ueber_welchen_weg:
+    label: 'Über welchen Weg?'
+    datasource_id: 'entity:node'
+    property_path: field_ueber_welchen_weg
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_ueber_welchen_weg
   name:
     label: 'Datenformat » Taxonomy term » Name'
     datasource_id: 'entity:node'
@@ -86,7 +150,6 @@ field_settings:
       config:
         - field.storage.node.field_datenformat
       module:
-        - taxonomy
         - taxonomy
   name_1:
     label: 'Status der Europeana-Lieferung » Taxonomie-Begriff » Name'
@@ -98,6 +161,55 @@ field_settings:
         - field.storage.node.field_europeanastatus
       module:
         - taxonomy
+  name_2:
+    label: 'Europeana-Lieferung » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_europeana_lieferung:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_europeana_lieferung
+      module:
+        - taxonomy
+  name_3:
+    label: 'Coding da Vinci-Event » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_coding_da_vinci_event:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_coding_da_vinci_event
+      module:
+        - taxonomy
+  name_4:
+    label: 'Coding da Vinci-Teilnahme » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_coding_da_vinci_teilnahme:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_coding_da_vinci_teilnahme
+      module:
+        - taxonomy
+  name_5:
+    label: 'Werden bereits Daten an Europeana geliefert? » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_europeana_lieferung_enum:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_europeana_lieferung_enum
+      module:
+        - taxonomy
+  name_6:
+    label: 'Bestandstags » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_bestandstags:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_bestandstags
+      module:
         - taxonomy
   nid:
     label: ID
@@ -127,7 +239,6 @@ field_settings:
         - field.storage.node.field_aggregator
       module:
         - node
-        - node
   title_kwe:
     label: 'Kultur- oder Wissenseinrichtung » Inhalt » Titel'
     datasource_id: 'entity:node'
@@ -138,7 +249,6 @@ field_settings:
       config:
         - field.storage.node.field_kwe
       module:
-        - node
         - node
 datasource_settings:
   'entity:node':
@@ -152,6 +262,22 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  html_filter:
+    all_fields: false
+    fields: {  }
+    title: true
+    alt: true
+    tags:
+      b: 2
+      em: 1
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      u: 1
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
   ignorecase:
     all_fields: false
     fields:

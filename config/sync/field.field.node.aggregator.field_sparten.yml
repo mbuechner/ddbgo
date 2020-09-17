@@ -10,8 +10,8 @@ id: node.aggregator.field_sparten
 field_name: field_sparten
 entity_type: node
 bundle: aggregator
-label: Sparten
-description: 'Mehrfachauswahl möglich.'
+label: 'Ausrichtung nach Sparte'
+description: ''
 required: false
 translatable: false
 default_value: {  }

@@ -1,0 +1,11 @@
+uuid: e488c9b6-ce65-4cb2-a565-9f1ce2346c94
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.bestandstags
+id: taxonomy_term.bestandstags
+target_entity_type_id: taxonomy_term
+target_bundle: bestandstags
+default_langcode: site_default
+language_alterable: false

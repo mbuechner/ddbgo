@@ -1,0 +1,29 @@
+uuid: cd4c42ce-0e2a-448b-9923-1857294a0f8f
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.suche_bestand
+  module:
+    - system
+    - views
+  theme:
+    - adminimal_theme
+id: hervorgehobenesformularsuche_bestandpage
+theme: adminimal_theme
+region: content
+weight: -9
+provider: null
+plugin: 'views_exposed_filter_block:suche_bestand-page'
+settings:
+  id: 'views_exposed_filter_block:suche_bestand-page'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: /search/bestand
+    negate: false
+    context_mapping: {  }

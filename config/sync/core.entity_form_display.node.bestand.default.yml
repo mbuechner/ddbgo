@@ -5,11 +5,17 @@ dependencies:
   config:
     - field.field.node.bestand.field_ablehnungsgrund
     - field.field.node.bestand.field_aggregator
+    - field.field.node.bestand.field_aggregiert
     - field.field.node.bestand.field_archivportal_lieferung
     - field.field.node.bestand.field_bemerkung
     - field.field.node.bestand.field_bemerkung_europeana_liefer
     - field.field.node.bestand.field_beschreibung
+    - field.field.node.bestand.field_bestandstags
+    - field.field.node.bestand.field_coding_da_vinci_bemerkung
+    - field.field.node.bestand.field_coding_da_vinci_event
+    - field.field.node.bestand.field_coding_da_vinci_teilnahme
     - field.field.node.bestand.field_datenformat
+    - field.field.node.bestand.field_datum_des_status_der_europ
     - field.field.node.bestand.field_ddb_objekte
     - field.field.node.bestand.field_erstingest
     - field.field.node.bestand.field_europeana_lieferung
@@ -18,6 +24,7 @@ dependencies:
     - field.field.node.bestand.field_fragebogen
     - field.field.node.bestand.field_jira_europeana
     - field.field.node.bestand.field_jira_hauptticket
+    - field.field.node.bestand.field_jira_ticket_bei_europeana
     - field.field.node.bestand.field_kwe
     - field.field.node.bestand.field_lieferweg
     - field.field.node.bestand.field_link_fragebogen
@@ -27,6 +34,7 @@ dependencies:
     - field.field.node.bestand.field_status_fragebogen
     - field.field.node.bestand.field_ueber_welchen_weg
     - field.field.node.bestand.field_url
+    - field.field.node.bestand.field_volltextformat
     - node.type.bestand
   module:
     - color_field
@@ -43,135 +51,161 @@ third_party_settings:
       children:
         - title
         - field_datenformat
+        - field_volltextformat
         - field_lieferweg
         - field_url
         - field_beschreibung
         - field_bemerkung
       parent_name: ''
-      weight: 2
-      format_type: fieldset
+      weight: 1
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_allgemeines
       label: Allgemeines
-    group_ddb_objekte:
-      children:
-        - field_ddb_objekte
-      parent_name: ''
-      weight: 3
-      format_type: fieldset
-      region: content
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: DDB-Objekte
     group_kultur_oder_wissenseinrich:
       children:
         - field_kwe
-      parent_name: ''
-      weight: 4
-      format_type: fieldset
-      region: content
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: 'Kultur- oder Wissenseinrichtung'
-    group_aggregator:
-      children:
+        - field_aggregiert
         - field_aggregator
       parent_name: ''
-      weight: 5
-      format_type: fieldset
+      weight: 2
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
-      label: Aggregator
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_kwe
+      label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
     group_personen:
       children:
         - field_personen
       parent_name: ''
-      weight: 6
-      format_type: fieldset
+      weight: 4
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_personen
       label: Personen
     group_informationen:
       children:
         - field_link_zu_ddbdash
         - field_jira_hauptticket
         - field_erstingest
-      parent_name: ''
-      weight: 7
-      format_type: fieldset
-      region: content
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: Informationen
-    group_fragebogen:
-      children:
         - field_status_fragebogen
         - field_link_fragebogen
         - field_fragebogen
       parent_name: ''
-      weight: 8
-      format_type: fieldset
+      weight: 5
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
-      label: Fragebogen
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_informationen
+      label: Informationen
     group_europeana_archivportal:
       children:
         - field_europeana_lieferung_enum
         - field_ueber_welchen_weg
-        - field_jira_europeana
         - field_europeana_lieferung
+        - field_ddb_objekte
+        - field_jira_europeana
+        - field_jira_ticket_bei_europeana
         - field_europeanastatus
+        - field_datum_des_status_der_europ
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
       parent_name: ''
-      weight: 9
-      format_type: fieldset
+      weight: 8
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_europeana
       label: Europeana/Archivportal
     group_s:
       children:
         - field_status
         - field_ablehnungsgrund
+        - field_bestandstags
       parent_name: ''
       weight: 0
-      format_type: fieldset
+      format_type: html_element
       region: content
       format_settings:
-        id: ''
-        classes: ''
-        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
         required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_status
       label: Status
+    group_coding_da_vinci:
+      children:
+        - field_coding_da_vinci_teilnahme
+        - field_coding_da_vinci_event
+        - field_coding_da_vinci_bemerkung
+      parent_name: ''
+      weight: 7
+      format_type: html_element
+      region: content
+      format_settings:
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+        id: ''
+        classes: fieldgroup_cdv
+      label: 'Coding da Vinci'
 id: node.bestand.default
 targetEntityType: node
 bundle: bestand
@@ -204,17 +238,24 @@ content:
     type: string_textarea
     region: content
   field_aggregator:
-    weight: 9
+    weight: 13
     settings:
       match_operator: CONTAINS
       autocomplete: false
       width: 100%
       match_limit: 10
-    third_party_settings: {  }
+    third_party_settings:
+      conditional_fields: {  }
     type: select2_entity_reference
     region: content
+  field_aggregiert:
+    weight: 12
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_archivportal_lieferung:
-    weight: 13
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -228,7 +269,7 @@ content:
     type: string_textarea
     region: content
   field_bemerkung_europeana_liefer:
-    weight: 14
+    weight: 17
     settings:
       rows: 5
       placeholder: ''
@@ -236,12 +277,46 @@ content:
     type: string_textarea
     region: content
   field_beschreibung:
-    weight: 5
+    weight: 6
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_bestandstags:
+    weight: 3
+    settings:
+      width: 100%
+      match_operator: CONTAINS
+      match_limit: 0
+      autocomplete: false
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+  field_coding_da_vinci_bemerkung:
+    weight: 11
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_coding_da_vinci_event:
+    weight: 10
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      autocomplete: false
+      width: 100%
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+  field_coding_da_vinci_teilnahme:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_datenformat:
     weight: 2
@@ -253,9 +328,28 @@ content:
     third_party_settings: {  }
     type: select2_entity_reference
     region: content
+  field_datum_des_status_der_europ:
+    weight: 15
+    settings:
+      hour_format: 24h
+      allow_times: '15'
+      allowed_hours: ''
+      disable_days: {  }
+      exclude_date: ''
+      inline: false
+      mask: false
+      datetimepicker_theme: default
+      min_date: ''
+      max_date: ''
+      year_start: ''
+      year_end: ''
+    third_party_settings: {  }
+    type: single_date_time_widget
+    region: content
   field_ddb_objekte:
     type: entity_reference_paragraphs
-    weight: 6
+    weight: 11
+    region: content
     settings:
       title: Seitenabschnitt
       title_plural: Seitenabschnitte
@@ -264,7 +358,6 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
     third_party_settings: {  }
-    region: content
   field_erstingest:
     weight: 15
     settings:
@@ -284,7 +377,7 @@ content:
     type: single_date_time_widget
     region: content
   field_europeana_lieferung:
-    weight: 11
+    weight: 10
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -296,64 +389,38 @@ content:
     type: options_select
     region: content
   field_europeanastatus:
-    weight: 12
+    weight: 14
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_fragebogen:
-    weight: 14
+    weight: 18
     settings:
       progress_indicator: throbber
     third_party_settings:
-      conditional_fields:
-        e55d96fb-36dd-4766-bd0a-a27d5f8ad10c:
-          dependee: field_status_fragebogen
-          settings:
-            state: '!disabled'
-            condition: value
-            grouping: AND
-            values_set: 1
-            value: ''
-            values: {  }
-            value_form:
-              -
-                target_id: '891'
-            effect: show
-            effect_options: {  }
-            selector: ''
-          entity_type: node
-          bundle: bestand
+      conditional_fields: {  }
     type: file_generic
     region: content
   field_jira_europeana:
-    weight: 10
+    weight: 12
     settings:
       size: 80
       placeholder: ''
     third_party_settings:
-      conditional_fields:
-        f87d6e25-dcd1-449f-a37c-defdb046841b:
-          dependee: field_europeana_lieferung_enum
-          settings:
-            state: '!disabled'
-            condition: value
-            grouping: AND
-            values_set: 1
-            value: ''
-            values: {  }
-            value_form:
-              -
-                target_id: '598'
-            effect: show
-            effect_options: {  }
-            selector: ''
-          entity_type: node
-          bundle: bestand
+      conditional_fields: {  }
     type: string_textfield
     region: content
   field_jira_hauptticket:
     weight: 14
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_jira_ticket_bei_europeana:
+    weight: 13
     settings:
       size: 80
       placeholder: ''
@@ -371,7 +438,7 @@ content:
     type: select2_entity_reference
     region: content
   field_lieferweg:
-    weight: 3
+    weight: 4
     settings:
       autocomplete: false
       match_operator: CONTAINS
@@ -381,64 +448,12 @@ content:
     type: select2_entity_reference
     region: content
   field_link_fragebogen:
-    weight: 13
+    weight: 17
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings:
-      conditional_fields:
-        d268195b-d0bf-4f93-9f5a-5e753808b613:
-          dependee: field_status_fragebogen
-          settings:
-            state: '!disabled'
-            condition: value
-            grouping: AND
-            values_set: 1
-            value: ''
-            values: {  }
-            value_form:
-              -
-                target_id: '619'
-            effect: show
-            effect_options: {  }
-            selector: ''
-          entity_type: node
-          bundle: bestand
-        99295ab8-0098-43d4-8448-99922ece9f8d:
-          dependee: field_status_fragebogen
-          settings:
-            state: required
-            condition: value
-            grouping: AND
-            values_set: 1
-            value: ''
-            values: {  }
-            value_form:
-              -
-                target_id: '619'
-            effect: show
-            effect_options: {  }
-            selector: ''
-          entity_type: node
-          bundle: bestand
-        762049a3-1e6e-482b-86c8-10cf455be42a:
-          dependee: field_status_fragebogen
-          settings:
-            state: '!empty'
-            condition: value
-            grouping: AND
-            values_set: 5
-            value: ''
-            values: '619'
-            value_form: {  }
-            effect: fill
-            effect_options:
-              fill:
-                value: ''
-                reset: 1
-            selector: ''
-          entity_type: node
-          bundle: bestand
+      conditional_fields: {  }
     type: link_default
     region: content
   field_link_zu_ddbdash:
@@ -469,7 +484,7 @@ content:
     type: color_field_widget_box
     region: content
   field_status_fragebogen:
-    weight: 12
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -480,33 +495,26 @@ content:
       size: 80
       placeholder: ''
     third_party_settings:
-      conditional_fields:
-        2395d49d-3003-48f9-9724-093bd579116b:
-          dependee: field_europeana_lieferung_enum
-          settings:
-            state: '!disabled'
-            condition: value
-            grouping: AND
-            values_set: 1
-            value: ''
-            values: {  }
-            value_form:
-              -
-                target_id: '598'
-            effect: show
-            effect_options: {  }
-            selector: ''
-          entity_type: node
-          bundle: bestand
+      conditional_fields: {  }
     type: string_textfield
     region: content
   field_url:
-    weight: 4
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_volltextformat:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      autocomplete: false
+      width: 100%
+    third_party_settings: {  }
+    type: select2_entity_reference
     region: content
   title:
     type: string_textfield

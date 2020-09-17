@@ -1,0 +1,10 @@
+uuid: 2c262f0a-17ef-4d0b-ab90-62b5b59b52a3
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.listenansicht
+label: Listenansicht
+targetEntityType: paragraph
+cache: true

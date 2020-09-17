@@ -1,0 +1,8 @@
+uuid: d80b0ee1-00c7-47d4-8835-eb294852649c
+langcode: de
+status: true
+dependencies: {  }
+name: Sichtbarkeit
+vid: sichtbarkeit
+description: 'Sichtbarkeit des Aggregators (Nutzung bei Aggregator)'
+weight: 0

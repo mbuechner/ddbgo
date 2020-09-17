@@ -10,7 +10,7 @@ id: node.aggregator.field_bestandsart
 field_name: field_bestandsart
 entity_type: node
 bundle: aggregator
-label: Bestandsart
+label: 'Ausrichtung nach Bestandsart'
 description: ''
 required: false
 translatable: false

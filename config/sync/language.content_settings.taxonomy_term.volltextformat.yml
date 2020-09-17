@@ -1,0 +1,11 @@
+uuid: 64ee8b95-f7cf-45fb-ac6e-d258c3fdd5c9
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.volltextformat
+id: taxonomy_term.volltextformat
+target_entity_type_id: taxonomy_term
+target_bundle: volltextformat
+default_langcode: site_default
+language_alterable: false

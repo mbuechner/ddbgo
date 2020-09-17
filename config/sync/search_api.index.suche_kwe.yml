@@ -2,20 +2,39 @@ uuid: f2dafc83-46dd-45d5-87bc-c0c2104f1f48
 langcode: de
 status: true
 dependencies:
-  module:
-    - node
-    - taxonomy
-    - search_api
   config:
+    - field.storage.node.field_ddb_id
+    - field.storage.node.field_isil
+    - field.storage.node.field_sparte
     - field.storage.node.field_stadt
     - field.storage.node.field_status
     - field.storage.node.field_vertragsstatus
     - search_api.server.default_server
+  module:
+    - node
+    - taxonomy
+    - search_api
 id: suche_kwe
 name: KWE
 description: ''
 read_only: false
 field_settings:
+  field_ddb_id:
+    label: DDB-ID
+    datasource_id: 'entity:node'
+    property_path: field_ddb_id
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_ddb_id
+  field_isil:
+    label: ISIL
+    datasource_id: 'entity:node'
+    property_path: field_isil
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_isil
   field_stadt:
     label: Stadt
     datasource_id: 'entity:node'
@@ -43,7 +62,6 @@ field_settings:
         - field.storage.node.field_vertragsstatus
       module:
         - taxonomy
-        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -52,6 +70,16 @@ field_settings:
     dependencies:
       module:
         - node
+  sparte:
+    label: 'Sparte » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_sparte:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_sparte
+      module:
+        - taxonomy
   status:
     label: status
     datasource_id: 'entity:node'
@@ -92,9 +120,12 @@ processor_settings:
   ignorecase:
     all_fields: true
     fields:
+      - field_ddb_id
+      - field_isil
       - field_stadt
       - field_status
       - name
+      - sparte
       - title
     weights:
       preprocess_index: -20
@@ -104,8 +135,11 @@ processor_settings:
   tokenizer:
     all_fields: true
     fields:
+      - field_ddb_id
+      - field_isil
       - field_stadt
       - name
+      - sparte
       - title
     spaces: ''
     overlap_cjk: 1

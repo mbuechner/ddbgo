@@ -1,0 +1,20 @@
+uuid: ef630b2e-2af6-48b9-9b59-e2201076f5c4
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_coding_da_vinci_event
+field_name: field_coding_da_vinci_event
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

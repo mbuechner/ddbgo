@@ -1,0 +1,29 @@
+uuid: ca53591b-3c9a-459f-a24b-426430fe2a60
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bestandstags
+    - node.type.bestand
+    - taxonomy.vocabulary.bestandstags
+id: node.bestand.field_bestandstags
+field_name: field_bestandstags
+entity_type: node
+bundle: bestand
+label: Bestandstags
+description: 'Schlagworte zum Bestand zur internen Filterung'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      bestandstags: bestandstags
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

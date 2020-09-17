@@ -1,0 +1,26 @@
+uuid: 672c2418-87ec-4410-aacb-ab0708470d72
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkungen_2
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_bemerkungen_2
+field_name: field_bemerkungen_2
+entity_type: node
+bundle: aggregator
+label: Bemerkungen
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

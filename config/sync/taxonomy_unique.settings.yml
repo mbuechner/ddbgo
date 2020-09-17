@@ -4,3 +4,17 @@ region_ort: 1
 region_ort_message: 'Die Region/ der Ort ''%term'' existiert bereits und kann nicht noch einmal angelegt werden.'
 bestandsart: 1
 bestandsart_message: 'Die Bestandsart ''%term'' existiert bereits und kann nicht noch einmal angelegt werden. Bitte die existierende Bestandsart nutzen!'
+sichtbarkeit: 0
+sichtbarkeit_message: 'Term @term already exists in vocabulary @vocabulary.'
+coding_da_vinci_event: 0
+coding_da_vinci_event_message: 'Term %term already exists in vocabulary %vocabulary.'
+bestandstags: 0
+bestandstags_message: 'Term %term already exists in vocabulary %vocabulary.'
+kultursparte: 0
+kultursparte_message: 'Term %term already exists in vocabulary %vocabulary.'
+kultursparte_kwe: 0
+kultursparte_kwe_message: 'Term %term already exists in vocabulary %vocabulary.'
+volltextformat: 0
+volltextformat_message: 'Term %term already exists in vocabulary %vocabulary.'
+aggregiert: 0
+aggregiert_message: 'Term %term already exists in vocabulary %vocabulary.'

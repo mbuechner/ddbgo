@@ -1,0 +1,11 @@
+uuid: 0f28b81c-ece3-4cea-ac0f-9d60e8aa5344
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.aggregiert
+id: taxonomy_term.aggregiert
+target_entity_type_id: taxonomy_term
+target_bundle: aggregiert
+default_langcode: site_default
+language_alterable: false

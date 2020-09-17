@@ -26,6 +26,6 @@ launcher:
 logger:
   id: database
   configuration:
-    method: '3'
+    method: '2'
     expire: 604800
     retain: 10000

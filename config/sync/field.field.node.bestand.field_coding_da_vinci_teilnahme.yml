@@ -1,16 +1,25 @@
-uuid: c5e8033e-ff44-4ef7-a55c-93495661ba42
+uuid: 0738360f-9b78-4cde-ab81-d2077361aa3f
 langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.field_ausrichtung_nach_bestandsa
-    - node.type.aggregator
+    - field.storage.node.field_coding_da_vinci_teilnahme
+    - node.type.bestand
     - taxonomy.vocabulary.ja_nein_feld
-id: node.aggregator.field_ausrichtung_nach_bestandsa
-field_name: field_ausrichtung_nach_bestandsa
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_coding_da_vinci_teilnahme
+field_name: field_coding_da_vinci_teilnahme
 entity_type: node
-bundle: aggregator
-label: 'Ausrichtung nach Bestandsart'
+bundle: bestand
+label: 'Coding da Vinci-Teilnahme'
 description: ''
 required: false
 translatable: false
