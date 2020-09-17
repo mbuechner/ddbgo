@@ -2,18 +2,44 @@ uuid: 6f1fb895-4b21-4183-a28d-7da6073e89db
 langcode: de
 status: true
 dependencies:
+  config:
+    - field.storage.node.field_bestandsart
+    - field.storage.node.field_sparten
+    - field.storage.node.field_datenformat
+    - field.storage.node.field_region_ort
+    - field.storage.node.field_jira_hauptticket
+    - field.storage.node.field_link_zu_ddbdash
+    - field.storage.node.field_sichtbarkeit
+    - field.storage.node.field_status
+    - field.storage.node.field_vertragskonstrukt
+    - field.storage.node.field_vertragsstatus
+    - search_api.server.default_server
   module:
+    - taxonomy
     - node
     - search_api
     - ddbgo_search
-  config:
-    - field.storage.node.field_status
-    - search_api.server.default_server
 id: aggregator
 name: Aggregator
 description: ''
 read_only: false
 field_settings:
+  field_jira_hauptticket:
+    label: JIRA-Hauptticket
+    datasource_id: 'entity:node'
+    property_path: field_jira_hauptticket
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_jira_hauptticket
+  field_link_zu_ddbdash:
+    label: 'Link zu DDBdash'
+    datasource_id: 'entity:node'
+    property_path: field_link_zu_ddbdash
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_link_zu_ddbdash
   field_status:
     label: Status
     datasource_id: 'entity:node'
@@ -22,6 +48,76 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_status
+  name:
+    label: 'Datenformat » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_datenformat:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_datenformat
+      module:
+        - taxonomy
+  name_1:
+    label: 'Vertragsstatus » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragsstatus:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_vertragsstatus
+      module:
+        - taxonomy
+  name_2:
+    label: 'Geografische Ausrichtung » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_region_ort:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_region_ort
+      module:
+        - taxonomy
+  name_3:
+    label: 'Ausrichtung nach Sparte » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_sparten:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_sparten
+      module:
+        - taxonomy
+  name_4:
+    label: 'Ausrichtung nach Bestandsart » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_bestandsart:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_bestandsart
+      module:
+        - taxonomy
+  name_5:
+    label: 'Sichtbarkeit » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_sichtbarkeit:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_sichtbarkeit
+      module:
+        - taxonomy
+  name_6:
+    label: 'Vertragskonstrukt » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragskonstrukt:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_vertragskonstrukt
+      module:
+        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -66,7 +162,16 @@ processor_settings:
   ignorecase:
     all_fields: true
     fields:
+      - field_jira_hauptticket
+      - field_link_zu_ddbdash
       - field_status
+      - name
+      - name_1
+      - name_2
+      - name_3
+      - name_4
+      - name_5
+      - name_6
       - title
       - title_1
       - title_2
@@ -78,6 +183,12 @@ processor_settings:
   tokenizer:
     all_fields: true
     fields:
+      - field_jira_hauptticket
+      - name
+      - name_2
+      - name_3
+      - name_4
+      - name_5
       - title
       - title_1
       - title_2

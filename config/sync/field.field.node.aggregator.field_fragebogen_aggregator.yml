@@ -1,0 +1,27 @@
+uuid: c86518eb-d561-4366-85e5-e75025c37c6b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fragebogen_aggregator
+    - node.type.aggregator
+  module:
+    - file
+id: node.aggregator.field_fragebogen_aggregator
+field_name: field_fragebogen_aggregator
+entity_type: node
+bundle: aggregator
+label: Fragebogen
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'pdf doc docx'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file

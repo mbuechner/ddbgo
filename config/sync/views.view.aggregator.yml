@@ -14,7 +14,7 @@ dependencies:
     - node
     - user
 id: aggregator
-label: Aggregator
+label: 'Aggregator: Bestände'
 module: views
 description: ''
 tag: ''
@@ -40,7 +40,7 @@ display:
       query:
         type: views_query
         options:
-          disable_sql_rewrite: false
+          disable_sql_rewrite: true
           distinct: false
           replica: false
           query_comment: ''

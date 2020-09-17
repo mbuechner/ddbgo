@@ -5,14 +5,15 @@ dependencies:
   config:
     - core.entity_view_mode.node.full
     - field.field.node.aggregator.field_ablehnungsgrund
-    - field.field.node.aggregator.field_ausrichtung_nach_bestandsa
-    - field.field.node.aggregator.field_ausrichtung_nach_sparte
     - field.field.node.aggregator.field_bemerkung
+    - field.field.node.aggregator.field_bemerkungen
+    - field.field.node.aggregator.field_bemerkungen_2
+    - field.field.node.aggregator.field_bemerkungen_zum_vertrag
     - field.field.node.aggregator.field_beschreibung
     - field.field.node.aggregator.field_bestandsart
     - field.field.node.aggregator.field_datenformat
     - field.field.node.aggregator.field_ddburi
-    - field.field.node.aggregator.field_field_ausrichtung_geo
+    - field.field.node.aggregator.field_fragebogen_aggregator
     - field.field.node.aggregator.field_jira_hauptticket
     - field.field.node.aggregator.field_kontakt
     - field.field.node.aggregator.field_kurzname
@@ -21,6 +22,7 @@ dependencies:
     - field.field.node.aggregator.field_link_zu_ddbpro
     - field.field.node.aggregator.field_personen
     - field.field.node.aggregator.field_region_ort
+    - field.field.node.aggregator.field_sichtbarkeit
     - field.field.node.aggregator.field_sparten
     - field.field.node.aggregator.field_status
     - field.field.node.aggregator.field_status_fragebogen
@@ -48,14 +50,15 @@ content:
     third_party_settings: {  }
 hidden:
   field_ablehnungsgrund: true
-  field_ausrichtung_nach_bestandsa: true
-  field_ausrichtung_nach_sparte: true
   field_bemerkung: true
+  field_bemerkungen: true
+  field_bemerkungen_2: true
+  field_bemerkungen_zum_vertrag: true
   field_beschreibung: true
   field_bestandsart: true
   field_datenformat: true
   field_ddburi: true
-  field_field_ausrichtung_geo: true
+  field_fragebogen_aggregator: true
   field_jira_hauptticket: true
   field_kontakt: true
   field_kurzname: true
@@ -64,6 +67,7 @@ hidden:
   field_link_zu_ddbpro: true
   field_personen: true
   field_region_ort: true
+  field_sichtbarkeit: true
   field_sparten: true
   field_status: true
   field_status_fragebogen: true

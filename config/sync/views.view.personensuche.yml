@@ -584,6 +584,59 @@ display:
           multi_type: separator
           multi_separator: ', '
           plugin_id: search_api
+        ddbgo_person_bestand:
+          id: ddbgo_person_bestand
+          table: search_api_index_personen
+          field: ddbgo_person_bestand
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Bestände
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: –
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          link_to_item: false
+          use_highlighting: false
+          multi_type: separator
+          multi_separator: ', '
+          plugin_id: search_api
         ddbgo_person_aggregator:
           id: ddbgo_person_aggregator
           table: search_api_index_personen
@@ -651,7 +704,7 @@ display:
           exposed: true
           expose:
             operator_id: search_api_fulltext_op
-            label: ''
+            label: Suche
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
@@ -666,6 +719,7 @@ display:
               anonymous: '0'
               administrator: '0'
               ddb_team: '0'
+              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -683,6 +737,7 @@ display:
           min_length: null
           fields:
             - ddbgo_person_aggregator
+            - ddbgo_person_bestand
             - ddbgo_person_kwe
             - field_email
             - field_nachname
@@ -717,8 +772,28 @@ display:
           plugin_id: search_api
       title: Personenliste
       header: {  }
-      footer: {  }
-      empty: {  }
+      footer:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: '@start - @end von @total wird angezeigt'
+          plugin_id: result
+      empty:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          content: '@start - @end von @total wird angezeigt'
+          plugin_id: result
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
@@ -733,12 +808,14 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'user.node_grants:view'
         - user.roles
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
         - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
+        - 'config:search_api.index.personen'
   page:
     display_plugin: page
     id: page
@@ -768,9 +845,11 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'user.node_grants:view'
         - user.roles
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
         - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
+        - 'config:search_api.index.personen'

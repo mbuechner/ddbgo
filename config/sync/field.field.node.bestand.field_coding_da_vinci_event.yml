@@ -1,16 +1,16 @@
-uuid: 5f600a2f-fe4c-44d3-876d-f8bd6300cfdf
+uuid: 4f7c6647-5001-42c1-9515-a6034977ba27
 langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.field_field_ausrichtung_geo
-    - node.type.aggregator
-    - taxonomy.vocabulary.ja_nein_feld
-id: node.aggregator.field_field_ausrichtung_geo
-field_name: field_field_ausrichtung_geo
+    - field.storage.node.field_coding_da_vinci_event
+    - node.type.bestand
+    - taxonomy.vocabulary.coding_da_vinci_event
+id: node.bestand.field_coding_da_vinci_event
+field_name: field_coding_da_vinci_event
 entity_type: node
-bundle: aggregator
-label: 'Geografische Ausrichtung'
+bundle: bestand
+label: 'Coding da Vinci-Event'
 description: ''
 required: false
 translatable: false
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      ja_nein_feld: ja_nein_feld
+      coding_da_vinci_event: coding_da_vinci_event
     sort:
       field: name
       direction: asc

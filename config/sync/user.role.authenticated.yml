@@ -13,6 +13,7 @@ permissions:
   - 'access toolbar'
   - 'can change your own password'
   - 'override page published option'
+  - 'use admin toolbar search'
   - 'use exclude node title'
   - userprotect.account.edit
   - userprotect.pass.edit

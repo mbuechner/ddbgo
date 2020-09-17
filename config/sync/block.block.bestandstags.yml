@@ -1,0 +1,29 @@
+uuid: ff24cd5a-3a24-4d1b-984a-00e85fcc444d
+langcode: de
+status: true
+dependencies:
+  config:
+    - facets.facet.bestandstags
+  module:
+    - facets
+    - system
+  theme:
+    - adminimal_theme
+id: bestandstags
+theme: adminimal_theme
+region: content
+weight: -8
+provider: null
+plugin: 'facet_block:bestandstags'
+settings:
+  id: 'facet_block:bestandstags'
+  label: Bestandstags
+  provider: facets
+  label_display: '0'
+  block_id: bestandstags
+visibility:
+  request_path:
+    id: request_path
+    pages: /search/bestand
+    negate: false
+    context_mapping: {  }

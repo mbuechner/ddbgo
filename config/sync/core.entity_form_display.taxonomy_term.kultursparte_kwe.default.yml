@@ -1,0 +1,33 @@
+uuid: 10277aee-d4cd-41ab-8349-5966b8e0297f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.kultursparte_kwe.field_uri
+    - taxonomy.vocabulary.kultursparte_kwe
+id: taxonomy_term.kultursparte_kwe.default
+targetEntityType: taxonomy_term
+bundle: kultursparte_kwe
+mode: default
+content:
+  field_uri:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true

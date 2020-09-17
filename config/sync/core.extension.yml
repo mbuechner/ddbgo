@@ -43,12 +43,14 @@ module:
   filter: 0
   flag: 0
   flag_bookmark: 0
+  flood_unblock: 0
   fontawesome: 0
   fontawesome_menu_icons: 0
   history: 0
   hook_post_action: 0
   image: 0
   inline_form_errors: 0
+  jquery_ui_accordion: 0
   language: 0
   layout_discovery: 0
   libraries: 0

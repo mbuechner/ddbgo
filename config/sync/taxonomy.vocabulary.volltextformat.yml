@@ -1,0 +1,8 @@
+uuid: 5b731ab0-add5-4f8d-95ff-e0701c4d4639
+langcode: de
+status: true
+dependencies: {  }
+name: Volltextformat
+vid: volltextformat
+description: 'Volltextformate für Bestände (Nutzung bei Bestand)'
+weight: 0

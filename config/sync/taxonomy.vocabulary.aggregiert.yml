@@ -1,0 +1,8 @@
+uuid: 6cab9b49-f06c-426b-85a8-3013be4d3612
+langcode: de
+status: true
+dependencies: {  }
+name: Aggregiert
+vid: aggregiert
+description: 'Erweiterung Ja/Nein-Feld um ''Geplant'' für Aggregiert bei Bestand'
+weight: 0

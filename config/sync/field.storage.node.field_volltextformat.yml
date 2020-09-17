@@ -1,12 +1,12 @@
-uuid: 603b7f4c-343b-403b-9d8c-e16510d73a24
+uuid: 9779a579-ddae-4eb4-a2fb-8f74acb5837d
 langcode: de
 status: true
 dependencies:
   module:
     - node
     - taxonomy
-id: node.field_field_ausrichtung_geo
-field_name: field_field_ausrichtung_geo
+id: node.field_volltextformat
+field_name: field_volltextformat
 entity_type: node
 type: entity_reference
 settings:

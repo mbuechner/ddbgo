@@ -1,0 +1,26 @@
+uuid: 20020b45-0d29-4930-843d-0abf16f8a35e
+langcode: de
+status: true
+dependencies:
+  config:
+    - custom_formatters.formatter.label_als_link
+    - field.field.taxonomy_term.kultursparte_kwe.field_uri
+    - taxonomy.vocabulary.kultursparte_kwe
+  module:
+    - custom_formatters
+id: taxonomy_term.kultursparte_kwe.default
+targetEntityType: taxonomy_term
+bundle: kultursparte_kwe
+mode: default
+content:
+  field_uri:
+    weight: 0
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: 'custom_formatters:label_als_link'
+    region: content
+hidden:
+  description: true
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,14 @@
+uuid: eb00a6a0-2c3a-43b1-87c8-0910d2ff7d0b
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: isil_link
+label: ISIL-Link
+type: twig
+description: ''
+field_types:
+  - string
+data: "{% for item in items %}\r\n {{ link(item.value | replace({'http://ld.zdb-services.de/resource/organisations/': ''}), item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

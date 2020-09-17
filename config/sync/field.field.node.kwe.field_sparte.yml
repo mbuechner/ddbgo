@@ -5,7 +5,16 @@ dependencies:
   config:
     - field.storage.node.field_sparte
     - node.type.kwe
-    - taxonomy.vocabulary.kultursparte
+    - taxonomy.vocabulary.kultursparte_kwe
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
 id: node.kwe.field_sparte
 field_name: field_sparte
 entity_type: node
@@ -20,10 +29,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      kultursparte: kultursparte
+      kultursparte_kwe: kultursparte_kwe
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: kultursparte
 field_type: entity_reference

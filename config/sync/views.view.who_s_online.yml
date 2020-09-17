@@ -5,6 +5,7 @@ dependencies:
   config:
     - user.role.administrator
     - user.role.ddb_team
+    - user.role.ddb_team_login_admin
   module:
     - user
 _core:
@@ -29,6 +30,7 @@ display:
           role:
             administrator: administrator
             ddb_team: ddb_team
+            ddb_team_login_admin: ddb_team_login_admin
       cache:
         type: none
         options: {  }

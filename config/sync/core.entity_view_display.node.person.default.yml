@@ -29,12 +29,18 @@ third_party_settings:
         - field_bemerkung
       parent_name: ''
       weight: 0
-      format_type: fieldset
+      format_type: html_element
       format_settings:
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
-      label: Allgemeines
+        classes: fieldgroup_personen
+      label: Personen
       region: content
 id: node.person.default
 targetEntityType: node
@@ -47,7 +53,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: basic_string
     region: content
   field_email:
@@ -56,7 +64,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: email_mailto
     region: content
   field_nachname:
@@ -66,7 +76,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   field_telefonnummer:
@@ -75,7 +87,9 @@ content:
     settings: {  }
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: 'custom_formatters:label_als_telefonnummer'
     region: content
   field_titel:
@@ -85,7 +99,9 @@ content:
       link: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: entity_reference_label
     region: content
   field_vorname:
@@ -95,7 +111,9 @@ content:
       link_to_entity: false
     third_party_settings:
       empty_fields:
-        handler: nbsp
+        handler: text
+        settings:
+          empty_text: –
     type: string
     region: content
   flag_bookmark:

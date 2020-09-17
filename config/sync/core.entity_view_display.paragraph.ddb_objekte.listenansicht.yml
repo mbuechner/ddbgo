@@ -1,0 +1,40 @@
+uuid: e4094d48-b95e-4722-9ed6-8584015f80b7
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.listenansicht
+    - custom_formatters.formatter.text_in_klammern
+    - field.field.paragraph.ddb_objekte.field_anzahl_der_objekte
+    - field.field.paragraph.ddb_objekte.field_medientyp
+    - paragraphs.paragraphs_type.ddb_objekte
+  module:
+    - custom_formatters
+    - empty_fields
+id: paragraph.ddb_objekte.listenansicht
+targetEntityType: paragraph
+bundle: ddb_objekte
+mode: listenansicht
+content:
+  field_anzahl_der_objekte:
+    weight: 0
+    label: hidden
+    settings:
+      thousand_separator: .
+      prefix_suffix: false
+    third_party_settings:
+      empty_fields:
+        handler: ''
+    type: number_integer
+    region: content
+  field_medientyp:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: ''
+    type: 'custom_formatters:text_in_klammern'
+    region: content
+hidden:
+  search_api_excerpt: true

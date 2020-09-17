@@ -1,0 +1,14 @@
+uuid: b6372f52-72e0-4996-a23e-41dc97b29d48
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: jira_link_bei_europeana
+label: 'JIRA-Link bei Europeana'
+type: twig
+description: ''
+field_types:
+  - string
+data: "{% for item in items %}\r\n {{ link(item.value, 'https://europeana.atlassian.net/browse/' ~ item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

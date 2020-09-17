@@ -1,0 +1,11 @@
+uuid: 16d900fa-63f6-49ca-884e-2fbf71a55bb6
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.kultursparte_kwe
+id: taxonomy_term.kultursparte_kwe
+target_entity_type_id: taxonomy_term
+target_bundle: kultursparte_kwe
+default_langcode: site_default
+language_alterable: false

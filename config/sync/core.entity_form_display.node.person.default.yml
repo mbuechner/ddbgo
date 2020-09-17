@@ -25,13 +25,19 @@ third_party_settings:
         - field_bemerkung
       parent_name: ''
       weight: 0
-      format_type: fieldset
+      format_type: html_element
       format_settings:
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
         id: ''
-        classes: ''
-        description: ''
+        classes: fieldgroup_personen
         required_fields: false
-      label: Allgemeines
+      label: Personen
       region: content
 id: node.person.default
 targetEntityType: node

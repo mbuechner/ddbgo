@@ -1,16 +1,15 @@
-uuid: a9da1f6b-231e-4a87-b4b4-7f1a278046b8
+uuid: d77d59db-f1e2-43aa-9710-d175a83520ca
 langcode: de
 status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_ausrichtung_nach_sparte
-field_name: field_ausrichtung_nach_sparte
+id: node.field_coding_da_vinci_bemerkung
+field_name: field_coding_da_vinci_bemerkung
 entity_type: node
-type: entity_reference
+type: string_long
 settings:
-  target_type: taxonomy_term
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

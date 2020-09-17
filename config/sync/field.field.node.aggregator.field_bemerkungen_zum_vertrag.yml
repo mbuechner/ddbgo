@@ -1,0 +1,26 @@
+uuid: ac02d20f-fb19-4fe9-8025-b13b9d481914
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bemerkungen_zum_vertrag
+    - node.type.aggregator
+  module:
+    - regex_field_validation
+third_party_settings:
+  regex_field_validation:
+    enable: 0
+    regex: ''
+    error_message: ''
+id: node.aggregator.field_bemerkungen_zum_vertrag
+field_name: field_bemerkungen_zum_vertrag
+entity_type: node
+bundle: aggregator
+label: 'Bemerkungen zum Vertrag'
+description: 'Bitte Bemerkungen zu den Verträgen eingeben.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

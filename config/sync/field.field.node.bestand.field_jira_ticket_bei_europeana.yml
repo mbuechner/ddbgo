@@ -1,0 +1,33 @@
+uuid: b227fead-b9e3-4832-a467-a36422a33b7f
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_jira_ticket_bei_europeana
+    - node.type.bestand
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/[A-Z]+\-[0-9]+/'
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_jira_ticket_bei_europeana
+field_name: field_jira_ticket_bei_europeana
+entity_type: node
+bundle: bestand
+label: 'JIRA-Ticket bei Europeana'
+description: 'Bitte das JIRA-Tickets des Bestands bei Europeana angeben, z.B. AGG-929'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -7,17 +7,24 @@ dependencies:
     - node.type.aggregator
   module:
     - regex_field_validation
+    - unique_field_ajax
 third_party_settings:
   regex_field_validation:
     enable: 0
     regex: ''
     error_message: ''
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
 id: node.aggregator.field_kurzname
 field_name: field_kurzname
 entity_type: node
 bundle: aggregator
-label: Kurzname
-description: 'Offizielle Abkürzung für den Aggregator-Namen, falls vorhanden (z.B. „d:kult“ für Digitales Kunst- und Kulturarchiv).'
+label: 'Weitere Namen/ Abkürzungen'
+description: 'Offizielle Namen oder Abkürzung für den Aggregator-Namen, falls vorhanden (z.B. „d:kult“ für Digitales Kunst- und Kulturarchiv).'
 required: false
 translatable: true
 default_value: {  }

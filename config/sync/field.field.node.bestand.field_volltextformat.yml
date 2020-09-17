@@ -1,0 +1,38 @@
+uuid: bc26872d-40e3-49f1-a708-f591b12fc5cd
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_volltextformat
+    - node.type.bestand
+    - taxonomy.vocabulary.volltextformat
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_volltextformat
+field_name: field_volltextformat
+entity_type: node
+bundle: bestand
+label: Volltextformat
+description: 'Welches Volltextformat wird geliefert?'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      volltextformat: volltextformat
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

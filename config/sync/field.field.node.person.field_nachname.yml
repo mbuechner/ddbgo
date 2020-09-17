@@ -10,9 +10,9 @@ dependencies:
     - unique_field_ajax
 third_party_settings:
   regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
+    enable: 1
+    regex: '/.{2,}/'
+    error_message: 'Bitte mindestens zwei Buchstaben eingeben!'
   unique_field_ajax:
     unique: true
     warn_only: true

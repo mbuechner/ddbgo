@@ -1,0 +1,8 @@
+uuid: 7c7fef0a-1925-426b-8012-a1b2622c4607
+langcode: de
+status: true
+dependencies: {  }
+name: 'Coding da Vinci-Event'
+vid: coding_da_vinci_event
+description: ''
+weight: 0

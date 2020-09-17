@@ -10,8 +10,8 @@ id: node.aggregator.field_region_ort
 field_name: field_region_ort
 entity_type: node
 bundle: aggregator
-label: Region/Ort
-description: ''
+label: 'Geografische Ausrichtung'
+description: 'Geografische Ausrichtung, z.B. Region oder Ort.'
 required: false
 translatable: false
 default_value: {  }

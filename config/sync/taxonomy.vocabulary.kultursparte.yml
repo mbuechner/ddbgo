@@ -2,7 +2,7 @@ uuid: 5878247a-ed7a-44b6-8f12-da142ca2f957
 langcode: de
 status: true
 dependencies: {  }
-name: Kultursparte
+name: Kultursparte-Aggregator
 vid: kultursparte
 description: 'Kultursparten der Deutsche Digitale Bibliothek (Nutzung bei Aggregatoren)'
 weight: 0

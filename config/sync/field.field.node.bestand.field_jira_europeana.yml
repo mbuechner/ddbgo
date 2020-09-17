@@ -24,7 +24,7 @@ field_name: field_jira_europeana
 entity_type: node
 bundle: bestand
 label: 'JIRA-Ticket für Europeanalieferung'
-description: 'Bitte das JIRA-Tickets der Lieferung des Bestands an Europeana angeben, z.B.: DDBDATA-3361'
+description: 'Bitte das JIRA-Tickets der Lieferung des Bestands an Europeana angeben, z.B. DDBDATA-3361'
 required: false
 translatable: false
 default_value: {  }

@@ -7,18 +7,25 @@ dependencies:
     - taxonomy.vocabulary.kultursparte
   module:
     - regex_field_validation
+    - unique_field_ajax
 third_party_settings:
   regex_field_validation:
     enable: 0
     regex: ''
     error_message: ''
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
 id: taxonomy_term.kultursparte.field_uri
 field_name: field_uri
 entity_type: taxonomy_term
 bundle: kultursparte
 label: URI
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''

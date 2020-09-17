@@ -1,16 +1,16 @@
-uuid: 59d45078-7748-4a8c-8213-f21280d6a1e0
+uuid: 5a501d00-34b1-4d64-83a3-2419a6c23c80
 langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.field_ausrichtung_nach_sparte
+    - field.storage.node.field_sichtbarkeit
     - node.type.aggregator
-    - taxonomy.vocabulary.ja_nein_feld
-id: node.aggregator.field_ausrichtung_nach_sparte
-field_name: field_ausrichtung_nach_sparte
+    - taxonomy.vocabulary.sichtbarkeit
+id: node.aggregator.field_sichtbarkeit
+field_name: field_sichtbarkeit
 entity_type: node
 bundle: aggregator
-label: 'Ausrichtung nach Sparte'
+label: Sichtbarkeit
 description: ''
 required: false
 translatable: false
@@ -20,7 +20,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      ja_nein_feld: ja_nein_feld
+      sichtbarkeit: sichtbarkeit
     sort:
       field: name
       direction: asc

@@ -1,0 +1,11 @@
+uuid: 3f79d03c-7b95-4c8f-8b5e-2c5c13ef8a94
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.sichtbarkeit
+id: taxonomy_term.sichtbarkeit
+target_entity_type_id: taxonomy_term
+target_bundle: sichtbarkeit
+default_langcode: site_default
+language_alterable: false

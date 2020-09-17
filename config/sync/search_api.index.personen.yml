@@ -25,6 +25,14 @@ field_settings:
       roles:
         - anonymous
       view_mode: {  }
+  ddbgo_person_bestand:
+    label: 'DDBgo Person Bestand nodes'
+    property_path: ddbgo_person_bestand
+    type: text
+    configuration:
+      roles:
+        - anonymous
+      view_mode: {  }
   ddbgo_person_kwe:
     label: 'DDBgo Person KWE nodes'
     property_path: ddbgo_person_kwe
@@ -96,11 +104,13 @@ processor_settings:
   add_url: {  }
   aggregated_field: {  }
   ddbgo_person_aggregator: {  }
+  ddbgo_person_bestand: {  }
   ddbgo_person_kwe: {  }
   ignorecase:
     all_fields: true
     fields:
       - ddbgo_person_aggregator
+      - ddbgo_person_bestand
       - ddbgo_person_kwe
       - field_email
       - field_nachname
@@ -117,13 +127,14 @@ processor_settings:
     all_fields: true
     fields:
       - ddbgo_person_aggregator
+      - ddbgo_person_bestand
       - ddbgo_person_kwe
       - field_email
       - field_nachname
       - field_telefonnummer
       - field_vorname
       - title
-    spaces: ' '
+    spaces: ''
     overlap_cjk: 1
     minimum_word_size: '2'
     weights:

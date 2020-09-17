@@ -13,7 +13,7 @@ dependencies:
 id: views_block__aggregator_block_1
 theme: adminimal_theme
 region: content
-weight: 1
+weight: 3
 provider: null
 plugin: 'views_block:aggregator-block_1'
 settings:

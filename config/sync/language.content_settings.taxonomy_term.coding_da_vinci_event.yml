@@ -1,0 +1,11 @@
+uuid: c5dff9b7-df70-4799-aa29-1f2e65d15b22
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.coding_da_vinci_event
+id: taxonomy_term.coding_da_vinci_event
+target_entity_type_id: taxonomy_term
+target_bundle: coding_da_vinci_event
+default_langcode: site_default
+language_alterable: false

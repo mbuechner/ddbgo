@@ -9,6 +9,7 @@ dependencies:
     - user.role.administrator
     - user.role.authenticated
     - user.role.ddb_team
+    - user.role.ddb_team_login_admin
   module:
     - color_field
     - datetime
@@ -16,7 +17,7 @@ dependencies:
     - semanticviews
     - user
 id: kwe
-label: KWE
+label: 'KWE: Bestände'
 module: views
 description: ''
 tag: ''
@@ -36,13 +37,14 @@ display:
             authenticated: authenticated
             administrator: administrator
             ddb_team: ddb_team
+            ddb_team_login_admin: ddb_team_login_admin
       cache:
         type: none
         options: {  }
       query:
         type: views_query
         options:
-          disable_sql_rewrite: false
+          disable_sql_rewrite: true
           distinct: false
           replica: false
           query_comment: ''
@@ -528,18 +530,49 @@ display:
           plugin_id: field
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: 'Status veröffentlicht'
+            description: ''
+            use_operator: false
+            operator: status_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: status
+            required: true
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              ddb_team: '0'
+              ddb_team_login_admin: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
@@ -690,7 +723,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      block_hide_empty: true
+      block_hide_empty: false
       block_description: 'Bestände (Kultur- oder Wissenseinrichtung)'
     cache_metadata:
       max-age: -1
