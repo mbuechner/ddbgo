@@ -1,2 +1,4 @@
 # images not needed in Docker container
 images/
+.git/
+.github/
