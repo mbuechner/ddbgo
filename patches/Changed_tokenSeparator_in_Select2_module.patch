@@ -1,8 +1,5 @@
-Index: web/modules/contrib/select2/src/Element/Select2.php
-<+>UTF-8
-===================================================================
---- web/modules/contrib/select2/src/Element/Select2.php
-+++ web/modules/contrib/select2/src/Element/Select2.php
+--- a/src/Element/Select2.php
++++ b/src/Element/Select2.php
 @@ -213,7 +213,7 @@
        'tags' => (bool) $element['#autocreate'],
        'theme' => $select2_theme_exists ? $current_theme : 'default',
