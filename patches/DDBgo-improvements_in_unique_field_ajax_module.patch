@@ -1,17 +1,5 @@
-From c2843336c2f59979d4ca6eee74ec39f163d3be9f Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Michael=20B=C3=BCchner?= <m.buechner@dnb.de>
-Date: Wed, 11 Mar 2020 10:54:07 +0100
-Subject: [PATCH] DDBgo improvements
-
----
- config/schema/unique_field_ajax.schema.yml |  36 +++-
- unique_field_ajax.module                   | 330 ++++++++++++++++++++++++-----
- 2 files changed, 302 insertions(+), 64 deletions(-)
-
-diff --git a/config/schema/unique_field_ajax.schema.yml b/config/schema/unique_field_ajax.schema.yml
-index b5146aa..7aa2be8 100644
---- a/web/modules/contrib/config/schema/unique_field_ajax.schema.yml
-+++ b/web/modules/contrib/config/schema/unique_field_ajax.schema.yml
+--- a/config/schema/unique_field_ajax.schema.yml
++++ b/config/schema/unique_field_ajax.schema.yml
 @@ -1,16 +1,38 @@
 -field.field.*.*.*.third_party.unique:
 +field.field.*.*.*.third_party.unique_field_ajax:
@@ -58,10 +46,8 @@ index b5146aa..7aa2be8 100644
 +    message:
 +      type: string
 +      label: Validation error message
-diff --git a/unique_field_ajax.module b/unique_field_ajax.module
-index 114bb66..983da00 100644
---- a/web/modules/contrib/unique_field_ajax.module
-+++ b/web/modules/contrib/unique_field_ajax.module
+--- a/unique_field_ajax.module
++++ b/unique_field_ajax.module
 @@ -9,6 +9,10 @@ use Drupal\Component\Utility\NestedArray;
  use Drupal\Core\Form\FormStateInterface;
  use Drupal\Core\Routing\RouteMatchInterface;
@@ -480,6 +466,3 @@ index 114bb66..983da00 100644
      $form_state->setRebuild();
    }
  }
--- 
-2.13.0.windows.1
-
