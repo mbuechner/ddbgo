@@ -1,16 +1,11 @@
 --- a/src/Element/SingleDateTime.php
 +++ b/src/Element/SingleDateTime.php
-@@ -133,8 +133,11 @@ class SingleDateTime extends FormElement {
-     // Disable Chrome autofill on widget.
+@@ -134,7 +134,7 @@ class SingleDateTime extends FormElement {
      $element['#attributes']['autocomplete'] = 'off';
  
--    // Prevent keyboard on mobile devices.
+     // Prevent keyboard on mobile devices.
 -    $element['#attributes']['onfocus'] = 'blur();';
-+    // Prevent keyboard on mobile devices, but only if allowBlank is false
-+    // otherwise a user won't be able to delete a date.
-+    if (!$element['#allow_blank']) {
-+      $element['#attributes']['onfocus'] = 'blur();';
-+    }
++    // $element['#attributes']['onfocus'] = 'blur();';
  
      // Attach library.
      $element['#attached']['library'][] = 'single_datetime/datetimepicker';
