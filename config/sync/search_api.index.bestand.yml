@@ -14,6 +14,7 @@ dependencies:
     - field.storage.node.field_jira_ticket_bei_europeana
     - field.storage.node.field_jira_europeana
     - field.storage.node.field_kwe
+    - field.storage.node.field_link_zu_coding_da_vinci
     - field.storage.node.field_link_zu_ddbdash
     - field.storage.node.field_status
     - field.storage.node.field_europeanastatus
@@ -117,6 +118,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_kwe
+  field_link_zu_coding_da_vinci:
+    label: 'Link zu Coding da Vinci'
+    datasource_id: 'entity:node'
+    property_path: field_link_zu_coding_da_vinci
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_link_zu_coding_da_vinci
   field_link_zu_ddbdash:
     label: 'Link zu DDBdash'
     datasource_id: 'entity:node'

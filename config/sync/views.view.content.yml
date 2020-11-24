@@ -467,7 +467,7 @@ display:
             operator_list: {  }
           is_grouped: true
           group_info:
-            label: 'Status veröffentlicht'
+            label: Veröffentlichungsstatus
             description: ''
             identifier: status
             optional: true

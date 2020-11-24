@@ -1,0 +1,39 @@
+uuid: a4b1915f-776c-4652-9530-7c42757c3678
+langcode: de
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:bd78c484-37ef-47b2-b989-cce3904fc732'
+  module:
+    - block_content
+    - system
+    - user
+  theme:
+    - adminimal_theme
+id: linkzurdoku
+theme: adminimal_theme
+region: content
+weight: -3
+provider: null
+plugin: 'block_content:bd78c484-37ef-47b2-b989-cce3904fc732'
+settings:
+  id: 'block_content:bd78c484-37ef-47b2-b989-cce3904fc732'
+  label: 'Link zur Dokumentation'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
+  user_role:
+    id: user_role
+    roles:
+      authenticated: authenticated
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'

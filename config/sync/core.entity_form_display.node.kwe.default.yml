@@ -397,8 +397,7 @@ content:
       year_end: ''
       inline: 0
       mask: 0
-    third_party_settings:
-      conditional_fields: {  }
+    third_party_settings: {  }
     type: single_date_time_widget
     region: content
   field_europeana_lieferung:
