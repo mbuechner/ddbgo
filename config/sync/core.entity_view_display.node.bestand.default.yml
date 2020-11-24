@@ -6,6 +6,7 @@ dependencies:
     - custom_formatters.formatter.jira_link
     - custom_formatters.formatter.jira_link_bei_europeana
     - custom_formatters.formatter.komma_getrennte_aufzaehlung
+    - custom_formatters.formatter.label_als_link
     - field.field.node.bestand.field_ablehnungsgrund
     - field.field.node.bestand.field_aggregator
     - field.field.node.bestand.field_aggregiert
@@ -31,6 +32,7 @@ dependencies:
     - field.field.node.bestand.field_kwe
     - field.field.node.bestand.field_lieferweg
     - field.field.node.bestand.field_link_fragebogen
+    - field.field.node.bestand.field_link_zu_coding_da_vinci
     - field.field.node.bestand.field_link_zu_ddbdash
     - field.field.node.bestand.field_personen
     - field.field.node.bestand.field_status
@@ -160,6 +162,7 @@ third_party_settings:
       children:
         - field_coding_da_vinci_teilnahme
         - field_coding_da_vinci_event
+        - field_link_zu_coding_da_vinci
         - field_coding_da_vinci_bemerkung
       parent_name: ''
       weight: 5
@@ -314,7 +317,7 @@ content:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     region: content
   field_coding_da_vinci_bemerkung:
-    weight: 17
+    weight: 18
     label: above
     settings: {  }
     third_party_settings:
@@ -517,6 +520,17 @@ content:
         settings:
           empty_text: –
     type: link
+    region: content
+  field_link_zu_coding_da_vinci:
+    weight: 17
+    label: inline
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    type: 'custom_formatters:label_als_link'
     region: content
   field_link_zu_ddbdash:
     weight: 17

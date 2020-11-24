@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bc11d4ea55d00e2b309ab69855ec18c",
+    "content-hash": "a9f9c90717b160fc976b286fe07987e2",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1202,6 +1202,18 @@
                 "source": "https://github.com/cweagans/composer-patches/tree/1.7.0"
             },
             "time": "2020-09-30T17:56:20+00:00"
+        },
+        {
+            "name": "ddbgolib/chosen",
+            "version": "1.8.7",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip"
+            },
+            "require": {
+                "composer/installers": "^1.2"
+            },
+            "type": "drupal-library"
         },
         {
             "name": "ddbgolib/datetimepicker",

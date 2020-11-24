@@ -28,6 +28,7 @@ dependencies:
     - field.field.node.bestand.field_kwe
     - field.field.node.bestand.field_lieferweg
     - field.field.node.bestand.field_link_fragebogen
+    - field.field.node.bestand.field_link_zu_coding_da_vinci
     - field.field.node.bestand.field_link_zu_ddbdash
     - field.field.node.bestand.field_personen
     - field.field.node.bestand.field_status
@@ -189,6 +190,7 @@ third_party_settings:
       children:
         - field_coding_da_vinci_teilnahme
         - field_coding_da_vinci_event
+        - field_link_zu_coding_da_vinci
         - field_coding_da_vinci_bemerkung
       parent_name: ''
       weight: 7
@@ -295,7 +297,7 @@ content:
     type: select2_entity_reference
     region: content
   field_coding_da_vinci_bemerkung:
-    weight: 11
+    weight: 12
     settings:
       rows: 5
       placeholder: ''
@@ -455,6 +457,14 @@ content:
     third_party_settings:
       conditional_fields: {  }
     type: link_default
+    region: content
+  field_link_zu_coding_da_vinci:
+    weight: 11
+    settings:
+      size: 80
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_link_zu_ddbdash:
     weight: 13

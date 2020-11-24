@@ -470,7 +470,7 @@ display:
           exposed: true
           expose:
             operator_id: ''
-            label: 'Status veröffentlicht'
+            label: Veröffentlichungsstatus
             description: ''
             use_operator: false
             operator: status_op
@@ -488,7 +488,7 @@ display:
             operator_list: {  }
           is_grouped: true
           group_info:
-            label: 'Status veröffentlicht'
+            label: Veröffentlichungsstatus
             description: ''
             identifier: status
             optional: true

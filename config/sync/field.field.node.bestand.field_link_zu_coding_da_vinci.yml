@@ -1,0 +1,33 @@
+uuid: 008f4480-4b54-4e1f-a4d8-ccfc95bd06b2
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_link_zu_coding_da_vinci
+    - node.type.bestand
+  module:
+    - regex_field_validation
+    - unique_field_ajax
+third_party_settings:
+  regex_field_validation:
+    enable: 1
+    regex: '/https:\/\/codingdavinci\.de\/node\/[0-9]*/'
+    error_message: 'Bitte eine URL in der Form ''https://codingdavinci.de/node/12345'' eingeben!'
+  unique_field_ajax:
+    unique: false
+    warn_only: false
+    per_lang: false
+    use_ajax: false
+    message: ''
+id: node.bestand.field_link_zu_coding_da_vinci
+field_name: field_link_zu_coding_da_vinci
+entity_type: node
+bundle: bestand
+label: 'Link zu Coding da Vinci'
+description: 'Permalink zur Webseite des Datensets auf codingdavinci.de'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
