@@ -142,7 +142,7 @@
         "drupal/rfv": "^1.5",
         "drupal/role_delegation": "^1.1",
         "drupal/search_api": "^1.15",
-        "drupal/select2": "^1.x-dev@dev",
+        "drupal/select2": "^1.12",
         "drupal/semanticviews": "^2.2",
         "drupal/single_datetime": "^1.7",
         "drupal/taxonomy_unique": "^2.2",
