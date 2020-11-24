@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9f9c90717b160fc976b286fe07987e2",
+    "content-hash": "b650bbd7a3f076fb027b21132dd7b3be",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1204,18 +1204,6 @@
             "time": "2020-09-30T17:56:20+00:00"
         },
         {
-            "name": "ddbgolib/chosen",
-            "version": "1.8.7",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip"
-            },
-            "require": {
-                "composer/installers": "^1.2"
-            },
-            "type": "drupal-library"
-        },
-        {
             "name": "ddbgolib/datetimepicker",
             "version": "2.5.20",
             "dist": {
@@ -2120,161 +2108,6 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/better_exposed_filters",
                 "issues": "https://www.drupal.org/project/issues/better_exposed_filters"
-            }
-        },
-        {
-            "name": "drupal/chosen",
-            "version": "3.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/chosen.git",
-                "reference": "3.0.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/chosen-3.0.1.zip",
-                "reference": "3.0.1",
-                "shasum": "088cb5bfb3872e217cff5300bc5884e022bd08d4"
-            },
-            "require": {
-                "drupal/chosen_lib": "*",
-                "drupal/core": "^8.8 || ^9",
-                "harvesthq/chosen": "^1.8.7"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "3.0.1",
-                    "datestamp": "1603473892",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Cyclodex",
-                    "homepage": "https://www.drupal.org/user/1305230"
-                },
-                {
-                    "name": "Dave Reid",
-                    "homepage": "https://www.drupal.org/user/53892"
-                },
-                {
-                    "name": "Hydra",
-                    "homepage": "https://www.drupal.org/user/647364"
-                },
-                {
-                    "name": "Pol",
-                    "homepage": "https://www.drupal.org/user/47194"
-                },
-                {
-                    "name": "aidanlis",
-                    "homepage": "https://www.drupal.org/user/502018"
-                },
-                {
-                    "name": "arshadcn",
-                    "homepage": "https://www.drupal.org/user/571032"
-                },
-                {
-                    "name": "kalman.hosszu",
-                    "homepage": "https://www.drupal.org/user/267481"
-                },
-                {
-                    "name": "nagy.balint",
-                    "homepage": "https://www.drupal.org/user/1763952"
-                },
-                {
-                    "name": "supercabbageuk",
-                    "homepage": "https://www.drupal.org/user/235438"
-                }
-            ],
-            "description": "Makes select elements more friendly using the Chosen jQuery plugin",
-            "homepage": "https://www.drupal.org/project/chosen",
-            "keywords": [
-                "Chosen",
-                "Drupal"
-            ],
-            "support": {
-                "source": "https://drupal.org/project/chosen",
-                "issues": "https://drupal.org/project/issues/chosen"
-            }
-        },
-        {
-            "name": "drupal/chosen_lib",
-            "version": "3.0.1",
-            "require": {
-                "drupal/chosen": "^3",
-                "drupal/core": "^8 || ^9",
-                "php": ">=5.6.0"
-            },
-            "type": "metapackage",
-            "extra": {
-                "drupal": {
-                    "version": "3.0.1",
-                    "datestamp": "1603473892",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Cyclodex",
-                    "homepage": "https://www.drupal.org/user/1305230"
-                },
-                {
-                    "name": "Dave Reid",
-                    "homepage": "https://www.drupal.org/user/53892"
-                },
-                {
-                    "name": "Hydra",
-                    "homepage": "https://www.drupal.org/user/647364"
-                },
-                {
-                    "name": "Pol",
-                    "homepage": "https://www.drupal.org/user/47194"
-                },
-                {
-                    "name": "aidanlis",
-                    "homepage": "https://www.drupal.org/user/502018"
-                },
-                {
-                    "name": "arshadcn",
-                    "homepage": "https://www.drupal.org/user/571032"
-                },
-                {
-                    "name": "kalman.hosszu",
-                    "homepage": "https://www.drupal.org/user/267481"
-                },
-                {
-                    "name": "nagy.balint",
-                    "homepage": "https://www.drupal.org/user/1763952"
-                },
-                {
-                    "name": "supercabbageuk",
-                    "homepage": "https://www.drupal.org/user/235438"
-                }
-            ],
-            "description": "This module provides the basic integration with the Chosen jQuery plugin.",
-            "homepage": "https://www.drupal.org/project/chosen",
-            "support": {
-                "source": "https://git.drupalcode.org/project/chosen"
             }
         },
         {
@@ -4389,17 +4222,11 @@
         },
         {
             "name": "drupal/select2",
-            "version": "1.12.0",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/select2.git",
-                "reference": "8.x-1.12"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/select2-8.x-1.12.zip",
-                "reference": "8.x-1.12",
-                "shasum": "a95c658ee4301c0432e378cee11b414f6963a075"
+                "reference": "a41b1d76b7c29ecbacb40a4ece453192bbd19ce3"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9"
@@ -4412,12 +4239,15 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.12",
-                    "datestamp": "1603365970",
+                    "version": "8.x-1.11+1-dev",
+                    "datestamp": "1603365341",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5783,58 +5613,6 @@
                 "source": "https://github.com/guzzle/psr7/tree/1.6.1"
             },
             "time": "2019-07-01T23:21:34+00:00"
-        },
-        {
-            "name": "harvesthq/chosen",
-            "version": "v1.8.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/harvesthq/chosen-package.git",
-                "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
-                "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Koen Punt",
-                    "homepage": "https://github.com/koenpunt"
-                },
-                {
-                    "name": "Patrick Filler",
-                    "homepage": "https://github.com/pfiller"
-                },
-                {
-                    "name": "Christophe Coevoet",
-                    "homepage": "https://github.com/stof"
-                },
-                {
-                    "name": "Ken Earley",
-                    "homepage": "https://github.com/kenearley"
-                }
-            ],
-            "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
-            "homepage": "https://harvesthq.github.io/chosen/",
-            "keywords": [
-                "dropdown",
-                "form",
-                "input",
-                "multiselect",
-                "select",
-                "ui"
-            ],
-            "support": {
-                "source": "https://github.com/harvesthq/chosen-package/tree/v1.8.7"
-            },
-            "time": "2018-06-28T20:32:51+00:00"
         },
         {
             "name": "henrikbjorn/lurker",
@@ -10073,6 +9851,7 @@
         "drupal/field_group": 20,
         "drupal/flag": 10,
         "drupal/libraries": 15,
+        "drupal/select2": 20,
         "drupal/ultimate_cron": 15
     },
     "prefer-stable": true,

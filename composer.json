@@ -95,26 +95,11 @@
                     "composer/installers": "^1.2"
                 }
             }
-        }, {
-            "type": "package",
-            "package": {
-                "name": "ddbgolib/chosen",
-                "version": "1.8.7",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip",
-                    "type": "zip"
-                },
-                "require": {
-                    "composer/installers": "^1.2"
-                }
-            }
         }
     ],
     "require": {
         "composer/installers": "^1.7",
         "cweagans/composer-patches": "^1.6",
-	"ddbgolib/chosen": "^1.8.7",
         "ddbgolib/datetimepicker": "^2.5",
         "ddbgolib/fontawesome": "^5.9",
         "ddbgolib/fontawesome-iconpicker": "^3.2",
@@ -126,7 +111,6 @@
         "drupal/adminimal_theme": "^1.5",
         "drupal/auto_entitylabel": "^3.0@beta",
         "drupal/better_exposed_filters": "^4.0@alpha",
-        "drupal/chosen": "^3.0",
         "drupal/color_field": "^2.2.0",
         "drupal/conditional_fields": "^1.0@alpha",
         "drupal/content_lock": "^2.0",
@@ -158,7 +142,7 @@
         "drupal/rfv": "^1.5",
         "drupal/role_delegation": "^1.1",
         "drupal/search_api": "^1.15",
-        "drupal/select2": "^1.6",
+        "drupal/select2": "^1.x-dev@dev",
         "drupal/semanticviews": "^2.2",
         "drupal/single_datetime": "^1.7",
         "drupal/taxonomy_unique": "^2.2",
