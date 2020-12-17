@@ -2312,30 +2312,30 @@
         },
         {
             "name": "drupal/content_lock",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/content_lock.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/content_lock-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "a83983c8deb697cf19863153b2b8c0e1a2452c2f"
+                "url": "https://ftp.drupal.org/files/projects/content_lock-8.x-2.2.zip",
+                "reference": "8.x-2.2",
+                "shasum": "9ea5810067c0df18879a16a19236e0cb46f9fba7"
             },
             "require": {
                 "drupal/core": "^8.8|^9.0"
             },
             "require-dev": {
-                "drupal/conflict": "dev-2.x",
+                "drupal/conflict": "^2.0@ALPHA",
                 "drupal/prefetch_cache": "dev-1.x"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1591342900",
+                    "version": "8.x-2.2",
+                    "datestamp": "1607936866",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3722,26 +3722,26 @@
         },
         {
             "name": "drupal/libraries",
-            "version": "3.0.0-alpha1",
+            "version": "3.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/libraries.git",
-                "reference": "8.x-3.0-alpha1"
+                "reference": "8.x-3.0-alpha6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/libraries-8.x-3.0-alpha1.zip",
-                "reference": "8.x-3.0-alpha1",
-                "shasum": "bb07036b1eaeea7d736fc7e72416238830cd8d67"
+                "url": "https://ftp.drupal.org/files/projects/libraries-8.x-3.0-alpha6.zip",
+                "reference": "8.x-3.0-alpha6",
+                "shasum": "d2aaf7f0968a1864457a7741b7e38ab11ef83e2c"
             },
             "require": {
-                "drupal/core": "~8.0"
+                "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-3.0-alpha1",
-                    "datestamp": "1517046484",
+                    "version": "8.x-3.0-alpha6",
+                    "datestamp": "1608099124",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Alpha releases are not covered by Drupal security advisories."
@@ -4634,26 +4634,26 @@
         },
         {
             "name": "drupal/token",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/token.git",
-                "reference": "8.x-1.7"
+                "reference": "8.x-1.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "c7e3a3757282e4c94e3c1fff08d01e22155cb853"
+                "url": "https://ftp.drupal.org/files/projects/token-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "f8e3b8f897817969324d88019438066b533bfe42"
             },
             "require": {
-                "drupal/core": "^8.7.7 || ^9"
+                "drupal/core": "^8.8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.7",
-                    "datestamp": "1589314266",
+                    "version": "8.x-1.8",
+                    "datestamp": "1607552423",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4667,7 +4667,7 @@
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
