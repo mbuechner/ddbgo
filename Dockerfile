@@ -1,5 +1,60 @@
-FROM composer:2 AS COMPOSER_CHAIN
-MAINTAINER Michael Büchner <m.buechner@dnb.de>
+FROM php:7-alpine AS COMPOSER_CHAIN
+RUN set -eux; \
+  apk add --no-cache --virtual .composer-rundeps \
+    bash \
+    coreutils \
+    git \
+    make \
+    mercurial \
+    openssh-client \
+    patch \
+    subversion \
+    tini \
+    unzip \
+    zip
+RUN set -eux; \
+  apk add --no-cache --virtual .build-deps \
+    libzip-dev \
+    zlib-dev \
+  ; \
+  docker-php-ext-install -j "$(nproc)" \
+    zip \
+  ; \
+  runDeps="$( \
+    scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
+      | tr ',' '\n' \
+      | sort -u \
+      | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+    )"; \
+  apk add --no-cache --virtual .composer-phpext-rundeps $runDeps; \
+  apk del .build-deps
+
+RUN printf "# composer php cli ini settings\n\
+date.timezone=UTC\n\
+memory_limit=-1\n\
+" > $PHP_INI_DIR/php-cli.ini
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+ENV COMPOSER_VERSION 2.0.9
+
+RUN set -eux; \
+  curl --silent --fail --location --retry 3 --output /tmp/keys.dev.pub --url https://raw.githubusercontent.com/composer/composer.github.io/e7f28b7200249f8e5bc912b42837d4598c74153a/snapshots.pub; \
+  curl --silent --fail --location --retry 3 --output /tmp/keys.tags.pub --url https://raw.githubusercontent.com/composer/composer.github.io/e7f28b7200249f8e5bc912b42837d4598c74153a/releases.pub; \
+  curl --silent --fail --location --retry 3 --output /tmp/installer.php --url https://raw.githubusercontent.com/composer/getcomposer.org/cb19f2aa3aeaa2006c0cd69a7ef011eb31463067/web/installer; \
+  php -r " \
+    \$signature = '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5'; \
+    \$hash = hash('sha384', file_get_contents('/tmp/installer.php')); \
+    if (!hash_equals(\$signature, \$hash)) { \
+      unlink('/tmp/installer.php'); \
+      echo 'Integrity check failed, installer is either corrupt or worse.' . PHP_EOL; \
+      exit(1); \
+    }"; \
+  php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION}; \
+  composer --ansi --version --no-interaction; \
+  composer diagnose; \
+  rm -f /tmp/installer.php; \
+  find /tmp -type d -exec chmod -v 1777 {} +
 RUN apk add --no-cache libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev
 RUN docker-php-ext-install gd
 COPY / /tmp/ddbgo
@@ -88,6 +143,7 @@ RUN { \
 		echo "max_execution_time = 600"; \
 		echo "max_input_vars = 5000"; \
 	} > /usr/local/etc/php/conf.d/0-upload_large_dumps.ini
+RUN printf '%s\n%s\n' "LISTEN 8080" "$(cat /etc/apache2/ports.conf)" > /etc/apache2/ports.conf
 
 WORKDIR /var/www/html
 COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
@@ -98,7 +154,7 @@ RUN find . -type f -exec chmod 644 {} \;
 RUN chown -R www-data:www-data web/sites web/modules web/themes web/tmp
 RUN chmod +x /var/www/html/vendor/drush/drush/drush
 RUN { \
-		echo "<VirtualHost *:80>"; \
+		echo "<VirtualHost *:8080>"; \
 		echo "  ServerAdmin m.buechner@dnb.de"; \
 		echo "  DocumentRoot /var/www/html/web"; \
 		echo "  ErrorLog ${APACHE_LOG_DIR}/error.log"; \
@@ -120,7 +176,7 @@ RUN rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
-HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost/ || exit 1
+HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:8080/ || exit 1
 
-EXPOSE 80
+EXPOSE 8080
 CMD ["apache2-foreground"]
