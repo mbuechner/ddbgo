@@ -182,6 +182,8 @@ RUN apt-get install -y supervisor
 RUN { \
 	echo "[supervisord]"; \
 	echo "nodaemon=true"; \
+	echo "logfile=/dev/null"; \
+       	echo "logfile_maxbytes=0"; \
         echo "[program:apache]"; \
         echo "command=apache2-foreground"; \
         echo "redirect_stderr=true"; \
