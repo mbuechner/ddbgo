@@ -7,8 +7,8 @@ echo "Start Drupal Cache Rebuild..."
 
 set -e
 echo "Export Environment variables for Cron job..."
-printenv | sed 's/^\(.*\)$/export \1/g' | sed 's/=/="/' | sed 's/$/"/' > /root/ddbgoenv.sh
-chmod 700 /root/ddbgoenv.sh
+printenv | sed 's/^\(.*\)$/export \1/g' | sed 's/=/="/' | sed 's/$/"/' > /tmp/ddbgoenv.sh
+chmod 700 /tmp/ddbgoenv.sh
 echo "Start Cron service..."
 service cron start
 
