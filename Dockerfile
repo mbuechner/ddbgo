@@ -161,12 +161,42 @@ RUN { \
 	} > /etc/apache2/sites-enabled/000-default.conf
 
 # Add cron (every minute) for Ultimate Cron module
-RUN apt-get update && apt-get install -y cron
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64 \
+    SUPERCRONIC=supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=048b95b48b708983effb2e5c935a1ef8483d9e3e
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+ && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
+ && chmod +x "$SUPERCRONIC" \
+ && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
+ && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+RUN mkdir /etc/cron.d
 RUN { \
-		echo "*/1 * * * * root . /tmp/ddbgoenv.sh; /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron >> /var/log/ddbgocron.log 2>&1"; \
-	} > /etc/cron.d/ddbgo-cron
+	echo "*/1 * * * * /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout"; \
+} > /etc/cron.d/ddbgo-cron
 RUN chmod 0644 /etc/cron.d/ddbgo-cron
-RUN crontab /etc/cron.d/ddbgo-cron
+
+# Supervisord
+RUN apt-get install -y supervisor
+RUN { \
+	echo "[supervisord]"; \
+	echo "nodaemon=true"; \
+        echo "[program:apache]"; \
+        echo "command=apache2-foreground"; \
+        echo "redirect_stderr=true"; \
+        echo "stdout_logfile=/dev/fd/1"; \
+        echo "stdout_logfile_maxbytes=0"; \
+	echo "killasgroup=true"; \
+        echo "stopasgroup=true"; \
+        echo "[program:supercronic]"; \
+        echo "command=supercronic /etc/cron.d/ddbgo-cron"; \
+	echo "redirect_stderr=true"; \
+	echo "stdout_logfile=/dev/fd/1"; \
+	echo "stdout_logfile_maxbytes=0"; \
+        echo "killasgroup=true"; \
+	echo "stopasgroup=true"; \
+} > /etc/supervisor/conf.d/supervisord.conf
 
 # Clean system
 RUN apt-get clean
@@ -177,4 +207,4 @@ ENTRYPOINT ["docker-php-entrypoint-drupal"]
 HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:8080/ || exit 1
 
 EXPOSE 8080
-CMD ["apache2-foreground"]
+CMD ["supervisord"]
