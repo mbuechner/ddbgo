@@ -36,7 +36,6 @@ memory_limit=-1\n\
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /tmp
-ENV COMPOSER_VERSION 2.0.9
 
 RUN set -eux; \
   curl --silent --fail --location --retry 3 --output /tmp/keys.dev.pub --url https://raw.githubusercontent.com/composer/composer.github.io/e7f28b7200249f8e5bc912b42837d4598c74153a/snapshots.pub; \
@@ -50,7 +49,7 @@ RUN set -eux; \
       echo 'Integrity check failed, installer is either corrupt or worse.' . PHP_EOL; \
       exit(1); \
     }"; \
-  php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION}; \
+  php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer; \
   composer --ansi --version --no-interaction; \
   composer diagnose; \
   rm -f /tmp/installer.php; \
@@ -143,8 +142,7 @@ RUN { \
 		echo "max_execution_time = 600"; \
 		echo "max_input_vars = 5000"; \
 	} > /usr/local/etc/php/conf.d/0-upload_large_dumps.ini
-RUN printf '%s\n%s\n' "LISTEN 8080" "$(cat /etc/apache2/ports.conf)" > /etc/apache2/ports.conf
-
+RUN echo "LISTEN 8080" > /etc/apache2/ports.conf
 WORKDIR /var/www/html
 COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
 COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
@@ -157,8 +155,8 @@ RUN { \
 		echo "<VirtualHost *:8080>"; \
 		echo "  ServerAdmin m.buechner@dnb.de"; \
 		echo "  DocumentRoot /var/www/html/web"; \
-		echo "  ErrorLog ${APACHE_LOG_DIR}/error.log"; \
-		echo "  CustomLog ${APACHE_LOG_DIR}/access.log combined"; \
+		echo "  ErrorLog /dev/stderr"; \
+		echo "  CustomLog /dev/stdout combined"; \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
 
