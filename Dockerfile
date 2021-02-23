@@ -182,21 +182,22 @@ RUN apt-get install -y supervisor
 RUN { \
 	echo "[supervisord]"; \
 	echo "nodaemon=true"; \
+  echo "user=nobody"; \
 	echo "logfile=/dev/null"; \
-       	echo "logfile_maxbytes=0"; \
-        echo "[program:apache]"; \
-        echo "command=apache2-foreground"; \
-        echo "redirect_stderr=true"; \
-        echo "stdout_logfile=/dev/fd/1"; \
-        echo "stdout_logfile_maxbytes=0"; \
+  echo "logfile_maxbytes=0"; \
+  echo "[program:apache]"; \
+  echo "command=apache2-foreground"; \
+  echo "redirect_stderr=true"; \
+  echo "stdout_logfile=/dev/fd/1"; \
+  echo "stdout_logfile_maxbytes=0"; \
 	echo "killasgroup=true"; \
-        echo "stopasgroup=true"; \
-        echo "[program:supercronic]"; \
-        echo "command=supercronic /etc/cron.d/ddbgo-cron"; \
+  echo "stopasgroup=true"; \
+  echo "[program:supercronic]"; \
+  echo "command=supercronic /etc/cron.d/ddbgo-cron"; \
 	echo "redirect_stderr=true"; \
 	echo "stdout_logfile=/dev/fd/1"; \
 	echo "stdout_logfile_maxbytes=0"; \
-        echo "killasgroup=true"; \
+  echo "killasgroup=true"; \
 	echo "stopasgroup=true"; \
 } > /etc/supervisor/conf.d/supervisord.conf
 
