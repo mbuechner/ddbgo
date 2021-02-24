@@ -1,7 +1,4 @@
-# See https://github.com/composer/docker/blob/2a6335d61cc92b7c43b69072ac107c4afb568f49/2.0/Dockerfile
-# The following is identical, except the use of PHP 7.
 FROM php:7-alpine AS COMPOSER_CHAIN
-MAINTAINER Michael Büchner <m.buechner@dnb.de>
 RUN set -eux; \
   apk add --no-cache --virtual .composer-rundeps \
     bash \
@@ -18,9 +15,11 @@ RUN set -eux; \
 RUN set -eux; \
   apk add --no-cache --virtual .build-deps \
     libzip-dev \
-    zlib-dev; \
+    zlib-dev \
+  ; \
   docker-php-ext-install -j "$(nproc)" \
-    zip; \
+    zip \
+  ; \
   runDeps="$( \
     scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
       | tr ',' '\n' \
@@ -55,8 +54,6 @@ RUN set -eux; \
   composer diagnose; \
   rm -f /tmp/installer.php; \
   find /tmp -type d -exec chmod -v 1777 {} +
-
-# the following is for DDBgo
 RUN apk add --no-cache libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev
 RUN docker-php-ext-install gd
 COPY / /tmp/ddbgo
@@ -145,6 +142,7 @@ RUN { \
 		echo "max_execution_time = 600"; \
 		echo "max_input_vars = 5000"; \
 	} > /usr/local/etc/php/conf.d/0-upload_large_dumps.ini
+RUN echo "LISTEN 8080" > /etc/apache2/ports.conf
 WORKDIR /var/www/html
 COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
 COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
@@ -153,7 +151,6 @@ RUN find . -type d -exec chmod 755 {} \;
 RUN find . -type f -exec chmod 644 {} \;
 RUN chown -R www-data:www-data web/sites web/modules web/themes web/tmp
 RUN chmod +x /var/www/html/vendor/drush/drush/drush
-RUN echo "LISTEN 8080" > /etc/apache2/ports.conf
 RUN { \
 		echo "<VirtualHost *:8080>"; \
 		echo "  ServerAdmin m.buechner@dnb.de"; \
@@ -162,6 +159,50 @@ RUN { \
 		echo "  CustomLog /dev/stdout combined"; \
 		echo "</VirtualHost>"; \
 	} > /etc/apache2/sites-enabled/000-default.conf
+
+# Add cron (every minute) for Ultimate Cron module
+ENV SUPERCRONIC_URL=https://github.com/aptible/supercronic/releases/download/v0.1.12/supercronic-linux-amd64 \
+    SUPERCRONIC=supercronic-linux-amd64 \
+    SUPERCRONIC_SHA1SUM=048b95b48b708983effb2e5c935a1ef8483d9e3e
+
+RUN curl -fsSLO "$SUPERCRONIC_URL" \
+ && echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - \
+ && chmod +x "$SUPERCRONIC" \
+ && mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" \
+ && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
+
+RUN mkdir /etc/cron.d
+RUN { \
+	echo "*/1 * * * * /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout"; \
+} > /etc/cron.d/ddbgo-cron
+RUN chmod 0644 /etc/cron.d/ddbgo-cron
+
+# Supervisord
+RUN apt-get install -y supervisor
+RUN { \
+	echo "[supervisord]"; \
+	echo "pidfile = /tmp/supervisord.pid"; \
+	echo "nodaemon=true"; \
+	echo "user=nobody"; \
+	echo "logfile=/dev/null"; \
+	echo "logfile_maxbytes=0"; \
+	echo "[unix_http_server]"; \
+	echo "file=/tmp/supervisord.sock"; \
+	echo "[program:apache]"; \
+	echo "command=apache2-foreground"; \
+	echo "redirect_stderr=true"; \
+	echo "stdout_logfile=/dev/fd/1"; \
+	echo "stdout_logfile_maxbytes=0"; \
+	echo "killasgroup=true"; \
+	echo "stopasgroup=true"; \
+	echo "[program:supercronic]"; \
+	echo "command=supercronic /etc/cron.d/ddbgo-cron"; \
+	echo "redirect_stderr=true"; \
+	echo "stdout_logfile=/dev/fd/1"; \
+	echo "stdout_logfile_maxbytes=0"; \
+	echo "killasgroup=true"; \
+	echo "stopasgroup=true"; \
+} > /etc/supervisor/conf.d/supervisord.conf
 
 # Clean system
 RUN apt-get clean
@@ -172,5 +213,4 @@ ENTRYPOINT ["docker-php-entrypoint-drupal"]
 HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:8080/ || exit 1
 
 EXPOSE 8080
-CMD ["apache2-foreground"]
-
+CMD ["supervisord"]

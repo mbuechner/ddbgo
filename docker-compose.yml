@@ -18,7 +18,7 @@ services:
       UPDATE_FREE_ACCESS: "FALSE"
       FILE_PUBLIC_PATH: "sites/default/files"
       TRUSTED_HOST_PATTERNS: "^localhost$$, ^127.0.0.1$$, ^go-t.ddb.de$$"
-      APACHE_LOG_DIR: "/var/www/html/web/sites/default/files/logs"
+      TMP: "/tmp"
     volumes:
       - ddbgo:/var/www/html/web/sites/default/files
     ports:
