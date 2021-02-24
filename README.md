@@ -37,6 +37,7 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
    UPDATE_FREE_ACCESS=FALSE
    FILE_PUBLIC_PATH=sites/default/files
    TRUSTED_HOST_PATTERNS="^localhost\$, ^127.0.0.1\$"
+   TMP=/tmp
    ```
 3. Use [Drush](https://www.drush.org/) command to run local server: `vendor/bin/drush rs`
 4. Access via  http://127.0.0.1:8888
@@ -85,3 +86,15 @@ docker pull mbuechner/ddbgo:latest
    `docker run -d -p 8080 -P ddbgo`
 5. Open browser:
    http://localhost:8080/
+   
+## Cron job
+It's important to run Drupal's Cron job regularly. It's recommended to trigger it *every minute* with a forbidden concurrency from an external cron job. The [Drush command](https://docs.drush.org/en/8.x/cron/) is a simple way to execute Drupal's cron job.
+Run:
+```
+> /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout
+```
+Cron task:
+```
+*/1 * * * * /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout
+```
+More information about cron at the [Drupal documentation](https://www.drupal.org/docs/administering-a-drupal-site/cron-automated-tasks/cron-automated-tasks-overview).
