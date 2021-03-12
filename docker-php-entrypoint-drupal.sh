@@ -1,4 +1,4 @@
-k#!/bin/sh
+#!/bin/sh
 set +e;
 
 if [ ${MAINTENANCE_ON_STARTUP+x} = "no" ]; then
@@ -15,4 +15,3 @@ set -e;
 docker-php-entrypoint;
 
 exec "$@";
-
