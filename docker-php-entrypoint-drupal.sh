@@ -1,7 +1,9 @@
 #!/bin/sh
 set +e;
 
-if [ ${MAINTENANCE_ON_STARTUP+x} = "no" ]; then
+MAINTENANCE_ON_STARTUP="${MAINTENANCE_ON_STARTUP:-yes}"
+
+if [ "$MAINTENANCE_ON_STARTUP" = "no" ]; then
         echo "NOT doing Drupal Update DB and Cache Rebuild...";
 else
         echo "Start Drupal Update DB...";
