@@ -140,6 +140,7 @@
         "drupal/minifyjs": "^2.0",
         "drupal/node_view_permissions": "^1.2",
         "drupal/noreqnewpass": "^1.1",
+        "drupal/oauth": "^2.2",
         "drupal/paragraphs": "^1.10",
         "drupal/rfv": "^1.5",
         "drupal/role_delegation": "^1.1",
