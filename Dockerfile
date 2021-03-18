@@ -87,7 +87,7 @@ RUN set -eux; \
 		pdo_mysql \
 		pdo_pgsql \
 		zip; \
-	pecl install uploadprogress apcu; \
+	pecl install uploadprogress apcu oauth; \
 	docker-php-ext-enable uploadprogress apcu; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
