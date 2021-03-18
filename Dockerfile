@@ -77,7 +77,8 @@ RUN set -eux; \
 		libjpeg62-turbo-dev \
 		libpng-dev \
 		libpq-dev \
-		libzip-dev; \
+		libzip-dev \
+		libpcre3-dev; \
 	docker-php-ext-configure gd \
 		--with-freetype \
 		--with-jpeg; \
@@ -88,7 +89,7 @@ RUN set -eux; \
 		pdo_pgsql \
 		zip; \
 	pecl install uploadprogress apcu oauth; \
-	docker-php-ext-enable uploadprogress apcu; \
+	docker-php-ext-enable uploadprogress apcu oauth; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
