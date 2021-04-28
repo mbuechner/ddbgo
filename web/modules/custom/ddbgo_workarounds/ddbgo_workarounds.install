@@ -12,3 +12,23 @@ function ddbgo_workarounds_install() {
   // Set a large weight in order to go last (and so validate first).
   module_set_weight('ddbgo_workarounds', 1001);
 }
+
+/**
+ * Implements hook_requirements().
+ */
+function boilerplate_requirements($phase) {
+  $requirements = [];
+
+  if($phase == 'runtime') {
+    $module_name = basename(__FILE__, '.install');
+    $requirements[] = [
+      'title' => t('DDBgo, Version {{version}}'),
+      'value' => t('Git Commit: {{commitid}} (<a href="https://github.com/mbuechner/ddbgo/commit/{{commitid}}">Weitere Infromationen</a>)'),
+      'description' => t('DDBgo ist korrekt installiert', [
+        '%module' => drupal_get_path('module', $module_name) . '/' . $module_name . '.module',
+      ]),
+      'severity' => REQUIREMENT_OK,
+    ];
+  }
+  return $requirements;
+}
