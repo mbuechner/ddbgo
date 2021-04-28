@@ -16,7 +16,7 @@ function ddbgo_workarounds_install() {
 /**
  * Implements hook_requirements().
  */
-function boilerplate_requirements($phase) {
+function ddbgo_workarounds_requirements($phase) {
   $requirements = [];
 
   if($phase == 'runtime') {
