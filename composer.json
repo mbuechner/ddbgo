@@ -147,7 +147,7 @@
         "drupal/search_api": "^1.15",
         "drupal/select2": "^1.12",
         "drupal/semanticviews": "^2.2",
-        "drupal/single_datetime": "^1.7",
+        "drupal/single_datetime": "^1.8@beta",
         "drupal/taxonomy_unique": "^2.2",
         "drupal/term_merge": "^1.0",
         "drupal/token": "^1.6",
@@ -216,9 +216,6 @@
             },
             "drupal/unique_field_ajax": {
                 "DDBgo improvements in Unique Field Ajax module": "patches/DDBgo-improvements_in_unique_field_ajax_module.patch"
-            },
-            "drupal/single_datetime": {
-                "Blur only Datetime field if allowBlank is false in Single Datetime module v1.7 (this is fixed in v1.8, remove patch if v1.7 is not used anymore!)": "patches/Blur_only_if_allowBlank_is_false_in_single_datetime_1.7_module.patch"
             }
         }
     }

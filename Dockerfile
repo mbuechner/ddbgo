@@ -63,6 +63,11 @@ COPY / /tmp/ddbgo
 WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
 
+# Add git tag version to status page
+RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
+	sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install;
+RUN rm -rf .git/
+
 # from https://github.com/docker-library/drupal/blob/master/8.7/apache/Dockerfile
 FROM php:7.4-apache
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
