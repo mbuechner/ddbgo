@@ -27,7 +27,7 @@ function ddbgo_workarounds_requirements($phase) {
       'description' => t('DDBgo ist korrekt installiert', [
         '%module' => drupal_get_path('module', $module_name) . '/' . $module_name . '.module',
       ]),
-      'severity' => REQUIREMENT_OK,
+      'severity' => REQUIREMENT_INFO,
     ];
   }
   return $requirements;
