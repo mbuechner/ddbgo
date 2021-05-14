@@ -21,10 +21,11 @@ function ddbgo_workarounds_requirements($phase) {
 
   if($phase == 'runtime') {
     $module_name = basename(__FILE__, '.install');
-    $requirements[] = [
-      'title' => t('DDBgo, Version {{version}}'),
-      'value' => t('Git Commit: {{commitid}} (<a href="https://github.com/mbuechner/ddbgo/commit/{{commitid}}">Weitere Infromationen</a>)'),
-      'description' => t('DDBgo ist korrekt installiert', [
+
+    $requirements['ddbgo_workarounds'] = [
+      'title' => t('DDBgo {{version}}'),
+      'value' => t('Git Tag: <a href="https://github.com/mbuechner/ddbgo/releases/tag/{{version}}">{{version}}</a>; Git Commit: <a href="https://github.com/mbuechner/ddbgo/commit/{{commitid}}">{{commitid}}</a>'),
+      'description' => t('DDBgo ist korrekt installiert (%module).', [
         '%module' => drupal_get_path('module', $module_name) . '/' . $module_name . '.module',
       ]),
       'severity' => REQUIREMENT_INFO,
