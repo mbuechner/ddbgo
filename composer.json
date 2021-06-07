@@ -15,10 +15,10 @@
             "type": "package",
             "package": {
                 "name": "ddbgolib/fontawesome",
-                "version": "5.9.3",
+                "version": "5.15.3",
                 "type": "drupal-library",
                 "dist": {
-                    "url": "https://use.fontawesome.com/releases/v5.6.3/fontawesome-free-5.6.3-web.zip",
+                    "url": "https://use.fontawesome.com/releases/v5.15.3/fontawesome-free-5.15.3-web.zip",
                     "type": "zip"
                 },
                 "require": {
@@ -57,10 +57,10 @@
             "type": "package",
             "package": {
                 "name": "ddbgolib/jquery-simple-color",
-                "version": "1.2.2",
+                "version": "1.2.3",
                 "type": "drupal-library",
                 "dist": {
-                    "url": "https://github.com/recurser/jquery-simple-color/archive/v1.2.2.zip",
+                    "url": "https://github.com/recurser/jquery-simple-color/archive/v1.2.3.zip",
                     "type": "zip"
                 },
                 "require": {
@@ -101,9 +101,9 @@
         "composer/installers": "^1.7",
         "cweagans/composer-patches": "^1.6",
         "ddbgolib/datetimepicker": "^2.5",
-        "ddbgolib/fontawesome": "^5.9",
+        "ddbgolib/fontawesome": "^5.15.3",
         "ddbgolib/fontawesome-iconpicker": "^3.2",
-        "ddbgolib/jquery-simple-color": "^1.2",
+        "ddbgolib/jquery-simple-color": "^1.2.3",
         "ddbgolib/select2": "^4.0",
         "ddbgolib/spectrum": "^1.8",
         "drupal/admin_toolbar": "^2.0",
@@ -115,8 +115,8 @@
         "drupal/color_field": "^2.2.0",
         "drupal/conditional_fields": "^1.0@alpha",
         "drupal/content_lock": "^2.0",
+        "drupal/core": "9.1.10 as 8.9.0",
         "drupal/core-composer-scaffold": "^9.0.7",
-        "drupal/core-recommended": "^8.8.1",
         "drupal/css_editor": "^1.2",
         "drupal/custom_formatters": "^3.0@alpha",
         "drupal/db_maintenance": "^1.4",
@@ -159,7 +159,6 @@
         "drupal/userprotect": "^1.1",
         "drupal/viewsreference": "^1.4",
         "drush/drush": "^10.1",
-        "henrikbjorn/lurker": "^1.2",
         "natxet/cssmin": "^3.0",
         "symfony/string": "^5.1",
         "vlucas/phpdotenv": "^4.1",
