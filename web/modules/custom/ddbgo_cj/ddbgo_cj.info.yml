@@ -8,6 +8,5 @@ dependencies:
 package: ddbgo
 version: '8.x-1.0'
 core: 8.x
-core_version_requirement: ^8 || ^9
 project: 'ddbgo_cj'
 datestamp: 1583236854
