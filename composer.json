@@ -216,8 +216,5 @@
                 "DDBgo improvements in Unique Field Ajax module": "patches/DDBgo-improvements_in_unique_field_ajax_module.patch"
             }
         }
-    },
-    "require-dev": {
-        "phpspec/prophecy-phpunit": "^2"
     }
 }
