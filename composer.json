@@ -126,6 +126,7 @@
         "drupal/exclude_node_title": "^1.0@beta",
         "drupal/facets": "^1.5",
         "drupal/field_group": "3.x-dev",
+        "drupal/field_validation": "^1.0@beta",
         "drupal/flag": "^4.0@beta",
         "drupal/flood_unblock": "^2.0",
         "drupal/fontawesome": "^2.15",
