@@ -128,6 +128,7 @@
         "drupal/field_group": "3.x-dev",
         "drupal/field_validation": "^1.0@beta",
         "drupal/flag": "^4.0@beta",
+        "drupal/flood_control": "^2.1",
         "drupal/flood_unblock": "^2.0",
         "drupal/fontawesome": "^2.15",
         "drupal/fontawesome_menu_icons": "^1.8",
