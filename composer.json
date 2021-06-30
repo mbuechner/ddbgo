@@ -175,7 +175,10 @@
     "prefer-stable": true,
     "config": {
         "preferred-install": "source",
-        "sort-packages": true
+        "sort-packages": true,
+	"platform": {
+            "php": "7.4.0"
+        }
     },
     "autoload": {
         "classmap": ["scripts/composer/ScriptHandler.php"],
