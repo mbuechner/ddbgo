@@ -176,7 +176,7 @@
     "config": {
         "preferred-install": "source",
         "sort-packages": true,
-	"platform": {
+    "platform": {
             "php": "7.4.0"
         }
     },

@@ -3,8 +3,9 @@
 FROM composer:2 AS COMPOSER_CHAIN
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 # the following is for DDBgo
-RUN apk add --no-cache libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev; \
-  docker-php-ext-install gd
+RUN apk add libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev; \
+	docker-php-ext-configure gd --with-jpeg --with-freetype; \
+	docker-php-ext-install gd;
 COPY / /tmp/ddbgo
 WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
@@ -112,14 +113,13 @@ COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
 COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
 
 RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
-  chown -R www-data:www-data web/sites web/modules web/themes web/tmp; \
-  chmod +x /var/www/html/vendor/drush/drush/drush;
-RUN find web/ -type d -exec chmod 755 {} \;
-RUN find web/ -type f -exec chmod 644 {} \;
+	chown -R www-data:www-data web/sites web/modules web/themes web/tmp; \
+	chmod +x /var/www/html/vendor/drush/drush/drush;
+RUN find web \( -type d -exec chmod 755 {} + \) -o \( -type f -exec chmod 644 {} + \)
 
 # Clean system
 RUN apt-get clean; \
-  rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
