@@ -1,16 +1,10 @@
-# See https://github.com/composer/docker/blob/master/2.1/Dockerfile
-# The following is identical, except the use of PHP 7.
 FROM composer:2 AS COMPOSER_CHAIN
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
-# the following is for DDBgo
-RUN apk add libpng libpng-dev libjpeg-turbo-dev libwebp-dev zlib-dev libxpm-dev; \
-	docker-php-ext-configure gd --with-jpeg --with-freetype; \
-	docker-php-ext-install gd;
 COPY / /tmp/ddbgo
 WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
 
-# Add git tag version to status page
+# Add git tag version to status page in DDBgo
 RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
 	sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install;
 RUN rm -rf .git/
@@ -114,8 +108,8 @@ COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
 
 RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
 	chown -R www-data:www-data web/sites web/modules web/themes web/tmp; \
-	chmod +x /var/www/html/vendor/drush/drush/drush;
-RUN find web \( -type d -exec chmod 755 {} + \) -o \( -type f -exec chmod 644 {} + \)
+	chmod +x /var/www/html/vendor/drush/drush/drush; \
+	find web \( -type d -exec chmod 755 {} + \) -o \( -type f -exec chmod 644 {} + \);
 
 # Clean system
 RUN apt-get clean; \
