@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbd79ae9dfa65780c5b71f9bb5983e93",
+    "content-hash": "cbf4e18b1cb9b808e712a977252e2f0a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3405,58 +3405,6 @@
             "homepage": "https://www.drupal.org/project/flood_control",
             "support": {
                 "source": "https://git.drupalcode.org/project/flood_control"
-            }
-        },
-        {
-            "name": "drupal/flood_unblock",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/flood_unblock.git",
-                "reference": "8.x-2.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flood_unblock-8.x-2.0.zip",
-                "reference": "8.x-2.0",
-                "shasum": "9f6df2537be6b760f58145e9dd9c8a94e69856db"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.0",
-                    "datestamp": "1584604316",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "batigolix",
-                    "homepage": "https://www.drupal.org/user/22175"
-                },
-                {
-                    "name": "fabianderijk",
-                    "homepage": "https://www.drupal.org/user/278745"
-                },
-                {
-                    "name": "tomvv",
-                    "homepage": "https://www.drupal.org/user/2748021"
-                }
-            ],
-            "description": "Interface for unblocking ip's that are blocked by the flood table",
-            "homepage": "https://www.drupal.org/project/flood_unblock",
-            "support": {
-                "source": "https://git.drupalcode.org/project/flood_unblock"
             }
         },
         {
