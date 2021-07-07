@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbf4e18b1cb9b808e712a977252e2f0a",
+    "content-hash": "560bf237632d65de751da0a5d9265630",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2811,74 +2811,6 @@
             }
         },
         {
-            "name": "drupal/db_maintenance",
-            "version": "1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/db_maintenance.git",
-                "reference": "8.x-1.4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/db_maintenance-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "c5c8116d1ddf8fc57604d89e025ed12e7d745abb"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1565642585",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Nafes",
-                    "homepage": "https://www.drupal.org/user/2489926"
-                },
-                {
-                    "name": "VicOnt",
-                    "homepage": "https://www.drupal.org/user/1801242"
-                },
-                {
-                    "name": "bonobo",
-                    "homepage": "https://www.drupal.org/user/19631"
-                },
-                {
-                    "name": "cYu",
-                    "homepage": "https://www.drupal.org/user/202205"
-                },
-                {
-                    "name": "deekayen",
-                    "homepage": "https://www.drupal.org/user/972"
-                },
-                {
-                    "name": "jgraham",
-                    "homepage": "https://www.drupal.org/user/146055"
-                },
-                {
-                    "name": "marcp",
-                    "homepage": "https://www.drupal.org/user/20885"
-                }
-            ],
-            "description": "DB Maintenance module.",
-            "homepage": "https://www.drupal.org/project/db_maintenance",
-            "support": {
-                "source": "https://git.drupalcode.org/project/db_maintenance"
-            }
-        },
-        {
             "name": "drupal/empty_fields",
             "version": "1.0.0-beta1",
             "source": {
@@ -4268,6 +4200,62 @@
             }
         },
         {
+            "name": "drupal/restui",
+            "version": "1.20.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/restui.git",
+                "reference": "8.x-1.20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/restui-8.x-1.20.zip",
+                "reference": "8.x-1.20",
+                "shasum": "df1d3c486ee0e7b4e9a24e6523a69c9efe73caff"
+            },
+            "require": {
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.20",
+                    "datestamp": "1616839543",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "-enzo-",
+                    "homepage": "https://www.drupal.org/user/294937"
+                },
+                {
+                    "name": "clemens.tolboom",
+                    "homepage": "https://www.drupal.org/user/125814"
+                },
+                {
+                    "name": "juampynr",
+                    "homepage": "https://www.drupal.org/user/682736"
+                },
+                {
+                    "name": "klausi",
+                    "homepage": "https://www.drupal.org/user/262198"
+                }
+            ],
+            "description": "Provides a user interface to manage REST resources.",
+            "homepage": "https://www.drupal.org/project/restui",
+            "support": {
+                "source": "https://git.drupalcode.org/project/restui"
+            }
+        },
+        {
             "name": "drupal/rfv",
             "version": "1.5.0",
             "source": {
@@ -4890,51 +4878,6 @@
             "homepage": "https://www.drupal.org/project/toolbar_menu",
             "support": {
                 "source": "https://git.drupalcode.org/project/toolbar_menu"
-            }
-        },
-        {
-            "name": "drupal/toolbar_menu_clean",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/toolbar_menu_clean.git",
-                "reference": "8.x-1.2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/toolbar_menu_clean-8.x-1.2.zip",
-                "reference": "8.x-1.2",
-                "shasum": "8adbd1be7cc4065fbb717dab969a8e35817483cc"
-            },
-            "require": {
-                "drupal/core": "~8.0",
-                "drupal/toolbar_menu": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.2",
-                    "datestamp": "1568775486",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "zipme_hkt",
-                    "homepage": "https://www.drupal.org/user/368236"
-                }
-            ],
-            "description": "Clean up Toolbar menu for user",
-            "homepage": "https://www.drupal.org/project/toolbar_menu_clean",
-            "support": {
-                "source": "https://git.drupalcode.org/project/toolbar_menu_clean"
             }
         },
         {
@@ -6503,16 +6446,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.5",
+            "version": "v4.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "4432ba399e47c66624bc73c8c0f811e5c109576f"
+                "reference": "fe14cf3672a149364fb66dfe11bf6549af899f94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4432ba399e47c66624bc73c8c0f811e5c109576f",
-                "reference": "4432ba399e47c66624bc73c8c0f811e5c109576f",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/fe14cf3672a149364fb66dfe11bf6549af899f94",
+                "reference": "fe14cf3672a149364fb66dfe11bf6549af899f94",
                 "shasum": ""
             },
             "require": {
@@ -6553,9 +6496,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.10.5"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v4.11.0"
             },
-            "time": "2021-05-03T19:11:20+00:00"
+            "time": "2021-07-03T13:36:55+00:00"
         },
         {
             "name": "paragonie/random_compat",
