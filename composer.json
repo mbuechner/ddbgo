@@ -212,6 +212,9 @@
             "initial": {
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
+            },
+            "file-mapping": {
+                "[web-root]/README.md": false
             }
         },
         "composer-exit-on-patch-failure": true,
