@@ -133,6 +133,7 @@
         "drupal/form_options_attributes": "^1.2",
         "drupal/hook_post_action": "^1.0",
         "drupal/jquery_ui_accordion": "^1.1",
+        "drupal/jsonapi_extras": "^3.19",
         "drupal/libraries": "^3.0@alpha",
         "drupal/menu_block": "^1.5",
         "drupal/metatag": "^1.15",
