@@ -61,22 +61,7 @@ display:
           sort_desc_label: Absteigend
           text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
           text_input_required_format: plain_text
-          bef:
-            general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
-              autosubmit_hide: false
-              input_required: false
-              allow_secondary: false
-              secondary_label: 'Erweiterte Optionen'
-            filter:
-              search_api_fulltext:
-                plugin_id: default
-                advanced:
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
+          bef: {  }
       pager:
         type: full
         options:
@@ -386,7 +371,7 @@ display:
             shape: square
             width: '15'
             height: '15'
-            opacity: '1'
+            opacity: true
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -802,8 +787,10 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - field_bemerkung
             - field_ddb_id
             - field_isil
+            - field_kurzname
             - field_stadt
             - name
             - sparte

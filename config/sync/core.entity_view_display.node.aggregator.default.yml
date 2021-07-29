@@ -32,6 +32,8 @@ dependencies:
     - field.field.node.aggregator.field_vertrag
     - field.field.node.aggregator.field_vertragskonstrukt
     - field.field.node.aggregator.field_vertragsstatus
+    - field.field.node.aggregator.field_workflow
+    - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
     - color_field
@@ -131,8 +133,10 @@ third_party_settings:
         - field_vertragskonstrukt
         - field_vertrag
         - field_bemerkungen_zum_vertrag
+        - field_workflow
         - field_link_zu_ddbdash
         - field_jira_hauptticket
+        - field_zwischenaggregatoren
         - field_sichtbarkeit
         - field_status_fragebogen
         - field_link_fragebogen
@@ -199,7 +203,7 @@ content:
     type: basic_string
     region: content
   field_bemerkungen:
-    weight: 21
+    weight: 23
     label: above
     settings: {  }
     third_party_settings:
@@ -276,7 +280,7 @@ content:
     type: 'custom_formatters:label_als_link'
     region: content
   field_fragebogen_aggregator:
-    weight: 20
+    weight: 22
     label: inline
     settings:
       use_description_as_link_text: false
@@ -288,7 +292,7 @@ content:
     type: file_default
     region: content
   field_jira_hauptticket:
-    weight: 16
+    weight: 17
     label: inline
     settings: {  }
     third_party_settings:
@@ -324,7 +328,7 @@ content:
     type: string
     region: content
   field_link_fragebogen:
-    weight: 19
+    weight: 21
     label: inline
     settings:
       trim_length: 255
@@ -340,7 +344,7 @@ content:
     type: link
     region: content
   field_link_zu_ddbdash:
-    weight: 15
+    weight: 16
     label: inline
     settings:
       trim_length: 255
@@ -396,7 +400,7 @@ content:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     region: content
   field_sichtbarkeit:
-    weight: 17
+    weight: 19
     label: inline
     settings: {  }
     third_party_settings:
@@ -424,7 +428,8 @@ content:
       shape: square
       width: '50'
       height: '50'
-      opacity: '1'
+      opacity: true
+      data_attribute: false
     third_party_settings:
       empty_fields:
         handler: text
@@ -433,7 +438,7 @@ content:
     type: color_field_formatter_swatch
     region: content
   field_status_fragebogen:
-    weight: 18
+    weight: 20
     label: inline
     settings:
       link: false
@@ -489,6 +494,30 @@ content:
     label: inline
     settings:
       link: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    type: entity_reference_label
+    region: content
+  field_workflow:
+    weight: 15
+    label: inline
+    settings:
+      use_description_as_link_text: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    type: file_default
+    region: content
+  field_zwischenaggregatoren:
+    weight: 18
+    label: inline
+    settings:
+      link: true
     third_party_settings:
       empty_fields:
         handler: text

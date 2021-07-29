@@ -15,3 +15,4 @@ content_type_modes:
   aggregator: {  }
   kwe: {  }
   page: {  }
+type: remove
