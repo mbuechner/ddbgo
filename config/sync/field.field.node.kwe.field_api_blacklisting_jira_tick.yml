@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_api_blacklisting_jira_tick
     - node.type.kwe
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/[A-Z]+\-[0-9]+/'
-    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
 id: node.kwe.field_api_blacklisting_jira_tick
 field_name: field_api_blacklisting_jira_tick
 entity_type: node

@@ -6,13 +6,8 @@ dependencies:
     - field.storage.node.field_ddburi
     - node.type.aggregator
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/^https:\/\/www\.deutsche-digitale-bibliothek\.de\/organization\/[A-Z0-9]{32}$/'
-    error_message: 'Bitte einen URI in der Form https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5 eingeben.'
   unique_field_ajax:
     unique: true
     warn_only: false

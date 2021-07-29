@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_coding_da_vinci_bemerkung
     - node.type.bestand
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
 id: node.bestand.field_coding_da_vinci_bemerkung
 field_name: field_coding_da_vinci_bemerkung
 entity_type: node

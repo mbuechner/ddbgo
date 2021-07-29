@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_bemerkungen_2
     - node.type.aggregator
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
 id: node.aggregator.field_bemerkungen_2
 field_name: field_bemerkungen_2
 entity_type: node

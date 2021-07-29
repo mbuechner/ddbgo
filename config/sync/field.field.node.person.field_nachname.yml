@@ -6,18 +6,13 @@ dependencies:
     - field.storage.node.field_nachname
     - node.type.person
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/.{2,}/'
-    error_message: 'Bitte mindestens zwei Buchstaben eingeben!'
   unique_field_ajax:
-    unique: true
-    warn_only: true
-    per_lang: false
-    use_ajax: true
+    unique: 1
+    per_lang: 0
+    use_ajax: 1
+    warn_only: 1
     message: 'Dieser Nachname ist bereits in DDBgo vorhanden. Bitte prüfen, ob die Person schon vorhanden ist.'
 id: node.person.field_nachname
 field_name: field_nachname

@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_ueber_welchen_weg
     - node.type.bestand
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
 id: node.bestand.field_ueber_welchen_weg
 field_name: field_ueber_welchen_weg
 entity_type: node

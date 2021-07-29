@@ -6,36 +6,45 @@ RUN composer install --no-dev
 
 # Add git tag version to status page in DDBgo
 RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
-	sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install;
-RUN rm -rf .git/
+	sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
+	rm -rf .git/
 
-# from https://github.com/docker-library/drupal/blob/master/8.7/apache/Dockerfile
-FROM php:7.4-apache
+# from https://github.com/docker-library/drupal/blob/master/9.2/php8.0/apache-buster/Dockerfile
+FROM php:8.0-apache-buster
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 RUN set -eux; \
+	\
 	if command -v a2enmod; then \
 		a2enmod rewrite; \
 	fi; \
+	\
 	savedAptMark="$(apt-mark showmanual)"; \
+	\
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		libfreetype6-dev \
-		libjpeg62-turbo-dev \
+		libjpeg-dev \
 		libpng-dev \
 		libpq-dev \
 		libzip-dev \
-		libpcre3-dev; \
+	; \
+	\
 	docker-php-ext-configure gd \
 		--with-freetype \
-		--with-jpeg; \
+		--with-jpeg=/usr \
+	; \
+	\
 	docker-php-ext-install -j "$(nproc)" \
 		gd \
 		opcache \
 		pdo_mysql \
 		pdo_pgsql \
-		zip; \
-	pecl install uploadprogress apcu oauth; \
-	docker-php-ext-enable uploadprogress apcu oauth; \
+		zip \
+	; \
+	\
+	pecl install apcu; \
+	docker-php-ext-enable apcu; \
+	\
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
@@ -45,48 +54,50 @@ RUN set -eux; \
 		| cut -d: -f1 \
 		| sort -u \
 		| xargs -rt apt-mark manual; \
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false;
-
+	\
+	# apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*
 RUN echo "LISTEN 8080" > /etc/apache2/ports.conf; \
-    { \
+	{ \
 		echo "opcache.file_update_protection=0"; \
 		echo "opcache.validate_timestamps=0"; \
-		echo "opcache.interned_strings_buffer=16"; \
+		echo "opcache.interned_strings_buffer=8"; \
 		echo "opcache.memory_consumption=128"; \
 		echo "opcache.max_accelerated_files=4000"; \
 		echo "opcache.max_wasted_percentage=10"; \
 		echo "opcache.revalidate_freq=60"; \
+		echo "opcache.fast_shutdown=1"; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini; \
-    { \
+	{ \
 		echo "apc.enabled=1"; \
-		echo "apc.file_update_protection=2"; \ 
-		echo "apc.optimization=0"; \ 
-		echo "apc.shm_size=256M"; \ 
-		echo "apc.include_once_override=0"; \ 
-		echo "apc.shm_segments=1"; \ 
-		echo "apc.ttl=7200"; \ 
-		echo "apc.user_ttl=7200"; \ 
-		echo "apc.gc_ttl=3600"; \ 
-		echo "apc.num_files_hint=1024"; \ 
-		echo "apc.enable_cli=0"; \ 
-		echo "apc.max_file_size=5M"; \ 
-		echo "apc.cache_by_default=1"; \ 
-		echo "apc.use_request_time=1"; \ 
-		echo "apc.slam_defense=0"; \ 
-		echo "apc.mmap_file_mask=/tmp/apc.XXXXXX"; \ 
-		echo "apc.stat_ctime=0"; \ 
-		echo "apc.canonicalize=1"; \ 
-		echo "apc.write_lock=1"; \ 
-		echo "apc.report_autofilter=0"; \ 
-		echo "apc.rfc1867=0"; \ 
-		echo "apc.rfc1867_prefix =upload_"; \ 
-		echo "apc.rfc1867_name=APC_UPLOAD_PROGRESS"; \ 
-		echo "apc.rfc1867_freq=0"; \ 
-		echo "apc.rfc1867_ttl=3600"; \ 
-		echo "apc.lazy_classes=0"; \ 
+		echo "apc.file_update_protection=2"; \
+		echo "apc.optimization=0"; \
+		echo "apc.shm_size=256M"; \
+		echo "apc.include_once_override=0"; \
+		echo "apc.shm_segments=1"; \
+		echo "apc.ttl=7200"; \
+		echo "apc.user_ttl=7200"; \
+		echo "apc.gc_ttl=3600"; \
+		echo "apc.num_files_hint=1024"; \
+		echo "apc.enable_cli=0"; \
+		echo "apc.max_file_size=5M"; \
+		echo "apc.cache_by_default=1"; \
+		echo "apc.use_request_time=1"; \
+		echo "apc.slam_defense=0"; \
+		echo "apc.mmap_file_mask=/tmp/apc.XXXXXX"; \
+		echo "apc.stat_ctime=0"; \
+		echo "apc.canonicalize=1"; \
+		echo "apc.write_lock=1"; \
+		echo "apc.report_autofilter=0"; \
+		echo "apc.rfc1867=0"; \
+		echo "apc.rfc1867_prefix =upload_"; \
+		echo "apc.rfc1867_name=APC_UPLOAD_PROGRESS"; \
+		echo "apc.rfc1867_freq=0"; \
+		echo "apc.rfc1867_ttl=3600"; \
+		echo "apc.lazy_classes=0"; \
 		echo "apc.lazy_functions=0"; \
 	} > /usr/local/etc/php/conf.d/apcu-caching.ini; \
-    { \
+	{ \
 		echo "upload_max_filesize = 128M"; \
 		echo "post_max_size = 128M"; \
 		echo "memory_limit = 512M"; \
@@ -110,11 +121,6 @@ RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
 	chown -R www-data:www-data web/sites web/modules web/themes web/tmp; \
 	chmod +x /var/www/html/vendor/drush/drush/drush; \
 	find web \( -type d -exec chmod 755 {} + \) -o \( -type f -exec chmod 644 {} + \);
-
-# Clean system
-RUN apt-get clean; \
-	rm -rf /var/lib/apt/lists/*
-
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
 HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:8080/ || exit 1

@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_ablehnungsgrund
     - node.type.kwe
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
 id: node.kwe.field_ablehnungsgrund
 field_name: field_ablehnungsgrund
 entity_type: node

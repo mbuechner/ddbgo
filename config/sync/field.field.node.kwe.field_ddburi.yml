@@ -6,18 +6,13 @@ dependencies:
     - field.storage.node.field_ddburi
     - node.type.kwe
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/^https:\/\/www\.deutsche-digitale-bibliothek\.de\/organization\/[A-Z0-9]{32}$/'
-    error_message: 'Bitte einen URI in der Form https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5 eingeben.'
   unique_field_ajax:
-    unique: true
-    warn_only: false
-    per_lang: false
-    use_ajax: true
+    unique: 0
+    per_lang: 0
+    use_ajax: 1
+    warn_only: 0
     message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden!'
 id: node.kwe.field_ddburi
 field_name: field_ddburi

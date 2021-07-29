@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_jira_hauptticket
     - node.type.aggregator
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/[A-Z]+\-[0-9]+/'
-    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
 id: node.aggregator.field_jira_hauptticket
 field_name: field_jira_hauptticket
 entity_type: node
