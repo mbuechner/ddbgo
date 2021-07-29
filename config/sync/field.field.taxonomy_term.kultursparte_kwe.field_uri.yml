@@ -6,13 +6,8 @@ dependencies:
     - field.storage.taxonomy_term.field_uri
     - taxonomy.vocabulary.kultursparte_kwe
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
   unique_field_ajax:
     unique: false
     warn_only: false

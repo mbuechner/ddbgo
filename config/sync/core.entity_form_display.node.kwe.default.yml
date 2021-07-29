@@ -38,11 +38,11 @@ dependencies:
   module:
     - color_field
     - conditional_fields
+    - datetime
     - field_group
     - file
     - link
     - paragraphs
-    - single_datetime
 third_party_settings:
   field_group:
     group_allgemeines:
@@ -108,7 +108,6 @@ third_party_settings:
         - field_vertragskonstrukt
         - field_vertrag
         - field_favorienkarussell
-        - field_link_zu_ddbdash
         - field_api_blacklisting
         - field_api_blacklisting_jira_tick
         - field_bemerkungen
@@ -352,54 +351,16 @@ content:
     region: content
   field_erstingest_archivportal:
     weight: 32
-    settings:
-      hour_format: 24h
-      allow_times: '15'
-      allowed_hours: ''
-      disable_days:
-        6: '6'
-        7: '7'
-        1: 0
-        2: 0
-        3: 0
-        4: 0
-        5: 0
-      exclude_date: ''
-      datetimepicker_theme: default
-      min_date: ''
-      max_date: ''
-      year_start: ''
-      year_end: ''
-      inline: 0
-      mask: 0
+    settings: {  }
     third_party_settings:
       conditional_fields: {  }
-    type: single_date_time_widget
+    type: datetime_default
     region: content
   field_erstingest_europeana:
     weight: 29
-    settings:
-      hour_format: 24h
-      allow_times: '15'
-      allowed_hours: ''
-      disable_days:
-        6: '6'
-        7: '7'
-        1: 0
-        2: 0
-        3: 0
-        4: 0
-        5: 0
-      exclude_date: ''
-      datetimepicker_theme: default
-      min_date: ''
-      max_date: ''
-      year_start: ''
-      year_end: ''
-      inline: 0
-      mask: 0
+    settings: {  }
     third_party_settings: {  }
-    type: single_date_time_widget
+    type: datetime_default
     region: content
   field_europeana_lieferung:
     weight: 28

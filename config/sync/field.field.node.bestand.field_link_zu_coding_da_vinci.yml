@@ -6,13 +6,8 @@ dependencies:
     - field.storage.node.field_link_zu_coding_da_vinci
     - node.type.bestand
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/https:\/\/codingdavinci\.de\/node\/[0-9]*/'
-    error_message: 'Bitte eine URL in der Form ''https://codingdavinci.de/node/12345'' eingeben!'
   unique_field_ajax:
     unique: false
     warn_only: false

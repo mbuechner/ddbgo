@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_plz
     - node.type.kwe
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/[0-9]{3,5}/'
-    error_message: 'Bitte eine gültige Postleitzahl ohne Länderkennung eingeben.'
 id: node.kwe.field_plz
 field_name: field_plz
 entity_type: node

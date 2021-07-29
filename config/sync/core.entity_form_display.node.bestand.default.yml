@@ -45,12 +45,12 @@ dependencies:
   module:
     - color_field
     - conditional_fields
+    - datetime
     - field_group
     - file
     - link
     - paragraphs
     - select2
-    - single_datetime
 third_party_settings:
   field_group:
     group_allgemeines:
@@ -417,24 +417,9 @@ content:
     region: content
   field_datum_des_status_der_europ:
     weight: 15
-    settings:
-      hour_format: 24h
-      allow_times: '15'
-      allowed_hours: ''
-      disable_days: {  }
-      exclude_date: ''
-      inline: false
-      mask: false
-      datetimepicker_theme: default
-      min_date: ''
-      max_date: ''
-      year_start: ''
-      year_end: ''
-      allow_seconds: false
-      start_date: ''
-      allow_blank: false
+    settings: {  }
     third_party_settings: {  }
-    type: single_date_time_widget
+    type: datetime_default
     region: content
   field_ddb_objekte:
     type: entity_reference_paragraphs
@@ -450,24 +435,9 @@ content:
     third_party_settings: {  }
   field_erstingest:
     weight: 15
-    settings:
-      hour_format: 24h
-      allow_times: '15'
-      allowed_hours: ''
-      disable_days: {  }
-      exclude_date: ''
-      inline: false
-      mask: false
-      datetimepicker_theme: default
-      min_date: ''
-      max_date: ''
-      year_start: ''
-      year_end: ''
-      allow_seconds: false
-      start_date: ''
-      allow_blank: false
+    settings: {  }
     third_party_settings: {  }
-    type: single_date_time_widget
+    type: datetime_default
     region: content
   field_europeana_lieferung:
     weight: 10

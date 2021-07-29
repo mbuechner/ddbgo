@@ -6,13 +6,8 @@ dependencies:
     - field.storage.node.field_jira_ticket_bei_europeana
     - node.type.bestand
   module:
-    - regex_field_validation
     - unique_field_ajax
 third_party_settings:
-  regex_field_validation:
-    enable: 1
-    regex: '/[A-Z]+\-[0-9]+/'
-    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
   unique_field_ajax:
     unique: false
     warn_only: false

@@ -5,13 +5,6 @@ dependencies:
   config:
     - field.storage.taxonomy_term.field_kuerzel
     - taxonomy.vocabulary.land
-  module:
-    - regex_field_validation
-third_party_settings:
-  regex_field_validation:
-    enable: 0
-    regex: ''
-    error_message: ''
 id: taxonomy_term.land.field_kuerzel
 field_name: field_kuerzel
 entity_type: taxonomy_term
