@@ -10,6 +10,7 @@ dependencies:
     - field.storage.node.field_datenformat
     - field.storage.node.field_datum_des_status_der_europ
     - field.storage.node.field_europeana_lieferung
+    - field.storage.node.field_ingestart
     - field.storage.node.field_jira_hauptticket
     - field.storage.node.field_jira_ticket_bei_europeana
     - field.storage.node.field_jira_europeana
@@ -220,6 +221,16 @@ field_settings:
         - field.storage.node.field_bestandstags
       module:
         - taxonomy
+  name_7:
+    label: 'Ingestart » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_ingestart:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_ingestart
+      module:
+        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -271,28 +282,13 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
-  html_filter:
-    all_fields: false
-    fields: {  }
-    title: true
-    alt: true
-    tags:
-      b: 2
-      em: 1
-      h1: 5
-      h2: 3
-      h3: 2
-      strong: 2
-      u: 1
-    weights:
-      preprocess_index: -15
-      preprocess_query: -15
   ignorecase:
     all_fields: false
     fields:
       - field_jira_hauptticket
       - name
       - name_1
+      - name_3
       - nid
       - title
       - title_aggregator
@@ -307,10 +303,12 @@ processor_settings:
     fields:
       - name
       - name_1
+      - name_3
       - nid
       - title
       - title_aggregator
       - title_kwe
+    ignored: ._-
     spaces: ''
     overlap_cjk: 1
     minimum_word_size: '3'

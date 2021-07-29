@@ -18,3 +18,9 @@ volltextformat: 0
 volltextformat_message: 'Term %term already exists in vocabulary %vocabulary.'
 aggregiert: 0
 aggregiert_message: 'Term %term already exists in vocabulary %vocabulary.'
+content_tier: 0
+content_tier_message: 'Term %term already exists in vocabulary %vocabulary.'
+metadata_tier: 0
+metadata_tier_message: 'Term %term already exists in vocabulary %vocabulary.'
+ingestart: 1
+ingestart_message: 'Term %term already exists in vocabulary %vocabulary.'

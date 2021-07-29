@@ -92,6 +92,7 @@ third_party_settings:
         - field_vertragskonstrukt
         - field_vertrag
         - field_favorienkarussell
+        - field_link_zu_ddbdash
         - field_api_blacklisting
         - field_api_blacklisting_jira_tick
         - field_bemerkungen
@@ -197,7 +198,7 @@ content:
     type: basic_string
     region: content
   field_api_blacklisting:
-    weight: 28
+    weight: 29
     label: inline
     settings:
       link: false
@@ -209,7 +210,7 @@ content:
     type: entity_reference_label
     region: content
   field_api_blacklisting_jira_tick:
-    weight: 29
+    weight: 30
     label: inline
     settings: {  }
     third_party_settings:
@@ -265,7 +266,7 @@ content:
     type: basic_string
     region: content
   field_bemerkungen:
-    weight: 30
+    weight: 31
     label: above
     settings: {  }
     third_party_settings:
@@ -475,7 +476,8 @@ content:
       shape: square
       width: '50'
       height: '50'
-      opacity: '1'
+      opacity: true
+      data_attribute: false
     third_party_settings:
       empty_fields:
         handler: text

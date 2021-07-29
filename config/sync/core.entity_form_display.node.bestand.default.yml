@@ -20,11 +20,15 @@ dependencies:
     - field.field.node.bestand.field_erstingest
     - field.field.node.bestand.field_europeana_lieferung
     - field.field.node.bestand.field_europeana_lieferung_enum
+    - field.field.node.bestand.field_europeana_objekte_content_
+    - field.field.node.bestand.field_europeana_objekte_metadata
     - field.field.node.bestand.field_europeanastatus
     - field.field.node.bestand.field_fragebogen
+    - field.field.node.bestand.field_ingestart
     - field.field.node.bestand.field_jira_europeana
     - field.field.node.bestand.field_jira_hauptticket
     - field.field.node.bestand.field_jira_ticket_bei_europeana
+    - field.field.node.bestand.field_kontakt
     - field.field.node.bestand.field_kwe
     - field.field.node.bestand.field_lieferweg
     - field.field.node.bestand.field_link_fragebogen
@@ -36,6 +40,7 @@ dependencies:
     - field.field.node.bestand.field_ueber_welchen_weg
     - field.field.node.bestand.field_url
     - field.field.node.bestand.field_volltextformat
+    - field.field.node.bestand.field_zwischenaggregatoren
     - node.type.bestand
   module:
     - color_field
@@ -78,6 +83,7 @@ third_party_settings:
         - field_kwe
         - field_aggregiert
         - field_aggregator
+        - field_zwischenaggregatoren
       parent_name: ''
       weight: 2
       format_type: html_element
@@ -98,7 +104,7 @@ third_party_settings:
       children:
         - field_personen
       parent_name: ''
-      weight: 4
+      weight: 3
       format_type: html_element
       region: content
       format_settings:
@@ -142,15 +148,18 @@ third_party_settings:
         - field_europeana_lieferung_enum
         - field_ueber_welchen_weg
         - field_europeana_lieferung
-        - field_ddb_objekte
         - field_jira_europeana
         - field_jira_ticket_bei_europeana
         - field_europeanastatus
+        - field_ingestart
         - field_datum_des_status_der_europ
+        - group_europeana_objekte_content_
+        - group_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
+        - group_ddb_objekte
       parent_name: ''
-      weight: 8
+      weight: 7
       format_type: html_element
       region: content
       format_settings:
@@ -193,7 +202,7 @@ third_party_settings:
         - field_link_zu_coding_da_vinci
         - field_coding_da_vinci_bemerkung
       parent_name: ''
-      weight: 7
+      weight: 6
       format_type: html_element
       region: content
       format_settings:
@@ -208,6 +217,82 @@ third_party_settings:
         id: ''
         classes: fieldgroup_cdv
       label: 'Coding da Vinci'
+    group_europeana_objekte_metadata:
+      children:
+        - field_europeana_objekte_metadata
+      parent_name: group_europeana_archivportal
+      weight: 17
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Europeana-Objekte: Metadata-Tier'
+    group_europeana_objekte_content_:
+      children:
+        - field_europeana_objekte_content_
+      parent_name: group_europeana_archivportal
+      weight: 16
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        required_fields: true
+        attributes: ''
+        effect: none
+        speed: fast
+      label: 'Europeana-Objekte: Content-Tier'
+    group_kontakt:
+      children:
+        - field_kontakt
+      parent_name: ''
+      weight: 4
+      format_type: html_element
+      region: content
+      format_settings:
+        id: ''
+        classes: fieldgroup_kontakt
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: Kontakt
+    group_ddb_objekte:
+      children:
+        - field_ddb_objekte
+      parent_name: group_europeana_archivportal
+      weight: 11
+      format_type: html_element
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        required_fields: false
+        attributes: ''
+        effect: none
+        speed: fast
+      label: DDB-Objekte
 id: node.bestand.default
 targetEntityType: node
 bundle: bestand
@@ -257,7 +342,7 @@ content:
     type: options_select
     region: content
   field_archivportal_lieferung:
-    weight: 16
+    weight: 18
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -271,7 +356,7 @@ content:
     type: string_textarea
     region: content
   field_bemerkung_europeana_liefer:
-    weight: 17
+    weight: 19
     settings:
       rows: 5
       placeholder: ''
@@ -345,12 +430,15 @@ content:
       max_date: ''
       year_start: ''
       year_end: ''
+      allow_seconds: false
+      start_date: ''
+      allow_blank: false
     third_party_settings: {  }
     type: single_date_time_widget
     region: content
   field_ddb_objekte:
     type: entity_reference_paragraphs
-    weight: 11
+    weight: 17
     region: content
     settings:
       title: Seitenabschnitt
@@ -375,6 +463,9 @@ content:
       max_date: ''
       year_start: ''
       year_end: ''
+      allow_seconds: false
+      start_date: ''
+      allow_blank: false
     third_party_settings: {  }
     type: single_date_time_widget
     region: content
@@ -390,22 +481,52 @@ content:
     third_party_settings: {  }
     type: options_select
     region: content
+  field_europeana_objekte_content_:
+    type: entity_reference_paragraphs
+    weight: 21
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
+  field_europeana_objekte_metadata:
+    type: entity_reference_paragraphs
+    weight: 21
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    region: content
   field_europeanastatus:
-    weight: 14
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_fragebogen:
-    weight: 18
+    weight: 19
     settings:
       progress_indicator: throbber
     third_party_settings:
       conditional_fields: {  }
     type: file_generic
     region: content
+  field_ingestart:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_jira_europeana:
-    weight: 12
+    weight: 11
     settings:
       size: 80
       placeholder: ''
@@ -422,12 +543,24 @@ content:
     type: string_textfield
     region: content
   field_jira_ticket_bei_europeana:
-    weight: 13
+    weight: 12
     settings:
       size: 80
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_kontakt:
+    weight: 18
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+    third_party_settings: {  }
+    type: entity_reference_paragraphs
     region: content
   field_kwe:
     weight: 11
@@ -518,6 +651,16 @@ content:
     region: content
   field_volltextformat:
     weight: 3
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      autocomplete: false
+      width: 100%
+    third_party_settings: {  }
+    type: select2_entity_reference
+    region: content
+  field_zwischenaggregatoren:
+    weight: 14
     settings:
       match_operator: CONTAINS
       match_limit: 10

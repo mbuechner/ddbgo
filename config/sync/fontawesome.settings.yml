@@ -8,3 +8,4 @@ _core:
   default_config_hash: i4D0yTbVf8LixxV0Laf9F7uWwICKJ6f2gqf6HKiu1eg
 langcode: de
 allow_pseudo_elements: false
+load_assets: true

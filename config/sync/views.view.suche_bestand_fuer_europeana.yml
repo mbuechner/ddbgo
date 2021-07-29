@@ -73,45 +73,7 @@ display:
           sort_desc_label: Desc
           text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
           text_input_required_format: plain_text
-          bef:
-            general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
-              autosubmit_textfield_delay: 500
-              autosubmit_hide: true
-              input_required: false
-              allow_secondary: false
-              secondary_label: 'Advanced options'
-              secondary_open: false
-              text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
-              text_input_required_format: basic_html
-            filter:
-              search_api_fulltext:
-                plugin_id: default
-                advanced:
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              field_europeana_lieferung_enum:
-                plugin_id: default
-                advanced:
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              field_europeana_lieferung:
-                plugin_id: default
-                advanced:
-                  rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              field_datum_des_status_der_europ:
-                plugin_id: bef_datepicker
-                advanced:
-                  collapsible: false
-                  is_secondary: false
+          bef: {  }
           input_required: false
       pager:
         type: full
@@ -157,6 +119,7 @@ display:
             field_jira_europeana: field_jira_europeana
             field_jira_ticket_bei_europeana: field_jira_ticket_bei_europeana
             name_1: name_1
+            name_7: name_7
             field_datum_des_status_der_europ: field_datum_des_status_der_europ
             field_link_zu_ddbdash: field_link_zu_ddbdash
           info:
@@ -229,6 +192,13 @@ display:
               empty_column: false
               responsive: ''
             name_1:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            name_7:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -1036,6 +1006,76 @@ display:
           group_type: group
           admin_label: ''
           label: 'Status der Europeana-Lieferung'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: –
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          plugin_id: search_api_field
+        name_7:
+          id: name_7
+          table: search_api_index_bestand
+          field: name_7
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Ingestart
           exclude: false
           alter:
             alter_text: false

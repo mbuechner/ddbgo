@@ -3,8 +3,10 @@ langcode: de
 status: true
 dependencies:
   config:
+    - field.storage.node.field_bemerkung
     - field.storage.node.field_ddb_id
     - field.storage.node.field_isil
+    - field.storage.node.field_kurzname
     - field.storage.node.field_sparte
     - field.storage.node.field_stadt
     - field.storage.node.field_status
@@ -19,6 +21,15 @@ name: KWE
 description: ''
 read_only: false
 field_settings:
+  field_bemerkung:
+    label: Bemerkung
+    datasource_id: 'entity:node'
+    property_path: field_bemerkung
+    type: text
+    boost: 0.5
+    dependencies:
+      config:
+        - field.storage.node.field_bemerkung
   field_ddb_id:
     label: DDB-ID
     datasource_id: 'entity:node'
@@ -35,6 +46,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_isil
+  field_kurzname:
+    label: Kurzname
+    datasource_id: 'entity:node'
+    property_path: field_kurzname
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_kurzname
   field_stadt:
     label: Stadt
     datasource_id: 'entity:node'
@@ -120,8 +139,10 @@ processor_settings:
   ignorecase:
     all_fields: true
     fields:
+      - field_bemerkung
       - field_ddb_id
       - field_isil
+      - field_kurzname
       - field_stadt
       - field_status
       - name
@@ -135,8 +156,10 @@ processor_settings:
   tokenizer:
     all_fields: true
     fields:
+      - field_bemerkung
       - field_ddb_id
       - field_isil
+      - field_kurzname
       - field_stadt
       - name
       - sparte
@@ -147,6 +170,7 @@ processor_settings:
     weights:
       preprocess_index: -6
       preprocess_query: -6
+    ignored: ._-
 tracker_settings:
   default:
     indexing_order: fifo

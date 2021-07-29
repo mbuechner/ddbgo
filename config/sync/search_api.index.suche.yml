@@ -17,15 +17,30 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: nid
     type: text
+    boost: !!float 2
     dependencies:
       module:
         - node
+  rendered_item:
+    label: 'Gerenderte HTML-Ausgabe'
+    property_path: rendered_item
+    type: text
+    boost: 0.5
+    configuration:
+      roles:
+        authenticated: authenticated
+      view_mode:
+        'entity:node':
+          aggregator: default
+          bestand: default
+          kwe: default
+          person: default
   title:
     label: Title
     datasource_id: 'entity:node'
     property_path: title
     type: text
-    boost: !!float 2
+    boost: !!float 5
     dependencies:
       module:
         - node
@@ -50,28 +65,58 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  highlight:
+    highlight: always
+    highlight_partial: true
+    excerpt: true
+    excerpt_length: 256
+    exclude_fields:
+      - nid
+      - title
+    prefix: '<mark>'
+    suffix: '</mark>'
+    weights:
+      postprocess_query: 0
+  html_filter:
+    all_fields: false
+    fields:
+      - rendered_item
+    title: true
+    alt: true
+    tags:
+      b: 2
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+    weights:
+      preprocess_index: -50
+      preprocess_query: -49
   ignorecase:
     all_fields: true
     fields:
       - nid
+      - rendered_item
       - title
       - type
     weights:
-      preprocess_index: -20
-      preprocess_query: -20
+      preprocess_index: -49
+      preprocess_query: -48
   language_with_fallback: {  }
   rendered_item: {  }
   tokenizer:
     all_fields: true
     fields:
       - nid
+      - rendered_item
       - title
+    ignored: ._-
     spaces: ''
     overlap_cjk: 1
     minimum_word_size: '3'
     weights:
-      preprocess_index: -6
-      preprocess_query: -6
+      preprocess_index: -46
+      preprocess_query: -45
 tracker_settings:
   default:
     indexing_order: fifo

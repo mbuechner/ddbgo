@@ -28,10 +28,10 @@ content:
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      autocomplete: false
-      width: 100%
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: select2_entity_reference
+    type: entity_reference_autocomplete
     region: content
 hidden:
   created: true
