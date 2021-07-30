@@ -73,5 +73,6 @@ jobs:
           echo VERSION=$VERSION
 
           docker tag "$IMAGE_NAME" "$IMAGE_ID:$VERSION"
+          docker push "$IMAGE_ID:$VERSION"
           if [ "$VERSION" != "latest" ]; then docker tag "$IMAGE_NAME" "$IMAGE_ID:tagged"; fi
-          docker push $IMAGE_ID
+          if [ "$VERSION" != "latest" ]; then docker push "$IMAGE_ID:tagged"; fi
