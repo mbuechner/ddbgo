@@ -9,7 +9,6 @@ on:
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
-      - tagged
 
   # Run tests for any PRs.
   pull_request:
@@ -74,4 +73,6 @@ jobs:
           echo VERSION=$VERSION
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          [ "$VERSION" != "latest" ] && docker tag $IMAGE_NAME $IMAGE_ID:tagged
           docker push $IMAGE_ID:$VERSION
+          [ "$VERSION" != "latest" ] && docker push $IMAGE_ID:tagged
