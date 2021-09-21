@@ -92,6 +92,9 @@ RUN chown -R nobody:nobody /var/www/html && \
 # Add application
 WORKDIR /var/www/html
 COPY --chown=nobody --from=COMPOSER_CHAIN /tmp/ddbgo/ .
+RUN mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
+    chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
+    chmod +x /var/www/html/vendor/drush/drush/drush;
 ENV PATH=${PATH}:/var/www/html/vendor/bin
 
 # Switch to use a non-root user
