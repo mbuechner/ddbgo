@@ -97,6 +97,11 @@ RUN mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drup
     chmod +x /var/www/html/vendor/drush/drush/drush;
 ENV PATH=${PATH}:/var/www/html/vendor/bin
 
+## add permissions for suervisor & nginx user
+RUN touch /run/supervisord.pid && chown nobody:nobody /run/supervisord.pid; \
+    touch /var/run/nginx.pid && chown nobody:nobody /var/run/nginx.pid; \
+    mkdir /var/cache/nginx && chown -R nobody:nobody /var/lib/nginx/logs/ /var/lib/nginx/modules/ /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
+
 # Switch to use a non-root user
 USER nobody:nobody
 
