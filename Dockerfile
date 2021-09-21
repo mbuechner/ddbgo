@@ -1,129 +1,106 @@
 FROM composer:2 AS COMPOSER_CHAIN
-MAINTAINER Michael Büchner <m.buechner@dnb.de>
 COPY / /tmp/ddbgo
 WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
 
 # Add git tag version to status page in DDBgo
 RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
-	sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
-	rm -rf .git/
+     sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
+     rm -rf .git/ config/;
 
-# from https://github.com/docker-library/drupal/blob/master/9.2/php8.0/apache-buster/Dockerfile
-FROM php:8.0-apache-buster
+FROM php:8.0-fpm-alpine
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
+
+# Install packages
+RUN apk --no-cache add \
+    curl \
+    nginx \
+    nginx-mod-http-upload-progress \
+    nginx-mod-http-brotli \
+    supervisor;
+
 RUN set -eux; \
-	\
-	if command -v a2enmod; then \
-		a2enmod rewrite; \
-	fi; \
-	\
-	savedAptMark="$(apt-mark showmanual)"; \
-	\
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		libfreetype6-dev \
-		libjpeg-dev \
-		libpng-dev \
-		libpq-dev \
-		libzip-dev \
-	; \
-	\
-	docker-php-ext-configure gd \
-		--with-freetype \
-		--with-jpeg=/usr \
-	; \
-	\
-	docker-php-ext-install -j "$(nproc)" \
-		gd \
-		opcache \
-		pdo_mysql \
-		pdo_pgsql \
-		zip \
-	; \
-	\
-	pecl install apcu; \
-	docker-php-ext-enable apcu; \
-	\
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark; \
-	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-		| awk '/=>/ { print $3 }' \
-		| sort -u \
-		| xargs -r dpkg-query -S \
-		| cut -d: -f1 \
-		| sort -u \
-		| xargs -rt apt-mark manual; \
-	\
-	# apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
-RUN echo "LISTEN 8080" > /etc/apache2/ports.conf; \
-	{ \
-		echo "opcache.file_update_protection=0"; \
-		echo "opcache.validate_timestamps=0"; \
-		echo "opcache.interned_strings_buffer=8"; \
-		echo "opcache.memory_consumption=128"; \
-		echo "opcache.max_accelerated_files=4000"; \
-		echo "opcache.max_wasted_percentage=10"; \
-		echo "opcache.revalidate_freq=60"; \
-		echo "opcache.fast_shutdown=1"; \
-	} > /usr/local/etc/php/conf.d/opcache-recommended.ini; \
-	{ \
-		echo "apc.enabled=1"; \
-		echo "apc.file_update_protection=2"; \
-		echo "apc.optimization=0"; \
-		echo "apc.shm_size=256M"; \
-		echo "apc.include_once_override=0"; \
-		echo "apc.shm_segments=1"; \
-		echo "apc.ttl=7200"; \
-		echo "apc.user_ttl=7200"; \
-		echo "apc.gc_ttl=3600"; \
-		echo "apc.num_files_hint=1024"; \
-		echo "apc.enable_cli=0"; \
-		echo "apc.max_file_size=5M"; \
-		echo "apc.cache_by_default=1"; \
-		echo "apc.use_request_time=1"; \
-		echo "apc.slam_defense=0"; \
-		echo "apc.mmap_file_mask=/tmp/apc.XXXXXX"; \
-		echo "apc.stat_ctime=0"; \
-		echo "apc.canonicalize=1"; \
-		echo "apc.write_lock=1"; \
-		echo "apc.report_autofilter=0"; \
-		echo "apc.rfc1867=0"; \
-		echo "apc.rfc1867_prefix =upload_"; \
-		echo "apc.rfc1867_name=APC_UPLOAD_PROGRESS"; \
-		echo "apc.rfc1867_freq=0"; \
-		echo "apc.rfc1867_ttl=3600"; \
-		echo "apc.lazy_classes=0"; \
-		echo "apc.lazy_functions=0"; \
-	} > /usr/local/etc/php/conf.d/apcu-caching.ini; \
-	{ \
-		echo "upload_max_filesize = 128M"; \
-		echo "post_max_size = 128M"; \
-		echo "memory_limit = 512M"; \
-		echo "max_execution_time = 600"; \
-		echo "max_input_vars = 5000"; \
-	} > /usr/local/etc/php/conf.d/0-upload_large_dumps.ini; \
-	{ \
-		echo "<VirtualHost *:8080>"; \
-		echo "  ServerAdmin m.buechner@dnb.de"; \
-		echo "  DocumentRoot /var/www/html/web"; \
-		echo "  ErrorLog /dev/stderr"; \
-		echo "  CustomLog /dev/stdout combined"; \
-		echo "</VirtualHost>"; \
-	} > /etc/apache2/sites-enabled/000-default.conf;
+     \
+     apk add --no-cache --virtual .build-deps \
+          coreutils \
+          freetype-dev \
+          libjpeg-turbo-dev \
+          libpng-dev \
+          libzip-dev \
+          pcre-dev \
+          autoconf \
+          g++ \
+          make \
+          git \
+          # postgresql-dev is needed for https://bugs.alpinelinux.org/issues/3642
+          postgresql-dev; \
+     \
+     docker-php-ext-configure gd \
+          --with-freetype \
+          --with-jpeg=/usr/include; \
+     \
+     docker-php-ext-install -j "$(nproc)" \
+          gd \
+          opcache \
+          pdo_mysql \
+          pdo_pgsql \
+          zip; \
+     pecl channel-update pecl.php.net; \
+     pecl install oauth apcu uploadprogress; \
+     docker-php-ext-enable apcu oauth uploadprogress; \
+     \
+     runDeps="$( \
+          scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
+               | tr ',' '\n' \
+               | sort -u \
+               | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+     )"; \
+     apk add --no-network --virtual .drupal-phpexts-rundeps $runDeps; \
+     apk del --no-network .build-deps \
+          coreutils \
+          freetype-dev \
+          libjpeg-turbo-dev \
+          libpng-dev \
+          libzip-dev \
+          pcre-dev \
+          autoconf \
+          g++ \
+          make \
+          git \
+          postgresql-dev;
 
+# add PHP config
+COPY ./config/php/ /usr/local/etc/php/conf.d/
+
+# add NGINX config
+COPY config/nginx/*.conf /etc/nginx/
+COPY config/nginx/mime.types /etc/nginx/mime.types
+COPY config/nginx/conf.d/ /etc/nginx/conf.d/ 
+
+# add supervisord config
+COPY config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Create symlink for php8
+RUN ln -s /usr/bin/php8 /usr/bin/php
+
+# Make sure files/folders needed by the processes are accessable when they run under the nobody user
+RUN chown -R nobody:nobody /var/www/html && \
+    chown -R nobody:nobody /run && \
+    chown -R nobody:nobody /var/lib/nginx && \
+    chown -R nobody:nobody /var/log/nginx
+
+# Add application
 WORKDIR /var/www/html
-COPY --from=COMPOSER_CHAIN /tmp/ddbgo/ .
-COPY docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal
+COPY --chown=nobody --from=COMPOSER_CHAIN /tmp/ddbgo/ .
+ENV PATH=${PATH}:/var/www/html/vendor/bin
 
-RUN chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
-	chown -R www-data:www-data web/sites web/modules web/themes web/tmp; \
-	chmod +x /var/www/html/vendor/drush/drush/drush; \
-	find web \( -type d -exec chmod 755 {} + \) -o \( -type f -exec chmod 644 {} + \);
+# Switch to use a non-root user
+USER nobody:nobody
+
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
-HEALTHCHECK --interval=1m --timeout=3s CMD curl --fail http://localhost:8080/ || exit 1
-
+# Expose the port for nginx
 EXPOSE 8080
-CMD ["apache2-foreground"]
+
+# supervisord starts nginx & php-fpm
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
