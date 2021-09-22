@@ -85,7 +85,7 @@ ENV RUN_GROUP 0
 
 # Add application
 WORKDIR /var/www/html
-COPY --chown=${RUN_USER} --from=COMPOSER_CHAIN /tmp/ddbgo/ .
+COPY --chown=${RUN_USER}:${RUN_GROUP} --from=COMPOSER_CHAIN /tmp/ddbgo/ .
 ENV PATH=${PATH}:/var/www/html/vendor/bin
 
 RUN \
@@ -95,11 +95,12 @@ RUN \
     mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
     # Make sure files/folders needed by the processes are accessable when they run under the nobody user
     mkdir /var/cache/nginx; \
-    chown -R ${RUN_USER}:${RUN_GROUP} /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
-    chmod 550 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
+    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
+    chmod -R g=u /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
+    chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
     # add permissions for suervisor & nginx user
-    touch /run/supervisord.pid && chown ${RUN_USER}:${RUN_GROUP} /run/supervisord.pid && chmod 660 /run/supervisord.pid; \
-    touch /run/nginx/nginx.pid && chown ${RUN_USER}:${RUN_GROUP} /run/nginx/nginx.pid && chmod 660 /run/nginx/nginx.pid;
+    touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
+    touch /run/nginx/nginx.pid && chgrp -R ${RUN_GROUP} /run/nginx/nginx.pid && chmod -R g=u /run/nginx/nginx.pid;
 
 # Switch to use a non-root user
 USER ${RUN_USER}:${RUN_GROUP}
