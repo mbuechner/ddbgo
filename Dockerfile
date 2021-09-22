@@ -80,33 +80,29 @@ COPY config/nginx/conf.d/ /etc/nginx/conf.d/
 # add supervisord config
 COPY config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Create symlink for php8
-RUN ln -s /usr/bin/php8 /usr/bin/php
-
 ENV RUN_USER nobody
 ENV RUN_GROUP 0
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R ${RUN_USER}:${RUN_GROUP} /var/www/html && \
-    chown -R ${RUN_USER}:${RUN_GROUP} /run && \
-    chown -R ${RUN_USER}:${RUN_GROUP} /var/lib/nginx && \
-    chown -R ${RUN_USER}:${RUN_GROUP} /var/log/nginx
-
 # Add application
 WORKDIR /var/www/html
-COPY --chown=nobody --from=COMPOSER_CHAIN /tmp/ddbgo/ .
-RUN mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
-    chmod 775 /usr/local/bin/docker-php-entrypoint-drupal; \
-    chmod +x /var/www/html/vendor/drush/drush/drush;
+COPY --chown=${RUN_USER} --from=COMPOSER_CHAIN /tmp/ddbgo/ .
 ENV PATH=${PATH}:/var/www/html/vendor/bin
 
-## add permissions for suervisor & nginx user
-RUN touch /run/supervisord.pid && chown ${RUN_USER}:${RUN_GROUP} /run/supervisord.pid; \
-    touch /var/run/nginx.pid && chown ${RUN_USER}:${RUN_GROUP} /var/run/nginx.pid; \
-    mkdir /var/cache/nginx && chown -R ${RUN_USER}:${RUN_GROUP} /var/lib/nginx/logs/ /var/lib/nginx/modules/ /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
+RUN \
+    # Create symlink for php8
+    ln -s /usr/bin/php8 /usr/bin/php; \
+    # Move entrypoint script in place
+    mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
+    # Make sure files/folders needed by the processes are accessable when they run under the nobody user
+    mkdir /var/cache/nginx; \
+    chown -R ${RUN_USER}:${RUN_GROUP} /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
+    chmod 550 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
+    # add permissions for suervisor & nginx user
+    touch /run/supervisord.pid && chown ${RUN_USER}:${RUN_GROUP} /run/supervisord.pid && chmod 660 /run/supervisord.pid; \
+    touch /run/nginx/nginx.pid && chown ${RUN_USER}:${RUN_GROUP} /run/nginx/nginx.pid && chmod 660 /run/nginx/nginx.pid;
 
 # Switch to use a non-root user
-USER nobody:0
+USER ${RUN_USER}:${RUN_GROUP}
 
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
