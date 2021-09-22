@@ -81,7 +81,7 @@ COPY config/nginx/conf.d/ /etc/nginx/conf.d/
 COPY config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ENV RUN_USER nobody
-ENV RUN_GROUP 0
+ENV RUN_GROUP 1000620000
 
 # Add application
 WORKDIR /var/www/html
