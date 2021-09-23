@@ -779,3 +779,8 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 }
 
 $settings['config_sync_directory'] = '../config/sync';
+
+/* Redis */
+$settings['redis.connection']['interface'] = 'PhpRedis';
+$settings['redis.connection']['host'] = '127.0.0.1';
+$settings['cache']['default'] = 'cache.backend.redis';
