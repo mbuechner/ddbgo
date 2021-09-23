@@ -17,6 +17,7 @@ RUN apk --no-cache add \
     nginx \
     nginx-mod-http-upload-progress \
     nginx-mod-http-brotli \
+    redis \
     supervisor;
 
 RUN set -eux; \
@@ -46,8 +47,8 @@ RUN set -eux; \
           pdo_pgsql \
           zip; \
      pecl channel-update pecl.php.net; \
-     pecl install oauth apcu uploadprogress; \
-     docker-php-ext-enable apcu oauth uploadprogress; \
+     pecl install oauth apcu uploadprogress redis; \
+     docker-php-ext-enable apcu oauth uploadprogress redis; \
      \
      runDeps="$( \
           scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
