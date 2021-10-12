@@ -95,7 +95,8 @@ RUN \
     # Use the default PHP production configuration
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     # Move entrypoint script in place
-    mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
+    mv scripts/docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
+    mv scripts/drupal-maintenance.sh /usr/local/bin/drupal-maintenance; \
     # Generate SSL certificates fpr HTTP2
     # Generating signing SSL private key
     openssl genrsa -des3 -passout pass:foobar -out /etc/ssl/key.pem 2048; \
@@ -110,7 +111,7 @@ RUN \
     mkdir /var/cache/nginx; \
     chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
     chmod -R g=u /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
-    chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
+    chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /usr/local/bin/drupal-maintenance /var/www/html/vendor/drush/drush/drush; \
     chmod 440 /var/www/html/web/sites/default/settings.php; \
     # add permissions for suervisor & nginx user
     touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
