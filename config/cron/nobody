@@ -1,0 +1,2 @@
+# m h dom mon dow user     command
+*/1 * *   *   *   nobody   /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout

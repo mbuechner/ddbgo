@@ -17,7 +17,9 @@ RUN apk --no-cache add \
     nginx \
     nginx-mod-http-brotli \
     redis \
-    supervisor;
+    supervisor \
+    dcron \
+    libcap;
 
 RUN set -eux; \
      \
@@ -69,20 +71,23 @@ RUN set -eux; \
           git \
           postgresql-dev;
 
-# add PHP config
-COPY ./config/php/ /usr/local/etc/php/conf.d/
-
-# add NGINX config
-COPY config/nginx/*.conf /etc/nginx/
-COPY config/nginx/mime.types /etc/nginx/mime.types
-COPY config/nginx/conf.d/ /etc/nginx/conf.d/ 
-COPY config/nginx/.authpasswd /etc/nginx/.authpasswd
-
-# add supervisord config
-COPY config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 ENV RUN_USER nobody
 ENV RUN_GROUP 0
+
+# add PHP config
+COPY --chown=${RUN_USER}:${RUN_GROUP} ./config/php/ /usr/local/etc/php/conf.d/
+
+# add NGINX config
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/nginx/*.conf /etc/nginx/
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/nginx/mime.types /etc/nginx/mime.types
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/nginx/conf.d/ /etc/nginx/conf.d/ 
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/nginx/.authpasswd /etc/nginx/.authpasswd
+
+# add cron jobs
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/cron/* /etc/crontabs/
+
+# add supervisord config
+COPY --chown=${RUN_USER}:${RUN_GROUP} config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add application
 WORKDIR /var/www/html
@@ -94,24 +99,29 @@ RUN \
     ln -s /usr/bin/php8 /usr/bin/php; \
     # Use the default PHP production configuration
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
+    # init dcron and cron tab
+    chown ${RUN_USER}:${RUN_GROUP} /usr/sbin/crond; \
+    setcap cap_setgid=ep /usr/sbin/crond; \
+    crontab /etc/crontabs/ddbgo; \
     # Move entrypoint script in place
     mv scripts/docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
     mv scripts/drupal-maintenance.sh /usr/local/bin/drupal-maintenance; \
     # Generate SSL certificates fpr HTTP2
     # Generating signing SSL private key
-    openssl genrsa -des3 -passout pass:foobar -out /etc/ssl/key.pem 2048; \
+    openssl genrsa -des3 -passout pass:foobar -out /etc/ssl/mykey.pem 2048; \
     # Removing passphrase from private key
-    cp /etc/ssl/key.pem /etc/ssl/key.pem.orig; \
-    openssl rsa -passin pass:foobar -in /etc/ssl/key.pem.orig -out /etc/ssl/key.pem; \
+    cp /etc/ssl/mykey.pem /etc/ssl/mykey.pem.orig; \
+    openssl rsa -passin pass:foobar -in /etc/ssl/mykey.pem.orig -out /etc/ssl/mykey.pem; \
     # Generating certificate signing request
-    openssl req -new -key /etc/ssl/key.pem -out /etc/ssl/cert.csr -subj "/C=DE/ST=DE/L=Frankfurt am Main/O=Deutsche Nationalbibliothek/OU=IT.DDB/CN=DDBgo"; \
+    openssl req -new -key /etc/ssl/mykey.pem -out /etc/ssl/mycert.csr -subj "/C=DE/ST=DE/L=Frankfurt am Main/O=Deutsche Nationalbibliothek/OU=IT.DDB/CN=DDBgo"; \
     # Generating self-signed certificate
-    openssl x509 -req -days 3650 -in /etc/ssl/cert.csr -signkey /etc/ssl/key.pem -out /etc/ssl/cert.pem; \
+    openssl x509 -req -days 3650 -in /etc/ssl/mycert.csr -signkey /etc/ssl/mykey.pem -out /etc/ssl/mycert.pem; \
     # Make sure files/folders needed by the processes are accessable when they run under the nobody user
     mkdir /var/cache/nginx; \
-    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
-    chmod -R g=u /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
+    chgrp -R ${RUN_GROUP} /run /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/mycert.pem /etc/ssl/mykey.pem /etc/nginx/.authpasswd; \
+    chmod -R g=u /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/mycert.pem /etc/ssl/mykey.pem /etc/nginx/.authpasswd; \
     chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /usr/local/bin/drupal-maintenance /var/www/html/vendor/drush/drush/drush; \
+    chmod 644 /var/www/html/web/sites/default; \
     chmod 440 /var/www/html/web/sites/default/settings.php; \
     # add permissions for suervisor & nginx user
     touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
