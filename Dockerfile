@@ -108,9 +108,10 @@ RUN \
     openssl x509 -req -days 3650 -in /etc/ssl/cert.csr -signkey /etc/ssl/key.pem -out /etc/ssl/cert.pem; \
     # Make sure files/folders needed by the processes are accessable when they run under the nobody user
     mkdir /var/cache/nginx; \
-    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
-    chmod -R g=u /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
+    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
+    chmod -R g=u /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
     chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
+    chmod 440 /var/www/html/web/sites/default/settings.php; \
     # add permissions for suervisor & nginx user
     touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
     touch /run/nginx/nginx.pid && chgrp -R ${RUN_GROUP} /run/nginx/nginx.pid && chmod -R g=u /run/nginx/nginx.pid;
