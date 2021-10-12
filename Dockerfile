@@ -15,7 +15,6 @@ MAINTAINER Michael Büchner <m.buechner@dnb.de>
 RUN apk --no-cache add \
     curl \
     nginx \
-    nginx-mod-http-upload-progress \
     nginx-mod-http-brotli \
     redis \
     supervisor;
@@ -47,8 +46,8 @@ RUN set -eux; \
           pdo_pgsql \
           zip; \
      pecl channel-update pecl.php.net; \
-     pecl install oauth apcu uploadprogress redis; \
-     docker-php-ext-enable apcu oauth uploadprogress redis; \
+     pecl install oauth apcu redis; \
+     docker-php-ext-enable apcu oauth redis; \
      \
      runDeps="$( \
           scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
@@ -77,6 +76,7 @@ COPY ./config/php/ /usr/local/etc/php/conf.d/
 COPY config/nginx/*.conf /etc/nginx/
 COPY config/nginx/mime.types /etc/nginx/mime.types
 COPY config/nginx/conf.d/ /etc/nginx/conf.d/ 
+COPY config/nginx/.authpasswd /etc/nginx/.authpasswd
 
 # add supervisord config
 COPY config/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -92,12 +92,24 @@ ENV PATH=${PATH}:/var/www/html/vendor/bin
 RUN \
     # Create symlink for php8
     ln -s /usr/bin/php8 /usr/bin/php; \
+    # Use the default PHP production configuration
+    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     # Move entrypoint script in place
     mv docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
+    # Generate SSL certificates fpr HTTP2
+    # Generating signing SSL private key
+    openssl genrsa -des3 -passout pass:foobar -out /etc/ssl/key.pem 2048; \
+    # Removing passphrase from private key
+    cp /etc/ssl/key.pem /etc/ssl/key.pem.orig; \
+    openssl rsa -passin pass:foobar -in /etc/ssl/key.pem.orig -out /etc/ssl/key.pem; \
+    # Generating certificate signing request
+    openssl req -new -key /etc/ssl/key.pem -out /etc/ssl/cert.csr -subj "/C=DE/ST=DE/L=Frankfurt am Main/O=Deutsche Nationalbibliothek/OU=IT.DDB/CN=DDBgo"; \
+    # Generating self-signed certificate
+    openssl x509 -req -days 3650 -in /etc/ssl/cert.csr -signkey /etc/ssl/key.pem -out /etc/ssl/cert.pem; \
     # Make sure files/folders needed by the processes are accessable when they run under the nobody user
     mkdir /var/cache/nginx; \
-    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
-    chmod -R g=u /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/; \
+    chgrp -R ${RUN_GROUP} /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
+    chmod -R g=u /run/ /etc/nginx/conf.d/ /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/cert.pem /etc/ssl/key.pem /etc/nginx/.authpasswd; \
     chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /var/www/html/vendor/drush/drush/drush; \
     # add permissions for suervisor & nginx user
     touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
@@ -108,8 +120,8 @@ USER ${RUN_USER}:${RUN_GROUP}
 
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
-# Expose the port for nginx
-EXPOSE 8080
+# Expose the ports for nginx
+EXPOSE 8080 4430
 
 # supervisord starts nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
