@@ -1,8 +1,6 @@
 #!/bin/sh
 set +e;
 
-UPDATEDB_ON_STARTUP="${UPDATEDB_ON_STARTUP:-no}";
-CACHEREBUILD_ON_STARTUP="${CACHEREBUILD_ON_STARTUP:-no}";
 HTPASSWD_GREETING="${HTPASSWD_GREETING:-Sie greifen auf ein Testsystem der DDB zu. Bitte geben als Benutzer 'testsystem' und als Passwort ebenfalls 'testsystem' ein.}";
 # HTPASSWD_USER -> HTTP Basic Auth User
 # HTPASSWD_PWD -> HTTP Basic Auth Password
