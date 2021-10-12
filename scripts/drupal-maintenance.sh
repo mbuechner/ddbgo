@@ -1,6 +1,4 @@
 #!/bin/sh
-set +e;
-
 UPDATEDB_ON_STARTUP="${UPDATEDB_ON_STARTUP:-no}";
 CACHEREBUILD_ON_STARTUP="${CACHEREBUILD_ON_STARTUP:-no}";
 
@@ -13,5 +11,3 @@ if [ "$CACHEREBUILD_ON_STARTUP" = "yes" ]; then
   echo "Start Drupal Cache Rebuild...";
   /var/www/html/vendor/bin/drush --root /var/www/html/web cache-rebuild;
 fi;
-
-set -e;
