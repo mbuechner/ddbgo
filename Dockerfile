@@ -102,7 +102,7 @@ RUN \
     # init dcron and cron tab
     # see https://github.com/gliderlabs/docker-alpine/issues/381#issuecomment-621946699
     chown ${RUN_USER}:${RUN_GROUP} /usr/sbin/crond; \
-    chmod 755 /usr/sbin/crond; \
+    chmod 777 /usr/sbin/crond; \
     setcap cap_setgid=ep /usr/sbin/crond; \
     crontab /etc/crontabs/nobody; \
     # Move entrypoint script in place
