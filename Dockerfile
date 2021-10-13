@@ -100,7 +100,9 @@ RUN \
     # Use the default PHP production configuration
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
     # init dcron and cron tab
+    # see https://github.com/gliderlabs/docker-alpine/issues/381#issuecomment-621946699
     chown ${RUN_USER}:${RUN_GROUP} /usr/sbin/crond; \
+    chmod 751 /usr/sbin/crond; \
     setcap cap_setgid=ep /usr/sbin/crond; \
     crontab /etc/crontabs/ddbgo; \
     # Move entrypoint script in place
@@ -120,8 +122,7 @@ RUN \
     mkdir /var/cache/nginx; \
     chgrp -R ${RUN_GROUP} /run /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/mycert.pem /etc/ssl/mykey.pem /etc/nginx/.authpasswd; \
     chmod -R g=u /run/ /etc/nginx/conf.d/ /etc/nginx/*.conf /var/cache/nginx/ /var/lib/nginx/ /var/log/nginx/ /var/www/html/ /etc/ssl/mycert.pem /etc/ssl/mykey.pem /etc/nginx/.authpasswd; \
-    chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /usr/local/bin/drupal-maintenance /var/www/html/vendor/drush/drush/drush; \
-    chmod 644 /var/www/html/web/sites/default; \
+    chmod 751 /usr/local/bin/docker-php-entrypoint-drupal /usr/local/bin/drupal-maintenance /var/www/html/vendor/drush/drush/drush /var/www/html/web/sites/default; \
     chmod 440 /var/www/html/web/sites/default/settings.php; \
     # add permissions for suervisor & nginx user
     touch /run/supervisord.pid && chgrp -R ${RUN_GROUP} /run/supervisord.pid && chmod -R g=u /run/supervisord.pid; \
@@ -133,7 +134,7 @@ USER ${RUN_USER}:${RUN_GROUP}
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
 # Expose the ports for nginx
-EXPOSE 8080 4430
+EXPOSE ["8080", "4430"]
 
 # supervisord starts nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
