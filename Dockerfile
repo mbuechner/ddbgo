@@ -17,9 +17,9 @@ RUN apk --no-cache add \
     nginx \
     nginx-mod-http-brotli \
     redis \
-    supervisor \
-    dcron \
-    libcap;
+    supervisor; \
+    apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+    supercronic;
 
 RUN set -eux; \
      \
@@ -99,12 +99,6 @@ RUN \
     ln -s /usr/bin/php8 /usr/bin/php; \
     # Use the default PHP production configuration
     mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
-    # init dcron and cron tab
-    # see https://github.com/gliderlabs/docker-alpine/issues/381#issuecomment-621946699
-    chown ${RUN_USER}:${RUN_GROUP} /usr/sbin/crond; \
-    chmod 777 /usr/sbin/crond; \
-    setcap cap_setgid=ep /usr/sbin/crond; \
-    crontab /etc/crontabs/nobody; \
     # Move entrypoint script in place
     mv scripts/docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
     mv scripts/drupal-maintenance.sh /usr/local/bin/drupal-maintenance; \
