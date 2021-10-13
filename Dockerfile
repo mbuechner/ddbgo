@@ -104,7 +104,7 @@ RUN \
     chown ${RUN_USER}:${RUN_GROUP} /usr/sbin/crond; \
     chmod 751 /usr/sbin/crond; \
     setcap cap_setgid=ep /usr/sbin/crond; \
-    crontab /etc/crontabs/ddbgo; \
+    crontab /etc/crontabs/nobody; \
     # Move entrypoint script in place
     mv scripts/docker-php-entrypoint-drupal.sh /usr/local/bin/docker-php-entrypoint-drupal; \
     mv scripts/drupal-maintenance.sh /usr/local/bin/drupal-maintenance; \
