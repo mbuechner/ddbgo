@@ -134,7 +134,7 @@ USER ${RUN_USER}:${RUN_GROUP}
 ENTRYPOINT ["docker-php-entrypoint-drupal"]
 
 # Expose the ports for nginx
-EXPOSE ["8080", "4430"]
+EXPOSE 8080 4430
 
 # supervisord starts nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
