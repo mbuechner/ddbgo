@@ -17,6 +17,7 @@ then
   } > /etc/nginx/auth.conf;
 else
   rm -f /etc/nginx/auth.conf;
+  touch /etc/nginx/auth.conf;
 fi;
 
 set -e;
