@@ -5,8 +5,8 @@ HTPASSWD_GREETING="${HTPASSWD_GREETING:-Sie greifen auf ein Testsystem der DDB z
 # HTPASSWD_USER -> HTTP Basic Auth User
 # HTPASSWD_PWD -> HTTP Basic Auth Password
 
-if [ -n "${HTPASSWD_USER}" ] && [ -n "${HTPASSWD_PWD}" ]; then
-
+if [ -n "${HTPASSWD_USER}" ] && [ -n "${HTPASSWD_PWD}" ];
+then
   echo "Setting HTTP Auth for nginx...";
   printf '%s:%s\n' "${HTPASSWD_USER}" "$(openssl passwd -crypt "${HTPASSWD_PWD}")" > /etc/nginx/.authpasswd;
   {
@@ -15,6 +15,8 @@ if [ -n "${HTPASSWD_USER}" ] && [ -n "${HTPASSWD_PWD}" ]; then
     echo "auth_basic \"${HTPASSWD_GREETING}\";";
     echo "auth_basic_user_file /etc/nginx/.authpasswd;";
   } > /etc/nginx/auth.conf;
+else
+  rm -f /etc/nginx/auth.conf;
 fi;
 
 set -e;
