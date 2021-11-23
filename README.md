@@ -71,9 +71,9 @@ If you start with a blank database you need to import all configuration with [Dr
    `vendor/drush/drush/drush config:import`.
 
 ## Docker
-Yes, there's a docker container for DDBgo available at [DockerHub](https://hub.docker.com/): https://hub.docker.com/r/mbuechner/ddbgo
+Yes, there's a docker container for DDBgo available at GitHub: https://github.com/mbuechner/ddbgo/pkgs/container/ddbgo%2Fddbgo
 ```
-docker pull mbuechner/ddbgo:latest
+docker pull ghcr.io/mbuechner/ddbgo/ddbgo:tagged
 ```
 ## Container build
 1. Checkout GitHub repository:
@@ -91,10 +91,10 @@ docker pull mbuechner/ddbgo:latest
 It's important to run Drupal's Cron job regularly. It's recommended to trigger it *every minute* with a forbidden concurrency from an external cron job. The [Drush command](https://docs.drush.org/en/8.x/cron/) is a simple way to execute Drupal's cron job.
 Run:
 ```
-> /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout
+> /var/www/html/vendor/bin/drush --root /var/www/html/web/ --quiet cron > /dev/stdout
 ```
 Cron task:
 ```
-*/1 * * * * /var/www/html/vendor/bin/drush --uri http://default --root /var/www/html/web/ --quiet cron > /dev/stdout
+*/1 * * * * /var/www/html/vendor/bin/drush --root /var/www/html/web/ --quiet cron > /dev/stdout
 ```
 More information about cron at the [Drupal documentation](https://www.drupal.org/docs/administering-a-drupal-site/cron-automated-tasks/cron-automated-tasks-overview).
