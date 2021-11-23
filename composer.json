@@ -84,6 +84,20 @@
         }, {
             "type": "package",
             "package": {
+                "name": "ddbgolib/jquery-ui-touch-punch",
+                "version": "1.0.x-dev",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/furf/jquery-ui-touch-punch/archive/refs/heads/master.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "^1.11"
+                }
+            }
+        }, {
+            "type": "package",
+            "package": {
                 "name": "ddbgolib/spectrum",
                 "version": "1.8.0",
                 "type": "drupal-library",
@@ -104,6 +118,7 @@
         "ddbgolib/fontawesome": "^5.15.3",
         "ddbgolib/fontawesome-iconpicker": "^3.2",
         "ddbgolib/jquery-simple-color": "^1.2.3",
+        "ddbgolib/jquery-ui-touch-punch": "1.0.x-dev",
         "ddbgolib/select2": "^4.0",
         "ddbgolib/spectrum": "^1.8",
         "drupal/admin_toolbar": "^2.4",
