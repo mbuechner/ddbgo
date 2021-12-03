@@ -174,6 +174,7 @@
         "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/unique_field_ajax": "2.0.1",
         "drupal/userprotect": "^1.1",
+        "drupal/views_bulk_edit": "^2.6",
         "drupal/views_data_export": "^1.0",
         "drupal/viewsreference": "^1.7",
         "drush/drush": "^10.5",
