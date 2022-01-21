@@ -134,6 +134,7 @@
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/custom_formatters": "^3.0@alpha",
         "drupal/date_popup": "^1.1",
+        "drupal/diff": "^1.0",
         "drupal/empty_fields": "^1.0",
         "drupal/entity_reference_integrity": "^1.0",
         "drupal/entity_reference_revisions": "^1.9",
