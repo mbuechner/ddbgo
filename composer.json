@@ -126,7 +126,6 @@
         "drupal/adminimal_theme": "^1.6",
         "drupal/auto_entitylabel": "^3.0@beta",
         "drupal/better_exposed_filters": "^5.0",
-        "drupal/christmas_lights": "^1.1",
         "drupal/color-color": "^1.0",
         "drupal/color_field": "^2.4.0",
         "drupal/conditional_fields": "^1.0@alpha",
@@ -196,7 +195,7 @@
         "preferred-install": "source",
         "sort-packages": true,
         "platform": {
-            "php": "7.4.0",
+            "php": "8.1",
             "ext-gd": "1"
         }
     },
