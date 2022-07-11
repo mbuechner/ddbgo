@@ -164,6 +164,7 @@
         "drupal/noreqnewpass": "^1.2",
         "drupal/paragraphs": "^1.12",
         "drupal/redis": "^1.5",
+        "drupal/responsive_favicons": "^1.7",
         "drupal/role_delegation": "^1.1",
         "drupal/search_api": "^1.19",
         "drupal/select2": "^1.13",
