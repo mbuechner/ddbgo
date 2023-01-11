@@ -66,7 +66,7 @@ class KweQueueWorker {
     return TRUE;
   }
 
-  private static function process($node = NULL, $user_id) {
+  private static function process($node, $user_id) {
 
     // FROM: https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5
     // TO: https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
