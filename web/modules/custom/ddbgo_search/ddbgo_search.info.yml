@@ -5,8 +5,7 @@ dependencies:
   - drupal:search_api
   - drupal:paragraphs
 package: ddbgo
-version: '8.x-1.0'
-core: 8.x
-core_version_requirement: ^8 || ^9
+version: '1.0'
+core_version_requirement: ^9 || ^10
 project: 'ddbgo_search'
 datestamp: 1583236800

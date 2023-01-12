@@ -177,6 +177,7 @@
         "drupal/transliterate_filenames": "^2.0",
         "drupal/ultimate_cron": "^2.0@alpha",
         "drupal/unique_field_ajax": "^2.1",
+        "drupal/upgrade_status": "^3.18",
         "drupal/userprotect": "^1.1",
         "drupal/views_data_export": "^1.0",
         "drupal/viewsreference": "^2.0@beta",
