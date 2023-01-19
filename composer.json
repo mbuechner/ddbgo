@@ -167,7 +167,6 @@
         "drupal/search_api": "^1.19",
         "drupal/select2": "^1.13",
         "drupal/semanticviews": "^2.3",
-        "drupal/seven": "^1.0@alpha",
         "drupal/smtp": "^1.1",
         "drupal/taxonomy_unique": "^2.3",
         "drupal/term_merge": "^1.x-dev@dev",
