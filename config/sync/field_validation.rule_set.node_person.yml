@@ -1,0 +1,39 @@
+uuid: 4a49e75f-c5e9-4bc5-9c41-0588ee753260
+langcode: de
+status: true
+dependencies: {  }
+name: node_person
+label: 'node person validation'
+entity_type: node
+bundle: person
+field_validation_rules:
+  d52305d0-10fa-464f-9e29-1b29f8f7c023:
+    id: regex_field_validation_rule
+    title: Nachname
+    data:
+      setting: '/.{2,}/'
+    weight: 1
+    uuid: d52305d0-10fa-464f-9e29-1b29f8f7c023
+    field_name: field_nachname
+    column: value
+    error_message: 'Bitte mindestens zwei Buchstaben eingeben!'
+  005279b1-3cd4-465a-8ad7-5edcfa0f7e62:
+    id: regex_field_validation_rule
+    title: Telefonnummer
+    data:
+      setting: '/\+[1-9][0-9]*\s[1-9][0-9]*\s[0-9]+(?:\-[0-9]*)?/'
+    weight: 2
+    uuid: 005279b1-3cd4-465a-8ad7-5edcfa0f7e62
+    field_name: field_telefonnummer
+    column: value
+    error_message: 'Bitte eine Telefonummer im Format +49 69 1525-1774 eingeben. Die führende Null muss von der Vorwahl entfernt werden.'
+  819e28c1-f880-4a8d-b11f-7b7177f254e2:
+    id: regex_field_validation_rule
+    title: Vorname
+    data:
+      setting: '/.{2,}/'
+    weight: 3
+    uuid: 819e28c1-f880-4a8d-b11f-7b7177f254e2
+    field_name: field_vorname
+    column: value
+    error_message: 'Bitte mindestens zwei Buchstaben eingeben!'

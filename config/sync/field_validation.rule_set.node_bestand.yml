@@ -1,0 +1,49 @@
+uuid: 263332be-4dcf-42bd-8123-84e68c511add
+langcode: de
+status: true
+dependencies: {  }
+name: node_bestand
+label: 'node bestand validation'
+entity_type: node
+bundle: bestand
+field_validation_rules:
+  8344e86c-ba54-425a-bf4b-6ae71fc3f416:
+    id: regex_field_validation_rule
+    title: JIRA-Hauptticket
+    data:
+      setting: '/[A-Z]+\-[0-9]+/'
+    weight: 2
+    uuid: 8344e86c-ba54-425a-bf4b-6ae71fc3f416
+    field_name: field_jira_hauptticket
+    column: value
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  e85411c7-b531-4c69-9221-6ad98da2320a:
+    id: regex_field_validation_rule
+    title: 'JIRA-Ticket bei Europeana'
+    data:
+      setting: '/[A-Z]+\-[0-9]+/'
+    weight: 3
+    uuid: e85411c7-b531-4c69-9221-6ad98da2320a
+    field_name: field_jira_ticket_bei_europeana
+    column: value
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  86deaa1d-ae95-4701-9968-d204da3076f0:
+    id: regex_field_validation_rule
+    title: 'JIRA-Ticket für Europeanalieferung'
+    data:
+      setting: '/[A-Z]+\-[0-9]+/'
+    weight: 1
+    uuid: 86deaa1d-ae95-4701-9968-d204da3076f0
+    field_name: field_jira_europeana
+    column: value
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  dbb92271-809a-48f9-a4ed-8065f4e92964:
+    id: regex_field_validation_rule
+    title: 'Link zu Coding da Vinci'
+    data:
+      setting: '/https:\/\/codingdavinci\.de\/node\/[0-9]*/'
+    weight: 4
+    uuid: dbb92271-809a-48f9-a4ed-8065f4e92964
+    field_name: field_link_zu_coding_da_vinci
+    column: value
+    error_message: 'Bitte eine URL in der Form ''''https://codingdavinci.de/node/12345'''' eingeben!'

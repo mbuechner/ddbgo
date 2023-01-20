@@ -10,10 +10,11 @@ third_party_settings:
     available_menus: {  }
     parent: ''
   unique_field_ajax:
-    unique_title: true
-    warn_only: true
-    use_ajax: true
-    message: 'Dieser Aggregator ist schon vorhanden!'
+    unique: 1
+    use_ajax: 1
+    no_enforce: 1
+    message: 'Dieser Aggregator ist schon vorhanden (siehe %link)!'
+    message_warning: 'Dieser Aggregator ist schon vorhanden (siehe %link)!'
 name: Aggregator
 type: aggregator
 description: ''

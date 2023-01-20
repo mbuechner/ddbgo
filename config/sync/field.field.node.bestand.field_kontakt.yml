@@ -1,0 +1,49 @@
+uuid: 35205b8d-0a60-4746-8c2d-e92e166b8caf
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_kontakt
+    - node.type.bestand
+    - paragraphs.paragraphs_type.kontakt
+  module:
+    - entity_reference_revisions
+id: node.bestand.field_kontakt
+field_name: field_kontakt
+entity_type: node
+bundle: bestand
+label: Kontakt
+description: 'Datum des (Erst-) Kontaktes zu dem Bestand und Name des DDB-Teammitgliedes sowie weitere Bemerkungen.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      kontakt: kontakt
+    negate: 0
+    target_bundles_drag_drop:
+      ddb_objekte:
+        weight: -14
+        enabled: false
+      europeana_objekte_content_tier:
+        weight: -13
+        enabled: false
+      europeana_objekte_metadata_tier:
+        weight: -12
+        enabled: false
+      kontakt:
+        weight: -15
+        enabled: true
+      person_aggregator:
+        weight: -11
+        enabled: false
+      person_bestand:
+        weight: -10
+        enabled: false
+      person_kwe:
+        weight: -9
+        enabled: false
+field_type: entity_reference_revisions

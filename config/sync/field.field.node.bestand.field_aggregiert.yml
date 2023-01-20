@@ -6,15 +6,6 @@ dependencies:
     - field.storage.node.field_aggregiert
     - node.type.bestand
     - taxonomy.vocabulary.aggregiert
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: node.bestand.field_aggregiert
 field_name: field_aggregiert
 entity_type: node

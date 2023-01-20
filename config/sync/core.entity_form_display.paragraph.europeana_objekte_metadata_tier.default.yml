@@ -1,0 +1,41 @@
+uuid: 62254c4e-5789-4140-a86b-d4e84e590d9b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.europeana_objekte_metadata_tier.field_metadata_tier
+    - field.field.paragraph.europeana_objekte_metadata_tier.field_objekte
+    - paragraphs.paragraphs_type.europeana_objekte_metadata_tier
+  module:
+    - paragraphs
+    - select2
+id: paragraph.europeana_objekte_metadata_tier.default
+targetEntityType: paragraph
+bundle: europeana_objekte_metadata_tier
+mode: default
+content:
+  field_metadata_tier:
+    type: select2_entity_reference
+    weight: 0
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
+  field_objekte:
+    type: entity_reference_paragraphs
+    weight: 1
+    region: content
+    settings:
+      title: Seitenabschnitt
+      title_plural: Seitenabschnitte
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

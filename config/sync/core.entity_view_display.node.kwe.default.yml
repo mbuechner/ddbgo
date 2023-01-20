@@ -37,6 +37,8 @@ dependencies:
     - field.field.node.kwe.field_vertrag
     - field.field.node.kwe.field_vertragskonstrukt
     - field.field.node.kwe.field_vertragsstatus
+    - field.field.node.kwe.field_widerspruch
+    - field.field.node.kwe.field_zustimmungsformular
     - node.type.kwe
   module:
     - color_field
@@ -53,10 +55,14 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
+      label: Kontakt
       parent_name: ''
+      region: content
       weight: 4
       format_type: html_element
       format_settings:
+        classes: fieldgroup_kontakt
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -64,17 +70,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_kontakt
-      label: Kontakt
-      region: content
     group_personen:
       children:
         - field_personen
+      label: Personen
       parent_name: ''
+      region: content
       weight: 3
       format_type: html_element
       format_settings:
+        classes: fieldgroup_personen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -82,24 +88,25 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_personen
-      label: Personen
-      region: content
     group_informationen:
       children:
         - field_vertragsstatus
         - field_vertragskonstrukt
+        - field_zustimmungsformular
         - field_vertrag
         - field_favorienkarussell
-        - field_link_zu_ddbdash
         - field_api_blacklisting
         - field_api_blacklisting_jira_tick
+        - field_widerspruch
         - field_bemerkungen
+      label: Informationen
       parent_name: ''
+      region: content
       weight: 5
       format_type: html_element
       format_settings:
+        classes: fieldgroup_informationen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -107,10 +114,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_informationen
-      label: Informationen
-      region: content
     group_einstellungen:
       children:
         - field_europeana_lieferung
@@ -119,10 +122,14 @@ third_party_settings:
         - field_archivportal_lieferung
         - field_erstingest_archivportal
         - field_bemerkung_archivportal
+      label: 'Europeana/ Archivportal'
       parent_name: ''
+      region: content
       weight: 6
       format_type: html_element
       format_settings:
+        classes: fieldgroup_europeana
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -130,19 +137,19 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_europeana
-      label: 'Europeana/ Archivportal'
-      region: content
     group_status:
       children:
         - flag_bookmark
         - field_status
         - field_ablehnungsgrund
+      label: Status
       parent_name: ''
+      region: content
       weight: 1
       format_type: html_element
       format_settings:
+        classes: fieldgroup_status
+        id: fieldgroup_kwe_status
         element: fieldset
         show_label: true
         label_element: legend
@@ -150,10 +157,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: slow
-        id: fieldgroup_kwe_status
-        classes: fieldgroup_status
-      label: Status
-      region: content
     group_allgemeines:
       children:
         - field_ddburi
@@ -170,10 +173,14 @@ third_party_settings:
         - field_email
         - field_url
         - field_bemerkung
+      label: Allgemeines
       parent_name: ''
+      region: content
       weight: 2
       format_type: html_element
       format_settings:
+        classes: fieldgroup_allgemeines
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -181,24 +188,20 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_allgemeines
-      label: Allgemeines
-      region: content
 id: node.kwe.default
 targetEntityType: node
 bundle: kwe
 mode: default
 content:
   field_ablehnungsgrund:
-    weight: 2
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
   field_api_blacklisting:
-    weight: 29
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -207,10 +210,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 29
     region: content
   field_api_blacklisting_jira_tick:
-    weight: 30
+    type: 'custom_formatters:jira_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -218,10 +221,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:jira_link'
+    weight: 30
     region: content
   field_archivportal_lieferung:
-    weight: 20
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -230,10 +233,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 20
     region: content
   field_bemerkung:
-    weight: 17
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -241,10 +244,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 17
     region: content
   field_bemerkung_archivportal:
-    weight: 22
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -252,10 +255,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 22
     region: content
   field_bemerkung_europeana_liefer:
-    weight: 19
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -263,10 +266,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 19
     region: content
   field_bemerkungen:
-    weight: 31
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -274,10 +277,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 32
     region: content
   field_bundesland:
-    weight: 11
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -286,10 +289,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 11
     region: content
   field_ddb_id:
-    weight: 5
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -298,10 +301,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 5
     region: content
   field_ddburi:
-    weight: 4
+    type: 'custom_formatters:label_als_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -309,10 +312,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:label_als_link'
+    weight: 4
     region: content
   field_email:
-    weight: 15
+    type: email_mailto
     label: inline
     settings: {  }
     third_party_settings:
@@ -320,10 +323,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: email_mailto
+    weight: 15
     region: content
   field_erstingest_archivportal:
-    weight: 21
+    type: datetime_default
     label: inline
     settings:
       timezone_override: ''
@@ -333,10 +336,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: datetime_default
+    weight: 21
     region: content
   field_erstingest_europeana:
-    weight: 18
+    type: datetime_default
     label: inline
     settings:
       timezone_override: ''
@@ -346,10 +349,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: datetime_default
+    weight: 18
     region: content
   field_europeana_lieferung:
-    weight: 17
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -358,10 +361,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 17
     region: content
   field_favorienkarussell:
-    weight: 27
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -370,10 +373,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 28
     region: content
   field_isil:
-    weight: 6
+    type: 'custom_formatters:isil_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -381,11 +384,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:isil_link'
+    weight: 6
     region: content
   field_kontakt:
     type: entity_reference_revisions_entity_view
-    weight: 22
     label: hidden
     settings:
       view_mode: default
@@ -395,9 +397,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Kontakte'
+    weight: 22
     region: content
   field_kurzname:
-    weight: 7
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -406,10 +409,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 7
     region: content
   field_land:
-    weight: 12
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -418,11 +421,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 12
     region: content
   field_personen:
     type: entity_reference_revisions_entity_view
-    weight: 20
     label: hidden
     settings:
       view_mode: default
@@ -432,9 +434,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Personen'
+    weight: 20
     region: content
   field_plz:
-    weight: 9
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -443,10 +446,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 9
     region: content
   field_sparte:
-    weight: 13
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -455,10 +458,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 13
     region: content
   field_stadt:
-    weight: 10
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -467,10 +470,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 10
     region: content
   field_status:
-    weight: 1
+    type: color_field_formatter_swatch
     label: hidden
     settings:
       shape: square
@@ -483,10 +486,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: color_field_formatter_swatch
+    weight: 1
     region: content
   field_strasse:
-    weight: 8
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -495,10 +498,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 8
     region: content
   field_telefonnummer:
-    weight: 14
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -507,26 +510,26 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 14
     region: content
   field_url:
-    weight: 16
+    type: link
     label: inline
     settings:
       trim_length: 255
-      target: _blank
       url_only: false
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 16
     region: content
   field_vertrag:
-    weight: 26
+    type: file_default
     label: inline
     settings:
       use_description_as_link_text: false
@@ -535,10 +538,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: file_default
+    weight: 27
     region: content
   field_vertragskonstrukt:
-    weight: 25
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -547,10 +550,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 25
     region: content
   field_vertragsstatus:
-    weight: 24
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -559,13 +562,37 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 24
+    region: content
+  field_widerspruch:
     type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 31
+    region: content
+  field_zustimmungsformular:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 26
     region: content
   flag_bookmark:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   langcode: true
   links: true

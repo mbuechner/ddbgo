@@ -16,27 +16,27 @@ bundle: bundesland
 mode: default
 content:
   field_hauptstadt:
-    weight: 1
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_kuerzel:
-    weight: 0
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_uri:
-    weight: 2
+    type: 'custom_formatters:label_als_link'
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: 'custom_formatters:label_als_link'
+    weight: 2
     region: content
 hidden:
   description: true

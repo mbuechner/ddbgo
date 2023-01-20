@@ -19,21 +19,21 @@ plugin: 'block_content:bd78c484-37ef-47b2-b989-cce3904fc732'
 settings:
   id: 'block_content:bd78c484-37ef-47b2-b989-cce3904fc732'
   label: 'Link zur Dokumentation'
-  provider: block_content
   label_display: '0'
+  provider: block_content
   status: true
   info: ''
   view_mode: full
 visibility:
   request_path:
     id: request_path
-    pages: '<front>'
     negate: false
     context_mapping: {  }
+    pages: '<front>'
   user_role:
     id: user_role
-    roles:
-      authenticated: authenticated
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

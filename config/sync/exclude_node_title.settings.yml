@@ -1,9 +1,10 @@
-nid_list: {  }
-translation_sync: true
-search: false
 _core:
   default_config_hash: tFcyNjovmdPA1ZVm7j2Iymt809j-r2F5uSDJAOI_QV8
 langcode: de
+nid_list: {  }
+translation_sync: true
+search: false
+type: remove
 content_types:
   person: all
   aggregator: none
@@ -15,4 +16,3 @@ content_type_modes:
   aggregator: {  }
   kwe: {  }
   page: {  }
-type: remove

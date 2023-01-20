@@ -1,7 +1,16 @@
 uuid: 381ef53d-e43f-4226-9aa8-9499aaff1bb5
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - fontawesome
+    - key_auth
+    - node_view_permissions
+    - noreqnewpass
+    - system
+    - toolbar
+    - toolbar_menu
+    - userprotect
 _core:
   default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
 id: authenticated
@@ -10,11 +19,9 @@ weight: -9
 is_admin: false
 permissions:
   - 'access content'
+  - 'access fontawesome additional settings'
   - 'access toolbar'
   - 'can change your own password'
-  - 'override page published option'
-  - 'use admin toolbar search'
-  - 'use exclude node title'
   - 'use key authentication'
   - userprotect.account.edit
   - userprotect.pass.edit
@@ -26,7 +33,6 @@ permissions:
   - 'view any person content'
   - 'view bestand in toolbar'
   - 'view kwe in toolbar'
-  - 'view media'
   - 'view own aggregator content'
   - 'view own bestand content'
   - 'view own kwe content'

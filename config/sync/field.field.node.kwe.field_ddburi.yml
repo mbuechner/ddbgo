@@ -9,11 +9,13 @@ dependencies:
     - unique_field_ajax
 third_party_settings:
   unique_field_ajax:
-    unique: 0
+    unique: 1
     per_lang: 0
+    case_sensitive: 0
     use_ajax: 1
-    warn_only: 0
-    message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden!'
+    no_enforce: 1
+    message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden (siehe %link)!'
+    message_warning: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden (siehe %link)!'
 id: node.kwe.field_ddburi
 field_name: field_ddburi
 entity_type: node

@@ -23,116 +23,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            authenticated: authenticated
-            administrator: administrator
-            ddb_team: ddb_team
-      cache:
-        type: none
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: true
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Anwenden
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: none
-        options:
-          offset: 0
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: false
-          override: true
-          sticky: true
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            nid: nid
-            nid_1: nid_1
-            title_1: title_1
-            field_status_1: field_status_1
-            title: title
-            field_status: field_status
-            field_erstingest: field_erstingest
-          info:
-            nid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nid_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title_1:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_status_1:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_status:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_erstingest:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: Bestände
       fields:
         nid:
           id: nid
@@ -141,6 +37,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -197,9 +96,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
         nid_1:
           id: nid_1
           table: node_field_data
@@ -207,6 +103,9 @@ display:
           relationship: field_kwe
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -263,9 +162,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -273,6 +169,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Bestand
           exclude: false
           alter:
@@ -328,7 +225,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_status:
           id: field_status
           table: node__field_status
@@ -336,6 +232,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Status des Bestands'
           exclude: false
           alter:
@@ -394,7 +291,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_erstingest:
           id: field_erstingest
           table: node__field_erstingest
@@ -402,6 +298,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Erster Ingest in die DDB'
           exclude: false
           alter:
@@ -458,7 +355,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         title_1:
           id: title_1
           table: node_field_data
@@ -466,6 +362,9 @@ display:
           relationship: field_kwe
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
           label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
@@ -521,9 +420,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: title
-          plugin_id: field
         field_status_1:
           id: field_status_1
           table: node__field_status
@@ -531,6 +427,7 @@ display:
           relationship: field_kwe
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: 'Status der Kultur- oder Wisseneinrichtung'
           exclude: false
           alter:
@@ -589,7 +486,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_zwischenaggregatoren:
           id: field_zwischenaggregatoren
           table: node__field_zwischenaggregatoren
@@ -597,6 +493,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Zwischenaggregator(en)
           exclude: false
           alter:
@@ -652,53 +549,30 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
-      filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: field_kwe
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-        title_1:
-          id: title_1
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-      title: Bestände
-      header: {  }
-      footer: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Anwenden
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+            administrator: administrator
+            ddb_team: ddb_team
+      cache:
+        type: none
+        options: {  }
       empty:
         area_text_custom:
           id: area_text_custom
@@ -707,29 +581,41 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Keine Bestände</p>'
           plugin_id: text_custom
-      relationships:
-        field_aggregator:
-          id: field_aggregator
-          table: node__field_aggregator
-          field: field_aggregator
+          empty: true
+          content: '<p>Keine Bestände</p>'
+          tokenize: false
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: field_kwe
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
           relationship: none
           group_type: group
-          admin_label: 'field_aggregator: Inhalt'
-          required: true
+          admin_label: ''
+          entity_type: node
+          entity_field: title
           plugin_id: standard
-        field_kwe:
-          id: field_kwe
-          table: node__field_kwe
-          field: field_kwe
-          relationship: none
-          group_type: group
-          admin_label: 'field_kwe: Inhalt'
-          required: true
-          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title_1
+          exposed: false
       arguments:
         nid:
           id: nid
@@ -738,6 +624,9 @@ display:
           relationship: field_aggregator
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
           default_action: default
           exception:
             value: all
@@ -751,8 +640,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -764,11 +653,124 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
           entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      display_extenders: {  }
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: false
+          columns:
+            nid: nid
+            nid_1: nid_1
+            title_1: title_1
+            field_status_1: field_status_1
+            title: title
+            field_status: field_status
+            field_erstingest: field_erstingest
+          default: '-1'
+          info:
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nid_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title_1:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_status_1:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_status:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_erstingest:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: true
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: true
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships:
+        field_aggregator:
+          id: field_aggregator
+          table: node__field_aggregator
+          field: field_aggregator
+          relationship: none
+          group_type: group
+          admin_label: 'field_aggregator: Inhalt'
+          plugin_id: standard
+          required: true
+        field_kwe:
+          id: field_kwe
+          table: node__field_kwe
+          field: field_kwe
+          relationship: none
+          group_type: group
+          admin_label: 'field_kwe: Inhalt'
+          plugin_id: standard
+          required: true
       use_ajax: true
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -783,9 +785,9 @@ display:
         - 'config:field.storage.node.field_status'
         - 'config:field.storage.node.field_zwischenaggregatoren'
   block_1:
-    display_plugin: block
     id: block_1
     display_title: Block
+    display_plugin: block
     position: 1
     display_options:
       display_extenders: {  }

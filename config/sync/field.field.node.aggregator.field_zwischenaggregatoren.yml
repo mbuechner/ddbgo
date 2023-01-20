@@ -1,0 +1,27 @@
+uuid: bacd974f-7405-4af6-9f92-5efbe90d4e26
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_zwischenaggregatoren
+    - node.type.aggregator
+id: node.aggregator.field_zwischenaggregatoren
+field_name: field_zwischenaggregatoren
+entity_type: node
+bundle: aggregator
+label: 'Mögliche(r) Zwischenaggregator(en)'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      aggregator: aggregator
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

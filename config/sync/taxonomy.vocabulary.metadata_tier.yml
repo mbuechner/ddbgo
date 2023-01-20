@@ -1,0 +1,8 @@
+uuid: 7b3c9514-5574-4df1-829d-9d0037026f0e
+langcode: de
+status: true
+dependencies: {  }
+name: Metadata-Tier
+vid: metadata_tier
+description: 'Metadata-Tier für Europeana (Nutzung bei Bestand)'
+weight: 0

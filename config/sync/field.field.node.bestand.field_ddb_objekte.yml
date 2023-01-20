@@ -21,11 +21,11 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       ddb_objekte: ddb_objekte
+    negate: 0
     target_bundles_drag_drop:
       ddb_objekte:
-        enabled: true
         weight: 2
+        enabled: true
 field_type: entity_reference_revisions

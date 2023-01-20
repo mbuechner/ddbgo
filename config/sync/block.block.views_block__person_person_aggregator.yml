@@ -19,21 +19,21 @@ plugin: 'views_block:person-person_aggregator'
 settings:
   id: 'views_block:person-person_aggregator'
   label: ''
-  provider: views
   label_display: visible
+  provider: views
+  context_mapping: {  }
   views_label: ''
   items_per_page: none
-  context_mapping: {  }
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      person: person
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/*/edit\r\n/node/*/delete\r\n/node/*/revisions"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: "/node/*/edit\r\n/node/*/delete\r\n/node/*/revisions"
-    negate: true
-    context_mapping: {  }
+    bundles:
+      person: person

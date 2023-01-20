@@ -1,0 +1,60 @@
+uuid: 2ecf269a-8901-47a5-8e77-2e36577c527e
+langcode: de
+status: true
+dependencies: {  }
+name: node_kwe
+label: 'node kwe validation'
+entity_type: node
+bundle: kwe
+field_validation_rules:
+  4ebe81be-211e-4f18-831d-53a2c6c22b39:
+    id: regex_field_validation_rule
+    title: API-Blacklisting-Jira-Ticket
+    data:
+      setting: '/[A-Z]+\-[0-9]+/'
+    weight: -10
+    uuid: 4ebe81be-211e-4f18-831d-53a2c6c22b39
+    field_name: field_api_blacklisting_jira_tick
+    column: value
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  009f6d15-952f-4241-b546-09684f149e75:
+    id: regex_field_validation_rule
+    title: DDB-URI
+    data:
+      setting: '/^https:\/\/www\.deutsche-digitale-bibliothek\.de\/organization\/[A-Z0-9]{32}$/'
+    weight: -8
+    uuid: 009f6d15-952f-4241-b546-09684f149e75
+    field_name: field_ddburi
+    column: value
+    error_message: 'Bitte einen URI in der Form https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5 eingeben.'
+  ef4a2f57-18e6-4c36-a209-b68ceb33c51a:
+    id: regex_field_validation_rule
+    title: ISIL
+    data:
+      setting: '/(http:\/\/ld\.zdb-services\.de\/resource\/organisations\/|http:\/\/w3id\.org\/isil\/)\D{1,4}\-[A-Za-z\-0-9:]{1,11}/'
+    weight: -7
+    uuid: ef4a2f57-18e6-4c36-a209-b68ceb33c51a
+    field_name: field_isil
+    column: value
+    error_message: 'Bitte einen gültigen ISIL-URI eingeben.'
+  895514b7-cafe-420a-8975-02d0ecb585ca:
+    id: regex_field_validation_rule
+    title: PLZ
+    data:
+      setting: '/[0-9]{3,5}/'
+    weight: -6
+    uuid: 895514b7-cafe-420a-8975-02d0ecb585ca
+    field_name: field_plz
+    column: value
+    error_message: 'Bitte eine gültige Postleitzahl ohne Länderkennung eingeben.'
+  25fb328a-eec4-40e8-97ab-1a04870ddc5a:
+    id: unique_field_validation_rule
+    title: DDB-URI
+    data:
+      scope: entity
+      per_user: 0
+    weight: -9
+    uuid: 25fb328a-eec4-40e8-97ab-1a04870ddc5a
+    field_name: field_ddburi
+    column: value
+    error_message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden!'

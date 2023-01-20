@@ -1,6 +1,9 @@
+_core:
+  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
+langcode: de
 uuid: 46b5728c-fc7e-4e23-a056-77df378d3c8a
 name: DDBgo
-mail: service@deutsche-digitale-bibliothek.de
+mail: noreply@deutsche-digitale-bibliothek.de
 slogan: 'Die Bestandsdatenbank der Deutsche Digitale Bibliothek'
 page:
   403: ''
@@ -8,8 +11,5 @@ page:
   front: /node/1
 admin_compact_mode: false
 weight_select_max: 100
-langcode: de
 default_langcode: de
-_core:
-  default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
 mail_notification: service@deutsche-digitale-bibliothek.de

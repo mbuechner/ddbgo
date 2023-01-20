@@ -5,15 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_nachname
     - node.type.person
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: 1
-    per_lang: 0
-    use_ajax: 1
-    warn_only: 1
-    message: 'Dieser Nachname ist bereits in DDBgo vorhanden. Bitte prüfen, ob die Person schon vorhanden ist.'
 id: node.person.field_nachname
 field_name: field_nachname
 entity_type: node

@@ -1,0 +1,33 @@
+uuid: c7929900-a481-40bc-a483-04c6b2c432f5
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_weihnachtsmailing
+    - node.type.person
+    - taxonomy.vocabulary.ja_nein_feld
+  content:
+    - 'taxonomy_term:ja_nein_feld:bc8f3e71-0db4-4e9d-a854-aeec12e40116'
+id: node.person.field_weihnachtsmailing
+field_name: field_weihnachtsmailing
+entity_type: node
+bundle: person
+label: 'E-Mail an Weihnachten'
+description: 'Die Person wird beim Weihnachtsmailing der DDB angeschrieben.'
+required: true
+translatable: false
+default_value:
+  -
+    target_uuid: bc8f3e71-0db4-4e9d-a854-aeec12e40116
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      ja_nein_feld: ja_nein_feld
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

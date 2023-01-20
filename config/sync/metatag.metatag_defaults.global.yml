@@ -1,0 +1,20 @@
+uuid: 908e7cfb-bd03-4e3a-a7db-751d8ac1d591
+langcode: de
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: sL588ui1E_8-2c_UupwyYxcqX2OVyMFp3HTLbbFqvPc
+id: global
+label: Global
+tags:
+  canonical_url: '[current-page:url]'
+  robots: 'noindex, nofollow, noarchive, nosnippet, noydir, noimageindex, notranslate'
+  title: '[current-page:title] | [site:name]'
+  apple_touch_icon_precomposed_180x180: /apple-touch-icon.png
+  icon_16x16: /favicon-16x16.png
+  icon_192x192: android-chrome-192x192.png
+  icon_32x32: /favicon-32x32.png
+  mask_icon:
+    href: /safari-pinned-tab.svg
+    color: '#ac74b2'
+  shortcut_icon: /favicon.ico

@@ -17,7 +17,7 @@ bundle: ddb_objekte
 mode: listenansicht
 content:
   field_anzahl_der_objekte:
-    weight: 0
+    type: number_integer
     label: hidden
     settings:
       thousand_separator: .
@@ -25,16 +25,16 @@ content:
     third_party_settings:
       empty_fields:
         handler: ''
-    type: number_integer
+    weight: 0
     region: content
   field_medientyp:
-    weight: 1
+    type: 'custom_formatters:text_in_klammern'
     label: hidden
     settings: {  }
     third_party_settings:
       empty_fields:
         handler: ''
-    type: 'custom_formatters:text_in_klammern'
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

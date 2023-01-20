@@ -1,0 +1,29 @@
+uuid: 2227af34-530f-4b6d-9570-f6e15678ab3d
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_metadata_tier
+    - paragraphs.paragraphs_type.europeana_objekte_metadata_tier
+    - taxonomy.vocabulary.metadata_tier
+id: paragraph.europeana_objekte_metadata_tier.field_metadata_tier
+field_name: field_metadata_tier
+entity_type: paragraph
+bundle: europeana_objekte_metadata_tier
+label: Metadata-Tier
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      metadata_tier: metadata_tier
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

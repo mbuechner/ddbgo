@@ -1,0 +1,8 @@
+uuid: 9a3d129a-edd4-467a-851c-374869f40279
+langcode: de
+status: true
+dependencies: {  }
+name: Content-Tier
+vid: content_tier
+description: 'Content-Tier bei Europeana (nutzung bei Bestand)'
+weight: 0

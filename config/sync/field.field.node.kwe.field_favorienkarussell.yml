@@ -6,15 +6,6 @@ dependencies:
     - field.storage.node.field_favorienkarussell
     - node.type.kwe
     - taxonomy.vocabulary.favorienkarussell
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: node.kwe.field_favorienkarussell
 field_name: field_favorienkarussell
 entity_type: node

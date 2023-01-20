@@ -1,0 +1,40 @@
+uuid: 6a24ec15-521d-4d8b-a64c-fdf0ad9a46c4
+langcode: de
+status: true
+dependencies: {  }
+name: node_aggregator
+label: 'node aggregator validation'
+entity_type: node
+bundle: aggregator
+field_validation_rules:
+  10242067-1682-4077-a0c2-670905fbab37:
+    id: regex_field_validation_rule
+    title: DDB-URI
+    data:
+      setting: '/^https:\/\/www\.deutsche-digitale-bibliothek\.de\/organization\/[A-Z0-9]{32}$/'
+    weight: -10
+    uuid: 10242067-1682-4077-a0c2-670905fbab37
+    field_name: field_ddburi
+    column: value
+    error_message: 'Bitte einen URI in der Form https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5 eingeben.'
+  7689224b-9004-437f-961a-e3fd6e7c5562:
+    id: regex_field_validation_rule
+    title: JIRA-Hauptticket
+    data:
+      setting: '/[A-Z]+\-[0-9]+/'
+    weight: -8
+    uuid: 7689224b-9004-437f-961a-e3fd6e7c5562
+    field_name: field_jira_hauptticket
+    column: value
+    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
+  c16906fa-4d78-4362-8199-c4766158406b:
+    id: unique_field_validation_rule
+    title: DDB-URI
+    data:
+      scope: entity
+      per_user: 0
+    weight: -9
+    uuid: c16906fa-4d78-4362-8199-c4766158406b
+    field_name: field_ddburi
+    column: value
+    error_message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einem Aggregator vorhanden!'

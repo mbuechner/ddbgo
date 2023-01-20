@@ -14,11 +14,11 @@ bundle: kultursparte_kwe
 mode: default
 content:
   field_uri:
-    weight: 0
+    type: 'custom_formatters:label_als_link'
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: 'custom_formatters:label_als_link'
+    weight: 0
     region: content
 hidden:
   description: true

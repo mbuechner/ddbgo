@@ -1,0 +1,63 @@
+uuid: 24e6c94b-5646-4782-b07e-5a0619f36346
+langcode: de
+status: true
+dependencies:
+  module:
+    - content_moderation
+_core:
+  default_config_hash: T7gMMyFbTYLalxpIOnzJebvek2OW0b1RgLVE9I2y228
+id: editorial
+label: Editorial
+type: content_moderation
+type_settings:
+  states:
+    archived:
+      label: Archiviert
+      weight: 5
+      published: false
+      default_revision: true
+    draft:
+      label: Entwurf
+      weight: -5
+      published: false
+      default_revision: false
+    published:
+      label: Veröffentlicht
+      weight: 0
+      published: true
+      default_revision: true
+  transitions:
+    archive:
+      label: Archivieren
+      from:
+        - published
+      to: archived
+      weight: 2
+    archived_draft:
+      label: 'Zurücksetzen auf Entwurf'
+      from:
+        - archived
+      to: draft
+      weight: 3
+    archived_published:
+      label: Wiederherstellen
+      from:
+        - archived
+      to: published
+      weight: 4
+    create_new_draft:
+      label: 'Neuen Entwurf erstellen'
+      from:
+        - draft
+        - published
+      to: draft
+      weight: 0
+    publish:
+      label: Veröffentlichen
+      from:
+        - draft
+        - published
+      to: published
+      weight: 1
+  entity_types: {  }
+  default_moderation_state: draft

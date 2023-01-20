@@ -1,7 +1,10 @@
 uuid: 2438f2aa-61b4-4826-a2fb-6fe2d6a468da
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - node_view_permissions
+    - system
 _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
 id: anonymous
@@ -10,8 +13,4 @@ weight: -10
 is_admin: false
 permissions:
   - 'access content'
-  - 'override page published option'
-  - 'use exclude node title'
   - 'view any page content'
-  - 'view media'
-  - 'view own page content'

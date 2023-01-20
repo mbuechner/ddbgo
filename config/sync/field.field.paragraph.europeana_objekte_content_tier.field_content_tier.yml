@@ -1,0 +1,29 @@
+uuid: 17bc01df-6667-4d9d-83d4-6c47f548f261
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_content_tier
+    - paragraphs.paragraphs_type.europeana_objekte_content_tier
+    - taxonomy.vocabulary.content_tier
+id: paragraph.europeana_objekte_content_tier.field_content_tier
+field_name: field_content_tier
+entity_type: paragraph
+bundle: europeana_objekte_content_tier
+label: Content-Tier
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      content_tier: content_tier
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

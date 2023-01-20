@@ -14,7 +14,7 @@ bundle: ddb_objekte
 mode: default
 content:
   field_anzahl_der_objekte:
-    weight: 1
+    type: number_integer
     label: inline
     settings:
       thousand_separator: .
@@ -22,17 +22,17 @@ content:
     third_party_settings:
       empty_fields:
         handler: nbsp
-    type: number_integer
+    weight: 1
     region: content
   field_medientyp:
-    weight: 0
+    type: entity_reference_label
     label: inline
     settings:
       link: false
     third_party_settings:
       empty_fields:
         handler: nbsp
-    type: entity_reference_label
+    weight: 0
     region: content
 hidden:
   search_api_excerpt: true

@@ -9,7 +9,6 @@ dependencies:
     - user.role.authenticated
     - user.role.ddb_team
   module:
-    - better_exposed_filters
     - search_api
     - user
 id: suche
@@ -21,108 +20,12 @@ base_table: search_api_index_suche
 base_field: search_api_id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            authenticated: authenticated
-            administrator: administrator
-            ddb_team: ddb_team
-      cache:
-        type: none
-        options: {  }
-      query:
-        type: views_query
-        options:
-          bypass_access: false
-          skip_access: false
-          preserve_facet_query_args: false
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Suchen
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
-          text_input_required_format: plain_text
-          bef: {  }
-      pager:
-        type: full
-        options:
-          items_per_page: 25
-          offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: '‹ Zurück'
-            next: 'Weiter ›'
-            first: '« Erste'
-            last: 'Letzte »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: true
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            nid: nid
-            title: title
-            type: type
-            search_api_excerpt: search_api_excerpt
-          info:
-            nid:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            type:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            search_api_excerpt:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: Volltextsuche
       fields:
         nid:
           id: nid
@@ -131,6 +34,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: null
+          entity_field: null
+          plugin_id: search_api_field
           label: ID
           exclude: false
           alter:
@@ -205,9 +111,6 @@ display:
             format_plural_values:
               - ''
               - ''
-          entity_type: null
-          entity_field: null
-          plugin_id: search_api_field
         title:
           id: title
           table: search_api_index_suche
@@ -215,6 +118,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: Titel
           exclude: false
           alter:
@@ -277,7 +181,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          plugin_id: search_api_field
         type:
           id: type
           table: search_api_index_suche
@@ -285,6 +188,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: Inhaltstyp
           exclude: false
           alter:
@@ -350,7 +254,6 @@ display:
             display_methods:
               node_type:
                 display_method: label
-          plugin_id: search_api_field
         search_api_excerpt:
           id: search_api_excerpt
           table: search_api_index_suche
@@ -358,6 +261,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api
           label: Suchtreffer
           exclude: false
           alter:
@@ -403,7 +307,60 @@ display:
           use_highlighting: true
           multi_type: separator
           multi_separator: ', '
-          plugin_id: search_api
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 25
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Weiter ›'
+            previous: '‹ Zurück'
+            first: '« Erste'
+            last: 'Letzte »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Suchen
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+            administrator: administrator
+            ddb_team: ddb_team
+      cache:
+        type: none
+        options: {  }
+      empty:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: true
+          content: '@start - @end von @total wird angezeigt'
+      sorts: {  }
+      arguments: {  }
       filters:
         search_api_fulltext:
           id: search_api_fulltext
@@ -412,6 +369,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_fulltext
           operator: and
           value: ''
           group: 1
@@ -434,8 +392,8 @@ display:
               administrator: '0'
               ddb_team: '0'
               ddb_team_login_admin: '0'
-            placeholder: Suchbegriff
             expose_fields: false
+            placeholder: Suchbegriff
             searched_fields_id: ''
           is_grouped: false
           group_info:
@@ -455,9 +413,61 @@ display:
             - nid
             - rendered_item
             - title
-          plugin_id: search_api_fulltext
-      sorts: {  }
-      title: Volltextsuche
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            nid: nid
+            title: title
+            type: type
+            search_api_excerpt: search_api_excerpt
+          default: '-1'
+          info:
+            nid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            search_api_excerpt:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: true
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: search_api_query
+        options:
+          bypass_access: false
+          skip_access: false
+          preserve_facet_query_args: false
+      relationships: {  }
+      use_ajax: false
       header: {  }
       footer:
         result:
@@ -467,24 +477,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: result
           empty: false
           content: '@start - @end von @total wird angezeigt'
-          plugin_id: result
-      empty:
-        result:
-          id: result
-          table: views
-          field: result
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          content: '@start - @end von @total wird angezeigt'
-          plugin_id: result
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
-      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -497,9 +493,9 @@ display:
       tags:
         - 'config:search_api.index.suche'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
@@ -508,11 +504,11 @@ display:
         type: normal
         title: Volltextsuche
         description: ''
-        expanded: false
-        parent: ''
         weight: -49
-        context: '0'
+        expanded: false
         menu_name: start
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

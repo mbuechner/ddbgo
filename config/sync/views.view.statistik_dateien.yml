@@ -19,78 +19,12 @@ base_table: file_managed
 base_field: fid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            authenticated: authenticated
-            administrator: administrator
-            ddb_team: ddb_team
-            ddb_team_login_admin: ddb_team_login_admin
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Anwenden
-          reset_button: false
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
-          expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
-      pager:
-        type: some
-        options:
-          items_per_page: 5
-          offset: 0
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            filemime_1: filemime_1
-            filemime: filemime
-          info:
-            filemime_1:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            filemime:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: filemime_1
-          empty_table: false
-      row:
-        type: fields
+      title: 'Statistik: Dateien'
       fields:
         filemime_1:
           id: filemime_1
@@ -99,6 +33,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: file
+          entity_field: filemime
+          plugin_id: field
           label: 'MIME-Typ der Datei'
           exclude: false
           alter:
@@ -155,9 +92,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: file
-          entity_field: filemime
-          plugin_id: field
         filemime:
           id: filemime
           table: file_managed
@@ -165,6 +99,9 @@ display:
           relationship: none
           group_type: count
           admin_label: ''
+          entity_type: file
+          entity_field: filemime
+          plugin_id: field
           label: Anzahl
           exclude: false
           alter:
@@ -206,14 +143,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          set_precision: false
-          precision: 0
-          decimal: .
-          separator: .
-          format_plural: 0
-          format_plural_string: !!binary MQNAY291bnQ=
-          prefix: ''
-          suffix: ''
           click_sort_column: value
           type: file_filemime
           settings: {  }
@@ -225,10 +154,59 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
+          separator: .
           field_api_classes: false
+          set_precision: false
+          precision: 0
+          decimal: .
+          format_plural: 0
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 5
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Anwenden
+          reset_button: false
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
+          expose_sort_order: true
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+            administrator: administrator
+            ddb_team: ddb_team
+            ddb_team_login_admin: ddb_team_login_admin
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        filemime:
+          id: filemime
+          table: file_managed
+          field: filemime
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: file
           entity_field: filemime
-          plugin_id: field
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: filemime
+          exposed: false
+      arguments: {  }
       filters:
         filemime:
           id: filemime
@@ -237,6 +215,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: file
+          entity_field: filemime
+          plugin_id: string
           operator: '!='
           value: application/javascript
           group: 1
@@ -268,9 +249,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: file
-          entity_field: filemime
-          plugin_id: string
         filemime_1:
           id: filemime_1
           table: file_managed
@@ -278,6 +256,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: file
+          entity_field: filemime
+          plugin_id: string
           operator: '!='
           value: image/png
           group: 1
@@ -309,32 +290,52 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: file
-          entity_field: filemime
-          plugin_id: string
-      sorts:
-        filemime:
-          id: filemime
-          table: file_managed
-          field: filemime
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: file
-          entity_field: filemime
-          plugin_id: standard
-      title: 'Statistik: Dateien'
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            filemime_1: filemime_1
+            filemime: filemime
+          default: filemime_1
+          info:
+            filemime_1:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            filemime:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
+      group_by: true
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
-      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -344,9 +345,9 @@ display:
         - user.roles
       tags: {  }
   block_1:
-    display_plugin: block
     id: block_1
     display_title: Block
+    display_plugin: block
     position: 1
     display_options:
       display_extenders: {  }

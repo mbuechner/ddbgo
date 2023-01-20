@@ -1,0 +1,11 @@
+uuid: 50a0d8b7-6447-4204-9e2e-c4c2256ef4f1
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.ingestart
+id: taxonomy_term.ingestart
+target_entity_type_id: taxonomy_term
+target_bundle: ingestart
+default_langcode: site_default
+language_alterable: false

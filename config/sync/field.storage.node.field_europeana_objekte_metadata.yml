@@ -1,0 +1,21 @@
+uuid: f30c9f48-40cb-47f1-978f-a921d057a136
+langcode: de
+status: true
+dependencies:
+  module:
+    - entity_reference_revisions
+    - node
+    - paragraphs
+id: node.field_europeana_objekte_metadata
+field_name: field_europeana_objekte_metadata
+entity_type: node
+type: entity_reference_revisions
+settings:
+  target_type: paragraph
+module: entity_reference_revisions
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
