@@ -167,6 +167,7 @@
         "drupal/search_api": "^1.19",
         "drupal/select2": "^1.13",
         "drupal/semanticviews": "^2.3",
+        "drupal/seven": "^1.0@alpha",
         "drupal/smtp": "^1.1",
         "drupal/taxonomy_unique": "^2.3",
         "drupal/term_merge": "^1.x-dev@dev",
@@ -243,7 +244,11 @@
             },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"
+            },
+            "drupal/seven": {
+                "Fixing bug with core icons, see https://www.drupal.org/project/seven/issues/3333606": "https://www.drupal.org/files/issues/2023-01-14/3333606-1.patch"
             }
+
         }
     }
 }
