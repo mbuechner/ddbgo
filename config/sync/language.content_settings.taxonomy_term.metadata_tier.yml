@@ -1,0 +1,11 @@
+uuid: 71298fbb-0673-41c5-9ea1-83017f2d38f8
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.metadata_tier
+id: taxonomy_term.metadata_tier
+target_entity_type_id: taxonomy_term
+target_bundle: metadata_tier
+default_langcode: site_default
+language_alterable: false

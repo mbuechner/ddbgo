@@ -6,15 +6,6 @@ dependencies:
     - field.storage.paragraph.field_medientyp
     - paragraphs.paragraphs_type.ddb_objekte
     - taxonomy.vocabulary.medientyp
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: paragraph.ddb_objekte.field_medientyp
 field_name: field_medientyp
 entity_type: paragraph

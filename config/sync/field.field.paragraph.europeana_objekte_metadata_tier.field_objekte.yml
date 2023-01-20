@@ -1,0 +1,49 @@
+uuid: 474be61d-a0a9-438e-99db-68d67e6b2642
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_objekte
+    - paragraphs.paragraphs_type.ddb_objekte
+    - paragraphs.paragraphs_type.europeana_objekte_metadata_tier
+  module:
+    - entity_reference_revisions
+id: paragraph.europeana_objekte_metadata_tier.field_objekte
+field_name: field_objekte
+entity_type: paragraph
+bundle: europeana_objekte_metadata_tier
+label: Objekte
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      ddb_objekte: ddb_objekte
+    negate: 0
+    target_bundles_drag_drop:
+      ddb_objekte:
+        weight: 8
+        enabled: true
+      europeana_objekte:
+        weight: 9
+        enabled: false
+      europeana_objekte_metadata_tier:
+        weight: 10
+        enabled: false
+      kontakt:
+        weight: 11
+        enabled: false
+      person_aggregator:
+        weight: 12
+        enabled: false
+      person_bestand:
+        weight: 13
+        enabled: false
+      person_kwe:
+        weight: 14
+        enabled: false
+field_type: entity_reference_revisions

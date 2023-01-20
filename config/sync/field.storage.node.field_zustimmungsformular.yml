@@ -1,0 +1,20 @@
+uuid: 19ac7aa2-ebb4-41bd-8580-8ee770665e48
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_zustimmungsformular
+field_name: field_zustimmungsformular
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

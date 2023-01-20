@@ -1,0 +1,11 @@
+uuid: 4bc6888a-8707-4dbc-89cc-3d047b9f4ea3
+langcode: de
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.zustimmungsformular
+id: taxonomy_term.zustimmungsformular
+target_entity_type_id: taxonomy_term
+target_bundle: zustimmungsformular
+default_langcode: site_default
+language_alterable: false

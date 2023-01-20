@@ -14,25 +14,25 @@ bundle: person_aggregator
 mode: default
 content:
   field_person:
+    type: select2_entity_reference
     weight: 0
+    region: content
     settings:
       width: 100%
-      match_operator: CONTAINS
       autocomplete: false
+      match_operator: CONTAINS
       match_limit: 10
     third_party_settings: {  }
-    type: select2_entity_reference
-    region: content
   field_rolle:
+    type: select2_entity_reference
     weight: 1
+    region: content
     settings:
       width: 100%
+      autocomplete: false
       match_operator: CONTAINS
       match_limit: 10
-      autocomplete: false
     third_party_settings: {  }
-    type: select2_entity_reference
-    region: content
 hidden:
   created: true
   status: true

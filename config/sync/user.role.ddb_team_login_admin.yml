@@ -1,10 +1,38 @@
 uuid: bd8662a5-088b-457c-bb1d-dfc0c4d9b256
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
+    - node.type.aggregator
+    - node.type.bestand
+    - node.type.kwe
+    - node.type.page
+    - node.type.person
+    - taxonomy.vocabulary.akademischer_titel
+    - taxonomy.vocabulary.bestandsart
+    - taxonomy.vocabulary.bestandstags
+    - taxonomy.vocabulary.coding_da_vinci_event
+    - taxonomy.vocabulary.datenformat
+    - taxonomy.vocabulary.europeana
+    - taxonomy.vocabulary.lieferweg
+    - taxonomy.vocabulary.medientyp
+    - taxonomy.vocabulary.personenrolle
+    - taxonomy.vocabulary.region_ort
+    - taxonomy.vocabulary.volltextformat
+    - taxonomy.vocabulary.zustimmungsformular
+  module:
+    - entity_reference_integrity_enforce
+    - filter
+    - flood_control
+    - node
+    - role_delegation
+    - taxonomy
+    - term_merge
+    - userprotect
 id: ddb_team_login_admin
 label: DDBgo-Benutzerverwaltung
-weight: -6
+weight: -7
 is_admin: null
 permissions:
   - 'access flood unblock'
@@ -16,7 +44,6 @@ permissions:
   - 'administer users'
   - 'assign ddb_team role'
   - 'assign ddb_team_login_admin role'
-  - 'cancel account'
   - 'change own username'
   - 'create page content'
   - 'create terms in akademischer_titel'
@@ -28,11 +55,9 @@ permissions:
   - 'create terms in lieferweg'
   - 'create terms in medientyp'
   - 'create terms in personenrolle'
-  - 'create terms in personenrolle_aggregator'
-  - 'create terms in personenrolle_bestand'
-  - 'create terms in personenrolle_kwe'
   - 'create terms in region_ort'
   - 'create terms in volltextformat'
+  - 'create terms in zustimmungsformular'
   - 'delete own page content'
   - 'delete page revisions'
   - 'delete terms in akademischer_titel'
@@ -43,11 +68,9 @@ permissions:
   - 'delete terms in lieferweg'
   - 'delete terms in medientyp'
   - 'delete terms in personenrolle'
-  - 'delete terms in personenrolle_aggregator'
-  - 'delete terms in personenrolle_bestand'
-  - 'delete terms in personenrolle_kwe'
   - 'delete terms in region_ort'
   - 'delete terms in volltextformat'
+  - 'delete terms in zustimmungsformular'
   - 'edit any page content'
   - 'edit own page content'
   - 'edit terms in akademischer_titel'
@@ -58,13 +81,15 @@ permissions:
   - 'edit terms in lieferweg'
   - 'edit terms in medientyp'
   - 'edit terms in personenrolle'
-  - 'edit terms in personenrolle_aggregator'
-  - 'edit terms in personenrolle_bestand'
-  - 'edit terms in personenrolle_kwe'
   - 'edit terms in region_ort'
   - 'edit terms in volltextformat'
+  - 'edit terms in zustimmungsformular'
   - 'merge taxonomy terms'
+  - 'revert aggregator revisions'
+  - 'revert bestand revisions'
+  - 'revert kwe revisions'
   - 'revert page revisions'
+  - 'revert person revisions'
   - 'select account cancellation method'
   - 'use text format basic_html'
   - userprotect.angemeldete_benutzer.bypass

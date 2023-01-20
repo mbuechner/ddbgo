@@ -6,15 +6,6 @@ dependencies:
     - field.storage.paragraph.field_rolle
     - paragraphs.paragraphs_type.person_aggregator
     - taxonomy.vocabulary.personenrolle
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: paragraph.person_aggregator.field_rolle
 field_name: field_rolle
 entity_type: paragraph

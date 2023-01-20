@@ -21,17 +21,17 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       person_kwe: person_kwe
+    negate: 0
     target_bundles_drag_drop:
-      person_kwe:
-        enabled: true
-        weight: 4
       ddb_objekte:
         weight: 5
         enabled: false
       kontakt:
         weight: 6
         enabled: false
+      person_kwe:
+        weight: 4
+        enabled: true
 field_type: entity_reference_revisions

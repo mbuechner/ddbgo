@@ -1,0 +1,10 @@
+uuid: 3652c34f-37be-4253-8458-0778b5a30fca
+langcode: de
+status: true
+dependencies: {  }
+id: europeana_objekte_content_tier
+label: 'Europeana-Objekte: Content-Tier'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

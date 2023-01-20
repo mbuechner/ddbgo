@@ -1,0 +1,23 @@
+uuid: b624a741-c881-451b-af83-fe4ca6e8c20b
+langcode: de
+status: true
+dependencies:
+  module:
+    - file
+    - node
+id: node.field_workflow
+field_name: field_workflow
+entity_type: node
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: private
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

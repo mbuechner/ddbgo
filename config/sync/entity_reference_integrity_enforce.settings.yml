@@ -1,3 +1,6 @@
+_core:
+  default_config_hash: 8gwG5hTvIhM_TZyyG2_Vdl7g63M1Rp8-t4jtTcE2vdk
+langcode: de
 enabled_entity_type_ids:
   node: node
   paragraph: paragraph
@@ -5,6 +8,7 @@ enabled_entity_type_ids:
   view: '0'
   entity_view_mode: '0'
   formatter: '0'
+  workflow: '0'
   base_field_override: '0'
   user: '0'
   block_content: '0'
@@ -21,13 +25,18 @@ enabled_entity_type_ids:
   facets_facet: '0'
   field_config: '0'
   field_storage_config: '0'
+  field_validation_rule_set: '0'
   entity_form_mode: '0'
+  content_moderation_state: '0'
   language_content_settings: '0'
   node_type: '0'
-  flagging: '0'
+  jsonapi_resource_config: '0'
   flag: '0'
+  flagging: '0'
   menu: '0'
+  metatag_defaults: '0'
   userprotect_rule: '0'
+  rest_resource_config: '0'
   user_role: '0'
   paragraphs_type: '0'
   configurable_language: '0'
@@ -40,6 +49,3 @@ enabled_entity_type_ids:
   filter_format: '0'
   toolbar_menu_element: '0'
   path_alias: '0'
-_core:
-  default_config_hash: 8gwG5hTvIhM_TZyyG2_Vdl7g63M1Rp8-t4jtTcE2vdk
-langcode: de

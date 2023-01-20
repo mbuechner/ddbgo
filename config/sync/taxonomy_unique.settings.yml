@@ -24,3 +24,5 @@ metadata_tier: 0
 metadata_tier_message: 'Term %term already exists in vocabulary %vocabulary.'
 ingestart: 1
 ingestart_message: 'Term %term already exists in vocabulary %vocabulary.'
+zustimmungsformular: 1
+zustimmungsformular_message: 'Term %term already exists in vocabulary %vocabulary.'

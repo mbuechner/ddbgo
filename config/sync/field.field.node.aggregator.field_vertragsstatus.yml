@@ -6,15 +6,6 @@ dependencies:
     - field.storage.node.field_vertragsstatus
     - node.type.aggregator
     - taxonomy.vocabulary.vertragsstatus
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: node.aggregator.field_vertragsstatus
 field_name: field_vertragsstatus
 entity_type: node

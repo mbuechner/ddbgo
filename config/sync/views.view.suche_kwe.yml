@@ -10,11 +10,11 @@ dependencies:
     - field.storage.node.field_status
     - search_api.index.suche_kwe
     - system.menu.kwe
+    - taxonomy.vocabulary.zustimmungsformular
     - user.role.administrator
     - user.role.authenticated
     - user.role.ddb_team
   module:
-    - better_exposed_filters
     - color_field
     - custom_formatters
     - search_api
@@ -28,142 +28,12 @@ base_table: search_api_index_suche_kwe
 base_field: search_api_id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            authenticated: authenticated
-            administrator: administrator
-            ddb_team: ddb_team
-      cache:
-        type: none
-        options: {  }
-      query:
-        type: views_query
-        options:
-          bypass_access: false
-          skip_access: false
-          preserve_facet_query_args: false
-      exposed_form:
-        type: bef
-        options:
-          submit_button: Suchen
-          reset_button: false
-          reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sortieren nach'
-          expose_sort_order: true
-          sort_asc_label: Aufsteigend
-          sort_desc_label: Absteigend
-          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
-          text_input_required_format: plain_text
-          bef: {  }
-      pager:
-        type: full
-        options:
-          items_per_page: 100
-          offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: '‹ Zurück'
-            next: 'Weiter ›'
-            first: '« Erste'
-            last: 'Letzte »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Elemente pro Seite'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- Alle -'
-            offset: false
-            offset_label: Versatz
-          quantity: 9
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: true
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            nid: nid
-            title: title
-            field_status: field_status
-            field_stadt: field_stadt
-            name: name
-            sparte: sparte
-            field_ddb_id: field_ddb_id
-            field_isil: field_isil
-          info:
-            nid:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_status:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_stadt:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            name:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            sparte:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_ddb_id:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_isil:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: title
-          empty_table: false
-      row:
-        type: fields
+      title: 'Liste der Kultur- und Wissenseinrichtungen'
       fields:
         nid:
           id: nid
@@ -172,6 +42,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: ID
           exclude: false
           alter:
@@ -246,7 +117,6 @@ display:
             format_plural_values:
               - '1'
               - '@count'
-          plugin_id: search_api_field
         title:
           id: title
           table: search_api_index_suche_kwe
@@ -254,6 +124,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
@@ -316,7 +187,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          plugin_id: search_api_field
         field_status:
           id: field_status
           table: search_api_index_suche_kwe
@@ -324,6 +194,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: 'Status der Kultur- oder Wisseneinrichtung'
           exclude: false
           alter:
@@ -389,7 +260,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          plugin_id: search_api_field
         field_stadt:
           id: field_stadt
           table: search_api_index_suche_kwe
@@ -397,6 +267,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: null
+          entity_field: null
+          plugin_id: search_api_field
           label: Stadt
           exclude: false
           alter:
@@ -459,9 +332,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: null
-          entity_field: null
-          plugin_id: search_api_field
         name:
           id: name
           table: search_api_index_suche_kwe
@@ -469,6 +339,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: Vertragsstatus
           exclude: false
           alter:
@@ -531,7 +402,76 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+        zustimmungsformular:
+          id: zustimmungsformular
+          table: search_api_index_suche_kwe
+          field: zustimmungsformular
+          relationship: none
+          group_type: group
+          admin_label: ''
           plugin_id: search_api_field
+          label: Zustimmungsformular
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: –
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
         sparte:
           id: sparte
           table: search_api_index_suche_kwe
@@ -539,6 +479,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: Sparte
           exclude: false
           alter:
@@ -601,7 +542,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          plugin_id: search_api_field
         field_ddb_id:
           id: field_ddb_id
           table: search_api_index_suche_kwe
@@ -609,6 +549,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: DDB-ID
           exclude: false
           alter:
@@ -671,7 +612,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          plugin_id: search_api_field
         field_isil:
           id: field_isil
           table: search_api_index_suche_kwe
@@ -679,6 +619,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_field
           label: ISIL
           exclude: false
           alter:
@@ -740,7 +681,73 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ','
-          plugin_id: search_api_field
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 100
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Weiter ›'
+            previous: '‹ Zurück'
+            first: '« Erste'
+            last: 'Letzte »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Elemente pro Seite'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- Alle -'
+            offset: false
+            offset_label: Versatz
+          quantity: 9
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Suchen
+          reset_button: false
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: 'Sortieren nach'
+          expose_sort_order: true
+          sort_asc_label: Aufsteigend
+          sort_desc_label: Absteigend
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+            administrator: administrator
+            ddb_team: ddb_team
+      cache:
+        type: none
+        options: {  }
+      empty:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: true
+          content: '@start - @end von @total wird angezeigt'
+      sorts:
+        title:
+          id: title
+          table: search_api_index_suche_kwe
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+      arguments: {  }
       filters:
         search_api_fulltext:
           id: search_api_fulltext
@@ -749,6 +756,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_fulltext
           operator: and
           value: ''
           group: 1
@@ -768,10 +776,12 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-              administrator: '0'
               ddb_team: '0'
               ddb_team_login_admin: '0'
+              administrator: '0'
+            expose_fields: false
             placeholder: Suchbegriff
+            searched_fields_id: ''
           is_grouped: false
           group_info:
             label: ''
@@ -795,21 +805,157 @@ display:
             - name
             - sparte
             - title
-          plugin_id: search_api_fulltext
-      sorts:
-        title:
-          id: title
+            - zustimmungsformular
+        field_zustimmungsformular:
+          id: field_zustimmungsformular
           table: search_api_index_suche_kwe
-          field: title
+          field: field_zustimmungsformular
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
-          exposed: false
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
           expose:
+            operator_id: field_zustimmungsformular_op
+            label: Zustimmungsformular
+            description: ''
+            use_operator: false
+            operator: field_zustimmungsformular_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_zustimmungsformular
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              ddb_team: '0'
+              ddb_team_login_admin: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
             label: ''
-          plugin_id: search_api
-      title: 'Liste der Kultur- und Wissenseinrichtungen'
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: zustimmungsformular
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            nid: nid
+            title: title
+            field_status: field_status
+            field_stadt: field_stadt
+            name: name
+            zustimmungsformular: zustimmungsformular
+            sparte: sparte
+            field_ddb_id: field_ddb_id
+            field_isil: field_isil
+          default: title
+          info:
+            nid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_status:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_stadt:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            zustimmungsformular:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            sparte:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_ddb_id:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_isil:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: true
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+      query:
+        type: search_api_query
+        options:
+          bypass_access: false
+          skip_access: false
+          preserve_facet_query_args: false
+      relationships: {  }
+      use_ajax: false
       header: {  }
       footer:
         result:
@@ -819,24 +965,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: result
           empty: false
           content: '@start - @end von @total wird angezeigt'
-          plugin_id: result
-      empty:
-        result:
-          id: result
-          table: views
-          field: result
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          content: '@start - @end von @total wird angezeigt'
-          plugin_id: result
-      relationships: {  }
-      arguments: {  }
       display_extenders: {  }
-      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -844,6 +976,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -853,9 +986,9 @@ display:
         - 'config:field.storage.node.field_status'
         - 'config:search_api.index.suche_kwe'
   page_1:
-    display_plugin: page
     id: page_1
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
@@ -864,11 +997,11 @@ display:
         type: normal
         title: 'Liste der Kultur- und Wissenseinrichtungen'
         description: ''
-        expanded: false
-        parent: ''
         weight: 10
-        context: '0'
+        expanded: false
         menu_name: kwe
+        parent: ''
+        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -876,6 +1009,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.roles
       tags:

@@ -6,24 +6,30 @@ dependencies:
     - field.field.paragraph.ddb_objekte.field_anzahl_der_objekte
     - field.field.paragraph.ddb_objekte.field_medientyp
     - paragraphs.paragraphs_type.ddb_objekte
+  module:
+    - select2
 id: paragraph.ddb_objekte.default
 targetEntityType: paragraph
 bundle: ddb_objekte
 mode: default
 content:
   field_anzahl_der_objekte:
+    type: number
     weight: 1
+    region: content
     settings:
       placeholder: '12345'
     third_party_settings: {  }
-    type: number
-    region: content
   field_medientyp:
+    type: select2_entity_reference
     weight: 0
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
 hidden:
   created: true
   status: true

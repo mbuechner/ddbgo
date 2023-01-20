@@ -64,11 +64,14 @@ third_party_settings:
         - field_status
         - field_ablehnungsgrund
         - field_bestandstags
+      label: Status
       parent_name: ''
+      region: content
       weight: 0
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_status
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -76,9 +79,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_status
-      label: Status
     group_allgemeines:
       children:
         - field_url
@@ -87,11 +87,14 @@ third_party_settings:
         - field_lieferweg
         - field_beschreibung
         - field_bemerkung
+      label: Allgemeines
       parent_name: ''
+      region: content
       weight: 1
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_allgemeines
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -99,20 +102,20 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_allgemeines
-      label: Allgemeines
     group_kultur_oder_wissenseinrich:
       children:
         - field_kwe
         - field_aggregiert
         - field_aggregator
         - field_zwischenaggregatoren
+      label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
       parent_name: ''
+      region: content
       weight: 2
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_kwe
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -120,17 +123,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_kwe
-      label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
     group_personen:
       children:
         - field_personen
+      label: Personen
       parent_name: ''
+      region: content
       weight: 3
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_personen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -138,9 +141,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_personen
-      label: Personen
     group_informationen:
       children:
         - field_link_zu_ddbdash
@@ -149,11 +149,14 @@ third_party_settings:
         - field_status_fragebogen
         - field_link_fragebogen
         - field_fragebogen
+      label: Informationen
       parent_name: ''
+      region: content
       weight: 5
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_informationen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -161,20 +164,20 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_informationen
-      label: Informationen
     group_coding_da_vinci:
       children:
         - field_coding_da_vinci_teilnahme
         - field_coding_da_vinci_event
         - field_link_zu_coding_da_vinci
         - field_coding_da_vinci_bemerkung
+      label: 'Coding da Vinci'
       parent_name: ''
+      region: content
       weight: 6
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_cdv
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -182,9 +185,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_cdv
-      label: 'Coding da Vinci'
     group_europenana_archivportal:
       children:
         - field_europeana_lieferung_enum
@@ -200,11 +200,15 @@ third_party_settings:
         - group_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
+      label: 'Europeana/ Archivportal'
       parent_name: ''
+      region: content
       weight: 7
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_europeana
+        show_empty_fields: false
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -212,17 +216,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_europeana
-      label: 'Europenana/ Archivportal'
     group_ddb_objekte:
       children:
         - field_ddb_objekte
+      label: DDB-Objekte
       parent_name: group_europenana_archivportal
+      region: content
       weight: 10
       format_type: html_element
-      region: content
       format_settings:
+        classes: fieldgroup_ddbobjekte
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -230,17 +234,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_ddbobjekte
-      label: DDB-Objekte
     group_europeana_objekte_content_:
       children:
         - field_europeana_objekte_content_
+      label: 'Europeana-Objekte: Content-Tier'
       parent_name: group_europenana_archivportal
+      region: content
       weight: 16
       format_type: html_element
-      region: content
       format_settings:
+        classes: ''
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -248,19 +252,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: ''
-      label: 'Europeana-Objekte: Content-Tier'
     group_europeana_objekte_metadata:
       children:
         - field_europeana_objekte_metadata
+      label: 'Europeana-Objekte: Metadata-Tier'
       parent_name: group_europenana_archivportal
+      region: content
       weight: 17
       format_type: html_element
-      region: content
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -268,17 +270,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-      label: 'Europeana-Objekte: Metadata-Tier'
     group_kontakt:
       children:
         - field_kontakt
+      label: Kontakt
       parent_name: ''
+      region: content
       weight: 4
       format_type: html_element
-      region: content
       format_settings:
-        id: ''
         classes: fieldgroup_kontakt
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -286,21 +288,20 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-      label: Kontakt
 id: node.bestand.default
 targetEntityType: node
 bundle: bestand
 mode: default
 content:
   field_ablehnungsgrund:
-    weight: 17
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 17
     region: content
   field_aggregator:
-    weight: 13
+    type: entity_reference_label
     label: inline
     settings:
       link: true
@@ -309,10 +310,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 13
     region: content
   field_aggregiert:
-    weight: 12
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -321,10 +322,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 12
     region: content
   field_archivportal_lieferung:
-    weight: 18
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -333,10 +334,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 18
     region: content
   field_bemerkung:
-    weight: 21
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -344,10 +345,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 21
     region: content
   field_bemerkung_europeana_liefer:
-    weight: 19
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -355,10 +356,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 19
     region: content
   field_beschreibung:
-    weight: 20
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -366,10 +367,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 20
     region: content
   field_bestandstags:
-    weight: 18
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: above
     settings: {  }
     third_party_settings:
@@ -377,10 +378,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 18
     region: content
   field_coding_da_vinci_bemerkung:
-    weight: 19
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -388,10 +389,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 19
     region: content
   field_coding_da_vinci_event:
-    weight: 16
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -400,10 +401,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 16
     region: content
   field_coding_da_vinci_teilnahme:
-    weight: 15
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -412,10 +413,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 15
     region: content
   field_datenformat:
-    weight: 17
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -423,10 +424,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 17
     region: content
   field_datum_des_status_der_europ:
-    weight: 15
+    type: datetime_default
     label: inline
     settings:
       timezone_override: ''
@@ -436,12 +437,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: datetime_default
+    weight: 15
     region: content
   field_ddb_objekte:
     type: entity_reference_revisions_entity_view
-    weight: 11
-    region: content
     label: hidden
     settings:
       view_mode: default
@@ -451,8 +450,10 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 11
+    region: content
   field_erstingest:
-    weight: 19
+    type: datetime_default
     label: inline
     settings:
       timezone_override: ''
@@ -462,10 +463,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: datetime_default
+    weight: 19
     region: content
   field_europeana_lieferung:
-    weight: 9
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -474,10 +475,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 9
     region: content
   field_europeana_lieferung_enum:
-    weight: 7
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -486,11 +487,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 7
     region: content
   field_europeana_objekte_content_:
     type: entity_reference_revisions_entity_view
-    weight: 16
     label: hidden
     settings:
       view_mode: default
@@ -500,10 +500,10 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 16
     region: content
   field_europeana_objekte_metadata:
     type: entity_reference_revisions_entity_view
-    weight: 17
     label: hidden
     settings:
       view_mode: default
@@ -513,9 +513,10 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 17
     region: content
   field_europeanastatus:
-    weight: 13
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -524,10 +525,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 13
     region: content
   field_fragebogen:
-    weight: 22
+    type: file_default
     label: inline
     settings:
       use_description_as_link_text: false
@@ -536,10 +537,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: file_default
+    weight: 22
     region: content
   field_ingestart:
-    weight: 14
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -548,10 +549,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 14
     region: content
   field_jira_europeana:
-    weight: 11
+    type: 'custom_formatters:jira_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -559,10 +560,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:jira_link'
+    weight: 11
     region: content
   field_jira_hauptticket:
-    weight: 18
+    type: 'custom_formatters:jira_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -570,10 +571,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:jira_link'
+    weight: 18
     region: content
   field_jira_ticket_bei_europeana:
-    weight: 12
+    type: 'custom_formatters:jira_link_bei_europeana'
     label: inline
     settings: {  }
     third_party_settings:
@@ -581,10 +582,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:jira_link_bei_europeana'
+    weight: 12
     region: content
   field_kontakt:
-    weight: 17
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: default
@@ -594,10 +595,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Kontakte'
-    type: entity_reference_revisions_entity_view
+    weight: 17
     region: content
   field_kwe:
-    weight: 11
+    type: entity_reference_label
     label: inline
     settings:
       link: true
@@ -606,12 +607,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Kultur- oder Wissenseinrichtungen'
-    type: entity_reference_label
+    weight: 11
     region: content
   field_lieferweg:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
-    weight: 19
-    region: content
     label: inline
     settings: {  }
     third_party_settings:
@@ -619,24 +618,26 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 19
+    region: content
   field_link_fragebogen:
-    weight: 21
+    type: link
     label: inline
     settings:
       trim_length: 255
       url_only: true
-      target: _blank
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 21
     region: content
   field_link_zu_coding_da_vinci:
-    weight: 18
+    type: 'custom_formatters:label_als_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -644,26 +645,26 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:label_als_link'
+    weight: 18
     region: content
   field_link_zu_ddbdash:
-    weight: 17
+    type: link
     label: inline
     settings:
       trim_length: 255
-      target: _blank
       url_only: false
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 17
     region: content
   field_personen:
-    weight: 20
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: default
@@ -673,10 +674,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Personen'
-    type: entity_reference_revisions_entity_view
+    weight: 20
     region: content
   field_status:
-    weight: 16
+    type: color_field_formatter_swatch
     label: hidden
     settings:
       shape: square
@@ -689,10 +690,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: color_field_formatter_swatch
+    weight: 16
     region: content
   field_status_fragebogen:
-    weight: 20
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -701,10 +702,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 20
     region: content
   field_ueber_welchen_weg:
-    weight: 8
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -713,26 +714,26 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 8
     region: content
   field_url:
     type: link
-    weight: 16
-    region: content
     label: inline
     settings:
       trim_length: 255
       url_only: true
-      target: _blank
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
+    weight: 16
+    region: content
   field_volltextformat:
-    weight: 18
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -741,10 +742,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 18
     region: content
   field_zwischenaggregatoren:
-    weight: 14
+    type: entity_reference_label
     label: inline
     settings:
       link: true
@@ -753,13 +754,13 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 14
     region: content
   flag_bookmark:
-    weight: 15
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 15
+    region: content
 hidden:
   langcode: true
   links: true

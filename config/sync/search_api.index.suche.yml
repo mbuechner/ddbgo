@@ -2,11 +2,11 @@ uuid: e2877c93-3894-450a-be07-8e0e4907aff2
 langcode: de
 status: true
 dependencies:
+  config:
+    - search_api.server.default_server
   module:
     - node
     - search_api
-  config:
-    - search_api.server.default_server
 id: suche
 name: Suche
 description: ''
@@ -25,7 +25,6 @@ field_settings:
     label: 'Gerenderte HTML-Ausgabe'
     property_path: rendered_item
     type: text
-    boost: 0.5
     configuration:
       roles:
         authenticated: authenticated
@@ -65,62 +64,75 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  entity_type: {  }
   highlight:
-    highlight: always
-    highlight_partial: true
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
     excerpt: true
-    excerpt_length: 256
+    excerpt_always: false
+    excerpt_length: 512
     exclude_fields:
       - nid
       - title
-    prefix: '<mark>'
-    suffix: '</mark>'
-    weights:
-      postprocess_query: 0
+    highlight: always
+    highlight_partial: true
   html_filter:
+    weights:
+      preprocess_index: -50
+      preprocess_query: -49
     all_fields: false
     fields:
       - rendered_item
     title: true
-    alt: true
+    alt: false
     tags:
       b: 2
       h1: 5
       h2: 3
       h3: 2
       strong: 2
-    weights:
-      preprocess_index: -50
-      preprocess_query: -49
   ignorecase:
+    weights:
+      preprocess_index: -49
+      preprocess_query: -48
     all_fields: true
     fields:
       - nid
       - rendered_item
       - title
       - type
-    weights:
-      preprocess_index: -49
-      preprocess_query: -48
   language_with_fallback: {  }
   rendered_item: {  }
   tokenizer:
+    weights:
+      preprocess_index: -47
+      preprocess_query: -45
     all_fields: true
     fields:
       - nid
       - rendered_item
       - title
-    ignored: ._-
     spaces: ''
+    ignored: ._-
     overlap_cjk: 1
     minimum_word_size: '3'
+  transliteration:
     weights:
-      preprocess_index: -46
-      preprocess_query: -45
+      preprocess_index: -48
+      preprocess_query: -20
+    all_fields: true
+    fields:
+      - nid
+      - rendered_item
+      - title
+      - type
 tracker_settings:
   default:
     indexing_order: fifo
 options:
-  index_directly: true
   cron_limit: 50
+  index_directly: true
+  track_changes_in_references: true
 server: default_server

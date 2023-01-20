@@ -5,15 +5,6 @@ dependencies:
   config:
     - field.storage.taxonomy_term.field_uri
     - taxonomy.vocabulary.kultursparte
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: taxonomy_term.kultursparte.field_uri
 field_name: field_uri
 entity_type: taxonomy_term

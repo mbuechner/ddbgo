@@ -6,15 +6,6 @@ dependencies:
     - field.storage.node.field_europeana_lieferung
     - node.type.bestand
     - taxonomy.vocabulary.ja_nein_feld
-  module:
-    - unique_field_ajax
-third_party_settings:
-  unique_field_ajax:
-    unique: false
-    warn_only: false
-    per_lang: false
-    use_ajax: false
-    message: ''
 id: node.bestand.field_europeana_lieferung
 field_name: field_europeana_lieferung
 entity_type: node

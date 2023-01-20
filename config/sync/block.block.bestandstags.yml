@@ -7,6 +7,7 @@ dependencies:
   module:
     - facets
     - system
+    - user
   theme:
     - adminimal_theme
 id: bestandstags
@@ -18,12 +19,21 @@ plugin: 'facet_block:bestandstags'
 settings:
   id: 'facet_block:bestandstags'
   label: Bestandstags
-  provider: facets
   label_display: '0'
+  provider: facets
   block_id: bestandstags
 visibility:
   request_path:
     id: request_path
-    pages: /search/bestand
     negate: false
     context_mapping: {  }
+    pages: /search/bestand
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      ddb_team: ddb_team
+      ddb_team_login_admin: ddb_team_login_admin

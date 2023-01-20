@@ -13,19 +13,19 @@ bundle: kultursparte
 mode: default
 content:
   description:
-    label: above
     type: text_default
-    weight: 1
-    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_uri:
-    weight: 0
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
 hidden:
   langcode: true

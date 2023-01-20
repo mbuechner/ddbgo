@@ -41,15 +41,15 @@ bundle: aggregator
 mode: full
 content:
   flag_bookmark:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   links:
-    weight: 100
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 100
+    region: content
 hidden:
   field_ablehnungsgrund: true
   field_bemerkung: true

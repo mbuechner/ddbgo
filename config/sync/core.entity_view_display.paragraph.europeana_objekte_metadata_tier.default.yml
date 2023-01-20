@@ -1,0 +1,41 @@
+uuid: 2c53bc91-f0e2-4614-9530-bfd82f39b821
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.europeana_objekte_metadata_tier.field_metadata_tier
+    - field.field.paragraph.europeana_objekte_metadata_tier.field_objekte
+    - paragraphs.paragraphs_type.europeana_objekte_metadata_tier
+  module:
+    - empty_fields
+    - entity_reference_revisions
+id: paragraph.europeana_objekte_metadata_tier.default
+targetEntityType: paragraph
+bundle: europeana_objekte_metadata_tier
+mode: default
+content:
+  field_metadata_tier:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    weight: 0
+    region: content
+  field_objekte:
+    type: entity_reference_revisions_entity_view
+    label: inline
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

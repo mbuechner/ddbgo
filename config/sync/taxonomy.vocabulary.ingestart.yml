@@ -1,0 +1,8 @@
+uuid: 91156471-9c0c-418f-82c5-c7f60a8797d6
+langcode: de
+status: true
+dependencies: {  }
+name: Ingestart
+vid: ingestart
+description: 'Ingestart für Europeana-Lieferung (Nutzung bei Bestand)'
+weight: 0

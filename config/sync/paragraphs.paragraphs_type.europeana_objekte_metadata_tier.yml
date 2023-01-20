@@ -1,0 +1,10 @@
+uuid: d96b6fa4-dddd-44f8-bf79-2a09cb312ab8
+langcode: de
+status: true
+dependencies: {  }
+id: europeana_objekte_metadata_tier
+label: 'Europeana-Objekte: Metadata-Tier'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

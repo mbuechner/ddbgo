@@ -1,0 +1,20 @@
+uuid: 3ad720d0-2a14-4654-a8e1-33bcd16ce6ed
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+    - taxonomy
+id: node.field_ingestart
+field_name: field_ingestart
+entity_type: node
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

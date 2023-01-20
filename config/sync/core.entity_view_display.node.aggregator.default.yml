@@ -55,10 +55,14 @@ third_party_settings:
         - field_datenformat
         - field_beschreibung
         - field_bemerkung
+      label: Allgemeines
       parent_name: ''
+      region: content
       weight: 2
       format_type: html_element
       format_settings:
+        classes: fieldgroup_allgemeines
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -66,17 +70,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_allgemeines
-      label: Allgemeines
-      region: content
     group_personen:
       children:
         - field_personen
+      label: Personen
       parent_name: ''
+      region: content
       weight: 3
       format_type: html_element
       format_settings:
+        classes: fieldgroup_personen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -84,17 +88,17 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_personen
-      label: Personen
-      region: content
     group_kontakt:
       children:
         - field_kontakt
+      label: Kontakt
       parent_name: ''
+      region: content
       weight: 4
       format_type: html_element
       format_settings:
+        classes: fieldgroup_kontakt
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -102,20 +106,20 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_kontakt
-      label: Kontakt
-      region: content
     group_geografische_ausrichtung:
       children:
         - field_region_ort
         - field_sparten
         - field_bestandsart
         - field_bemerkungen_2
+      label: Ausrichtung
       parent_name: ''
+      region: content
       weight: 5
       format_type: html_element
       format_settings:
+        classes: fieldgroup_ausrichtung
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -123,10 +127,6 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_ausrichtung
-      label: Ausrichtung
-      region: content
     group_informationen:
       children:
         - field_vertragsstatus
@@ -142,10 +142,14 @@ third_party_settings:
         - field_link_fragebogen
         - field_fragebogen_aggregator
         - field_bemerkungen
+      label: Informationen
       parent_name: ''
+      region: content
       weight: 6
       format_type: html_element
       format_settings:
+        classes: fieldgroup_informationen
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -153,19 +157,19 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_informationen
-      label: Informationen
-      region: content
     group_status:
       children:
         - flag_bookmark
         - field_status
         - field_ablehnungsgrund
+      label: Status
       parent_name: ''
+      region: content
       weight: 0
       format_type: html_element
       format_settings:
+        classes: fieldgroup_status
+        id: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -173,26 +177,22 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        id: ''
-        classes: fieldgroup_status
-      label: Status
-      region: content
 id: node.aggregator.default
 targetEntityType: node
 bundle: aggregator
 mode: default
 content:
   field_ablehnungsgrund:
-    weight: 9
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
       empty_fields:
         handler: ''
-    type: basic_string
+    weight: 9
     region: content
   field_bemerkung:
-    weight: 16
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -200,10 +200,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 16
     region: content
   field_bemerkungen:
-    weight: 23
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -211,10 +211,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 23
     region: content
   field_bemerkungen_2:
-    weight: 17
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -222,10 +222,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 17
     region: content
   field_bemerkungen_zum_vertrag:
-    weight: 14
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -233,10 +233,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 14
     region: content
   field_beschreibung:
-    weight: 15
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings:
@@ -244,10 +244,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: basic_string
+    weight: 15
     region: content
   field_bestandsart:
-    weight: 15
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -255,10 +255,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 15
     region: content
   field_datenformat:
-    weight: 10
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -266,10 +266,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 10
     region: content
   field_ddburi:
-    weight: 8
+    type: 'custom_formatters:label_als_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -277,10 +277,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:label_als_link'
+    weight: 8
     region: content
   field_fragebogen_aggregator:
-    weight: 22
+    type: file_default
     label: inline
     settings:
       use_description_as_link_text: false
@@ -289,10 +289,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: file_default
+    weight: 22
     region: content
   field_jira_hauptticket:
-    weight: 17
+    type: 'custom_formatters:jira_link'
     label: inline
     settings: {  }
     third_party_settings:
@@ -300,10 +300,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:jira_link'
+    weight: 17
     region: content
   field_kontakt:
-    weight: 16
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: default
@@ -313,10 +313,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Kontakte'
-    type: entity_reference_revisions_entity_view
+    weight: 16
     region: content
   field_kurzname:
-    weight: 6
+    type: string
     label: inline
     settings:
       link_to_entity: false
@@ -325,58 +325,58 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: string
+    weight: 6
     region: content
   field_link_fragebogen:
-    weight: 21
+    type: link
     label: inline
     settings:
       trim_length: 255
       url_only: true
-      target: _blank
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 21
     region: content
   field_link_zu_ddbdash:
-    weight: 16
+    type: link
     label: inline
     settings:
       trim_length: 255
       url_only: true
-      target: _blank
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 16
     region: content
   field_link_zu_ddbpro:
-    weight: 9
+    type: link
     label: inline
     settings:
       trim_length: 255
       url_only: true
-      target: _blank
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 9
     region: content
   field_personen:
-    weight: 7
+    type: entity_reference_revisions_entity_view
     label: hidden
     settings:
       view_mode: default
@@ -386,10 +386,10 @@ content:
         handler: text
         settings:
           empty_text: 'keine Personen'
-    type: entity_reference_revisions_entity_view
+    weight: 7
     region: content
   field_region_ort:
-    weight: 13
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -397,10 +397,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 13
     region: content
   field_sichtbarkeit:
-    weight: 19
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -408,10 +408,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 19
     region: content
   field_sparten:
-    weight: 14
+    type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
     settings: {  }
     third_party_settings:
@@ -419,10 +419,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
+    weight: 14
     region: content
   field_status:
-    weight: 8
+    type: color_field_formatter_swatch
     label: hidden
     settings:
       shape: square
@@ -435,10 +435,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: color_field_formatter_swatch
+    weight: 8
     region: content
   field_status_fragebogen:
-    weight: 20
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -447,26 +447,26 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 20
     region: content
   field_url:
-    weight: 7
+    type: link
     label: inline
     settings:
       trim_length: 255
-      target: _blank
       url_only: false
       url_plain: false
       rel: '0'
+      target: _blank
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    type: link
+    weight: 7
     region: content
   field_vertrag:
-    weight: 13
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: false
@@ -475,10 +475,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: file_default
+    weight: 13
     region: content
   field_vertragskonstrukt:
-    weight: 12
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -487,10 +487,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 12
     region: content
   field_vertragsstatus:
-    weight: 11
+    type: entity_reference_label
     label: inline
     settings:
       link: false
@@ -499,10 +499,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 11
     region: content
   field_workflow:
-    weight: 15
+    type: file_default
     label: inline
     settings:
       use_description_as_link_text: false
@@ -511,10 +511,10 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: file_default
+    weight: 15
     region: content
   field_zwischenaggregatoren:
-    weight: 18
+    type: entity_reference_label
     label: inline
     settings:
       link: true
@@ -523,13 +523,13 @@ content:
         handler: text
         settings:
           empty_text: –
-    type: entity_reference_label
+    weight: 18
     region: content
   flag_bookmark:
-    weight: 7
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 7
+    region: content
 hidden:
   langcode: true
   links: true
