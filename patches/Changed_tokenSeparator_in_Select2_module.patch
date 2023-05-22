@@ -1,9 +1,14 @@
+ src/Element/Select2.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Element/Select2.php b/src/Element/Select2.php
+index f9f6e28..0821894 100644
 --- a/src/Element/Select2.php
 +++ b/src/Element/Select2.php
-@@ -213,7 +213,7 @@
+@@ -295,7 +295,7 @@ class Select2 extends Select {
        'tags' => (bool) $element['#autocreate'],
        'theme' => $select2_theme_exists ? $current_theme : 'default',
-       'maximumSelectionLength' => $multiple ? $element['#cardinality'] : 0,
+       'maximumSelectionLength' => $multiple ? $cardinality : 0,
 -      'tokenSeparators' => $element['#autocreate'] ? [','] : [],
 +      'tokenSeparators' => $element['#autocreate'] ? ['|'] : [],
        'selectOnClose' => $element['#autocomplete'],
