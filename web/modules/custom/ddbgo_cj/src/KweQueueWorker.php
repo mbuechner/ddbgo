@@ -154,6 +154,7 @@ class KweQueueWorker {
     // get term of Bundesland-URI in Drupal
     if ($node->hasField('field_bundesland') && isset($results['state'])) {
       $term_nids = \Drupal::entityQuery('taxonomy_term')
+        ->accessCheck(FALSE)
         ->condition('vid', 'bundesland')
         ->condition('field_uri', $results['state'], '=')
         ->addMetaData('account', \Drupal\user\Entity\User::load(1))
@@ -173,6 +174,7 @@ class KweQueueWorker {
     // get term of Land-URI in Drupal
     if ($node->hasField('field_land') && isset($results['country'])) {
       $term_nids = \Drupal::entityQuery('taxonomy_term')
+        ->accessCheck(FALSE)
         ->condition('vid', 'land')
         ->condition('field_uri', $results['country'], '=')
         ->addMetaData('account', \Drupal\user\Entity\User::load(1))
@@ -191,6 +193,7 @@ class KweQueueWorker {
     // Sparte: $results['sector']	- field_sparte
     if ($node->hasField('field_sparte') && isset($results['sector'])) {
       $term_nids = \Drupal::entityQuery('taxonomy_term')
+        ->accessCheck(FALSE)
         ->condition('vid', 'kultursparte_kwe')
         ->condition('field_uri', $results['sector'], '=')
         ->addMetaData('account', \Drupal\user\Entity\User::load(1))

@@ -12,6 +12,7 @@ function ddbgo_cj_kwe_daily_queue_worker()
 
   // get all IDs of KWE which are published
   $nids = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
     ->condition('status', 1)
     ->condition('type', 'kwe')
     ->addMetaData('account', \Drupal\user\Entity\User::load(1))

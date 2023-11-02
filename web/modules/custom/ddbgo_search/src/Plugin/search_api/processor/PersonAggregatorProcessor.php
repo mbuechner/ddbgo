@@ -84,6 +84,7 @@ class PersonAggregatorProcessor extends ProcessorPluginBase {
     }
 
     $nids = Drupal::entityQuery('node')
+      ->accessCheck(FALSE)
       ->condition('status', 1)
       ->condition('type', 'aggregator')
       ->condition('field_personen.entity:paragraph.field_person.target_id', $original_entity->id())
