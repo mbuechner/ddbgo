@@ -174,6 +174,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
     }
 
     $query = Drupal::entityQuery('node')
+      ->accessCheck(FALSE)
       ->condition('status', 1)
       ->condition('type', 'bestand')
       ->condition('field_aggregator.target_id', $original_entity->id())

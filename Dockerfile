@@ -28,6 +28,7 @@ RUN set -eux; \
           freetype-dev \
           libjpeg-turbo-dev \
           libpng-dev \
+          libwebp-dev \
           libzip-dev \
           pcre-dev \
           autoconf \
@@ -39,7 +40,8 @@ RUN set -eux; \
      \
      docker-php-ext-configure gd \
           --with-freetype \
-          --with-jpeg=/usr/include; \
+          --with-jpeg=/usr/include \
+          --with-webp=/usr/include; \
      \
      docker-php-ext-install -j "$(nproc)" \
           gd \
@@ -63,6 +65,7 @@ RUN set -eux; \
           freetype-dev \
           libjpeg-turbo-dev \
           libpng-dev \
+          libwebp-dev \
           libzip-dev \
           pcre-dev \
           autoconf \
