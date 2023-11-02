@@ -26,7 +26,7 @@ function ddbgo_workarounds_requirements($phase) {
       'title' => t('DDBgo {{version}}'),
       'value' => t('Git Tag: <a href="https://github.com/mbuechner/ddbgo/releases/tag/{{version}}">{{version}}</a>; Git Commit: <a href="https://github.com/mbuechner/ddbgo/commit/{{commitid}}">{{commitid}}</a>'),
       'description' => t('DDBgo ist korrekt installiert (%module).', [
-        '%module' => drupal_get_path('module', $module_name) . '/' . $module_name . '.module',
+        '%module' => \Drupal::service('extension.list.module')->getPath($module_name) . '/' . $module_name . '.module',
       ]),
       'severity' => REQUIREMENT_INFO,
     ];
