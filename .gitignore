@@ -44,3 +44,4 @@
 /update.php
 /web.config
 /.editorconfig
+/config/sync/smtp.settings.yml
