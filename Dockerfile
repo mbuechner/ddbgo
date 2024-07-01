@@ -8,7 +8,7 @@ RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_
      sed -i -e "s:{{commitid}}:$(git rev-parse HEAD):g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
      rm -rf .git/;
 
-FROM php:8.2-fpm-alpine
+FROM php:8.3-fpm-alpine
 MAINTAINER Michael Büchner <m.buechner@dnb.de>
 
 # Install packages

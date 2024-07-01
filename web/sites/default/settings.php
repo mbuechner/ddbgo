@@ -779,6 +779,7 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 }
 
 $settings['config_sync_directory'] = '../config/sync';
+$settings['state_cache'] = true;
 
 /* Redis */
 if ((getenv('USE_REDIS') ?: 'no') == 'yes') {
