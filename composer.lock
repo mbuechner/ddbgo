@@ -5513,16 +5513,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.1.1",
+            "version": "13.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "79f5f32f2c3f2059b986a2504ace5f14369a359f"
+                "reference": "6a3f0cfe0abab49f42e83602469049506d75035d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/79f5f32f2c3f2059b986a2504ace5f14369a359f",
-                "reference": "79f5f32f2c3f2059b986a2504ace5f14369a359f",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/6a3f0cfe0abab49f42e83602469049506d75035d",
+                "reference": "6a3f0cfe0abab49f42e83602469049506d75035d",
                 "shasum": ""
             },
             "require": {
@@ -5648,7 +5648,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.1.1"
+                "source": "https://github.com/drush-ops/drush/tree/13.2.0"
             },
             "funding": [
                 {
@@ -5656,7 +5656,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-06T17:17:11+00:00"
+            "time": "2024-09-10T13:16:15+00:00"
         },
         {
             "name": "e0ipso/shaper",
@@ -7666,16 +7666,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.3",
+            "version": "1.12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0fcbf194ab63d8159bb70d9aa3e1350051632009"
+                "reference": "ffa517cb918591b93acc9b95c0bebdcd0e4538bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0fcbf194ab63d8159bb70d9aa3e1350051632009",
-                "reference": "0fcbf194ab63d8159bb70d9aa3e1350051632009",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ffa517cb918591b93acc9b95c0bebdcd0e4538bd",
+                "reference": "ffa517cb918591b93acc9b95c0bebdcd0e4538bd",
                 "shasum": ""
             },
             "require": {
@@ -7720,7 +7720,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-09T08:10:35+00:00"
+            "time": "2024-09-19T07:58:01+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -11718,5 +11718,5 @@
         "php": "8.3",
         "ext-gd": "1"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
