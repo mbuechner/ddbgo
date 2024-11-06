@@ -150,9 +150,6 @@
             "web/core": [
                 "type:drupal-core"
             ],
-            "web/libraries/bgrins-spectrum": [
-                "npm-asset/spectrum"
-            ],
             "web/libraries/{$name}": [
                 "type:drupal-library",
                 "type:bower-asset",
