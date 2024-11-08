@@ -153,7 +153,6 @@
             "web/libraries/spectrum": [
                 "npm-asset/spectrum-colorpicker"
             ],
-
             "web/libraries/{$name}": [
                 "type:drupal-library",
                 "type:bower-asset",
@@ -190,6 +189,7 @@
                 "[web-root]/README.md": false
             }
         },
+        "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patches": {
             "drupal/select2": {
