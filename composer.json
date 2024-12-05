@@ -198,6 +198,9 @@
             },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"
+            },
+            "drupal/happy_new_year": {
+                "Make Happy New Year module DDBgo-ready": "patches/Happy_New_Year_module.patch"
             }
         }
     }
