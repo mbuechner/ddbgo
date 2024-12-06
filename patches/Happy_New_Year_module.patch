@@ -8,7 +8,7 @@ diff --git a/js/garland.js b/js/garland.js
 -        $('body').prepend('<div id="garland"></div>');
 +        const newDiv = document.createElement("div");
 +        newDiv.id = "garland";
-+        $('header.content-header').appendChild(newDiv);
++        $('header.content-header').prepend(newDiv);
        }
  
        if ($('#garland').length > 0) {
