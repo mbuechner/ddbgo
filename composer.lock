@@ -63,6 +63,18 @@
             "time": "2023-11-14T13:51:46+00:00"
         },
         {
+            "name": "bgrins/spectrum",
+            "version": "1.8.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/bgrins/spectrum/archive/refs/tags/1.8.0.zip"
+            },
+            "type": "drupal-library",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "caxy/php-htmldiff",
             "version": "v0.1.16",
             "source": {
@@ -1181,26 +1193,29 @@
         },
         {
             "name": "doctrine/deprecations",
-            "version": "1.1.4",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/deprecations.git",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9"
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/31610dbb31faa98e6b5447b62340826f54fbc4e9",
-                "reference": "31610dbb31faa98e6b5447b62340826f54fbc4e9",
+                "url": "https://api.github.com/repos/doctrine/deprecations/zipball/459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
+                "reference": "459c2f5dd3d6a4633d3b5f46ee2b1c40f57d3f38",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
+            "conflict": {
+                "phpunit/phpunit": "<=7.5 || >=13"
+            },
             "require-dev": {
-                "doctrine/coding-standard": "^9 || ^12",
-                "phpstan/phpstan": "1.4.10 || 2.0.3",
+                "doctrine/coding-standard": "^9 || ^12 || ^13",
+                "phpstan/phpstan": "1.4.10 || 2.1.11",
                 "phpstan/phpstan-phpunit": "^1.0 || ^2",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.6 || ^10.5 || ^11.5 || ^12",
                 "psr/log": "^1 || ^2 || ^3"
             },
             "suggest": {
@@ -1220,9 +1235,9 @@
             "homepage": "https://www.doctrine-project.org/",
             "support": {
                 "issues": "https://github.com/doctrine/deprecations/issues",
-                "source": "https://github.com/doctrine/deprecations/tree/1.1.4"
+                "source": "https://github.com/doctrine/deprecations/tree/1.1.5"
             },
-            "time": "2024-12-07T21:18:45+00:00"
+            "time": "2025-04-07T20:06:18+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -3051,17 +3066,17 @@
         },
         {
             "name": "drupal/flag",
-            "version": "4.0.0-beta6",
+            "version": "4.0.0-beta7",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flag.git",
-                "reference": "8.x-4.0-beta6"
+                "reference": "8.x-4.0-beta7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flag-8.x-4.0-beta6.zip",
-                "reference": "8.x-4.0-beta6",
-                "shasum": "eb36689b4b97e12b60be626771f6f2a987b83a70"
+                "url": "https://ftp.drupal.org/files/projects/flag-8.x-4.0-beta7.zip",
+                "reference": "8.x-4.0-beta7",
+                "shasum": "6f74fcaec0db3c54934cdf8f25acb67c0c2d7f07"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
@@ -3069,8 +3084,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-4.0-beta6",
-                    "datestamp": "1737620760",
+                    "version": "8.x-4.0-beta7",
+                    "datestamp": "1743851261",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5497,16 +5512,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.4.0",
+            "version": "13.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "5412e5a5652ea3003ed65dfe3653bbecfeeba42e"
+                "reference": "16076b24532eb27aaf9e2b8bca1e05a74871c713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/5412e5a5652ea3003ed65dfe3653bbecfeeba42e",
-                "reference": "5412e5a5652ea3003ed65dfe3653bbecfeeba42e",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/16076b24532eb27aaf9e2b8bca1e05a74871c713",
+                "reference": "16076b24532eb27aaf9e2b8bca1e05a74871c713",
                 "shasum": ""
             },
             "require": {
@@ -5524,7 +5539,7 @@
                 "ext-dom": "*",
                 "grasmash/yaml-cli": "^3.1",
                 "guzzlehttp/guzzle": "^7.0",
-                "laravel/prompts": "^0.1.21",
+                "laravel/prompts": "^0.3.5",
                 "league/container": "^4.2",
                 "php": ">=8.2",
                 "psy/psysh": "~0.12",
@@ -5633,7 +5648,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.4.0"
+                "source": "https://github.com/drush-ops/drush/tree/13.5.1"
             },
             "funding": [
                 {
@@ -5641,24 +5656,24 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-18T16:10:10+00:00"
+            "time": "2025-04-04T11:38:40+00:00"
         },
         {
             "name": "e0ipso/shaper",
-            "version": "1.2.5",
+            "version": "1.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/e0ipso/shaper.git",
-                "reference": "78e5142a11323ae1359ef569f1c8064177c1fdd4"
+                "reference": "1d9e726c98d3168d30c1180cd836d13267744fb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/e0ipso/shaper/zipball/78e5142a11323ae1359ef569f1c8064177c1fdd4",
-                "reference": "78e5142a11323ae1359ef569f1c8064177c1fdd4",
+                "url": "https://api.github.com/repos/e0ipso/shaper/zipball/1d9e726c98d3168d30c1180cd836d13267744fb7",
+                "reference": "1d9e726c98d3168d30c1180cd836d13267744fb7",
                 "shasum": ""
             },
             "require": {
-                "justinrainbow/json-schema": "^5.2"
+                "justinrainbow/json-schema": "^5.2 || ^6.3"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.4",
@@ -5685,9 +5700,9 @@
             "description": "Lightweight library to handle in and out transformations in PHP.",
             "support": {
                 "issues": "https://github.com/e0ipso/shaper/issues",
-                "source": "https://github.com/e0ipso/shaper/tree/1.2.5"
+                "source": "https://github.com/e0ipso/shaper/tree/1.2.7"
             },
-            "time": "2024-12-03T05:49:15+00:00"
+            "time": "2025-04-04T08:14:01+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -6266,227 +6281,41 @@
             "time": "2025-03-27T12:30:47+00:00"
         },
         {
-            "name": "illuminate/collections",
-            "version": "v11.44.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/collections.git",
-                "reference": "f2f537dfb2a142791d37478f34c920b44a45cea9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/collections/zipball/f2f537dfb2a142791d37478f34c920b44a45cea9",
-                "reference": "f2f537dfb2a142791d37478f34c920b44a45cea9",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/conditionable": "^11.0",
-                "illuminate/contracts": "^11.0",
-                "illuminate/macroable": "^11.0",
-                "php": "^8.2"
-            },
-            "suggest": {
-                "symfony/var-dumper": "Required to use the dump method (^7.0)."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "11.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "functions.php",
-                    "helpers.php"
-                ],
-                "psr-4": {
-                    "Illuminate\\Support\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Collections package.",
-            "homepage": "https://laravel.com",
-            "support": {
-                "issues": "https://github.com/laravel/framework/issues",
-                "source": "https://github.com/laravel/framework"
-            },
-            "time": "2025-03-06T14:02:47+00:00"
-        },
-        {
-            "name": "illuminate/conditionable",
-            "version": "v11.44.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/conditionable.git",
-                "reference": "911df1bda950a3b799cf80671764e34eede131c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/conditionable/zipball/911df1bda950a3b799cf80671764e34eede131c6",
-                "reference": "911df1bda950a3b799cf80671764e34eede131c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "11.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Support\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Conditionable package.",
-            "homepage": "https://laravel.com",
-            "support": {
-                "issues": "https://github.com/laravel/framework/issues",
-                "source": "https://github.com/laravel/framework"
-            },
-            "time": "2024-11-21T16:28:56+00:00"
-        },
-        {
-            "name": "illuminate/contracts",
-            "version": "v11.44.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/contracts.git",
-                "reference": "b350a3cd8450846325cb49e1cbc1293598b18898"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/b350a3cd8450846325cb49e1cbc1293598b18898",
-                "reference": "b350a3cd8450846325cb49e1cbc1293598b18898",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2",
-                "psr/container": "^1.1.1|^2.0.1",
-                "psr/simple-cache": "^1.0|^2.0|^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "11.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Contracts\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Contracts package.",
-            "homepage": "https://laravel.com",
-            "support": {
-                "issues": "https://github.com/laravel/framework/issues",
-                "source": "https://github.com/laravel/framework"
-            },
-            "time": "2025-02-10T14:20:57+00:00"
-        },
-        {
-            "name": "illuminate/macroable",
-            "version": "v11.44.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/macroable.git",
-                "reference": "e1cb9e51b9ed5d3c9bc1ab431d0a52fe42a990ed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/macroable/zipball/e1cb9e51b9ed5d3c9bc1ab431d0a52fe42a990ed",
-                "reference": "e1cb9e51b9ed5d3c9bc1ab431d0a52fe42a990ed",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "11.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Support\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Macroable package.",
-            "homepage": "https://laravel.com",
-            "support": {
-                "issues": "https://github.com/laravel/framework/issues",
-                "source": "https://github.com/laravel/framework"
-            },
-            "time": "2024-06-28T20:10:30+00:00"
-        },
-        {
             "name": "justinrainbow/json-schema",
-            "version": "5.3.0",
+            "version": "6.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8"
+                "reference": "35d262c94959571e8736db1e5c9bc36ab94ae900"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8",
-                "reference": "feb2ca6dd1cebdaf1ed60a4c8de2e53ce11c4fd8",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/35d262c94959571e8736db1e5c9bc36ab94ae900",
+                "reference": "35d262c94959571e8736db1e5c9bc36ab94ae900",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "ext-json": "*",
+                "marc-mabe/php-enum": "^4.0",
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
+                "friendsofphp/php-cs-fixer": "3.3.0",
                 "json-schema/json-schema-test-suite": "1.2.0",
-                "phpunit/phpunit": "^4.8.35"
+                "marc-mabe/php-enum-phpstan": "^2.0",
+                "phpspec/prophecy": "^1.19",
+                "phpstan/phpstan": "^1.12",
+                "phpunit/phpunit": "^8.5"
             },
             "bin": [
                 "bin/validate-json"
             ],
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "JsonSchema\\": "src/JsonSchema/"
@@ -6515,34 +6344,34 @@
                 }
             ],
             "description": "A library to validate a json schema.",
-            "homepage": "https://github.com/justinrainbow/json-schema",
+            "homepage": "https://github.com/jsonrainbow/json-schema",
             "keywords": [
                 "json",
                 "schema"
             ],
             "support": {
                 "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/5.3.0"
+                "source": "https://github.com/jsonrainbow/json-schema/tree/6.4.1"
             },
-            "time": "2024-07-06T21:00:26+00:00"
+            "time": "2025-04-04T13:08:07+00:00"
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.1.25",
+            "version": "v0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "7b4029a84c37cb2725fc7f011586e2997040bc95"
+                "reference": "57b8f7efe40333cdb925700891c7d7465325d3b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/7b4029a84c37cb2725fc7f011586e2997040bc95",
-                "reference": "7b4029a84c37cb2725fc7f011586e2997040bc95",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/57b8f7efe40333cdb925700891c7d7465325d3b1",
+                "reference": "57b8f7efe40333cdb925700891c7d7465325d3b1",
                 "shasum": ""
             },
             "require": {
+                "composer-runtime-api": "^2.2",
                 "ext-mbstring": "*",
-                "illuminate/collections": "^10.0|^11.0",
                 "php": "^8.1",
                 "symfony/console": "^6.2|^7.0"
             },
@@ -6551,8 +6380,9 @@
                 "laravel/framework": ">=10.17.0 <10.25.0"
             },
             "require-dev": {
+                "illuminate/collections": "^10.0|^11.0|^12.0",
                 "mockery/mockery": "^1.5",
-                "pestphp/pest": "^2.3",
+                "pestphp/pest": "^2.3|^3.4",
                 "phpstan/phpstan": "^1.11",
                 "phpstan/phpstan-mockery": "^1.1"
             },
@@ -6562,7 +6392,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.1.x-dev"
+                    "dev-main": "0.3.x-dev"
                 }
             },
             "autoload": {
@@ -6580,9 +6410,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.1.25"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.5"
             },
-            "time": "2024-08-12T22:06:33+00:00"
+            "time": "2025-02-11T13:34:40+00:00"
         },
         {
             "name": "league/container",
@@ -6773,6 +6603,79 @@
             ]
         },
         {
+            "name": "marc-mabe/php-enum",
+            "version": "v4.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marc-mabe/php-enum.git",
+                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/7159809e5cfa041dca28e61f7f7ae58063aae8ed",
+                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed",
+                "shasum": ""
+            },
+            "require": {
+                "ext-reflection": "*",
+                "php": "^7.1 | ^8.0"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^0.16.10 || ^1.0.4",
+                "phpstan/phpstan": "^1.3.1",
+                "phpunit/phpunit": "^7.5.20 | ^8.5.22 | ^9.5.11",
+                "vimeo/psalm": "^4.17.0 | ^5.26.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.2-dev",
+                    "dev-master": "4.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MabeEnum\\": "src/"
+                },
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Bennewitz",
+                    "email": "dev@mabe.berlin",
+                    "homepage": "https://mabe.berlin/",
+                    "role": "Lead"
+                }
+            ],
+            "description": "Simple and fast implementation of enumerations with native PHP",
+            "homepage": "https://github.com/marc-mabe/php-enum",
+            "keywords": [
+                "enum",
+                "enum-map",
+                "enum-set",
+                "enumeration",
+                "enumerator",
+                "enummap",
+                "enumset",
+                "map",
+                "set",
+                "type",
+                "type-hint",
+                "typehint"
+            ],
+            "support": {
+                "issues": "https://github.com/marc-mabe/php-enum/issues",
+                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.1"
+            },
+            "time": "2024-11-28T04:54:44+00:00"
+        },
+        {
             "name": "masterminds/html5",
             "version": "2.9.0",
             "source": {
@@ -6890,16 +6793,16 @@
         },
         {
             "name": "mglaman/phpstan-drupal",
-            "version": "1.3.4",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/phpstan-drupal.git",
-                "reference": "6d08c04840f0d524b792e60cefc17d19bc315a3d"
+                "reference": "91cb3860d816316dd98503ef258bc386f5fc22b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/6d08c04840f0d524b792e60cefc17d19bc315a3d",
-                "reference": "6d08c04840f0d524b792e60cefc17d19bc315a3d",
+                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/91cb3860d816316dd98503ef258bc386f5fc22b7",
+                "reference": "91cb3860d816316dd98503ef258bc386f5fc22b7",
                 "shasum": ""
             },
             "require": {
@@ -6974,7 +6877,7 @@
             "description": "Drupal extension and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/mglaman/phpstan-drupal/issues",
-                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.3.4"
+                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.3.7"
             },
             "funding": [
                 {
@@ -6990,7 +6893,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-03-27T17:04:33+00:00"
+            "time": "2025-04-15T16:10:17+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -7736,16 +7639,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.23",
+            "version": "1.12.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "29201e7a743a6ab36f91394eab51889a82631428"
+                "reference": "338b92068f58d9f8035b76aed6cf2b9e5624c025"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/29201e7a743a6ab36f91394eab51889a82631428",
-                "reference": "29201e7a743a6ab36f91394eab51889a82631428",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/338b92068f58d9f8035b76aed6cf2b9e5624c025",
+                "reference": "338b92068f58d9f8035b76aed6cf2b9e5624c025",
                 "shasum": ""
             },
             "require": {
@@ -7790,7 +7693,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-23T14:57:32+00:00"
+            "time": "2025-04-16T13:01:53+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -8240,57 +8143,6 @@
             "time": "2024-09-11T13:17:53+00:00"
         },
         {
-            "name": "psr/simple-cache",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
-                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Psr\\SimpleCache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "PHP-FIG",
-                    "homepage": "https://www.php-fig.org/"
-                }
-            ],
-            "description": "Common interfaces for simple caching",
-            "keywords": [
-                "cache",
-                "caching",
-                "psr",
-                "psr-16",
-                "simple-cache"
-            ],
-            "support": {
-                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
-            },
-            "time": "2021-10-29T13:26:27+00:00"
-        },
-        {
             "name": "psy/psysh",
             "version": "v0.12.8",
             "source": {
@@ -8412,6 +8264,18 @@
                 "source": "https://github.com/ralouphie/getallheaders/tree/develop"
             },
             "time": "2019-03-08T08:55:37+00:00"
+        },
+        {
+            "name": "recurser/jquery-simple-color",
+            "version": "v1.2.3",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/recurser/jquery-simple-color/archive/refs/tags/v1.2.3.zip"
+            },
+            "type": "drupal-library",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "sebastian/diff",
