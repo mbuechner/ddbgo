@@ -6,7 +6,7 @@ dependencies:
   - drupal:hook_post_action
   - drupal:content_lock
 package: ddbgo
-version: '1.0'
-core_version_requirement: ^9 || ^10
+version: '1.1'
+core_version_requirement: ^9 || ^10 || ^11
 project: 'ddbgo_cj'
 datestamp: 1583236854
