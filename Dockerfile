@@ -1,4 +1,4 @@
-FROM composer:2 AS COMPOSER_CHAIN
+FROM composer:2 AS cchain
 COPY / /tmp/ddbgo
 WORKDIR /tmp/ddbgo
 RUN composer install --no-dev
@@ -9,7 +9,7 @@ RUN sed -i -e "s:{{version}}:$(git describe --tags):g" web/modules/custom/ddbgo_
      rm -rf .git/;
 
 FROM php:8.3-fpm-alpine
-MAINTAINER Michael Büchner <m.buechner@dnb.de>
+LABEL org.opencontainers.image.authors="m.buechner@dnb.de"
 
 # Install packages
 RUN apk --no-cache add \
@@ -29,6 +29,7 @@ RUN set -eux; \
           libjpeg-turbo-dev \
           libpng-dev \
           libwebp-dev \
+          libavif-dev \
           libzip-dev \
           pcre-dev \
           autoconf \
@@ -40,8 +41,9 @@ RUN set -eux; \
      \
      docker-php-ext-configure gd \
           --with-freetype \
-          --with-jpeg=/usr/include \
-          --with-webp=/usr/include; \
+          --with-jpeg \
+          --with-webp \
+          --with-avif; \
      \
      docker-php-ext-install -j "$(nproc)" \
           gd \
@@ -74,8 +76,8 @@ RUN set -eux; \
           git \
           postgresql-dev;
 
-ENV RUN_USER nobody
-ENV RUN_GROUP 0
+ENV RUN_USER=nobody
+ENV RUN_GROUP=0
 
 # add PHP config
 COPY --chown=${RUN_USER}:${RUN_GROUP} ./config/php/ /usr/local/etc/php/conf.d/
@@ -94,7 +96,7 @@ COPY --chown=${RUN_USER}:${RUN_GROUP} config/supervisord/supervisord.conf /etc/s
 
 # Add application
 WORKDIR /var/www/html
-COPY --chown=${RUN_USER}:${RUN_GROUP} --from=COMPOSER_CHAIN /tmp/ddbgo/ .
+COPY --chown=${RUN_USER}:${RUN_GROUP} --from=cchain /tmp/ddbgo/ .
 ENV PATH=${PATH}:/var/www/html/vendor/bin
 
 RUN \
@@ -112,7 +114,7 @@ RUN \
     cp /etc/ssl/mykey.pem /etc/ssl/mykey.pem.orig; \
     openssl rsa -passin pass:foobar -in /etc/ssl/mykey.pem.orig -out /etc/ssl/mykey.pem; \
     # Generating certificate signing request
-    openssl req -new -key /etc/ssl/mykey.pem -out /etc/ssl/mycert.csr -subj "/C=DE/ST=DE/L=Frankfurt am Main/O=Deutsche Nationalbibliothek/OU=IT.DDB/CN=DDBgo"; \
+    openssl req -new -key /etc/ssl/mykey.pem -out /etc/ssl/mycert.csr -subj "/C=DE/ST=DE/L=Frankfurt am Main/O=Deutsche Nationalbibliothek/OU=GD.DDB/CN=DDBgo"; \
     # Generating self-signed certificate
     openssl x509 -req -days 3650 -in /etc/ssl/mycert.csr -signkey /etc/ssl/mykey.pem -out /etc/ssl/mycert.pem; \
     # Make sure files/folders needed by the processes are accessable when they run under the nobody user
