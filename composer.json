@@ -23,7 +23,7 @@
         "drupal/adminimal_admin_toolbar": "^2.0",
         "drupal/adminimal_theme": "^1.6",
         "drupal/auto_entitylabel": "^3.0@beta",
-        "drupal/better_exposed_filters": "^7.0",
+        "drupal/better_exposed_filters": "^7.1@beta",
         "drupal/color": "^1.0",
         "drupal/color-color": "^1.0",
         "drupal/color_field": "^3.0",
