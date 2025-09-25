@@ -1531,17 +1531,17 @@
         },
         {
             "name": "drupal/better_exposed_filters",
-            "version": "7.1.0-beta1",
+            "version": "7.1.0-beta3",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/better_exposed_filters.git",
-                "reference": "7.1.0-beta1"
+                "reference": "7.1.0-beta3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-7.1.0-beta1.zip",
-                "reference": "7.1.0-beta1",
-                "shasum": "589b2d62fda7edf615f91d9cd9998ee6f97a0402"
+                "url": "https://ftp.drupal.org/files/projects/better_exposed_filters-7.1.0-beta3.zip",
+                "reference": "7.1.0-beta3",
+                "shasum": "cc4a637c92bb9cce4339ea35fc6be79e622809f7"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11",
@@ -1550,8 +1550,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "7.1.0-beta1",
-                    "datestamp": "1752100982",
+                    "version": "7.1.0-beta3",
+                    "datestamp": "1757966905",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -2958,17 +2958,17 @@
         },
         {
             "name": "drupal/field_validation",
-            "version": "3.0.0-beta4",
+            "version": "3.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/field_validation.git",
-                "reference": "3.0.0-beta4"
+                "reference": "3.0.0-beta5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/field_validation-3.0.0-beta4.zip",
-                "reference": "3.0.0-beta4",
-                "shasum": "b5a417a0fc4093629ab96326e154068b7340d797"
+                "url": "https://ftp.drupal.org/files/projects/field_validation-3.0.0-beta5.zip",
+                "reference": "3.0.0-beta5",
+                "shasum": "617ca0d199e1eabb538f9e57813c8975039ecfc1"
             },
             "require": {
                 "drupal/core": "^10.2 || ^11",
@@ -2979,8 +2979,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.0-beta4",
-                    "datestamp": "1731485225",
+                    "version": "3.0.0-beta5",
+                    "datestamp": "1758096648",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -2992,6 +2992,10 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
+                {
+                    "name": "abhisekmazumdar",
+                    "homepage": "https://www.drupal.org/user/3557964"
+                },
                 {
                     "name": "g089h515r806",
                     "homepage": "https://www.drupal.org/user/174740"
@@ -3009,17 +3013,17 @@
         },
         {
             "name": "drupal/flag",
-            "version": "5.0.0",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flag.git",
-                "reference": "5.0.0"
+                "reference": "5.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flag-5.0.0.zip",
-                "reference": "5.0.0",
-                "shasum": "7dce8b7dbbd72601dc1b6f57f30a6adefd9575ea"
+                "url": "https://ftp.drupal.org/files/projects/flag-5.0.1.zip",
+                "reference": "5.0.1",
+                "shasum": "8487a0d34b3c52f47d8af1631e1947497057f500"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
@@ -3027,8 +3031,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.0.0",
-                    "datestamp": "1755505809",
+                    "version": "5.0.1",
+                    "datestamp": "1757658472",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3972,20 +3976,20 @@
         },
         {
             "name": "drupal/metatag",
-            "version": "2.1.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/metatag.git",
-                "reference": "2.1.2"
+                "reference": "2.2.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/metatag-2.1.2.zip",
-                "reference": "2.1.2",
-                "shasum": "0ef6232c40a3b7a45ea40d033e124b9698941e9d"
+                "url": "https://ftp.drupal.org/files/projects/metatag-2.2.0.zip",
+                "reference": "2.2.0",
+                "shasum": "b6ae4b665a49771d5139644c71cb3d5a68cb4828"
             },
             "require": {
-                "drupal/core": "^9.4 || ^10 || ^11",
+                "drupal/core": "^10.3 || ^11",
                 "drupal/token": "^1.0",
                 "php": ">=8.0"
             },
@@ -4002,8 +4006,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.1.2",
-                    "datestamp": "1757006643",
+                    "version": "2.2.0",
+                    "datestamp": "1758622371",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6235,16 +6239,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "6.5.1",
+            "version": "6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "b5ab21e431594897e5bb86343c01f140ba862c26"
+                "reference": "ac0d369c09653cf7af561f6d91a705bc617a87b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/b5ab21e431594897e5bb86343c01f140ba862c26",
-                "reference": "b5ab21e431594897e5bb86343c01f140ba862c26",
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/ac0d369c09653cf7af561f6d91a705bc617a87b8",
+                "reference": "ac0d369c09653cf7af561f6d91a705bc617a87b8",
                 "shasum": ""
             },
             "require": {
@@ -6304,22 +6308,22 @@
             ],
             "support": {
                 "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/6.5.1"
+                "source": "https://github.com/jsonrainbow/json-schema/tree/6.5.2"
             },
-            "time": "2025-08-29T10:58:11+00:00"
+            "time": "2025-09-09T09:42:27+00:00"
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.6",
+            "version": "v0.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "86a8b692e8661d0fb308cec64f3d176821323077"
+                "reference": "a1891d362714bc40c8d23b0b1d7090f022ea27cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/86a8b692e8661d0fb308cec64f3d176821323077",
-                "reference": "86a8b692e8661d0fb308cec64f3d176821323077",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/a1891d362714bc40c8d23b0b1d7090f022ea27cc",
+                "reference": "a1891d362714bc40c8d23b0b1d7090f022ea27cc",
                 "shasum": ""
             },
             "require": {
@@ -6336,8 +6340,8 @@
                 "illuminate/collections": "^10.0|^11.0|^12.0",
                 "mockery/mockery": "^1.5",
                 "pestphp/pest": "^2.3|^3.4",
-                "phpstan/phpstan": "^1.11",
-                "phpstan/phpstan-mockery": "^1.1"
+                "phpstan/phpstan": "^1.12.28",
+                "phpstan/phpstan-mockery": "^1.1.3"
             },
             "suggest": {
                 "ext-pcntl": "Required for the spinner to be animated."
@@ -6363,9 +6367,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.6"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.7"
             },
-            "time": "2025-07-07T14:17:42+00:00"
+            "time": "2025-09-19T13:47:56+00:00"
         },
         {
             "name": "league/container",
@@ -6451,16 +6455,16 @@
         },
         {
             "name": "league/csv",
-            "version": "9.24.1",
+            "version": "9.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/csv.git",
-                "reference": "e0221a3f16aa2a823047d59fab5809d552e29bc8"
+                "reference": "f856f532866369fb1debe4e7c5a1db185f40ef86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/csv/zipball/e0221a3f16aa2a823047d59fab5809d552e29bc8",
-                "reference": "e0221a3f16aa2a823047d59fab5809d552e29bc8",
+                "url": "https://api.github.com/repos/thephpleague/csv/zipball/f856f532866369fb1debe4e7c5a1db185f40ef86",
+                "reference": "f856f532866369fb1debe4e7c5a1db185f40ef86",
                 "shasum": ""
             },
             "require": {
@@ -6476,7 +6480,7 @@
                 "phpstan/phpstan-deprecation-rules": "^1.2.1",
                 "phpstan/phpstan-phpunit": "^1.4.2",
                 "phpstan/phpstan-strict-rules": "^1.6.2",
-                "phpunit/phpunit": "^10.5.16 || ^11.5.22",
+                "phpunit/phpunit": "^10.5.16 || ^11.5.22 || ^12.3.6",
                 "symfony/var-dumper": "^6.4.8 || ^7.3.0"
             },
             "suggest": {
@@ -6538,7 +6542,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-06-25T14:53:51+00:00"
+            "time": "2025-09-11T08:29:08+00:00"
         },
         {
             "name": "leongersen/nouislider",
@@ -6557,16 +6561,16 @@
         },
         {
             "name": "marc-mabe/php-enum",
-            "version": "v4.7.1",
+            "version": "v4.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marc-mabe/php-enum.git",
-                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed"
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/7159809e5cfa041dca28e61f7f7ae58063aae8ed",
-                "reference": "7159809e5cfa041dca28e61f7f7ae58063aae8ed",
+                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/bb426fcdd65c60fb3638ef741e8782508fda7eef",
+                "reference": "bb426fcdd65c60fb3638ef741e8782508fda7eef",
                 "shasum": ""
             },
             "require": {
@@ -6624,9 +6628,9 @@
             ],
             "support": {
                 "issues": "https://github.com/marc-mabe/php-enum/issues",
-                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.1"
+                "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.2"
             },
-            "time": "2024-11-28T04:54:44+00:00"
+            "time": "2025-09-14T11:18:39+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -7589,16 +7593,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.22",
+            "version": "2.1.29",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4"
+                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
+                "reference": "git"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/41600c8379eb5aee63e9413fe9e97273e25d57e4",
-                "reference": "41600c8379eb5aee63e9413fe9e97273e25d57e4",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
+                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
                 "shasum": ""
             },
             "require": {
@@ -7643,7 +7647,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-04T19:17:37+00:00"
+            "time": "2025-09-25T06:58:18+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -8094,16 +8098,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.10",
+            "version": "v0.12.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "6e80abe6f2257121f1eb9a4c55bf29d921025b22"
+                "reference": "cd23863404a40ccfaf733e3af4db2b459837f7e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/6e80abe6f2257121f1eb9a4c55bf29d921025b22",
-                "reference": "6e80abe6f2257121f1eb9a4c55bf29d921025b22",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/cd23863404a40ccfaf733e3af4db2b459837f7e7",
+                "reference": "cd23863404a40ccfaf733e3af4db2b459837f7e7",
                 "shasum": ""
             },
             "require": {
@@ -8166,9 +8170,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.10"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.12"
             },
-            "time": "2025-08-04T12:39:37+00:00"
+            "time": "2025-09-20T13:46:31+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -11488,5 +11492,5 @@
         "php": "8.3",
         "ext-gd": "1"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
