@@ -122,7 +122,7 @@ RUN \
     touch /run/nginx/nginx.pid && chgrp -R ${RUN_GROUP} /run/nginx/nginx.pid && chmod -R g=u /run/nginx/nginx.pid; \
     \
     # cleanup
-    rm -rf config/; \
+    rm -rf ./config/cron ./config/nginx ./config/php ./config/supervisord; \
     docker-php-source delete || true; \
     rm -rf /usr/src/php* \
     apk del --no-network .build-deps; \
