@@ -15,7 +15,7 @@ RUN set -eu; \
     sed -i "s/{{version}}/${ver_esc}/g"  web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
     sed -i "s/{{commitid}}/${com_esc}/g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install
 
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 LABEL org.opencontainers.image.authors="m.buechner@dnb.de"
 
 # Install packages
