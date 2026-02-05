@@ -60,7 +60,7 @@ RUN set -eux; \
           pdo_pgsql \
           zip; \
      pecl channel-update pecl.php.net; \
-     pecl install oauth apcu redis; \
+     pecl install apcu oauth redis; \
      docker-php-ext-enable apcu oauth redis; \
      \
      runDeps="$( \
