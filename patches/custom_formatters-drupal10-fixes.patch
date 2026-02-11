@@ -1,0 +1,173 @@
+diff --git a/src/Entity/Formatter.php b/src/Entity/Formatter.php
+index c035338..20b9503 100644
+--- a/src/Entity/Formatter.php
++++ b/src/Entity/Formatter.php
+@@ -29,7 +29,12 @@ use Drupal\custom_formatters\FormatterInterface;
+  *     "label" = "label"
+  *   },
+  *   config_export = {
+- *     "id"
++ *     "id",
++ *     "label",
++ *     "type",
++ *     "description",
++ *     "field_types",
++ *     "data"
+  *   },
+  *   links = {
+  *     "delete-form" = "/admin/structure/formatters/manage/{custom_formatter}/delete",
+@@ -48,20 +53,28 @@ class Formatter extends ConfigEntityBase implements FormatterInterface {
+     /** @var \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager */
+     $field_type_manager = \Drupal::service('plugin.manager.field.field_type');
+     $field_type_definitions = $field_type_manager->getDefinitions();
++    $field_types = $this->get('field_types');
++    if (!is_array($field_types)) {
++      $field_types = $field_types === NULL ? [] : [$field_types];
++    }
++
+     /** @var string $field_type */
+-    foreach ($this->field_types as $field_type) {
++    foreach ($field_types as $field_type) {
+       if (isset($field_type_definitions[$field_type])) {
+         $this->addDependency('module', $field_type_definitions[$field_type]['provider']);
+       }
+     }
+ 
+     // Allow formatter type plugins a chance to add dependencies.
+-    $dependencies = $this->getFormatterType()->calculateDependencies();
+-    if (!empty($dependencies) && is_array($dependencies)) {
+-      foreach ($dependencies as $type => $type_dependencies) {
+-        if (!empty($type_dependencies) && is_array($type_dependencies)) {
+-          foreach ($type_dependencies as $name) {
+-            $this->addDependency($type, $name);
++    $formatter_type = $this->getFormatterType();
++    if ($formatter_type) {
++      $dependencies = $formatter_type->calculateDependencies();
++      if (!empty($dependencies) && is_array($dependencies)) {
++        foreach ($dependencies as $type => $type_dependencies) {
++          if (!empty($type_dependencies) && is_array($type_dependencies)) {
++            foreach ($type_dependencies as $name) {
++              $this->addDependency($type, $name);
++            }
+           }
+         }
+       }
+@@ -104,7 +117,7 @@ class Formatter extends ConfigEntityBase implements FormatterInterface {
+     $config_manager = \Drupal::service('config.manager');
+ 
+     // Get the dependent entities.
+-    $dependent_entities = $config_manager->ConfigManagerInterface::findConfigEntityDependenciesAsEntities('config', [$this->getConfigDependencyName()]);
++    $dependent_entities = $config_manager->findConfigEntityDependenciesAsEntities('config', [$this->getConfigDependencyName()]);
+ 
+     return $dependent_entities;
+   }
+@@ -115,8 +128,9 @@ class Formatter extends ConfigEntityBase implements FormatterInterface {
+   public static function postLoad(EntityStorageInterface $storage, array &$entities) {
+     /** @var \Drupal\custom_formatters\FormatterInterface $entity */
+     foreach ($entities as $entity) {
+-      if ($entity->getFormatterType()) {
+-        $entity->getFormatterType()->postLoad();
++      $formatter_type = $entity->getFormatterType();
++      if ($formatter_type) {
++        $formatter_type->postLoad();
+       }
+     }
+     parent::postLoad($storage, $entities);
+@@ -126,12 +140,19 @@ class Formatter extends ConfigEntityBase implements FormatterInterface {
+    * {@inheritdoc}
+    */
+   public function preSave(EntityStorageInterface $storage) {
+-    if (!is_array($this->field_types)) {
+-      $this->field_types = [$this->field_types];
++    $field_types = $this->get('field_types');
++    if (!is_array($field_types)) {
++      $field_types = $field_types === NULL ? [] : [$field_types];
+     }
+ 
++    $this->set('field_types', $field_types);
++
+     parent::preSave($storage);
+-    $this->getFormatterType()->preSave();
++
++    $formatter_type = $this->getFormatterType();
++    if ($formatter_type) {
++      $formatter_type->preSave();
++    }
+   }
+ 
+   /**
+diff --git a/src/Form/FormatterForm.php b/src/Form/FormatterForm.php
+index e051ea7..4b0147e 100644
+--- a/src/Form/FormatterForm.php
++++ b/src/Form/FormatterForm.php
+@@ -209,7 +209,10 @@ class FormatterForm extends EntityForm {
+    * {@inheritdoc}
+    */
+   public function save(array $form, FormStateInterface $form_state) {
+-    $this->entity->getFormatterType()->submitForm($form, $form_state);
++    $formatter_type = $this->entity->getFormatterType();
++    if ($formatter_type) {
++      $formatter_type->submitForm($form, $form_state);
++    }
+ 
+     $entity = $this->entity;
+     $is_new = !$entity->getOriginalId();
+diff --git a/src/FormatterListBuilder.php b/src/FormatterListBuilder.php
+index 3fdea37..66eb629 100644
+--- a/src/FormatterListBuilder.php
++++ b/src/FormatterListBuilder.php
+@@ -67,7 +67,13 @@ class FormatterListBuilder extends ConfigEntityListBuilder {
+     $row['label'] = $formatter->label();
+     // @todo Ensure definition is present, probably best dealt with with
+     // dependencies.
+-    $row['type'] = $this->formatterTypes[$formatter->get('type')]['label'];
++    $type = $formatter->get('type');
++    if (isset($this->formatterTypes[$type])) {
++      $row['type'] = $this->formatterTypes[$type]['label'];
++    }
++    else {
++      $row['type'] = $this->t('Undefined type (@type)', ['@type' => $type]);
++    }
+ 
+     return $row + parent::buildRow($formatter);
+   }
+diff --git a/src/Plugin/Derivative/CustomFormatters.php b/src/Plugin/Derivative/CustomFormatters.php
+index 6de4b2e..b7a8868 100644
+--- a/src/Plugin/Derivative/CustomFormatters.php
++++ b/src/Plugin/Derivative/CustomFormatters.php
+@@ -35,7 +35,11 @@ class CustomFormatters extends DeriverBase {
+       if ($formatter->get('status')) {
+         $this->derivatives[$formatter->id()] = $base_plugin_definition;
+         $this->derivatives[$formatter->id()]['label'] = $this->getLabel($formatter->label());
+-        $this->derivatives[$formatter->id()]['field_types'] = $formatter->get('field_types');
++        $field_types = $formatter->get('field_types');
++        if (!is_array($field_types)) {
++          $field_types = $field_types === NULL ? [] : [$field_types];
++        }
++        $this->derivatives[$formatter->id()]['field_types'] = $field_types;
+         $this->derivatives[$formatter->id()]['formatter'] = $formatter->id();
+         $this->derivatives[$formatter->id()]['config_dependencies'] = $formatter->getDependencies();
+         $this->derivatives[$formatter->id()]['config_dependencies']['config'][] = $formatter->getConfigDependencyName();
+diff --git a/src/Plugin/Field/FieldFormatter/CustomFormatters.php b/src/Plugin/Field/FieldFormatter/CustomFormatters.php
+index 068cfd2..90e545a 100644
+--- a/src/Plugin/Field/FieldFormatter/CustomFormatters.php
++++ b/src/Plugin/Field/FieldFormatter/CustomFormatters.php
+@@ -26,8 +26,16 @@ class CustomFormatters extends EntityReferenceFormatterBase {
+       ->getStorage('formatter')
+       ->load($this->getPluginDefinition()['formatter']);
+ 
+-    $element = $formatter->getFormatterType()
+-      ->viewElements($items, $langcode);
++    if (!$formatter) {
++      return [];
++    }
++
++    $formatter_type = $formatter->getFormatterType();
++    if (!$formatter_type) {
++      return [];
++    }
++
++    $element = $formatter_type->viewElements($items, $langcode);
+     if (!$element) {
+       // @todo Fail better.
+       return [];
