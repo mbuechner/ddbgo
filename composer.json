@@ -198,6 +198,10 @@
             },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"
+            },
+            "drupal/custom_formatters": {
+                "Custom Formatters: Does not work with drupal 10 (see https://www.drupal.org/project/custom_formatters/issues/3404747)": "patches/Custom_formatters_Does_not_work_with_drupal_10_3404747.patch",
+                "Custom Formatters: fix missing type/field_types (Drupal 10, PHP 8.3)": "patches/custom_formatters-fix-missing-type-fieldtypes-drupal10-php83.patch"
             }
         }
     }

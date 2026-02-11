@@ -1,0 +1,44 @@
+From 1b492cd56d0aacd9b8e051c13c6f7223b1a5adc9 Mon Sep 17 00:00:00 2001
+From: ubuntu <himanshu.j@valuebound.com>
+Date: Wed, 21 Feb 2024 18:00:41 +0530
+Subject: [PATCH] Issue #3404747: fix the issue with drupal 10
+
+---
+ src/Entity/Formatter.php     | 2 +-
+ src/FormatterListBuilder.php | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/Entity/Formatter.php b/src/Entity/Formatter.php
+index c035338..6cbaa5b 100644
+--- a/src/Entity/Formatter.php
++++ b/src/Entity/Formatter.php
+@@ -104,7 +104,7 @@ class Formatter extends ConfigEntityBase implements FormatterInterface {
+     $config_manager = \Drupal::service('config.manager');
+ 
+     // Get the dependent entities.
+-    $dependent_entities = $config_manager->ConfigManagerInterface::findConfigEntityDependenciesAsEntities('config', [$this->getConfigDependencyName()]);
++    $dependent_entities = $config_manager->findConfigEntityDependenciesAsEntities('config', [$this->getConfigDependencyName()]);
+ 
+     return $dependent_entities;
+   }
+diff --git a/src/FormatterListBuilder.php b/src/FormatterListBuilder.php
+index 3fdea37..f64acc0 100644
+--- a/src/FormatterListBuilder.php
++++ b/src/FormatterListBuilder.php
+@@ -67,7 +67,12 @@ class FormatterListBuilder extends ConfigEntityListBuilder {
+     $row['label'] = $formatter->label();
+     // @todo Ensure definition is present, probably best dealt with with
+     // dependencies.
+-    $row['type'] = $this->formatterTypes[$formatter->get('type')]['label'];
++    $type = $formatter->get('type');
++    if (isset($this->formatterTypes[$type])) {
++        $row['type'] = $this->formatterTypes[$type]['label'];
++    } else {
++        $row['type'] = $this->t('Undefined type (@type)', ['@type' => $type]);
++    }
+ 
+     return $row + parent::buildRow($formatter);
+   }
+-- 
+GitLab
+
