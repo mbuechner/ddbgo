@@ -6,5 +6,5 @@ _core:
   default_config_hash: Q2Ra3jfoIVk0f3SjxJX61byRQFVBAbpzYDQOiY-kno8
 id: main
 label: Hauptnavigation
-description: 'Links zu den wichtigsten Seitenbereichen'
+description: 'Das Hauptmenü mit mindestens allen Einstiegsseiten'
 locked: true

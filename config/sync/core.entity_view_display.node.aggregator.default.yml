@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.aggregator.field_vertragskonstrukt
     - field.field.node.aggregator.field_vertragsstatus
     - field.field.node.aggregator.field_workflow
+    - field.field.node.aggregator.field_zustimmungsformular
     - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
@@ -132,6 +133,7 @@ third_party_settings:
         - field_vertragsstatus
         - field_vertragskonstrukt
         - field_vertrag
+        - field_zustimmungsformular
         - field_bemerkungen_zum_vertrag
         - field_workflow
         - field_link_zu_ddbdash
@@ -211,7 +213,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 23
+    weight: 24
     region: content
   field_bemerkungen_2:
     type: basic_string
@@ -233,7 +235,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 14
+    weight: 15
     region: content
   field_beschreibung:
     type: basic_string
@@ -289,7 +291,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 22
+    weight: 23
     region: content
   field_jira_hauptticket:
     type: 'custom_formatters:jira_link'
@@ -300,7 +302,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 17
+    weight: 18
     region: content
   field_kontakt:
     type: entity_reference_revisions_entity_view
@@ -341,7 +343,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 21
+    weight: 22
     region: content
   field_link_zu_ddbdash:
     type: link
@@ -357,7 +359,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 16
+    weight: 17
     region: content
   field_link_zu_ddbpro:
     type: link
@@ -408,7 +410,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 19
+    weight: 20
     region: content
   field_sparten:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
@@ -447,7 +449,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 20
+    weight: 21
     region: content
   field_url:
     type: link
@@ -511,7 +513,19 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 15
+    weight: 16
+    region: content
+  field_zustimmungsformular:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 14
     region: content
   field_zwischenaggregatoren:
     type: entity_reference_label
@@ -523,7 +537,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 18
+    weight: 19
     region: content
   flag_bookmark:
     settings: {  }

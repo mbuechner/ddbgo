@@ -6,3 +6,4 @@ name: Bestandstags
 vid: bestandstags
 description: 'Schlagworte zum Bestand'
 weight: 0
+new_revision: false

@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: Ja/Nein-Feld
 vid: ja_nein_feld
-description: ''
+description: null
 weight: 0
+new_revision: false

@@ -1,8 +1,15 @@
 uuid: 91156471-9c0c-418f-82c5-c7f60a8797d6
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - taxonomy_unique
+third_party_settings:
+  taxonomy_unique:
+    enabled: true
+    message: 'Term %term already exists in vocabulary %vocabulary.'
 name: Ingestart
 vid: ingestart
 description: 'Ingestart für Europeana-Lieferung (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

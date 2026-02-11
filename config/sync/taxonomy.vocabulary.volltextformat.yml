@@ -6,3 +6,4 @@ name: Volltextformat
 vid: volltextformat
 description: 'Volltextformate für Bestände (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

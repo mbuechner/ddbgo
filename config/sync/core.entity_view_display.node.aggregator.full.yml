@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.aggregator.field_vertragskonstrukt
     - field.field.node.aggregator.field_vertragsstatus
     - field.field.node.aggregator.field_workflow
+    - field.field.node.aggregator.field_zustimmungsformular
     - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
@@ -78,6 +79,7 @@ hidden:
   field_vertragskonstrukt: true
   field_vertragsstatus: true
   field_workflow: true
+  field_zustimmungsformular: true
   field_zwischenaggregatoren: true
   langcode: true
   search_api_excerpt: true

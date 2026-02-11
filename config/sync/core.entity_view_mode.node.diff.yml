@@ -11,6 +11,7 @@ dependencies:
 _core:
   default_config_hash: pqZNtad5J9THcdbYjwPD4qINqvrTxnOd8KCWn6tUBRs
 id: node.diff
-label: 'Revision comparison'
+label: Revisionsvergleich
+description: ''
 targetEntityType: node
 cache: true

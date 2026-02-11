@@ -11,4 +11,4 @@ type: twig
 description: ''
 field_types:
   - string
-data: "{% for item in items %}\r\n {{ link(item.value, 'https://jira.deutsche-digitale-bibliothek.de/browse/' ~ item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"
+data: "{% for item in items %}\r\n {{ link(item.value, 'https://deutsche-digitale-bibliothek.atlassian.net/browse/' ~ item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

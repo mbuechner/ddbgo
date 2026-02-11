@@ -6,3 +6,4 @@ name: Europeanastatus
 vid: europeanastatus
 description: 'Status in dem Sich die Daten für die Lieferung an Europeana befinden. (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

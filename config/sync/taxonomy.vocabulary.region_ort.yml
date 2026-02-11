@@ -1,8 +1,15 @@
 uuid: 66d81d76-7de9-467c-ab0e-63fba8abf47e
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - taxonomy_unique
+third_party_settings:
+  taxonomy_unique:
+    enabled: true
+    message: "Die Region/ der Ort '%term' existiert bereits und kann nicht noch einmal angelegt werden."
 name: Region/Ort
 vid: region_ort
 description: 'Region/ Ort der geografischen Ausrichtung eines Aggregators (Nutzung bei Aggregator)'
 weight: 0
+new_revision: false

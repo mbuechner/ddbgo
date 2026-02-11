@@ -6,3 +6,4 @@ name: Datenformat
 vid: datenformat
 description: 'Das Datenformat/ die Datenformate, in dem der Bestand vorliegt. (Nutzung bei Bestand, Aggregator)'
 weight: 0
+new_revision: false

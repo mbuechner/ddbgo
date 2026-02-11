@@ -6,3 +6,4 @@ name: Kultursparte-Aggregator
 vid: kultursparte
 description: 'Kultursparten der Deutsche Digitale Bibliothek (Nutzung bei Aggregatoren)'
 weight: 0
+new_revision: false

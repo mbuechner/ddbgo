@@ -1,6 +1,5 @@
 _core:
   default_config_hash: 9rAU4Pku7eMBQxauQqAgjzlcicFZ2As6zEa6zvTlCB8
-langcode: de
 favicon:
   mimetype: image/vnd.microsoft.icon
   path: 'public://favicon.ico'
@@ -13,5 +12,5 @@ features:
   node_user_picture: false
 logo:
   path: modules/custom/ddbgo_workarounds/images/787878/ddb-logo.svg
-  url: ''
+  url: null
   use_default: true

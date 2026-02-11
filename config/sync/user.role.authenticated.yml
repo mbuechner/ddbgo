@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   module:
+    - file
     - fontawesome
     - key_auth
     - node_view_permissions
@@ -22,6 +23,7 @@ permissions:
   - 'access fontawesome additional settings'
   - 'access toolbar'
   - 'can change your own password'
+  - 'delete own files'
   - 'use key authentication'
   - userprotect.account.edit
   - userprotect.pass.edit

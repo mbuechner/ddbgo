@@ -6,3 +6,4 @@ name: Sichtbarkeit
 vid: sichtbarkeit
 description: 'Sichtbarkeit des Aggregators (Nutzung bei Aggregator)'
 weight: 0
+new_revision: false

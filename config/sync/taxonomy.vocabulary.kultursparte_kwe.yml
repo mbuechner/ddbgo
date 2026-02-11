@@ -6,3 +6,4 @@ name: Kultursparte-KWE
 vid: kultursparte_kwe
 description: 'Kultursparten der Deutsche Digitale Bibliothek (Nutzung bei KWE)'
 weight: 0
+new_revision: false

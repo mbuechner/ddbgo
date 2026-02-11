@@ -1,8 +1,15 @@
 uuid: 7b50e4bd-a58d-415b-b359-616c0425e3c0
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - taxonomy_unique
+third_party_settings:
+  taxonomy_unique:
+    enabled: true
+    message: "Die Rolle '%term' existiert bereits und kann nicht noch einmal angelegt werden. Bitte die existierende Rolle nutzen!"
 name: Personenrolle
 vid: personenrolle
 description: 'Rolle einer Person im Bezug zum Aggregator, Kultur- und Wissenseinrichtung oder Bestand (Nutzung bei Aggregator, KWE, Bestand)'
 weight: 0
+new_revision: false

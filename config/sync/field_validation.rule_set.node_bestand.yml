@@ -46,4 +46,4 @@ field_validation_rules:
     uuid: dbb92271-809a-48f9-a4ed-8065f4e92964
     field_name: field_link_zu_coding_da_vinci
     column: value
-    error_message: 'Bitte eine URL in der Form ''''https://codingdavinci.de/node/12345'''' eingeben!'
+    error_message: "Bitte eine URL in der Form ''https://codingdavinci.de/node/12345'' eingeben!"

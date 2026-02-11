@@ -16,7 +16,6 @@ dependencies:
   module:
     - node
     - taxonomy
-    - search_api
 id: suche_kwe
 name: KWE
 description: ''
@@ -60,7 +59,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: field_stadt
     type: text
-    boost: !!float 2
+    boost: 2.0
     dependencies:
       config:
         - field.storage.node.field_stadt
@@ -121,7 +120,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: title
     type: text
-    boost: !!float 3
+    boost: 3.0
     dependencies:
       module:
         - node

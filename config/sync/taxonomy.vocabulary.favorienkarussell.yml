@@ -6,3 +6,4 @@ name: Favoritenkarussell
 vid: favorienkarussell
 description: 'Status des Favoritenkarussells auf der Organisationenseite (Nutzung bei KWE)'
 weight: 0
+new_revision: false

@@ -10,22 +10,21 @@ dependencies:
     - field.storage.node.field_datenformat
     - field.storage.node.field_datum_des_status_der_europ
     - field.storage.node.field_europeana_lieferung
+    - field.storage.node.field_europeana_lieferung_enum
+    - field.storage.node.field_europeanastatus
     - field.storage.node.field_ingestart
+    - field.storage.node.field_jira_europeana
     - field.storage.node.field_jira_hauptticket
     - field.storage.node.field_jira_ticket_bei_europeana
-    - field.storage.node.field_jira_europeana
     - field.storage.node.field_kwe
-    - field.storage.node.field_status
     - field.storage.node.field_link_zu_coding_da_vinci
     - field.storage.node.field_link_zu_ddbdash
-    - field.storage.node.field_europeanastatus
-    - field.storage.node.field_europeana_lieferung_enum
+    - field.storage.node.field_status
     - field.storage.node.field_ueber_welchen_weg
     - search_api.server.default_server
   module:
     - node
     - taxonomy
-    - search_api
 id: bestand
 name: Bestand
 description: ''
@@ -64,7 +63,7 @@ field_settings:
       config:
         - field.storage.node.field_datenformat
   field_datum_des_status_der_europ:
-    label: 'Datum des Status'' der Europeana-Lieferung'
+    label: "Datum des Status' der Europeana-Lieferung"
     datasource_id: 'entity:node'
     property_path: field_datum_des_status_der_europ
     type: date
@@ -255,7 +254,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: title
     type: text
-    boost: !!float 13
+    boost: 13.0
     dependencies:
       module:
         - node
@@ -264,7 +263,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: 'field_aggregator:entity:title'
     type: text
-    boost: !!float 2
+    boost: 2.0
     dependencies:
       config:
         - field.storage.node.field_aggregator
@@ -275,7 +274,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: 'field_kwe:entity:title'
     type: text
-    boost: !!float 8
+    boost: 8.0
     dependencies:
       config:
         - field.storage.node.field_kwe

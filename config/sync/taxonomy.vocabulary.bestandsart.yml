@@ -1,8 +1,15 @@
 uuid: b88616bd-a655-42fa-be0f-fddbfebc0c95
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - taxonomy_unique
+third_party_settings:
+  taxonomy_unique:
+    enabled: true
+    message: "Die Bestandsart '%term' existiert bereits und kann nicht noch einmal angelegt werden. Bitte die existierende Bestandsart nutzen!"
 name: Bestandsart
 vid: bestandsart
 description: 'Inhaltliche Stichwörter, auf welche Art von Beständen der Aggregator spezialisiert ist, z.B. Münzen. (Nutzung bei Aggregator)'
 weight: 0
+new_revision: false

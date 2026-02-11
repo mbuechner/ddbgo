@@ -18,12 +18,12 @@ bundles:
   - person
 entity_type: node
 global: false
-flag_short: '<i class="far fa-bookmark"></i>'
+flag_short: Kennzeichnen
 flag_long: 'Diesen Beitrag zu den Lesezeichen hinzufügen.'
-flag_message: ''
-unflag_short: '<i class="fas fa-bookmark"></i>'
+flag_message: 'Dieser Beitrag wurde zu Ihren Lesezeichen hinzugefügt'
+unflag_short: 'Lesezeichen entfernen'
 unflag_long: 'Diesen Beitrag aus den Lesezeichen entfernen'
-unflag_message: ''
+unflag_message: 'Dieser Beitrag wurde aus den Lesezeichen entfernt'
 unflag_denied_text: ''
 weight: 0
 flag_type: 'entity:node'

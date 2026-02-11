@@ -6,3 +6,4 @@ name: Vertragsstatus
 vid: vertragsstatus
 description: 'Status des Vertrags mit Kultur- oder Wisseneinrichtung/ Aggregators mit der DDB (Nutzung bei KWE)'
 weight: 0
+new_revision: false

@@ -1,0 +1,15 @@
+_core:
+  default_config_hash: qe01BctuzmlC7swA6VCxfO2zqzBXNFlPAnqx8q3b69c
+happy_new_year_period: 1
+happy_new_year_start: '0'
+happy_new_year_end: '0'
+happy_new_year_garland: 1
+happy_new_year_garland_topfixed: 0
+happy_new_year_garland_coretoolbar: 1
+happy_new_year_garland_bootstrapfixed: 0
+happy_new_year_garland_custommargin: 0
+happy_new_year_garland_custommargintext: ''
+happy_new_year_snow: 0
+happy_new_year_snowcolor: '#FFFFFF'
+happy_new_year_minified: 1
+happy_new_year_cdn: 1

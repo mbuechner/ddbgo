@@ -6,3 +6,4 @@ name: Lieferweg
 vid: lieferweg
 description: 'Lieferweg auf dem die Daten an die Deutsche Digitale Bibliothek geliefert werden. (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

@@ -12,7 +12,7 @@ dependencies:
     - taxonomy.vocabulary.region_ort
   module:
     - content_lock
-    - exclude_node_title
+    - file
     - flag
     - node
     - node_view_permissions
@@ -41,6 +41,7 @@ permissions:
   - 'delete any person content'
   - 'delete own aggregator content'
   - 'delete own bestand content'
+  - 'delete own files'
   - 'delete own kwe content'
   - 'delete own person content'
   - 'edit any aggregator content'
@@ -56,7 +57,6 @@ permissions:
   - 'edit terms in region_ort'
   - 'flag bookmark'
   - 'unflag bookmark'
-  - 'use exclude node title'
   - 'view aggregator in toolbar'
   - 'view aggregator revisions'
   - 'view any aggregator content'

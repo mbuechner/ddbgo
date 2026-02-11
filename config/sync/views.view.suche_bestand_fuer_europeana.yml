@@ -969,7 +969,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Datum des Status'''
+          label: "Datum des Status'"
           exclude: false
           alter:
             alter_text: false
@@ -1126,6 +1126,7 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -1144,7 +1145,7 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: none
+        type: search_api_none
         options: {  }
       empty:
         result:
@@ -1346,7 +1347,7 @@ display:
           exposed: true
           expose:
             operator_id: field_datum_des_status_der_europ_op
-            label: 'Datum des Status'''
+            label: "Datum des Status'"
             description: ''
             use_operator: true
             operator: field_datum_des_status_der_europ_op

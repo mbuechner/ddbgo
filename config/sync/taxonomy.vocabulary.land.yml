@@ -6,3 +6,4 @@ name: Land
 vid: land
 description: 'Die Staaten der Welt. (Nutzung bei Aggregatoren)'
 weight: 0
+new_revision: false

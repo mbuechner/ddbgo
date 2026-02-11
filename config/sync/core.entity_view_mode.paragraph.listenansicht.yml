@@ -6,5 +6,6 @@ dependencies:
     - paragraphs
 id: paragraph.listenansicht
 label: Listenansicht
+description: ''
 targetEntityType: paragraph
 cache: true

@@ -6,3 +6,4 @@ name: Content-Tier
 vid: content_tier
 description: 'Content-Tier bei Europeana (nutzung bei Bestand)'
 weight: 0
+new_revision: false

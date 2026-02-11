@@ -1,8 +1,15 @@
 uuid: 97a45b64-4e47-4263-913f-27e7b68bedd7
 langcode: de
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - taxonomy_unique
+third_party_settings:
+  taxonomy_unique:
+    enabled: true
+    message: 'Term %term already exists in vocabulary %vocabulary.'
 name: Zustimmungsformular
 vid: zustimmungsformular
 description: 'Zustimmung der KWE zur Umstellung auf die neuen Rechtehinweise. Zustimmung eingeholt ab 2023.'
 weight: 0
+new_revision: false

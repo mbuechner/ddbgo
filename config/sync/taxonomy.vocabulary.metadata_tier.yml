@@ -6,3 +6,4 @@ name: Metadata-Tier
 vid: metadata_tier
 description: 'Metadata-Tier für Europeana (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

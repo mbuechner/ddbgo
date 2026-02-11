@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: 'Coding da Vinci-Event'
 vid: coding_da_vinci_event
-description: ''
+description: null
 weight: 0
+new_revision: false

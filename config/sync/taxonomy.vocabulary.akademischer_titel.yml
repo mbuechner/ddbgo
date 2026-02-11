@@ -6,3 +6,4 @@ name: 'Akademischer Titel'
 vid: akademischer_titel
 description: 'Akademischer Titel einer Person, z.B. Dr. (Nutzung bei Person)'
 weight: 0
+new_revision: false

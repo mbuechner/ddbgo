@@ -30,6 +30,7 @@ dependencies:
     - field.field.node.aggregator.field_vertragskonstrukt
     - field.field.node.aggregator.field_vertragsstatus
     - field.field.node.aggregator.field_workflow
+    - field.field.node.aggregator.field_zustimmungsformular
     - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
@@ -72,6 +73,7 @@ third_party_settings:
         - field_vertragsstatus
         - field_vertragskonstrukt
         - field_vertrag
+        - field_zustimmungsformular
         - field_bemerkungen_zum_vertrag
         - field_workflow
         - field_link_zu_ddbdash
@@ -219,7 +221,7 @@ content:
     third_party_settings: {  }
   field_bemerkungen:
     type: string_textarea
-    weight: 54
+    weight: 55
     region: content
     settings:
       rows: 5
@@ -235,7 +237,7 @@ content:
     third_party_settings: {  }
   field_bemerkungen_zum_vertrag:
     type: string_textarea
-    weight: 45
+    weight: 46
     region: content
     settings:
       rows: 5
@@ -297,7 +299,7 @@ content:
     third_party_settings: {  }
   field_fragebogen_aggregator:
     type: file_generic
-    weight: 53
+    weight: 54
     region: content
     settings:
       progress_indicator: throbber
@@ -305,7 +307,7 @@ content:
       conditional_fields: {  }
   field_jira_hauptticket:
     type: string_textfield
-    weight: 48
+    weight: 49
     region: content
     settings:
       size: 80
@@ -333,7 +335,7 @@ content:
     third_party_settings: {  }
   field_link_fragebogen:
     type: link_default
-    weight: 52
+    weight: 53
     region: content
     settings:
       placeholder_url: ''
@@ -342,7 +344,7 @@ content:
       conditional_fields: {  }
   field_link_zu_ddbdash:
     type: link_default
-    weight: 47
+    weight: 48
     region: content
     settings:
       placeholder_url: ''
@@ -398,7 +400,7 @@ content:
             selector: ''
   field_sichtbarkeit:
     type: select2_entity_reference
-    weight: 50
+    weight: 51
     region: content
     settings:
       width: 100%
@@ -443,7 +445,7 @@ content:
     third_party_settings: {  }
   field_status_fragebogen:
     type: select2_entity_reference
-    weight: 51
+    weight: 52
     region: content
     settings:
       width: 100%
@@ -488,14 +490,24 @@ content:
     third_party_settings: {  }
   field_workflow:
     type: file_generic
-    weight: 46
+    weight: 47
     region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
+  field_zustimmungsformular:
+    type: select2_entity_reference
+    weight: 45
+    region: content
+    settings:
+      width: 100%
+      autocomplete: false
+      match_operator: CONTAINS
+      match_limit: 10
+    third_party_settings: {  }
   field_zwischenaggregatoren:
     type: select2_entity_reference
-    weight: 49
+    weight: 50
     region: content
     settings:
       width: 100%

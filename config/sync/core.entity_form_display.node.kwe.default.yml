@@ -34,7 +34,6 @@ dependencies:
     - field.field.node.kwe.field_vertrag
     - field.field.node.kwe.field_vertragskonstrukt
     - field.field.node.kwe.field_vertragsstatus
-    - field.field.node.kwe.field_widerspruch
     - field.field.node.kwe.field_zustimmungsformular
     - node.type.kwe
   module:
@@ -669,16 +668,6 @@ content:
   field_vertragsstatus:
     type: select2_entity_reference
     weight: 35
-    region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
-    third_party_settings: {  }
-  field_widerspruch:
-    type: select2_entity_reference
-    weight: 42
     region: content
     settings:
       width: 100%

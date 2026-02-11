@@ -6,3 +6,4 @@ name: Fragebogen
 vid: fragebogen
 description: 'Status des Fragebogen an der Kultur- oder Wissenseinrichtung (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

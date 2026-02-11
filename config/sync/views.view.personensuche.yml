@@ -1,12 +1,10 @@
 uuid: 9457d15c-66d8-4ed4-a440-89e1c22b237f
 langcode: de
-status: true
+status: false
 dependencies:
   config:
-    - custom_formatters.formatter.label_als_telefonnummer
     - field.storage.node.field_email
     - field.storage.node.field_nachname
-    - field.storage.node.field_telefonnummer
     - field.storage.node.field_vorname
     - search_api.index.personen
     - system.menu.person
@@ -18,7 +16,6 @@ dependencies:
     - 'taxonomy_term:ja_nein_feld:bb649cfd-b464-4206-a97d-43b50066ee27'
   module:
     - csv_serialization
-    - custom_formatters
     - rest
     - search_api
     - serialization
@@ -331,75 +328,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-        field_telefonnummer:
-          id: field_telefonnummer
-          table: search_api_index_personen
-          field: field_telefonnummer
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: Telefonnummer
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: 'custom_formatters:label_als_telefonnummer'
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
         ddbgo_person_kwe:
           id: ddbgo_person_kwe
           table: search_api_index_personen
@@ -563,6 +491,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 100
           total_pages: null
           id: 0
@@ -598,7 +527,7 @@ display:
             ddb_team: ddb_team
             ddb_team_login_admin: ddb_team_login_admin
       cache:
-        type: search_api_tag
+        type: search_api_none
         options: {  }
       empty:
         result:
@@ -773,9 +702,9 @@ display:
       query:
         type: search_api_query
         options:
-          skip_access: 0
-          bypass_access: 0
-          preserve_facet_query_args: 0
+          bypass_access: false
+          skip_access: false
+          preserve_facet_query_args: false
       relationships: {  }
       use_ajax: false
       header: {  }
@@ -803,9 +732,9 @@ display:
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
-        - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
+        - 'search_api_list:personen'
   data_export_1:
     id: data_export_1
     display_title: 'Data export'
@@ -1246,7 +1175,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1254,6 +1182,7 @@ display:
         - 'config:field.storage.node.field_nachname'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
+        - 'search_api_list:personen'
   page:
     id: page
     display_title: Page
@@ -1261,7 +1190,7 @@ display:
     position: 1
     display_options:
       cache:
-        type: none
+        type: search_api_none
       defaults:
         cache: false
       exposed_block: false
@@ -1288,9 +1217,9 @@ display:
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
-        - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
+        - 'search_api_list:personen'
   page_1:
     id: page_1
     display_title: Xmas
@@ -1620,7 +1549,7 @@ display:
             administrator: administrator
             ddb_team_login_admin: ddb_team_login_admin
       cache:
-        type: none
+        type: search_api_none
       filters:
         field_weihnachtsmailing:
           id: field_weihnachtsmailing
@@ -1702,7 +1631,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1710,3 +1638,4 @@ display:
         - 'config:field.storage.node.field_nachname'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
+        - 'search_api_list:personen'

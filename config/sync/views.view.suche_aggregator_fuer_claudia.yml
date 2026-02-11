@@ -914,6 +914,7 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
+          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -933,7 +934,7 @@ display:
             ddb_team: ddb_team
             ddb_team_login_admin: ddb_team_login_admin
       cache:
-        type: none
+        type: search_api_none
         options: {  }
       empty:
         result:

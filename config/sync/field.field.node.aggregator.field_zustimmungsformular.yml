@@ -1,0 +1,40 @@
+uuid: be58a969-3e99-4b18-b6a0-0c28dbc114f1
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_zustimmungsformular
+    - node.type.aggregator
+    - taxonomy.vocabulary.zustimmungsformular
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: 0
+    per_lang: 0
+    case_sensitive: 0
+    use_ajax: 0
+    no_enforce: 0
+    message: ''
+    message_warning: ''
+id: node.aggregator.field_zustimmungsformular
+field_name: field_zustimmungsformular
+entity_type: node
+bundle: aggregator
+label: Zustimmungsformular
+description: 'Zustimmung des Aggregators zur Umstellung auf die neuen Rechtehinweise. Zustimmung eingeholt ab 2023.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      zustimmungsformular: zustimmungsformular
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

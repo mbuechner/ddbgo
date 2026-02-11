@@ -6,3 +6,4 @@ name: Europeana
 vid: europeana
 description: 'Wird der Bestand bereits, z.B. über ein Europeana-Projekt wie Europeana Fashion, an Europeana geliefert? (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

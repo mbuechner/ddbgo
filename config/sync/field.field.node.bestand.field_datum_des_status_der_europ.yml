@@ -11,7 +11,7 @@ id: node.bestand.field_datum_des_status_der_europ
 field_name: field_datum_des_status_der_europ
 entity_type: node
 bundle: bestand
-label: 'Datum des Status'' der Europeana-Lieferung'
+label: "Datum des Status' der Europeana-Lieferung"
 description: ''
 required: false
 translatable: false

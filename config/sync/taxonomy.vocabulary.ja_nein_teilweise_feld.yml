@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: Ja/Nein/Teilweise-Feld
 vid: ja_nein_teilweise_feld
-description: ''
+description: null
 weight: 0
+new_revision: false

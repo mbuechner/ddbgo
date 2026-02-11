@@ -4,21 +4,20 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_bestandsart
-    - field.storage.node.field_sparten
     - field.storage.node.field_datenformat
-    - field.storage.node.field_region_ort
     - field.storage.node.field_jira_hauptticket
     - field.storage.node.field_link_zu_ddbdash
+    - field.storage.node.field_region_ort
     - field.storage.node.field_sichtbarkeit
+    - field.storage.node.field_sparten
     - field.storage.node.field_status
     - field.storage.node.field_vertragskonstrukt
     - field.storage.node.field_vertragsstatus
     - search_api.server.default_server
   module:
-    - taxonomy
-    - node
-    - search_api
     - ddbgo_search
+    - node
+    - taxonomy
 id: aggregator
 name: Aggregator
 description: ''
@@ -131,7 +130,7 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: title
     type: text
-    boost: !!float 2
+    boost: 2.0
     dependencies:
       module:
         - node

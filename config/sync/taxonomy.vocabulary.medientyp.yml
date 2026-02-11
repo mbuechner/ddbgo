@@ -6,3 +6,4 @@ name: Medientyp
 vid: medientyp
 description: 'Medientyp der digitalen Objekte eines Bestandes (Nutzung bei Bestand)'
 weight: 0
+new_revision: false

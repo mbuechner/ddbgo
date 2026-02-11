@@ -6,3 +6,4 @@ name: Bundesland
 vid: bundesland
 description: 'Die Länder Deutschlands. (Nutzung bei Aggregator)'
 weight: 0
+new_revision: false

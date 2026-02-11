@@ -23,6 +23,7 @@ dependencies:
     - taxonomy.vocabulary.zustimmungsformular
   module:
     - entity_reference_integrity_enforce
+    - file
     - filter
     - flood_control
     - node
@@ -35,11 +36,11 @@ label: DDBgo-Benutzerverwaltung
 weight: -7
 is_admin: null
 permissions:
-  - 'access flood unblock'
   - 'access taxonomy overview'
   - 'access user profiles'
   - 'administer account settings'
   - 'administer entity reference integrity enforce'
+  - 'administer flood unblock'
   - 'administer taxonomy'
   - 'administer users'
   - 'assign ddb_team role'
@@ -58,6 +59,7 @@ permissions:
   - 'create terms in region_ort'
   - 'create terms in volltextformat'
   - 'create terms in zustimmungsformular'
+  - 'delete own files'
   - 'delete own page content'
   - 'delete page revisions'
   - 'delete terms in akademischer_titel'
@@ -84,6 +86,7 @@ permissions:
   - 'edit terms in region_ort'
   - 'edit terms in volltextformat'
   - 'edit terms in zustimmungsformular'
+  - 'flood unblock ips'
   - 'merge taxonomy terms'
   - 'revert aggregator revisions'
   - 'revert bestand revisions'

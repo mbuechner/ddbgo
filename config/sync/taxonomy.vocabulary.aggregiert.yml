@@ -4,5 +4,6 @@ status: true
 dependencies: {  }
 name: Aggregiert
 vid: aggregiert
-description: 'Erweiterung Ja/Nein-Feld um ''Geplant'' für Aggregiert bei Bestand'
+description: "Erweiterung Ja/Nein-Feld um 'Geplant' für Aggregiert bei Bestand"
 weight: 0
+new_revision: false
