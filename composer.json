@@ -98,7 +98,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "8.3",
+            "php": "8.4",
             "ext-gd": "1"
         },
         "allow-plugins": {
