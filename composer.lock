@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a04df1efb7803236fa21f975ee5ae2e",
+    "content-hash": "f1cdf44d90e39f028932a5824795d897",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2945,17 +2945,17 @@
         },
         {
             "name": "drupal/flag",
-            "version": "5.0.3",
+            "version": "5.1.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flag.git",
-                "reference": "5.0.3"
+                "reference": "5.1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flag-5.0.3.zip",
-                "reference": "5.0.3",
-                "shasum": "4b7af7e9d6091038bad02db4e414115f2208e46d"
+                "url": "https://ftp.drupal.org/files/projects/flag-5.1.0-beta1.zip",
+                "reference": "5.1.0-beta1",
+                "shasum": "b4d9500e4223bac707547df60638c3ea691c9c64"
             },
             "require": {
                 "drupal/core": "^10.3 || ^11"
@@ -2963,11 +2963,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.0.3",
-                    "datestamp": "1761563276",
+                    "version": "5.1.0-beta1",
+                    "datestamp": "1775373715",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -5397,20 +5397,20 @@
         },
         {
             "name": "drupal/viewsreference",
-            "version": "2.0.0-beta10",
+            "version": "2.0.0-beta12",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/viewsreference.git",
-                "reference": "8.x-2.0-beta10"
+                "reference": "8.x-2.0-beta12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta10.zip",
-                "reference": "8.x-2.0-beta10",
-                "shasum": "699c3f790d3dbe6ebcd890916409c66562a04eb4"
+                "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta12.zip",
+                "reference": "8.x-2.0-beta12",
+                "shasum": "643eefb27c3f415a50eec75eccbbc287bcc7156a"
             },
             "require": {
-                "drupal/core": "^10 || ^11"
+                "drupal/core": "^10 || ^11 || ^12"
             },
             "conflict": {
                 "drupal/viewsreferennce": "*"
@@ -5421,8 +5421,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-beta10",
-                    "datestamp": "1725510905",
+                    "version": "8.x-2.0-beta12",
+                    "datestamp": "1776760483",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6309,16 +6309,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.16",
+            "version": "v0.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2"
+                "reference": "6a82ac19a28b916ae0885828795dbd4c59d9a818"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/11e7d5f93803a2190b00e145142cb00a33d17ad2",
-                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/6a82ac19a28b916ae0885828795dbd4c59d9a818",
+                "reference": "6a82ac19a28b916ae0885828795dbd4c59d9a818",
                 "shasum": ""
             },
             "require": {
@@ -6362,9 +6362,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.16"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.17"
             },
-            "time": "2026-03-23T14:35:33+00:00"
+            "time": "2026-04-20T16:07:33+00:00"
         },
         {
             "name": "league/container",
@@ -7588,11 +7588,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.48",
+            "version": "2.1.50",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/231397213efb7c0a066ee024b5c3c87f2d3adfa0",
-                "reference": "231397213efb7c0a066ee024b5c3c87f2d3adfa0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
                 "shasum": ""
             },
             "require": {
@@ -7637,7 +7637,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-15T20:24:19+00:00"
+            "time": "2026-04-17T13:10:32+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -11510,6 +11510,7 @@
         "drupal/diff": 10,
         "drupal/facets": 10,
         "drupal/field_validation": 10,
+        "drupal/flag": 10,
         "drupal/seven": 15,
         "drupal/term_merge": 10,
         "drupal/ultimate_cron": 15,
@@ -11524,5 +11525,5 @@
         "php": "8.3",
         "ext-gd": "1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
