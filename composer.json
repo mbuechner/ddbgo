@@ -201,9 +201,6 @@
             },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"
-            },
-            "drupal/custom_formatters": {
-                "Custom Formatters: Drupal 10 fixes (combined)": "patches/custom_formatters-drupal10-fixes.patch"
             }
         }
     }
