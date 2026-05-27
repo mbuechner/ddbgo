@@ -31,7 +31,6 @@ RUN apk --no-cache add \
 RUN set -eux; \
      \
      apk add --no-cache --virtual .build-deps \
-          coreutils \
           freetype-dev \
           libjpeg-turbo-dev \
           libpng-dev \
@@ -42,7 +41,6 @@ RUN set -eux; \
           autoconf \
           g++ \
           make \
-          git \
           openssl \
           # postgresql-dev is needed for https://bugs.alpinelinux.org/issues/3642
           postgresql-dev; \
@@ -55,13 +53,11 @@ RUN set -eux; \
      \
      docker-php-ext-install -j "$(nproc)" \
           gd \
-          opcache \
           pdo_mysql \
           pdo_pgsql \
           zip; \
-     pecl channel-update pecl.php.net; \
-     pecl install apcu oauth redis; \
-     docker-php-ext-enable apcu oauth redis; \
+     pecl install apcu redis; \
+     docker-php-ext-enable apcu redis; \
      \
      runDeps="$( \
           scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
