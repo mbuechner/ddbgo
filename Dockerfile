@@ -15,7 +15,7 @@ RUN set -eu; \
     sed -i "s/{{version}}/${ver_esc}/g"  web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
     sed -i "s/{{commitid}}/${com_esc}/g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install
 
-FROM php:8.4-fpm-alpine
+FROM php:8.5-fpm-alpine
 LABEL org.opencontainers.image.authors="m.buechner@dnb.de"
 
 # Install packages
@@ -77,6 +77,7 @@ ENV RUN_GROUP=0
 
 # add PHP config
 COPY --chown=${RUN_USER}:${RUN_GROUP} ./config/php/ /usr/local/etc/php/conf.d/
+COPY --chown=${RUN_USER}:${RUN_GROUP} ./config/php-fpm/ /usr/local/etc/php-fpm.d/
 
 # add NGINX config
 COPY --chown=${RUN_USER}:${RUN_GROUP} ./config/nginx/*.conf /etc/nginx/
@@ -122,7 +123,7 @@ RUN \
     touch /run/nginx/nginx.pid && chgrp -R ${RUN_GROUP} /run/nginx/nginx.pid && chmod -R g=u /run/nginx/nginx.pid; \
     \
     # cleanup
-    rm -rf ./config/cron ./config/nginx ./config/php ./config/supervisord; \
+     rm -rf ./config/cron ./config/nginx ./config/php ./config/php-fpm ./config/supervisord; \
     docker-php-source delete || true; \
     rm -rf /usr/src/php*; \
     apk del --no-network .build-deps; \
