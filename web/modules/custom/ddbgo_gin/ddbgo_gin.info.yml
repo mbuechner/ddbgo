@@ -1,0 +1,7 @@
+name: DDBGO Gin
+type: module
+description: Overrides Gin toolbar icons for selected toolbar menu entries.
+package: DDBGO
+core_version_requirement: ^11
+dependencies:
+  - toolbar_menu:toolbar_menu

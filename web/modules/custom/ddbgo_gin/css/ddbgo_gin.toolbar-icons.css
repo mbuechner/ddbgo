@@ -1,0 +1,85 @@
+.toolbar-item-toolbar-menu-start .toolbar-link--has-icon::before,
+.toolbar-icon-toolbar-menu-start::before {
+  --icon: url("../images/ddb-logo.svg");
+  -webkit-mask-image: none;
+          mask-image: none;
+  background-color: transparent;
+  background-image: url("../images/ddb-logo.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.toolbar-icon-toolbar-menu-kwe::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/building.svg");
+}
+
+.toolbar-icon-toolbar-menu-aggregator::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/diagram-project.svg");
+}
+
+.toolbar-icon-toolbar-menu-person::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/user-group.svg");
+}
+
+.toolbar-icon-toolbar-menu-bestand::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/file.svg");
+}
+
+.toolbar-icon-toolbar-menu-einstellungen::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/gear.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-3d7b8b44-6716-487c-aba2-2a4e899e8962::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/house.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-page-1::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/magnifying-glass.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-views-view-views-flag-bookmark-page::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-a1de9476-5888-42f9-95ce-3d3e7fcf3f98::before,
+.toolbar-icon-link-toolbar-menu-menu-link-content-e0f87a7b-5a27-4eb5-94e6-25b45b7574e8::before,
+.toolbar-icon-link-toolbar-menu-menu-link-content-e6b18ef8-fd9f-4bb9-b34b-8136e2e17f31::before,
+.toolbar-icon-link-toolbar-menu-menu-link-content-448c9fd6-f7a0-4a0b-aaa8-63e8cd85d02e::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/plus.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-kwe-page-1::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-aggregator-page-1::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-aggregator-fuer-claudia-page-1::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-personensuche-page::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-bestand-page::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-bestand-fuer-europeana-page::before,
+.toolbar-icon-link-toolbar-menu-views-view-views-suche-bestand-fuer-coding-da-vinci-page::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/bars.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-views-view-views-personensuche-page-1::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/tree.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-d15b9356-73ac-4823-b9d0-e8b93c24cef9::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/receipt.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-e5266329-9a35-43d9-87ce-4e28df761ff3::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/users.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-0abd3d56-0b7e-49f3-b397-b4cc963b94bb::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/users-gear.svg");
+}
+
+.toolbar-icon-link-toolbar-menu-menu-link-content-97275089-238b-4b9b-8e09-df90c96d950b::before {
+  --icon: url("/libraries/fontawesome/svgs/solid/unlock-keyhole.svg");
+}
+
+/* Hide the root tools entry in toolbar menu as a fallback. */
+.toolbar-tray .menu-item.menu-item--expanded.menu-item__tools {
+  display: none;
+}

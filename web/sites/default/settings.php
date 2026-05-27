@@ -2,6 +2,23 @@
 
 // @codingStandardsIgnoreFile
 
+$env = static function (string $name, $default = null) {
+  $value = getenv($name);
+  if ($value === false || $value === '') {
+    return $default;
+  }
+  return $value;
+};
+
+$env_bool = static function (string $name, bool $default = false): bool {
+  $value = getenv($name);
+  if ($value === false || $value === '') {
+    return $default;
+  }
+  $parsed = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+  return $parsed ?? $default;
+};
+
 /**
  * @file
  * Drupal site-specific configuration file.
@@ -89,12 +106,12 @@
  * @endcode
  */
 $databases['default']['default'] = array (
-  'database' => getenv('MYSQL_DATABASE'),
-  'username' => getenv('MYSQL_USER'),
-  'password' => getenv('MYSQL_PASSWORD'),
+  'database' => $env('MYSQL_DATABASE', 'drupal'),
+  'username' => $env('MYSQL_USER', 'drupal'),
+  'password' => $env('MYSQL_PASSWORD', 'drupal'),
   'prefix' => '',
-  'host' => getenv('MYSQL_HOSTNAME'),
-  'port' => getenv('MYSQL_PORT'),
+  'host' => $env('MYSQL_HOSTNAME', 'localhost'),
+  'port' => $env('MYSQL_PORT', '3306'),
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );
@@ -289,7 +306,7 @@ $config_directories = [];
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = getenv('HASH_SALT');
+$settings['hash_salt'] = $env('HASH_SALT', '');
 
 /**
  * Deployment identifier.
@@ -312,7 +329,7 @@ $settings['hash_salt'] = getenv('HASH_SALT');
  * After finishing the upgrade, be sure to open this file again and change the
  * TRUE back to a FALSE!
  */
-$settings['update_free_access'] = (strtolower(getenv('UPDATE_FREE_ACCESS')) === 'true');
+$settings['update_free_access'] = $env_bool('UPDATE_FREE_ACCESS', false);
 
 /**
  * External access proxy settings:
@@ -528,7 +545,7 @@ if ($settings['hash_salt']) {
  * must exist and be writable by Drupal. This directory must be relative to
  * the Drupal installation directory and be accessible over the web.
  */
-$settings['file_public_path'] = getenv('FILE_PUBLIC_PATH');
+$settings['file_public_path'] = $env('FILE_PUBLIC_PATH', 'sites/default/files');
 
 /**
  * Private file path:
@@ -543,7 +560,7 @@ $settings['file_public_path'] = getenv('FILE_PUBLIC_PATH');
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-$settings['file_private_path'] = getenv('FILE_PRIVATE_PATH');
+$settings['file_private_path'] = $env('FILE_PRIVATE_PATH', '');
 
 /**
  * Session write interval:
@@ -646,7 +663,7 @@ $settings['file_private_path'] = getenv('FILE_PRIVATE_PATH');
  * configuration values in settings.php will not fire any of the configuration
  * change events.
  */
-$settings['file_temp_path'] = getenv('TMP');
+$settings['file_temp_path'] = $env('TMP', sys_get_temp_dir());
 # $config['system.site']['name'] = 'My Drupal site';
 # $config['system.theme']['default'] = 'stark';
 # $config['user.settings']['anonymous'] = 'Visitor';
@@ -737,7 +754,7 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
-$settings['trusted_host_patterns'] = preg_split('/,[\s]*/', getenv('TRUSTED_HOST_PATTERNS'));
+$settings['trusted_host_patterns'] = preg_split('/,[\s]*/', $env('TRUSTED_HOST_PATTERNS', '^localhost$, ^127\.0\.0\.1$'));
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
@@ -782,7 +799,9 @@ $settings['config_sync_directory'] = '../config/sync';
 $settings['state_cache'] = true;
 
 /* Redis */
-if ((getenv('USE_REDIS') ?: 'no') == 'yes') {
+$use_redis = $env_bool('USE_REDIS', false);
+if ($use_redis) {
+  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/redis.services.yml';
   $settings['redis.connection']['interface'] = 'PhpRedis';
   $settings['redis.connection']['host'] = '127.0.0.1';
   $settings['cache']['default'] = 'cache.backend.redis';

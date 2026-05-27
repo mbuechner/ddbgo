@@ -1,0 +1,4 @@
+toolbar_icons:
+  css:
+    theme:
+      css/ddbgo_gin.toolbar-icons.css: {}

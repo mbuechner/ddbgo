@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Gin toolbar icon overrides for selected toolbar menu entries.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ddbgo_gin_page_attachments(array &$attachments): void {
+  if (
+    \Drupal::service('theme.manager')->getActiveTheme()->getName() !== 'gin' ||
+    !\Drupal::currentUser()->hasPermission('access toolbar')
+  ) {
+    return;
+  }
+
+  $attachments['#attached']['library'][] = 'ddbgo_gin/toolbar_icons';
+}
