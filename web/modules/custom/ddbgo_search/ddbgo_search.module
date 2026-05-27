@@ -1,11 +1,21 @@
 <?php
 
 /**
- * Disbale Drupal's module updates
+ * Disable update checks for this custom module.
  *
- * @param $projects
+ * @param array $projects
+ *   Project data returned by Update Manager.
  */
-function ddbgo_search_update_projects_alter(&$projects)
-{
+function ddbgo_search_update_projects_alter(array &$projects): void {
+  unset($projects['ddbgo_search']);
+}
+
+/**
+ * Disable locale translation update checks for this custom module.
+ *
+ * @param array $projects
+ *   Project data used by locale translation update checks.
+ */
+function ddbgo_search_locale_translation_projects_alter(array &$projects): void {
   unset($projects['ddbgo_search']);
 }

@@ -1,6 +1,5 @@
 <?php
 
-use Drupal\ddbgo_cj\Plugin\QueueWorker\KweQueueWorker;
 use Drupal\node\Entity\Node;
 
 /**
@@ -79,7 +78,7 @@ function ddbgo_cj_kwe_queue_worker()
 /**
  * Update every KWE after saving. This will only add a new job into queue.
  *
- * @param \EntityInterface $entity
+ * @param \Drupal\node\Entity\Node $node
  */
 function ddbgo_cj_node_postsave($node)
 {
@@ -117,5 +116,15 @@ function ddbgo_cj_node_postsave($node)
  */
 function ddbgo_cj_update_projects_alter(&$projects)
 {
+  unset($projects['ddbgo_cj']);
+}
+
+/**
+ * Disable locale translation update checks for this custom module.
+ *
+ * @param array $projects
+ *   Project data used by locale translation update checks.
+ */
+function ddbgo_cj_locale_translation_projects_alter(array &$projects): void {
   unset($projects['ddbgo_cj']);
 }

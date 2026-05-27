@@ -56,7 +56,7 @@ class PersonAggregatorProcessor extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL) {
     $properties = [];
 
     if (!$datasource) {
@@ -102,11 +102,18 @@ class PersonAggregatorProcessor extends ProcessorPluginBase {
       $html = "";
       $j = 0;
       foreach ($nodes as $node) {
+        if (!($node instanceof Node)) {
+          continue;
+        }
+
         $html .= $node->toLink()->toString();
 
         $rolesText = "";
         foreach ($node->get("field_personen")->getValue() as $parId) {
           $par = Paragraph::load($parId["target_id"]);
+          if (!($par instanceof Paragraph)) {
+            continue;
+          }
           $perId = $par->get("field_person")->target_id;
           if ($perId !== $original_entity->id()) {
             continue;

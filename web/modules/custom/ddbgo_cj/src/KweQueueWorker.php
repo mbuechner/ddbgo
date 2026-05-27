@@ -3,6 +3,7 @@
 namespace Drupal\ddbgo_cj;
 
 use Drupal\Core\Session\AccountProxy;
+use Drupal\node\NodeInterface;
 
 /**
  * KWE Queue Worker which is doing the update work.
@@ -25,7 +26,7 @@ class KweQueueWorker {
   private $queue;
 
   /**
-   * @var Current User
+   * @var \Drupal\Core\Session\AccountProxy
    */
   private $currentUser;
 
@@ -51,8 +52,13 @@ class KweQueueWorker {
 
     $node = $this->entityStorage->load($nid);
 
+    if (!($node instanceof NodeInterface)) {
+      return TRUE; // we can't do anything here: don't re-run.
+    }
+    /** @var \Drupal\node\NodeInterface $node */
+
     // get DDB-URI
-    if (!isset($node) || !$node->hasField("field_ddburi") || empty($node->get("field_ddburi")->value)) {
+    if (!$node->hasField("field_ddburi") || empty($node->get("field_ddburi")->value)) {
       return TRUE; // we can't do anything here: don't re-run.
     }
 
@@ -66,13 +72,13 @@ class KweQueueWorker {
     return TRUE;
   }
 
-  private static function process($node, $user_id) {
+  private static function process(NodeInterface $node, $user_id) {
 
     // FROM: https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5
     // TO: https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
 
     $url = str_replace("https://www.deutsche-digitale-bibliothek.de/organization/",
-        "https://api.deutsche-digitale-bibliothek.de/items/",
+        "https://api.deutsche-digitale-bibliothek.de/2/items/",
         $node->get('field_ddburi')->value)
       . "/source/record";
 
@@ -234,7 +240,7 @@ class KweQueueWorker {
    * @param $nid Needed for logging only
    * @param $url URL to download
    *
-   * @return \SimpleXMLElement Parsed XML document
+  * @return \SimpleXMLElement|false Parsed XML document or FALSE on failure
    */
   private static function loadxmlfromurl($nid = '<unknown>', $url) {
     // check if url exists
@@ -252,7 +258,7 @@ class KweQueueWorker {
         $context = stream_context_create($opts);
         // parse xml
         return simplexml_load_string(file_get_contents($url, FALSE, $context));
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         \Drupal::logger('ddbgo_cj')
           ->error("Error while download information from " . $url . ". Cannot update node " . $nid . ". " . $e->getMessage() . ". ");
       }
@@ -261,6 +267,8 @@ class KweQueueWorker {
       \Drupal::logger('ddbgo_cj')
         ->warning($url . " seems to be NOT a valid DDB URI. Cannot update node " . $nid . ". ");
     }
+
+    return FALSE;
   }
 
   /**

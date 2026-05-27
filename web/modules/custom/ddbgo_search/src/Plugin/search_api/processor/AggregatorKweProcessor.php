@@ -126,7 +126,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL)
   {
     $properties = [];
 
@@ -183,9 +183,16 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       ->execute();
 
     $nids = [];
-    foreach (\Drupal::entityTypeManager()->getStorage('node')->loadMultiple($query) as $e) {
-      foreach ($e->get('field_kwe')->referencedEntities() as $re) {
-        array_push($nids, $re->id());
+    foreach (Drupal::entityTypeManager()->getStorage('node')->loadMultiple($query) as $e) {
+      if (!($e instanceof Node)) {
+        continue;
+      }
+      /** @var \Drupal\node\Entity\Node $e */
+
+      foreach ($e->get('field_kwe')->getValue() as $ref) {
+        if (!empty($ref['target_id'])) {
+          $nids[] = (int) $ref['target_id'];
+        }
       }
     }
 

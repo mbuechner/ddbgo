@@ -1,10 +1,8 @@
 <?php
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\String\UnicodeString;
+use Symfony\Component\String\AbstractUnicodeString;
 
 /**
  * Disable browser's autocomplete for some search fields in expose forms.
@@ -44,6 +42,16 @@ function ddbgo_workarounds_theme($existing, $type, $theme, $path) {
  * @param $projects
  */
 function ddbgo_workarounds_update_projects_alter(&$projects) {
+  unset($projects['ddbgo_workarounds']);
+}
+
+/**
+ * Disable locale translation update checks for this custom module.
+ *
+ * @param array $projects
+ *   Project data used by locale translation update checks.
+ */
+function ddbgo_workarounds_locale_translation_projects_alter(array &$projects): void {
   unset($projects['ddbgo_workarounds']);
 }
 
@@ -95,7 +103,7 @@ function ddbgo_workarounds_trim_value(&$value) {
   }
   elseif (is_string($value)) {
     $unicodeString = (new UnicodeString($value))
-      ->normalize(UnicodeString::NFC)
+      ->normalize(AbstractUnicodeString::NFC)
       ->trim();
     $value = $unicodeString->toString();
   }

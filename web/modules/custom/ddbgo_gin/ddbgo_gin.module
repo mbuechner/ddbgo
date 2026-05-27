@@ -18,3 +18,13 @@ function ddbgo_gin_page_attachments(array &$attachments): void {
 
   $attachments['#attached']['library'][] = 'ddbgo_gin/toolbar_icons';
 }
+
+/**
+ * Disable locale translation update checks for this custom module.
+ *
+ * @param array $projects
+ *   Project data used by locale translation update checks.
+ */
+function ddbgo_gin_locale_translation_projects_alter(array &$projects): void {
+  unset($projects['ddbgo_gin']);
+}
