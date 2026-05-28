@@ -1,10 +1,10 @@
 .toolbar-item-toolbar-menu-start .toolbar-link--has-icon::before,
 .toolbar-icon-toolbar-menu-start::before {
-  --icon: url("../images/ddb-logo.svg");
+  --icon: url("/modules/custom/ddbgo_gin/images/ddb-logo.svg");
   -webkit-mask-image: none;
           mask-image: none;
   background-color: transparent;
-  background-image: url("../images/ddb-logo.svg");
+  background-image: url("/modules/custom/ddbgo_gin/images/ddb-logo.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
