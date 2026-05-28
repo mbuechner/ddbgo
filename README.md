@@ -37,12 +37,36 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
    UPDATE_FREE_ACCESS=FALSE
    FILE_PUBLIC_PATH=sites/default/files
    TRUSTED_HOST_PATTERNS="^localhost\$, ^127.0.0.1\$"
+   USE_REDIS=no
+   REDIS_HOST=127.0.0.1
+   REDIS_PORT=6379
    TMP=/tmp
    ```
 3. Use [Drush](https://www.drush.org/) command to run local server: `vendor/bin/drush rs`
 4. Access via  http://127.0.0.1:8888
 
 If you start with a blank database you need to import all configuration with [Drush](https://www.drush.org/), which is stored in the folder [config/sync](config/sync). Therefor run `vendor/drush/drush/drush config:import`.
+
+### Environment variables
+The following environment variables are used by DDBgo and can be set via `.env`.
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `MYSQL_DATABASE` | Yes | `drupal` | MySQL database name. |
+| `MYSQL_USER` | Yes | `drupal` | MySQL username. |
+| `MYSQL_PASSWORD` | Yes | `drupal` | MySQL password. |
+| `MYSQL_HOSTNAME` | No | `localhost` | MySQL host name or IP address. |
+| `MYSQL_PORT` | No | `3306` | MySQL TCP port. |
+| `HASH_SALT` | Yes | `''` (empty) | Drupal hash salt for tokens and one-time links. |
+| `UPDATE_FREE_ACCESS` | No | `false` | Enables access to `update.php` without login when set to `true` (not recommended in production). |
+| `FILE_PUBLIC_PATH` | No | `sites/default/files` | Public files directory relative to Drupal web root. |
+| `FILE_PRIVATE_PATH` | No | `$app_root . '/../private'` | Private files directory path (should not be web-accessible). |
+| `TMP` | No | `sys_get_temp_dir()` | Temporary directory path used by Drupal. |
+| `TRUSTED_HOST_PATTERNS` | No | `^localhost$, ^127\.0\.0\.1$` | Comma-separated regex list for trusted host validation. |
+| `USE_REDIS` | No | `false` | Enables Redis cache backend integration when set to `true`. |
+| `REDIS_HOST` | No | `127.0.0.1` | Redis host name or IP address (used when `USE_REDIS=true`). |
+| `REDIS_PORT` | No | `6379` | Redis TCP port (used when `USE_REDIS=true`). |
+| `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
 
 ### Composer project maintenance
 1. Find update-able packages: 

@@ -23,7 +23,6 @@ RUN apk --no-cache add \
     curl \
     nginx \
     nginx-mod-http-brotli \
-    redis \
     supervisor; \
     apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/community \
     supercronic;

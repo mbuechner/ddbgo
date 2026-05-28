@@ -803,6 +803,7 @@ $use_redis = $env_bool('USE_REDIS', false);
 if ($use_redis) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/redis.services.yml';
   $settings['redis.connection']['interface'] = 'PhpRedis';
-  $settings['redis.connection']['host'] = '127.0.0.1';
+  $settings['redis.connection']['host'] = $env('REDIS_HOST', '127.0.0.1');
+  $settings['redis.connection']['port'] = (int) $env('REDIS_PORT', '6379');
   $settings['cache']['default'] = 'cache.backend.redis';
 }
