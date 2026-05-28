@@ -75,14 +75,30 @@ class PersonAggregatorProcessor extends ProcessorPluginBase {
 
   /**
    * {@inheritdoc}
+   *
+   * Enriches the Search API item with the rendered property
+   * "ddbgo_person_aggregator" for person nodes.
+   *
+   * Input:
+   * - Search API item whose original object is expected to be a person node.
+   *
+   * Output (single HTML string per target field):
+   * - "<a ...>Aggregator A</a> (Rolle 1, Rolle 2); <a ...>Aggregator B</a>"
+   *
+   * Notes:
+   * - Keeps node order by title ASC from the query.
+   * - Uses bulk loads (nodes, paragraphs, taxonomy terms) to avoid per-row
+   *   entity loading in nested loops.
    */
   public function addFieldValues(ItemInterface $item) {
+    // This processor only applies when the indexed item is a person node.
     $original_entity = $item->getOriginalObject()->getValue();
 
     if (!($original_entity instanceof Node)) {
       return;
     }
 
+    // Find all published aggregator nodes linked to the current person.
     $nids = Drupal::entityQuery('node')
       ->accessCheck(FALSE)
       ->condition('status', 1)
@@ -95,50 +111,98 @@ class PersonAggregatorProcessor extends ProcessorPluginBase {
       ->getStorage('node')
       ->loadMultiple($nids);
 
+    // Use bulk loading to avoid repeated entity loads in later loops.
+    $person_id = (int) $original_entity->id();
+    $node_paragraph_ids = [];
+    $paragraph_ids = [];
+
+    foreach ($nodes as $node) {
+      if (!($node instanceof Node)) {
+        continue;
+      }
+
+      // Collect all paragraph references per node and globally.
+      $ids = array_column($node->get('field_personen')->getValue(), 'target_id');
+      $ids = array_values(array_filter($ids));
+      $node_paragraph_ids[$node->id()] = $ids;
+      $paragraph_ids = array_merge($paragraph_ids, $ids);
+    }
+
+    // Load all referenced paragraphs once and map them in memory.
+    $paragraph_ids = array_values(array_unique($paragraph_ids));
+    $paragraphs = [];
+    if ($paragraph_ids) {
+      $paragraphs = $this->getEntityTypeManager()
+        ->getStorage('paragraph')
+        ->loadMultiple($paragraph_ids);
+    }
+
+    // Resolve role term IDs for the current person per node.
+    $node_role_ids = [];
+    $role_ids = [];
+    foreach ($node_paragraph_ids as $node_id => $ids) {
+      $node_role_ids[$node_id] = [];
+      foreach ($ids as $id) {
+        $paragraph = $paragraphs[$id] ?? NULL;
+        if (!($paragraph instanceof Paragraph)) {
+          continue;
+        }
+
+        // Keep only paragraph rows that point to the current person.
+        if ((int) $paragraph->get('field_person')->target_id !== $person_id) {
+          continue;
+        }
+
+        $role_id = (int) $paragraph->get('field_rolle')->target_id;
+        if ($role_id <= 0) {
+          continue;
+        }
+
+        $node_role_ids[$node_id][] = $role_id;
+        $role_ids[] = $role_id;
+      }
+    }
+
+    // Load all role terms once; labels are resolved during output rendering.
+    $role_ids = array_values(array_unique($role_ids));
+    $roles = [];
+    if ($role_ids) {
+      $roles = $this->getEntityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->loadMultiple($role_ids);
+    }
+
     $fields = $this->getFieldsHelper()
       ->filterForPropertyPath($item->getFields(), NULL, 'ddbgo_person_aggregator');
 
+    // Build one HTML string per field in the configured property path.
     foreach ($fields as $field) {
       $html = "";
       $j = 0;
+      $node_count = count($nodes);
       foreach ($nodes as $node) {
         if (!($node instanceof Node)) {
           continue;
         }
+        /** @var \Drupal\node\Entity\Node $node */
 
         $html .= $node->toLink()->toString();
 
-        $rolesText = "";
-        foreach ($node->get("field_personen")->getValue() as $parId) {
-          $par = Paragraph::load($parId["target_id"]);
-          if (!($par instanceof Paragraph)) {
-            continue;
-          }
-          $perId = $par->get("field_person")->target_id;
-          if ($perId !== $original_entity->id()) {
-            continue;
-          }
-          $rolle = $par->get("field_rolle")->entity;
-          if ($rolle !== NULL) {
-            $rolesText .= $rolle->getName();
-            $rolesText .= ", ";
+        // Build role labels for this node from preloaded role IDs.
+        $role_names = [];
+        foreach ($node_role_ids[$node->id()] ?? [] as $role_id) {
+          if (isset($roles[$role_id])) {
+            $role_names[] = $roles[$role_id]->label();
           }
         }
 
-        if (strlen($rolesText) >= 2) {
-          $rolesText = substr($rolesText, 0, strlen($rolesText) - 2);
-
-          if (++$j < count($nodes)) {
-            $html .= " (" . $rolesText . "); ";
-          }
-          else {
-            $html .= " (" . $rolesText . ")";
-          }
+        // Preserve original output format: "Node link (Role1, Role2); ...".
+        if ($role_names) {
+          $html .= " (" . implode(', ', array_values(array_unique($role_names))) . ")";
         }
-        else {
-          if (++$j < count($nodes)) {
-            $html .= "; ";
-          }
+
+        if (++$j < $node_count) {
+          $html .= "; ";
         }
       }
       $field->addValue($html);

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
- * Adds the user's soul mate node for indexing.
+ * Exposes KWE nodes linked to an aggregator for Search API indexing.
  *
  * @SearchApiProcessor(
  *   id = "ddbgo_aggregator_kwe",
@@ -147,15 +147,30 @@ class AggregatorKweProcessor extends ProcessorPluginBase
 
   /**
    * {@inheritdoc}
+   *
+   * Enriches node datasource fields for property "ddbgo_aggregator_kwe".
+   *
+   * Input:
+   * - Search API item whose original object is expected to be an aggregator
+   *   node.
+   *
+   * Output:
+   * - Entity list (node references) used by Search API field extraction.
+   *
+   * Notes:
+   * - Resolves KWE nodes indirectly via linked bestand nodes.
+   * - Leaves extraction semantics unchanged by relying on Search API helpers.
    */
   public function addFieldValues(ItemInterface $item)
   {
+    // This processor only applies when the indexed item is a node entity.
     $original_entity = $item->getOriginalObject()->getValue();
 
     if (!($original_entity instanceof Node)) {
       return;
     }
 
+    // Collect target fields for this processor's property path.
     /** @var \Drupal\search_api\Item\FieldInterface[][] $to_extract */
     $to_extract = [];
     foreach ($item->getFields() as $field) {
@@ -173,6 +188,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Find published bestand nodes for this aggregator that reference KWE.
     $query = Drupal::entityQuery('node')
       ->accessCheck(FALSE)
       ->condition('status', 1)
@@ -182,6 +198,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       ->sort('field_kwe.entity.title', 'ASC')
       ->execute();
 
+    // Collect referenced KWE node IDs from all matched bestand nodes.
     $nids = [];
     foreach (Drupal::entityTypeManager()->getStorage('node')->loadMultiple($query) as $e) {
       if (!($e instanceof Node)) {
@@ -204,6 +221,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Populate root-level property values first, then nested fields.
     if (isset($to_extract[''])) {
       foreach ($to_extract[''] as $field) {
         $field->setValues($nodes);

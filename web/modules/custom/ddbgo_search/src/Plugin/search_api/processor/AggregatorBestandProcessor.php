@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
- * Adds the user's soul mate node for indexing.
+ * Exposes bestand nodes linked to an aggregator for Search API indexing.
  *
  * @SearchApiProcessor(
  *   id = "ddbgo_aggregator_bestand",
@@ -147,15 +147,30 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
 
   /**
    * {@inheritdoc}
+   *
+   * Enriches node datasource fields for property "ddbgo_aggregator_bestand".
+   *
+   * Input:
+   * - Search API item whose original object is expected to be an aggregator
+   *   node.
+   *
+   * Output:
+   * - Entity list (node references) used by Search API field extraction.
+   *
+   * Notes:
+   * - Keeps linked bestand node order by title ASC.
+   * - Leaves extraction semantics unchanged by relying on Search API helpers.
    */
   public function addFieldValues(ItemInterface $item)
   {
+    // This processor only applies when the indexed item is a node entity.
     $original_entity = $item->getOriginalObject()->getValue();
 
     if (!($original_entity instanceof Node)) {
       return;
     }
 
+    // Collect target fields for this processor's property path.
     /** @var \Drupal\search_api\Item\FieldInterface[][] $to_extract */
     $to_extract = [];
     foreach ($item->getFields() as $field) {
@@ -173,6 +188,7 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Query all published bestand nodes linked to this aggregator.
     $nids = Drupal::entityQuery('node')
       ->accessCheck(FALSE)
       ->condition('status', 1)
@@ -189,6 +205,7 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Populate root-level property values first, then nested fields.
     if (isset($to_extract[''])) {
       foreach ($to_extract[''] as $field) {
         $field->setValues($nodes);
