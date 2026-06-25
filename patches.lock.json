@@ -1,0 +1,29 @@
+{
+    "_hash": "9ff518c694fd9de1da5c97e0a382604d7eb02bef06f15317db5f1497b2c1c000",
+    "patches": {
+        "drupal/select2": [
+            {
+                "package": "drupal/select2",
+                "description": "Changed tokenSeparator in Select2 module",
+                "url": "patches/Changed_tokenSeparator_in_Select2_module.patch",
+                "sha256": "743d8bd9df66c1d951f985a3f4a12744f3b001e8b52e5a532ad737449d9d0d63",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/unique_field_ajax": [
+            {
+                "package": "drupal/unique_field_ajax",
+                "description": "Fixing bug with warning message at Unique Field Ajax",
+                "url": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch",
+                "sha256": "535fac7b31b9444528a916da6eec7897ddd8f447ed7328a74dd5ef3466f8b256",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
+}
