@@ -110,7 +110,8 @@
             "oomphinc/composer-installers-extender": true,
             "wikimedia/composer-merge-plugin": true,
             "drupal/core-project-message": true,
-            "drupal/core-recipe-unpack": true
+            "drupal/core-recipe-unpack": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {
