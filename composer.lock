@@ -1883,16 +1883,16 @@
         },
         {
             "name": "drupal/core",
-            "version": "10.6.12",
+            "version": "10.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "87fd33ee009619bcd0a1679d6015c349f74dd977"
+                "reference": "70dfc22c6f1ab2042d225d619c72f36a0429eb93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/87fd33ee009619bcd0a1679d6015c349f74dd977",
-                "reference": "87fd33ee009619bcd0a1679d6015c349f74dd977",
+                "url": "https://api.github.com/repos/drupal/core/zipball/70dfc22c6f1ab2042d225d619c72f36a0429eb93",
+                "reference": "70dfc22c6f1ab2042d225d619c72f36a0429eb93",
                 "shasum": ""
             },
             "require": {
@@ -2042,13 +2042,13 @@
             ],
             "description": "Drupal is an open source content management platform powering millions of websites and applications.",
             "support": {
-                "source": "https://github.com/drupal/core/tree/10.6.12"
+                "source": "https://github.com/drupal/core/tree/10.6.13"
             },
-            "time": "2026-06-23T07:23:10+00:00"
+            "time": "2026-07-15T18:02:44+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",
-            "version": "10.6.12",
+            "version": "10.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-composer-scaffold.git",
@@ -2092,22 +2092,22 @@
                 "drupal"
             ],
             "support": {
-                "source": "https://github.com/drupal/core-composer-scaffold/tree/10.6.12"
+                "source": "https://github.com/drupal/core-composer-scaffold/tree/10.6.13"
             },
             "time": "2024-08-22T14:31:30+00:00"
         },
         {
             "name": "drupal/core-recommended",
-            "version": "10.6.12",
+            "version": "10.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core-recommended.git",
-                "reference": "d11d79225bf6f0ce2f17cd29daf96ec625ec5a63"
+                "reference": "f57eb67b3a50f06fa098e835af808d6d2d55a3c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/d11d79225bf6f0ce2f17cd29daf96ec625ec5a63",
-                "reference": "d11d79225bf6f0ce2f17cd29daf96ec625ec5a63",
+                "url": "https://api.github.com/repos/drupal/core-recommended/zipball/f57eb67b3a50f06fa098e835af808d6d2d55a3c8",
+                "reference": "f57eb67b3a50f06fa098e835af808d6d2d55a3c8",
                 "shasum": ""
             },
             "require": {
@@ -2115,7 +2115,7 @@
                 "composer/semver": "~3.4.4",
                 "doctrine/deprecations": "~1.1.5",
                 "doctrine/lexer": "~2.1.1",
-                "drupal/core": "10.6.12",
+                "drupal/core": "10.6.13",
                 "egulias/email-validator": "~4.0.4",
                 "guzzlehttp/guzzle": "~7.12.1",
                 "guzzlehttp/promises": "~2.5.0",
@@ -2175,9 +2175,9 @@
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core.",
             "support": {
-                "source": "https://github.com/drupal/core-recommended/tree/10.6.12"
+                "source": "https://github.com/drupal/core-recommended/tree/10.6.13"
             },
-            "time": "2026-06-23T07:23:10+00:00"
+            "time": "2026-07-15T18:02:44+00:00"
         },
         {
             "name": "drupal/csv_serialization",
@@ -2979,26 +2979,26 @@
         },
         {
             "name": "drupal/flag",
-            "version": "5.1.0-beta1",
+            "version": "5.1.0-beta2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flag.git",
-                "reference": "5.1.0-beta1"
+                "reference": "5.1.0-beta2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flag-5.1.0-beta1.zip",
-                "reference": "5.1.0-beta1",
-                "shasum": "b4d9500e4223bac707547df60638c3ea691c9c64"
+                "url": "https://ftp.drupal.org/files/projects/flag-5.1.0-beta2.zip",
+                "reference": "5.1.0-beta2",
+                "shasum": "c87381e9fa901fb1bc854cb50bfe4c71128aace8"
             },
             "require": {
-                "drupal/core": "^10.3 || ^11"
+                "drupal/core": "^10.3 || ^11 || ^12"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "5.1.0-beta1",
-                    "datestamp": "1775373715",
+                    "version": "5.1.0-beta2",
+                    "datestamp": "1783929410",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -4114,26 +4114,26 @@
         },
         {
             "name": "drupal/noreqnewpass",
-            "version": "1.4.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/noreqnewpass.git",
-                "reference": "8.x-1.4"
+                "reference": "8.x-1.6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/noreqnewpass-8.x-1.4.zip",
-                "reference": "8.x-1.4",
-                "shasum": "b3fd5499d8a371ff1c259e371284c48602b9dbc3"
+                "url": "https://ftp.drupal.org/files/projects/noreqnewpass-8.x-1.6.zip",
+                "reference": "8.x-1.6",
+                "shasum": "b31764bea64b57aa72ae0b5b2a7c12e8700b7e48"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10 || ^11"
+                "drupal/core": "^10.3 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.4",
-                    "datestamp": "1727698112",
+                    "version": "8.x-1.6",
+                    "datestamp": "1784097064",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4146,25 +4146,35 @@
             ],
             "authors": [
                 {
+                    "name": "Pedro Faria",
+                    "homepage": "https://www.drupal.org/u/pedrofaria",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Kevin Reynen",
+                    "homepage": "https://www.drupal.org/u/kreynen",
+                    "role": "Maintainer"
+                },
+                {
                     "name": "Neslee Canil Pinto",
                     "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
                     "role": "Maintainer"
                 },
                 {
-                    "name": "neslee canil pinto",
-                    "homepage": "https://www.drupal.org/user/3580850"
+                    "name": "Viktor Holovachek",
+                    "homepage": "https://www.drupal.org/u/astonvictor",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "pedrofaria",
-                    "homepage": "https://www.drupal.org/user/27805"
-                },
-                {
-                    "name": "University of Colorado Boulder",
+                    "name": "university of colorado boulder",
                     "homepage": "https://www.drupal.org/user/3299791"
                 }
             ],
             "description": "Disable link to request a new password.",
             "homepage": "https://www.drupal.org/project/noreqnewpass",
+            "keywords": [
+                "Drupal"
+            ],
             "support": {
                 "source": "https://git.drupalcode.org/project/noreqnewpass",
                 "issues": "https://www.drupal.org/project/issues/noreqnewpass"
@@ -5431,17 +5441,17 @@
         },
         {
             "name": "drupal/viewsreference",
-            "version": "2.0.0-beta12",
+            "version": "2.0.0-beta13",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/viewsreference.git",
-                "reference": "8.x-2.0-beta12"
+                "reference": "8.x-2.0-beta13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta12.zip",
-                "reference": "8.x-2.0-beta12",
-                "shasum": "643eefb27c3f415a50eec75eccbbc287bcc7156a"
+                "url": "https://ftp.drupal.org/files/projects/viewsreference-8.x-2.0-beta13.zip",
+                "reference": "8.x-2.0-beta13",
+                "shasum": "359a8051f7faa5e5a9b568cb0705eb73ff97ce62"
             },
             "require": {
                 "drupal/core": "^10 || ^11 || ^12"
@@ -5455,8 +5465,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-beta12",
-                    "datestamp": "1776760483",
+                    "version": "8.x-2.0-beta13",
+                    "datestamp": "1783759655",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5497,16 +5507,16 @@
         },
         {
             "name": "drush/drush",
-            "version": "13.7.4",
+            "version": "13.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "90123a96db5a4d2e0faa97242eef69785aa0e67d"
+                "reference": "051f6b4909728e0d3363aedab19d393f64438de4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/90123a96db5a4d2e0faa97242eef69785aa0e67d",
-                "reference": "90123a96db5a4d2e0faa97242eef69785aa0e67d",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/051f6b4909728e0d3363aedab19d393f64438de4",
+                "reference": "051f6b4909728e0d3363aedab19d393f64438de4",
                 "shasum": ""
             },
             "require": {
@@ -5634,7 +5644,7 @@
                 "issues": "https://github.com/drush-ops/drush/issues",
                 "security": "https://github.com/drush-ops/drush/security/advisories",
                 "slack": "https://drupal.slack.com/messages/C62H9CWQM",
-                "source": "https://github.com/drush-ops/drush/tree/13.7.4"
+                "source": "https://github.com/drush-ops/drush/tree/13.7.6"
             },
             "funding": [
                 {
@@ -5642,7 +5652,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-15T20:22:19+00:00"
+            "time": "2026-07-08T10:43:20+00:00"
         },
         {
             "name": "e0ipso/shaper",
@@ -6071,16 +6081,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "4360e982f87f5f258bf872d094647791db2f4c8e"
+                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/4360e982f87f5f258bf872d094647791db2f4c8e",
-                "reference": "4360e982f87f5f258bf872d094647791db2f4c8e",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/9ad1e4fc607446a055b95870c7f668e93b5cff29",
+                "reference": "9ad1e4fc607446a055b95870c7f668e93b5cff29",
                 "shasum": ""
             },
             "require": {
@@ -6135,7 +6145,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.5.0"
+                "source": "https://github.com/guzzle/promises/tree/2.5.1"
             },
             "funding": [
                 {
@@ -6151,20 +6161,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-02T12:23:43+00:00"
+            "time": "2026-07-08T15:48:39+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.3",
+            "version": "2.12.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d"
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
-                "reference": "7ec62dc3f44aa218487dbed81a9bf9bc647be55d",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9365d578a9fd1552ad6ca9c3cb530708526feb09",
+                "reference": "9365d578a9fd1552ad6ca9c3cb530708526feb09",
                 "shasum": ""
             },
             "require": {
@@ -6254,7 +6264,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.3"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.5"
             },
             "funding": [
                 {
@@ -6270,7 +6280,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-23T15:21:08+00:00"
+            "time": "2026-07-13T01:27:20+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -6785,16 +6795,16 @@
         },
         {
             "name": "mglaman/phpstan-drupal",
-            "version": "2.0.15",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/phpstan-drupal.git",
-                "reference": "b61426dddc69862d652abe87cae40848e28caa7d"
+                "reference": "cab71f31fae33981446137738e1709fc8c3ea2b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/b61426dddc69862d652abe87cae40848e28caa7d",
-                "reference": "b61426dddc69862d652abe87cae40848e28caa7d",
+                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/cab71f31fae33981446137738e1709fc8c3ea2b8",
+                "reference": "cab71f31fae33981446137738e1709fc8c3ea2b8",
                 "shasum": ""
             },
             "require": {
@@ -6803,7 +6813,7 @@
                 "phpstan/phpstan-deprecation-rules": "^2.0",
                 "symfony/finder": "^6.2 || ^7.0 || ^8.0",
                 "symfony/yaml": "^6.2 || ^7.0 || ^8.0",
-                "webflo/drupal-finder": "^1.3.1"
+                "webflo/drupal-finder": "^1.3.1 || ^2.0"
             },
             "require-dev": {
                 "behat/mink": "^1.10",
@@ -6866,7 +6876,7 @@
             "description": "Drupal extension and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/mglaman/phpstan-drupal/issues",
-                "source": "https://github.com/mglaman/phpstan-drupal/tree/2.0.15"
+                "source": "https://github.com/mglaman/phpstan-drupal/tree/2.1.0"
             },
             "funding": [
                 {
@@ -6882,7 +6892,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-24T10:47:34+00:00"
+            "time": "2026-07-14T13:49:55+00:00"
         },
         {
             "name": "mkalkbrenner/php-htmldiff-advanced",
@@ -6927,20 +6937,19 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.7.0",
+            "version": "v5.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82"
+                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/dca41cd15c2ac9d055ad70dbfd011130757d1f82",
-                "reference": "dca41cd15c2ac9d055ad70dbfd011130757d1f82",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
                 "shasum": ""
             },
             "require": {
-                "ext-ctype": "*",
                 "ext-json": "*",
                 "ext-tokenizer": "*",
                 "php": ">=7.4"
@@ -6979,9 +6988,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.7.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.8.0"
             },
-            "time": "2025-12-06T11:56:16+00:00"
+            "time": "2026-07-04T14:30:18+00:00"
         },
         {
             "name": "npm-asset/fontawesome-iconpicker",
@@ -7629,11 +7638,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.3",
+            "version": "2.2.5",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/4048833dd47b377287818841877fb3087289509c",
-                "reference": "4048833dd47b377287818841877fb3087289509c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
+                "reference": "909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
                 "shasum": ""
             },
             "require": {
@@ -7689,7 +7698,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-06-30T21:15:26+00:00"
+            "time": "2026-07-05T06:31:06+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -11674,5 +11683,5 @@
         "php": "8.3",
         "ext-gd": "1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
