@@ -14,3 +14,4 @@ is_admin: false
 permissions:
   - 'access content'
   - 'view any page content'
+  - 'view the administration theme'

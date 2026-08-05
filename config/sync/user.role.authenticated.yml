@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - file
-    - fontawesome
     - key_auth
     - node_view_permissions
     - noreqnewpass
@@ -20,7 +19,6 @@ weight: -9
 is_admin: false
 permissions:
   - 'access content'
-  - 'access fontawesome additional settings'
   - 'access toolbar'
   - 'can change your own password'
   - 'delete own files'
@@ -42,3 +40,4 @@ permissions:
   - 'view own person content'
   - 'view person in toolbar'
   - 'view start in toolbar'
+  - 'view the administration theme'

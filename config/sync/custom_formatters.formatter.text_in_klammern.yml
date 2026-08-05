@@ -1,0 +1,14 @@
+uuid: 72782268-e9b4-488a-984f-d1d5408656df
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: text_in_klammern
+label: 'Text in Klammern'
+type: twig
+description: ''
+field_types:
+  - entity_reference
+data: "{% for item in items %}\r\n {{ '(' ~ item.entity.label ~ ')' }}{% if not loop.last %}; {% endif %}\r\n{% endfor %}"

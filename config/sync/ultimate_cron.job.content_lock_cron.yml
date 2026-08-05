@@ -1,14 +1,14 @@
-uuid: f060130a-0932-4517-ac89-2c4f005a2d9c
+uuid: 5907f330-7c84-4a3f-9f85-ef5192a2a027
 langcode: de
 status: true
 dependencies:
   module:
-    - content_lock_timeout
+    - content_lock
 title: 'Standardverarbeitungsroutine für Cron'
-id: content_lock_timeout_cron
+id: content_lock_cron
 weight: 0
-module: content_lock_timeout
-callback: 'content_lock_timeout#cron'
+module: content_lock
+callback: 'content_lock#cron'
 scheduler:
   id: simple
 launcher:

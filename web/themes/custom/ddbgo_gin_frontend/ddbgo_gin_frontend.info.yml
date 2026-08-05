@@ -1,0 +1,5 @@
+name: DDBgo Gin Frontend
+type: theme
+base theme: gin
+description: Frontend theme for node views based on Gin.
+core_version_requirement: ^10 || ^11

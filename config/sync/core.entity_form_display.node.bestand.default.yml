@@ -293,6 +293,20 @@ third_party_settings:
         effect: none
         speed: fast
         required_fields: false
+    group_tabs:
+      children: {  }
+      label: Tabs
+      region: hidden
+      parent_name: ''
+      weight: 20
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        direction: vertical
+        width_breakpoint: 640
 id: node.bestand.default
 targetEntityType: node
 bundle: bestand

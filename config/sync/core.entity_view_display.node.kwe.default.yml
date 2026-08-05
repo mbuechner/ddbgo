@@ -55,13 +55,17 @@ third_party_settings:
       children:
         - field_kontakt
       label: Kontakt
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 4
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -73,13 +77,17 @@ third_party_settings:
       children:
         - field_personen
       label: Personen
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 3
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -96,16 +104,19 @@ third_party_settings:
         - field_favorienkarussell
         - field_api_blacklisting
         - field_api_blacklisting_jira_tick
-        - field_widerspruch
         - field_bemerkungen
       label: Informationen
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 5
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -122,13 +133,17 @@ third_party_settings:
         - field_erstingest_archivportal
         - field_bemerkung_archivportal
       label: 'Europeana/ Archivportal'
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 6
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_europeana
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -142,20 +157,17 @@ third_party_settings:
         - field_status
         - field_ablehnungsgrund
       label: Status
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 1
-      format_type: html_element
+      format_type: tab
       format_settings:
-        classes: fieldgroup_status
-        id: fieldgroup_kwe_status
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: slow
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
     group_allgemeines:
       children:
         - field_ddburi
@@ -173,13 +185,17 @@ third_party_settings:
         - field_url
         - field_bemerkung
       label: Allgemeines
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 2
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -187,6 +203,26 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
+    group_kwe:
+      children:
+        - group_status
+        - group_allgemeines
+        - group_personen
+        - group_kontakt
+        - group_informationen
+        - group_einstellungen
+      label: KWE
+      parent_name: ''
+      region: content
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.kwe.default
 targetEntityType: node
 bundle: kwe

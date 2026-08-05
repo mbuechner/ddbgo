@@ -1,13 +1,13 @@
-uuid: 6c473e43-21b6-4db7-addc-2357715b28ff
+uuid: 298d6b15-bca9-46aa-afab-921d825c524d
 langcode: de
 status: true
 dependencies:
   theme:
-    - adminimal_theme
+    - gin
 _core:
-  default_config_hash: Z3nlZUh2mSJP3apMrJWt-duS-aLyP79rcfu_0wpPmDs
-id: adminimal_theme_page_title
-theme: adminimal_theme
+  default_config_hash: HLQY2xgby8K3vN_98hiOSasOhm9pdCsH234-s0duJ8Q
+id: gin_page_title
+theme: gin
 region: header
 weight: -30
 provider: null

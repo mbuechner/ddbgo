@@ -66,20 +66,17 @@ third_party_settings:
         - field_bemerkung
       label: Allgemeines
       region: content
-      parent_name: ''
-      weight: 3
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 2
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: false
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
     group_einstellungen:
       children:
         - field_europeana_lieferung
@@ -90,20 +87,17 @@ third_party_settings:
         - field_erstingest_europeana
       label: 'Europeana/ Archivportal'
       region: content
-      parent_name: ''
-      weight: 7
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 6
+      format_type: tab
       format_settings:
         classes: fieldgroup_europeana
+        show_empty_fields: false
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
     group_informationen:
       children:
         - field_vertragsstatus
@@ -113,35 +107,36 @@ third_party_settings:
         - field_favorienkarussell
         - field_api_blacklisting
         - field_api_blacklisting_jira_tick
-        - field_widerspruch
         - field_bemerkungen
       label: Informationen
       region: content
-      parent_name: ''
-      weight: 6
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 5
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: false
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
     group_kontakt:
       children:
         - field_kontakt
       label: Kontakt
       region: content
-      parent_name: ''
-      weight: 5
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 4
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: false
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: false
         element: fieldset
         show_label: true
         label_element: legend
@@ -149,46 +144,59 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-        required_fields: false
     group_personen:
       children:
         - field_personen
       label: Personen
       region: content
-      parent_name: ''
-      weight: 4
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 3
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: false
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
     group_s:
       children:
         - field_status
         - field_ablehnungsgrund
       label: Status
       region: content
-      parent_name: ''
-      weight: 0
-      format_type: html_element
+      parent_name: group_kwe
+      weight: 1
+      format_type: tab
       format_settings:
         classes: fieldgroup_status
+        show_empty_fields: false
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: open
+        description: ''
         required_fields: true
+    group_kwe:
+      children:
+        - group_s
+        - group_allgemeines
+        - group_personen
+        - group_kontakt
+        - group_informationen
+        - group_einstellungen
+      label: KWE
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.kwe.default
 targetEntityType: node
 bundle: kwe

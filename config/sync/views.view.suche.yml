@@ -311,6 +311,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 25
           total_pages: null
           id: 0
@@ -328,7 +329,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -347,7 +347,7 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
         result:
@@ -389,10 +389,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             expose_fields: false
             placeholder: Suchbegriff
             searched_fields_id: ''
@@ -459,6 +455,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -493,6 +490,7 @@ display:
         - user.roles
       tags:
         - 'config:search_api.index.suche'
+        - 'search_api_list:suche'
   page_1:
     id: page_1
     display_title: Page
@@ -521,3 +519,4 @@ display:
         - user.roles
       tags:
         - 'config:search_api.index.suche'
+        - 'search_api_list:suche'

@@ -1,0 +1,14 @@
+uuid: ab0a1617-4cdd-4771-aa5f-a9d5d7399192
+langcode: de
+status: true
+dependencies: {  }
+third_party_settings:
+  contextual:
+    mode: '1'
+id: label_als_telefonnummer
+label: 'Label als Telefonnummer'
+type: twig
+description: ''
+field_types:
+  - string
+data: "{% for item in items %}\r\n {{ link(item.value, 'tel:' ~ item.value | replace({' ': ''}) | replace({'-': ''}), {}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

@@ -1,0 +1,28 @@
+_core:
+  default_config_hash: c8aZhkIY8zHUo0_UOll4vVs_l48dHL_gBqbvfuAM0Rs
+favicon:
+  mimetype: image/vnd.microsoft.icon
+  path: favicon.ico
+  use_default: false
+features:
+  comment_user_picture: false
+  comment_user_verification: false
+  favicon: true
+  node_user_picture: false
+logo:
+  use_default: true
+third_party_settings:
+  shortcut:
+    module_link: true
+preset_accent_color: custom
+preset_focus_color: custom
+enable_darkmode: auto
+classic_toolbar: classic
+secondary_toolbar_frontend: true
+high_contrast_mode: true
+accent_color: '#a5003b'
+focus_color: '#81002d'
+layout_density: small
+show_description_toggle: true
+show_user_theme_settings: false
+sticky_action_buttons: true

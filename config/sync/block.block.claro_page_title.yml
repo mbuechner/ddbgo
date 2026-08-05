@@ -1,13 +1,13 @@
-uuid: fa76217f-30bc-42f0-ae31-69e226c77e33
+uuid: a1271314-1fa3-4ff2-9e9e-c3c2cbab09cd
 langcode: de
 status: true
 dependencies:
   theme:
-    - seven
+    - claro
 _core:
-  default_config_hash: ZSpc3IoSaLd0PkB02nxjVPBMztIdsTdHek9SiGaqZ_c
-id: seven_page_title
-theme: seven
+  default_config_hash: fNwDdW063tk_ktzSWzZVeQS9wzvLooVO280BQ9WrsIs
+id: claro_page_title
+theme: claro
 region: header
 weight: -30
 provider: null

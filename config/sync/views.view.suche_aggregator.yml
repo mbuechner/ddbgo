@@ -190,7 +190,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status des Aggregators'
+          label: Status
           exclude: false
           alter:
             alter_text: false
@@ -238,6 +238,7 @@ display:
             width: '15'
             height: '15'
             opacity: false
+            data_attribute: false
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -399,6 +400,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 100
           total_pages: null
           id: 0
@@ -416,7 +418,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -436,7 +437,7 @@ display:
             ddb_team: ddb_team
             ddb_team_login_admin: ddb_team_login_admin
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
         result:
@@ -491,10 +492,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -569,6 +566,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -604,6 +602,7 @@ display:
       tags:
         - 'config:field.storage.node.field_status'
         - 'config:search_api.index.aggregator'
+        - 'search_api_list:aggregator'
   page_1:
     id: page_1
     display_title: Page
@@ -634,3 +633,4 @@ display:
       tags:
         - 'config:field.storage.node.field_status'
         - 'config:search_api.index.aggregator'
+        - 'search_api_list:aggregator'
