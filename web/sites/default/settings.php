@@ -797,6 +797,7 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 
 $settings['config_sync_directory'] = '../config/sync';
 $settings['state_cache'] = true;
+$settings['enable_html5_validation'] = false;
 
 /* Redis */
 $use_redis = $env_bool('USE_REDIS', false);

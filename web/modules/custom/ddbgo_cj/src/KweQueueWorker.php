@@ -1,347 +1,342 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\ddbgo_cj;
 
-use Drupal\Core\Session\AccountProxy;
+use Drupal\content_lock\ContentLock\ContentLockInterface;
+use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Queue\QueueFactory;
+use Drupal\Core\Queue\QueueInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\NodeInterface;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Log\LoggerInterface;
 
 /**
- * KWE Queue Worker which is doing the update work.
- *
+ * Synchronizes KWE nodes with organization data from the DDB API.
  */
-class KweQueueWorker {
+final class KweQueueWorker {
+
+  private const QUEUE_NAME = 'kwe_queue_worker';
+
+  private const ORGANIZATION_URL = 'https://www.deutsche-digitale-bibliothek.de/organization/';
+
+  private const API_URL = 'https://api.deutsche-digitale-bibliothek.de/2/items/';
 
   /**
-   * The Entity storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface|null
+   * Prevents a synchronized save from enqueuing the same node again.
    */
-  protected $entityStorage;
+  private bool $synchronizing = FALSE;
 
   /**
-   * The queue.
-   *
-   * @var \Drupal\Core\Queue\DatabaseQueue
+   * Constructs the KWE queue worker.
    */
-  private $queue;
+  public function __construct(
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+    private readonly ContentLockInterface $contentLock,
+    private readonly QueueFactory $queueFactory,
+    private readonly AccountProxyInterface $currentUser,
+    private readonly ClientInterface $httpClient,
+    private readonly LoggerInterface $logger,
+    private readonly TimeInterface $time,
+  ) {}
 
   /**
-   * @var \Drupal\Core\Session\AccountProxy
+   * Adds every published KWE node that is not already queued.
    */
-  private $currentUser;
+  public function enqueuePublishedNodes(): void {
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $node_ids = $node_storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('status', 1)
+      ->condition('type', 'kwe')
+      ->execute();
 
-  /**
-   * Content lock service.
-   *
-   * @var \Drupal\content_lock\ContentLock\ContentLock
-   */
-  private $lockService;
-
-  public function __construct(AccountProxy $currentUser) {
-    $this->entityStorage = \Drupal::entityTypeManager()->getStorage('node');
-    $this->lockService = \Drupal::service('content_lock');
-    $this->queue = \Drupal::service('queue')->get('kwe_queue_worker');
-    $this->currentUser = $currentUser;
+    $queued_ids = $this->getQueuedNodeIds();
+    $queue = $this->getQueue();
+    foreach ($node_ids as $node_id) {
+      if (!in_array((int) $node_id, $queued_ids, TRUE)) {
+        $queue->createItem((int) $node_id);
+      }
+    }
   }
 
+  /**
+   * Adds a KWE node to the queue unless it is already present.
+   */
+  public function enqueueNode(NodeInterface $node): void {
+    if ($this->synchronizing) {
+      return;
+    }
+
+    $node_id = (int) $node->id();
+    if (!in_array($node_id, $this->getQueuedNodeIds(), TRUE)) {
+      $this->getQueue()->createItem($node_id);
+    }
+  }
 
   /**
-   * {@inheritdoc}
+   * Processes all queue items that are currently available.
    */
-  public function processItem($nid) {
-
-    $node = $this->entityStorage->load($nid);
-
-    if (!($node instanceof NodeInterface)) {
-      return TRUE; // we can't do anything here: don't re-run.
-    }
-    /** @var \Drupal\node\NodeInterface $node */
-
-    // get DDB-URI
-    if (!$node->hasField("field_ddburi") || empty($node->get("field_ddburi")->value)) {
-      return TRUE; // we can't do anything here: don't re-run.
+  public function processQueue(): void {
+    $queue = $this->getQueue();
+    $items = [];
+    while ($item = $queue->claimItem(600)) {
+      $items[] = $item;
     }
 
-    // if node is locked, queue it again and do nothing
-    $is_locked = $this->lockService->fetchLock($nid, $node->language()->getId());
-    if ($is_locked) {
-      \Drupal::logger('ddbgo_cj')->warning("Node " . $node->id() . " is locked. ");
-      return FALSE; // we can do something there later
+    foreach ($items as $item) {
+      try {
+        if ($this->processItem((int) $item->data)) {
+          $queue->deleteItem($item);
+        }
+        else {
+          $queue->releaseItem($item);
+        }
+      }
+      catch (\Throwable $exception) {
+        $queue->releaseItem($item);
+        $this->logger->error('Could not update KWE node @id: @message', [
+          '@id' => $item->data,
+          '@message' => $exception->getMessage(),
+        ]);
+      }
     }
-    self::process($node, $this->currentUser->id());
+  }
+
+  /**
+   * Updates one node. Returns FALSE when a lock requires a later retry.
+   */
+  public function processItem(int $node_id): bool {
+    $node = $this->entityTypeManager->getStorage('node')->load($node_id);
+    if (!$node instanceof NodeInterface) {
+      return TRUE;
+    }
+
+    $ddb_uri = $node->hasField('field_ddburi') ? $node->get('field_ddburi')->value : NULL;
+    if (!is_string($ddb_uri) || !str_starts_with($ddb_uri, self::ORGANIZATION_URL)) {
+      $this->logger->warning('Node @id has no valid DDB organization URI.', ['@id' => $node_id]);
+      return TRUE;
+    }
+
+    if ($this->contentLock->fetchLock($node)) {
+      $this->logger->warning('Node @id is locked and will be retried later.', ['@id' => $node_id]);
+      return FALSE;
+    }
+
+    $api_url = self::API_URL . substr($ddb_uri, strlen(self::ORGANIZATION_URL)) . '/source/record';
+    $organization = $this->loadOrganization($node_id, $api_url);
+    if ($organization === NULL) {
+      return TRUE;
+    }
+
+    $this->updateNode($node, $organization, $api_url);
     return TRUE;
   }
 
-  private static function process(NodeInterface $node, $user_id) {
+  /**
+   * Returns all node IDs currently present in the queue.
+   *
+   * Claimed items are released immediately so their original state is kept.
+   *
+   * @return int[]
+   *   Queued node IDs.
+   */
+  private function getQueuedNodeIds(): array {
+    $queue = $this->getQueue();
+    $items = [];
+    $node_ids = [];
+    while ($item = $queue->claimItem(60)) {
+      $items[] = $item;
+      $node_ids[] = (int) $item->data;
+    }
 
-    // FROM: https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5
-    // TO: https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
+    foreach ($items as $item) {
+      $queue->releaseItem($item);
+    }
 
-    $url = str_replace("https://www.deutsche-digitale-bibliothek.de/organization/",
-        "https://api.deutsche-digitale-bibliothek.de/2/items/",
-        $node->get('field_ddburi')->value)
-      . "/source/record";
+    return array_values(array_unique($node_ids));
+  }
 
-    $xml = self::loadxmlfromurl($node->id(), trim($url));
-    // check if we got data from xml
-    if (!isset($xml) || $xml === FALSE) {
-      \Drupal::logger('ddbgo_cj')
-        ->error("Node " . $node->id() . " could not parse data from " . trim($url) . ". ");
+  /**
+   * Returns the configured KWE queue.
+   */
+  private function getQueue(): QueueInterface {
+    return $this->queueFactory->get(self::QUEUE_NAME);
+  }
+
+  /**
+   * Downloads and parses organization data from the trusted DDB API endpoint.
+   *
+   * @return array<string, string>|null
+   *   Parsed values, or NULL when the response cannot be processed.
+   */
+  private function loadOrganization(int $node_id, string $url): ?array {
+    try {
+      $response = $this->httpClient->request('GET', $url, [
+        'connect_timeout' => 3.0,
+        'headers' => ['Accept' => 'application/xml'],
+        'timeout' => 5.0,
+      ]);
+      $contents = (string) $response->getBody();
+
+      $previous = libxml_use_internal_errors(TRUE);
+      try {
+        $xml = simplexml_load_string($contents, \SimpleXMLElement::class, LIBXML_NONET);
+      }
+      finally {
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+      }
+
+      if (!$xml instanceof \SimpleXMLElement) {
+        throw new \RuntimeException('The API response is not valid XML.');
+      }
+
+      return $this->parseOrganization($xml);
+    }
+    catch (GuzzleException | \RuntimeException $exception) {
+      $this->logger->error('Could not load DDB data for node @id from @url: @message', [
+        '@id' => $node_id,
+        '@url' => $url,
+        '@message' => $exception->getMessage(),
+      ]);
+      return NULL;
+    }
+  }
+
+  /**
+   * Applies changed API values and creates a revision when necessary.
+   *
+   * @param array<string, string> $values
+   *   Parsed organization data.
+   */
+  private function updateNode(NodeInterface $node, array $values, string $url): void {
+    $changed = FALSE;
+    $field_map = [
+      'title' => 'displayName',
+      'field_ddb_id' => 'id',
+      'field_isil' => 'pid',
+      'field_kurzname' => 'abbreviation',
+      'field_plz' => 'postalCode',
+      'field_stadt' => 'city',
+      'field_telefonnummer' => 'telephone',
+      'field_email' => 'email',
+    ];
+
+    foreach ($field_map as $field_name => $value_key) {
+      if (isset($values[$value_key]) && $node->hasField($field_name)
+        && $node->get($field_name)->value !== $values[$value_key]) {
+        $node->set($field_name, $values[$value_key]);
+        $changed = TRUE;
+      }
+    }
+
+    if (isset($values['url']) && $node->hasField('field_url')
+      && $node->get('field_url')->uri !== $values['url']) {
+      $node->set('field_url', ['uri' => $values['url']]);
+      $changed = TRUE;
+    }
+
+    if (isset($values['street']) && $node->hasField('field_strasse')) {
+      $street = trim($values['street'] . ' ' . ($values['houseIdentifier'] ?? ''));
+      if ($node->get('field_strasse')->value !== $street) {
+        $node->set('field_strasse', $street);
+        $changed = TRUE;
+      }
+    }
+
+    $references = [
+      'field_bundesland' => ['bundesland', 'state'],
+      'field_land' => ['land', 'country'],
+      'field_sparte' => ['kultursparte_kwe', 'sector'],
+    ];
+    foreach ($references as $field_name => [$vocabulary, $value_key]) {
+      if (!isset($values[$value_key]) || !$node->hasField($field_name)) {
+        continue;
+      }
+      $term_id = $this->findTermId($vocabulary, $values[$value_key]);
+      if ($term_id !== NULL && (int) $node->get($field_name)->target_id !== $term_id) {
+        $node->set($field_name, ['target_id' => $term_id]);
+        $changed = TRUE;
+      }
+    }
+
+    if (!$changed) {
+      $this->logger->info('Node @id is already up to date.', ['@id' => $node->id()]);
       return;
     }
-    $results = self::parseddborg($xml);
 
-    // indicator if anything has been changed
-    $any_changes = FALSE;
-
-    // do the updates
-    // ==========================
-    if ($node->hasField('title') && isset($results['displayName']) && strcmp($node->get('title')->value, $results['displayName']) !== 0) {
-      $node->set('title', $results['displayName']);
-      $any_changes = TRUE;
+    if ($node->getEntityType()->isRevisionable()) {
+      $node->setNewRevision(TRUE);
+      $node->setRevisionLogMessage("Automatic update from '$url'.");
+      $node->setRevisionCreationTime($this->time->getRequestTime());
+      $node->setRevisionUserId((int) $this->currentUser->id());
     }
 
-    if ($node->hasField('field_ddb_id') && isset($results['id']) && strcmp($node->get('field_ddb_id')->value, $results['id']) !== 0) {
-      $node->set('field_ddb_id', $results['id']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_isil') && isset($results['pid']) && strcmp($node->get('field_isil')->value, $results['pid']) !== 0) {
-      $node->set('field_isil', $results['pid']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_kurzname') && isset($results['abbreviation']) && strcmp($node->get('field_kurzname')->value, $results['abbreviation']) !== 0) {
-      $node->set('field_kurzname', $results['abbreviation']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_plz') && isset($results['postalCode']) && strcmp($node->get('field_plz')->value, $results['postalCode']) !== 0) {
-      $node->set('field_plz', $results['postalCode']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_stadt') && isset($results['city']) && strcmp($node->get('field_stadt')->value, $results['city']) !== 0) {
-      $node->set('field_stadt', $results['city']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_telefonnummer') && isset($results['telephone']) && strcmp($node->get('field_telefonnummer')->value, $results['telephone']) !== 0) {
-      $node->set('field_telefonnummer', $results['telephone']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_email') && isset($results['email']) && strcmp($node->get('field_email')->value, $results['email']) !== 0) {
-      $node->set('field_email', $results['email']);
-      $any_changes = TRUE;
-    }
-
-    if ($node->hasField('field_url') && isset($results['url']) && strcmp($node->get('field_url')->uri, $results['url']) !== 0) {
-      $node->set('field_url', ['uri' => $results['url']]);
-      $any_changes = TRUE;
-    }
-
-    // street with no.
-    if ($node->hasField('field_strasse') && isset($results['street'])) {
-
-      $street = $results['street'];
-      // add street no. if there's any
-      if (isset($results['houseIdentifier'])) {
-        $street = $street . " " . $results['houseIdentifier'];
-      }
-
-      if (strcmp($node->get('field_strasse')->value, $street) !== 0) {
-        $node->set('field_strasse', $street);
-        $any_changes = TRUE;
-      }
-    }
-
-    // Bundesland: state - field_bundesland
-    // get term of Bundesland-URI in Drupal
-    if ($node->hasField('field_bundesland') && isset($results['state'])) {
-      $term_nids = \Drupal::entityQuery('taxonomy_term')
-        ->accessCheck(FALSE)
-        ->condition('vid', 'bundesland')
-        ->condition('field_uri', $results['state'], '=')
-        ->addMetaData('account', \Drupal\user\Entity\User::load(1))
-        ->execute();
-
-      // taxonomy term found?
-      if (count($term_nids) > 0) {
-        $term_id = current($term_nids);
-        if (isset($term_id) && $term_id !== $node->get('field_bundesland')->target_id) {
-          $node->set('field_bundesland', ['target_id' => $term_id]);
-          $any_changes = TRUE;
-        }
-      }
-    }
-
-    // Land: $results['country'] - field_land
-    // get term of Land-URI in Drupal
-    if ($node->hasField('field_land') && isset($results['country'])) {
-      $term_nids = \Drupal::entityQuery('taxonomy_term')
-        ->accessCheck(FALSE)
-        ->condition('vid', 'land')
-        ->condition('field_uri', $results['country'], '=')
-        ->addMetaData('account', \Drupal\user\Entity\User::load(1))
-        ->execute();
-
-      // taxonomy term found?
-      if (count($term_nids) > 0) {
-        $term_id = current($term_nids);
-        if (isset($term_id) && $term_id !== $node->get('field_land')->target_id) {
-          $node->set('field_land', ['target_id' => $term_id]);
-          $any_changes = TRUE;
-        }
-      }
-    }
-
-    // Sparte: $results['sector']	- field_sparte
-    if ($node->hasField('field_sparte') && isset($results['sector'])) {
-      $term_nids = \Drupal::entityQuery('taxonomy_term')
-        ->accessCheck(FALSE)
-        ->condition('vid', 'kultursparte_kwe')
-        ->condition('field_uri', $results['sector'], '=')
-        ->addMetaData('account', \Drupal\user\Entity\User::load(1))
-        ->execute();
-
-      // taxonomy term found?
-      if (count($term_nids) > 0) {
-        $term_id = current($term_nids);
-        if (isset($term_id) && $term_id !== $node->get('field_sparte')->target_id) {
-          $node->set('field_sparte', ['target_id' => $term_id]);
-          $any_changes = TRUE;
-        }
-      }
-    }
-    // ==========================
-
-    if ($any_changes) {
-      if ($node->getEntityType()->isRevisionable()) {
-        $node->setNewRevision(TRUE);
-        $node->setRevisionLogMessage("Automatic Update from '" . $url . "'.");
-        $node->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-        $node->setRevisionUserId($user_id);
-      }
+    $this->synchronizing = TRUE;
+    try {
       $node->save();
-      \Drupal::logger('ddbgo_cj')
-        ->info("Node " . $node->id() . " was successfully updated from " . $url . ". ");
     }
-    else {
-      \Drupal::logger('ddbgo_cj')
-        ->info("Node " . $node->id() . " is already up-to-date. ");
+    finally {
+      $this->synchronizing = FALSE;
     }
+    $this->logger->info('Node @id was updated from @url.', [
+      '@id' => $node->id(),
+      '@url' => $url,
+    ]);
   }
 
+  /**
+   * Finds a taxonomy term by vocabulary and URI.
+   */
+  private function findTermId(string $vocabulary, string $uri): ?int {
+    $ids = $this->entityTypeManager->getStorage('taxonomy_term')->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('vid', $vocabulary)
+      ->condition('field_uri', $uri)
+      ->range(0, 1)
+      ->execute();
+
+    $term_id = reset($ids);
+    return $term_id === FALSE ? NULL : (int) $term_id;
+  }
 
   /**
-   * Load data from an URL and return SimpleXMLElement.
+   * Extracts the supported organization fields from DDB XML.
    *
-   * @param $nid Needed for logging only
-   * @param $url URL to download
-   *
-  * @return \SimpleXMLElement|false Parsed XML document or FALSE on failure
+   * @return array<string, string>
+   *   Parsed values keyed by DDB field name.
    */
-  private static function loadxmlfromurl($nid = '<unknown>', $url) {
-    // check if url exists
-    $headers = get_headers($url);
-    if (strpos($headers[0], '404') === FALSE) {
-      try {
-        $opts = [
-          "http" => [
-            "method" => "GET",
-            "header" => "Accept: application/xml",
-            'timeout' => 3.0, // 3 sec. timeout
-          ],
-        ];
-        // get stream as XML
-        $context = stream_context_create($opts);
-        // parse xml
-        return simplexml_load_string(file_get_contents($url, FALSE, $context));
-      } catch (\Exception $e) {
-        \Drupal::logger('ddbgo_cj')
-          ->error("Error while download information from " . $url . ". Cannot update node " . $nid . ". " . $e->getMessage() . ". ");
+  private function parseOrganization(\SimpleXMLElement $xml): array {
+    $paths = [
+      'id' => '/*[local-name()="organization"]/*[local-name()="id"]',
+      'displayName' => '/*[local-name()="organization"]/*[local-name()="displayName"][@lang="deu"]',
+      'pid' => '/*[local-name()="organization"]/*[local-name()="pid"]',
+      'abbreviation' => '/*[local-name()="organization"]/*[local-name()="abbreviation"][@lang="deu"]',
+      'street' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="street"]',
+      'houseIdentifier' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="houseIdentifier"]',
+      'postalCode' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="postalCode"]',
+      'city' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="city"]/*[local-name()="label"][@lang="deu"]',
+      'state' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="state"]/@uri',
+      'country' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="country"]/@uri',
+      'sector' => '/*[local-name()="organization"]/*[local-name()="sector"]',
+      'telephone' => '/*[local-name()="organization"]/*[local-name()="telephone"]',
+      'email' => '/*[local-name()="organization"]/*[local-name()="email"]',
+      'url' => '/*[local-name()="organization"]/*[local-name()="url"]',
+    ];
+
+    $values = [];
+    foreach ($paths as $key => $path) {
+      $matches = $xml->xpath($path);
+      if ($matches !== FALSE && isset($matches[0])) {
+        $values[$key] = trim((string) $matches[0]);
       }
     }
-    else {
-      \Drupal::logger('ddbgo_cj')
-        ->warning($url . " seems to be NOT a valid DDB URI. Cannot update node " . $nid . ". ");
-    }
-
-    return FALSE;
-  }
-
-  /**
-   * Parse DDB-Organisation with xPath from XML document.
-   * e.g.
-   * https://api.deutsche-digitale-bibliothek.de/items/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5/source/record
-   *
-   * @param $xml Parsed XML document. See ddbgo_cj_loadxmlfromurl().
-   *
-   * @return array Key/Value array with following keys: id, displayName, pid,
-   * abbreviation, street, houseIdentifier, postalCode, city, state, country,
-   * sector, telephone, email, url.
-   */
-  private static function parseddborg($xml) {
-    $results = [];
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="id"]')) && isset($result[0])) {
-      $results['id'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="displayName"][@lang="deu"]')) && isset($result[0])) {
-      $results['displayName'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="pid"]')) && isset($result[0])) {
-      $results['pid'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="abbreviation"][@lang="deu"]')) && isset($result[0])) {
-      $results['abbreviation'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="street"]')) && isset($result[0])) {
-      $results['street'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="houseIdentifier"]')) && isset($result[0])) {
-      $results['houseIdentifier'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="postalCode"]')) && isset($result[0])) {
-      $results['postalCode'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="city"]/*[local-name()="label"][@lang="deu"]')) && isset($result[0])) {
-      $results['city'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="state"]/@uri')) && isset($result[0])) {
-      $results['state'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="country"]/@uri')) && isset($result[0])) {
-      $results['country'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="sector"]')) && isset($result[0])) {
-      $results['sector'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="telephone"]')) && isset($result[0])) {
-      $results['telephone'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="email"]')) && isset($result[0])) {
-      $results['email'] = trim($result[0]);
-    }
-
-    if (($result = $xml->xpath('/*[local-name()="organization"]/*[local-name()="url"]')) && isset($result[0])) {
-      $results['url'] = trim($result[0]);
-    }
-
-    return $results;
+    return $values;
   }
 
 }

@@ -1,4 +1,15 @@
 services:
+  logger.channel.ddbgo_cj:
+    parent: logger.channel_base
+    arguments: ['ddbgo_cj']
+
   ddbgo_cj.kwe_queue_worker:
     class: Drupal\ddbgo_cj\KweQueueWorker
-    arguments: ['@current_user']
+    arguments:
+      - '@entity_type.manager'
+      - '@content_lock'
+      - '@queue'
+      - '@current_user'
+      - '@http_client'
+      - '@logger.channel.ddbgo_cj'
+      - '@datetime.time'

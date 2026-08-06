@@ -35,8 +35,8 @@ final class DdbgoWorkspaceNavigationBlock extends BlockBase implements Container
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    private readonly ToolbarMenuManager $toolbarMenuManager,
-    private readonly AccountProxyInterface $currentUser,
+    protected readonly ToolbarMenuManager $toolbarMenuManager,
+    protected readonly AccountProxyInterface $currentUser,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

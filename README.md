@@ -8,23 +8,28 @@ DDBgo ist eine Datenbank der [Deutsche Digitalen Bibliothek](https://www.deutsch
 </p>
 
 ## Drupal modules
-### DDBgo Gin
-See folder [web/modules/custom/ddbgo_gin/](web/modules/custom/ddbgo_gin/).
-### DDBgo Cron Job
-See folder [web/modules/custom/ddbgo_cj/](web/modules/custom/ddbgo_cj/).
-### DDBgo Search
-See folder [web/modules/custom/ddbgo_search](web/modules/custom/ddbgo_search/).
+
+- **DDBgo Gin:** navigation, layout, and shared form behavior for Gin-based themes
+  ([source](web/modules/custom/ddbgo_gin/)).
+- **DDBgo Cron Job:** synchronization of cultural and knowledge institutions
+  with the DDB API ([source](web/modules/custom/ddbgo_cj/)).
+- **DDBgo Search:** DDBgo-specific Search API processors
+  ([source](web/modules/custom/ddbgo_search/)).
+
 ## Drupal patches
+
 See folder [patches/](patches/).
+
 1. [Changed_tokenSeparator_in_Select2_module.patch](patches/Changed_tokenSeparator_in_Select2_module.patch)
-2. [DDBgo-improvements_in_unique_field_ajax_module.patch](patches/DDBgo-improvements_in_unique_field_ajax_module.patch)
+2. [toolbar_menu-gin-compatibility.patch](patches/toolbar_menu-gin-compatibility.patch)
+3. [Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch](patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch)
    
    Discussion at: https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
 
 ## Composer
 DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Please make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
 
-### Run DDBgo localy
+### Run DDBgo locally
 1. Run `composer install` to install the project in your local directory
 2. Add file `.env` with the following configuration for Drupal's MySQL database connection (example file [.env.example](.env.example)).
    ```
@@ -45,7 +50,7 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
 3. Use [Drush](https://www.drush.org/) command to run local server: `vendor/bin/drush rs`
 4. Access via  http://127.0.0.1:8888
 
-If you start with a blank database you need to import all configuration with [Drush](https://www.drush.org/), which is stored in the folder [config/sync](config/sync). Therefor run `vendor/drush/drush/drush config:import`.
+If you start with a blank database, import the configuration from [config/sync](config/sync) with `vendor/bin/drush config:import`.
 
 ### Environment variables
 The following environment variables are used by DDBgo and can be set via `.env`.
@@ -69,7 +74,7 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
 
 ### Composer project maintenance
-1. Find update-able packages: 
+1. Find updateable packages:
    `composer outdated --direct`
 2. Show available package versions for a package: 
    `composer show --all drupal/facets`
@@ -79,20 +84,20 @@ The following environment variables are used by DDBgo and can be set via `.env`.
    `composer update drupal/facets` or `composer update 'drupal/facets:^1.4'`
 5. Update all packages to newest version: 
    `composer update`
-6. Update to new major version: 
-   `composer require drupal/core-recommended:^8.8 --update-with-dependencies --no-plugins`
+6. Update Drupal core and its locked dependencies:
+   `composer update drupal/core-* --with-all-dependencies`
 
 ### Drush commands
 1. Update Drupal's database: 
-   `vendor/drush/drush/drush updatedb`
+   `vendor/bin/drush updatedb`
 2. Rebuild cache: 
-   `vendor/drush/drush/drush cr`
+   `vendor/bin/drush cr`
 3. Runs PHP's built-in HTTP server (for development only): 
-   `vendor/drush/drush/drush rs`
+   `vendor/bin/drush rs`
 4. Export all configuration to folder [config/sync](config/sync): 
-   `vendor/drush/drush/drush config:export`.
+   `vendor/bin/drush config:export`.
 5. Import all configuration from folder [config/sync](config/sync): 
-   `vendor/drush/drush/drush config:import`.
+   `vendor/bin/drush config:import`.
 
 ## Docker
 Yes, there's a docker container for DDBgo available at GitHub: https://github.com/mbuechner/ddbgo/pkgs/container/ddbgo%2Fddbgo

@@ -1,0 +1,19 @@
+# Deny all requests from Apache 2.4+.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+
+# Deny all requests from Apache 2.0-2.2.
+<IfModule !mod_authz_core.c>
+  Deny from all
+</IfModule>
+
+Options -Indexes -ExecCGI -Includes -MultiViews
+SetHandler Drupal_Security_Do_Not_Remove_See_SA_2006_006
+<Files *>
+  SetHandler Drupal_Security_Do_Not_Remove_See_SA_2013_003
+</Files>
+
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
