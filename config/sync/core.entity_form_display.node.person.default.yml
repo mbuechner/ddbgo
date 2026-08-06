@@ -30,17 +30,14 @@ third_party_settings:
       region: content
       parent_name: ''
       weight: 0
-      format_type: html_element
+      format_type: details
       format_settings:
-        classes: fieldgroup_personen
+        classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        open: true
+        description: ''
         required_fields: false
 id: node.person.default
 targetEntityType: node

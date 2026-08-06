@@ -1,22 +1,2 @@
-keep_admin_menu: 0
-settings:
-  -
-    menu: kwe
-    role:
-      ddb_team: ddb_team
-      ddb_team_login_admin: ddb_team_login_admin
-      administrator: administrator
-      anonymous: '0'
-      authenticated: '0'
-    excluded_role:
-      anonymous: anonymous
-      authenticated: authenticated
-      ddb_team: '0'
-      ddb_team_login_admin: '0'
-      administrator: '0'
-    icons:
-      'menu_link_content:a1de9476-5888-42f9-95ce-3d3e7fcf3f98': edit-view
-      'views_view:views_suche_kwe_page_1': hamburger-view
-    admin_menu: use_global
-    actions:
-      remove_setting: 'Remove rule'
+keep_admin_menu: 1
+settings: {  }

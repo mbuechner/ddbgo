@@ -2,13 +2,17 @@ uuid: 381ef53d-e43f-4226-9aa8-9499aaff1bb5
 langcode: de
 status: true
 dependencies:
+  config:
+    - node.type.aggregator
+    - node.type.bestand
+    - node.type.kwe
+    - node.type.page
+    - node.type.person
   module:
     - file
     - key_auth
     - node_view_permissions
-    - noreqnewpass
     - system
-    - toolbar
     - toolbar_menu
     - userprotect
 _core:
@@ -19,8 +23,6 @@ weight: -9
 is_admin: false
 permissions:
   - 'access content'
-  - 'access toolbar'
-  - 'can change your own password'
   - 'delete own files'
   - 'use key authentication'
   - userprotect.account.edit

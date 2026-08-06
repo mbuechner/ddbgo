@@ -153,7 +153,6 @@ third_party_settings:
         speed: fast
     group_status:
       children:
-        - flag_bookmark
         - field_status
         - field_ablehnungsgrund
       label: Status
@@ -214,7 +213,7 @@ third_party_settings:
       label: KWE
       parent_name: ''
       region: content
-      weight: 0
+      weight: 1
       format_type: tabs
       format_settings:
         classes: ''
@@ -250,7 +249,8 @@ content:
   field_api_blacklisting_jira_tick:
     type: 'custom_formatters:jira_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -331,6 +331,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -341,7 +342,8 @@ content:
   field_ddburi:
     type: 'custom_formatters:label_als_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -413,7 +415,8 @@ content:
   field_isil:
     type: 'custom_formatters:isil_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -439,6 +442,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -476,6 +480,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -500,6 +505,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -512,10 +518,10 @@ content:
     label: hidden
     settings:
       shape: square
-      width: '50'
-      height: '50'
+      width: '150'
+      height: '80'
       opacity: true
-      data_attribute: false
+      data_attribute: true
     third_party_settings:
       empty_fields:
         handler: text
@@ -528,6 +534,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -540,6 +547,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text

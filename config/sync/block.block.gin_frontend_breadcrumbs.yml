@@ -1,0 +1,22 @@
+uuid: efb184f9-cf41-44b6-b5f2-9b492e8f148b
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - gin_frontend
+_core:
+  default_config_hash: y9X3xgCsO59pQyzNLzY1D3SDJJxCHILLWkpPnmuTJ2E
+id: gin_frontend_breadcrumbs
+theme: gin_frontend
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Pfadnavigation
+  label_display: '0'
+  provider: system
+visibility: {  }

@@ -17,7 +17,7 @@ third_party_settings:
     message_warning: 'Die Kultur- oder Wissenseinrichtung ist bereits vorhanden (siehe %link)!'
 name: KWE
 type: kwe
-description: 'Kultur- und Wissenseinrichtung'
+description: 'Kultur- oder Wissenseinrichtung, deren Stammdaten, Kontakte und Lieferbeziehungen in DDBgo verwaltet werden.'
 help: 'Bitte Namen von der DDB-Organisationenseite übernehmen, wenn vorhanden.'
 new_revision: true
 preview_mode: 0

@@ -97,4 +97,3 @@ permissions:
   - 'use text format basic_html'
   - userprotect.angemeldete_benutzer.bypass
   - userprotect.ddbgo_editor.bypass
-  - 'view page revisions'

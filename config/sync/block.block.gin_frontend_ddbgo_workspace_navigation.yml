@@ -1,0 +1,20 @@
+uuid: fae37806-dd47-4f9e-acad-e556d7560204
+langcode: de
+status: true
+dependencies:
+  module:
+    - ddbgo_gin
+  theme:
+    - gin_frontend
+id: gin_frontend_ddbgo_workspace_navigation
+theme: gin_frontend
+region: primary_menu
+weight: 0
+provider: null
+plugin: ddbgo_workspace_navigation
+settings:
+  id: ddbgo_workspace_navigation
+  label: DDBgo-Arbeitsnavigation
+  label_display: '0'
+  provider: ddbgo_gin
+visibility: {  }

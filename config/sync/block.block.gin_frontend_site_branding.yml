@@ -1,0 +1,23 @@
+uuid: 207dd0a4-2c41-4f93-88b4-55566ea3e8c5
+langcode: de
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - gin_frontend
+id: gin_frontend_site_branding
+theme: gin_frontend
+region: branding
+weight: -10
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: Website-Branding
+  label_display: ''
+  provider: system
+  use_site_logo: true
+  use_site_name: false
+  use_site_slogan: false
+visibility: {  }

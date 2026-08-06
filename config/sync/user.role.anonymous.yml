@@ -2,6 +2,8 @@ uuid: 2438f2aa-61b4-4826-a2fb-6fe2d6a468da
 langcode: de
 status: true
 dependencies:
+  config:
+    - node.type.page
   module:
     - node_view_permissions
     - system
@@ -14,4 +16,5 @@ is_admin: false
 permissions:
   - 'access content'
   - 'view any page content'
+  - 'view own page content'
   - 'view the administration theme'

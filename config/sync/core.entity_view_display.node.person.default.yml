@@ -19,9 +19,8 @@ dependencies:
     - user
 third_party_settings:
   field_group:
-    group_allgemeines:
+    group_person:
       children:
-        - flag_bookmark
         - field_titel
         - field_vorname
         - field_nachname
@@ -29,21 +28,18 @@ third_party_settings:
         - field_email
         - field_telefonnummer
         - field_bemerkung
-      label: Personen
+      label: Person
       parent_name: ''
       region: content
-      weight: 0
-      format_type: html_element
+      weight: 1
+      format_type: details
       format_settings:
-        classes: fieldgroup_personen
+        classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        open: true
+        description: ''
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -58,7 +54,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 25
+    weight: 8
     region: content
   field_email:
     type: email_mailto
@@ -69,30 +65,32 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 23
+    weight: 6
     region: content
   field_nachname:
     type: string
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    weight: 21
+    weight: 4
     region: content
   field_telefonnummer:
     type: 'custom_formatters:label_als_telefonnummer'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    weight: 24
+    weight: 7
     region: content
   field_titel:
     type: entity_reference_label
@@ -104,19 +102,20 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 19
+    weight: 2
     region: content
   field_vorname:
     type: string
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
-    weight: 20
+    weight: 3
     region: content
   field_weihnachtsmailing:
     type: entity_reference_label
@@ -128,12 +127,12 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 22
+    weight: 5
     region: content
   flag_bookmark:
     settings: {  }
     third_party_settings: {  }
-    weight: 18
+    weight: 0
     region: content
 hidden:
   langcode: true

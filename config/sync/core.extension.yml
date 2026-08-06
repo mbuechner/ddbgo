@@ -27,7 +27,6 @@ module:
   ddbgo_cj: 0
   ddbgo_gin: 0
   ddbgo_search: 0
-  ddbgo_workarounds: 0
   diff: 0
   dynamic_page_cache: 0
   editor: 0
@@ -49,6 +48,7 @@ module:
   flag_bookmark: 0
   flood_control: 0
   form_options_attributes: 0
+  gin_everywhere: 0
   gin_login: 0
   gin_toolbar: 0
   gin_toolbar_custom_menu: 0
@@ -96,11 +96,13 @@ module:
   serialization: 0
   smtp: 0
   system: 0
+  tagify: 0
   taxonomy: 0
   taxonomy_unique: 0
   term_merge: 0
   term_reference_change: 0
   text: 0
+  toastify: 0
   token: 0
   toolbar: 0
   toolbar_menu: 0
@@ -110,6 +112,7 @@ module:
   update: 0
   upgrade_status: 0
   user: 0
+  user_switcher: 0
   userprotect: 0
   views_data_export: 0
   views_ui: 0
@@ -121,6 +124,6 @@ module:
   standard: 1000
 theme:
   claro: 0
-  ddbgo_gin_frontend: 0
   gin: 0
+  gin_frontend: 0
 profile: standard

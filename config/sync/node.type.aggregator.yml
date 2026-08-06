@@ -17,7 +17,7 @@ third_party_settings:
     message_warning: 'Dieser Aggregator ist schon vorhanden (siehe %link)!'
 name: Aggregator
 type: aggregator
-description: null
+description: 'Partner oder Vermittler, der Bestände bündelt und deren Datenlieferung an die DDB koordiniert.'
 help: null
 new_revision: true
 preview_mode: 0

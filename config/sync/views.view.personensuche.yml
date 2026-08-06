@@ -339,7 +339,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: Telefonnummer
+          label: Tel.
           exclude: false
           alter:
             alter_text: false
@@ -400,6 +400,10 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
         ddbgo_person_kwe:
           id: ddbgo_person_kwe
           table: search_api_index_personen
@@ -408,7 +412,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api
-          label: 'Kultur- und Wisseneinrichtungen'
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -453,6 +457,11 @@ display:
           use_highlighting: false
           multi_type: separator
           multi_separator: ', '
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          filter_type: xss
         ddbgo_person_bestand:
           id: ddbgo_person_bestand
           table: search_api_index_personen

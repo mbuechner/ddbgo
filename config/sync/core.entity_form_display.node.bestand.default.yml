@@ -51,6 +51,7 @@ dependencies:
     - link
     - paragraphs
     - select2
+    - tagify
 third_party_settings:
   field_group:
     group_allgemeines:
@@ -394,14 +395,15 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_bestandstags:
-    type: select2_entity_reference
+    type: tagify_select_widget
     weight: 3
     region: content
     settings:
-      width: 100%
-      autocomplete: false
       match_operator: CONTAINS
       match_limit: 0
+      placeholder: ''
+      show_entity_id: 1
+      parent_selection: 1
     third_party_settings: {  }
   field_coding_da_vinci_bemerkung:
     type: string_textarea
