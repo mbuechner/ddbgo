@@ -1,0 +1,24 @@
+diff --git a/js/toolbar_menu.js b/js/toolbar_menu.js
+index da961a0..3d68307 100644
+--- a/js/toolbar_menu.js
++++ b/js/toolbar_menu.js
+@@ -49,6 +49,6 @@
+           Drupal.toolbar.views.menuVisualView =
+             new Drupal.toolbar.MenuVisualView({
+-              el: element.querySelectorAll('.toolbar-menu-administration'),
++              el: element.querySelectorAll('.toolbar-menu-container'),
+               model: menuModel,
+               strings: options.strings,
+             });
+diff --git a/toolbar_menu.module b/toolbar_menu.module
+index bbbd3f8..3fb4e5f 100644
+--- a/toolbar_menu.module
++++ b/toolbar_menu.module
+@@ -75,6 +75,6 @@ function toolbar_menu_toolbar() {
+           ],
+           '#attributes' => [
+-            'class' => ['toolbar-menu-administration'],
++            'class' => ['toolbar-menu-container'],
+           ],
+         ],
+       ],

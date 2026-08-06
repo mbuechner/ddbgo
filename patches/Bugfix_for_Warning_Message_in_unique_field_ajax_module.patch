@@ -2,7 +2,9 @@ diff --git a/unique_field_ajax.module b/unique_field_ajax.module
 index 1184c42..306d453 100644
 --- a/unique_field_ajax.module
 +++ b/unique_field_ajax.module
-@@ -132,6 +132,7 @@ function _unique_field_ajax_entity_form_builder(string $entity_type, EntityInter
+@@ -149,8 +149,9 @@ function _unique_field_ajax_entity_form_builder(
+     'per_lang',
+     'use_ajax',
      'case_sensitive',
      'no_enforce',
      'message',

@@ -8,8 +8,8 @@ DDBgo ist eine Datenbank der [Deutsche Digitalen Bibliothek](https://www.deutsch
 </p>
 
 ## Drupal modules
-### DDBgo Work-a-rounds
-See folder [web/modules/custom/ddbgo_workarounds/](web/modules/custom/ddbgo_workarounds/).
+### DDBgo Gin
+See folder [web/modules/custom/ddbgo_gin/](web/modules/custom/ddbgo_gin/).
 ### DDBgo Cron Job
 See folder [web/modules/custom/ddbgo_cj/](web/modules/custom/ddbgo_cj/).
 ### DDBgo Search

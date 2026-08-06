@@ -12,8 +12,8 @@ RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --opt
 RUN set -eu; \
     ver_esc="$(printf '%s' "$APP_VERSION" | sed 's/[\/&]/\\&/g')"; \
     com_esc="$(printf '%s' "$APP_COMMIT"  | sed 's/[\/&]/\\&/g')"; \
-    sed -i "s/{{version}}/${ver_esc}/g"  web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install; \
-    sed -i "s/{{commitid}}/${com_esc}/g" web/modules/custom/ddbgo_workarounds/ddbgo_workarounds.install
+    sed -i "s/{{version}}/${ver_esc}/g"  web/modules/custom/ddbgo_gin/ddbgo_gin.install; \
+    sed -i "s/{{commitid}}/${com_esc}/g" web/modules/custom/ddbgo_gin/ddbgo_gin.install
 
 FROM php:8.5-fpm-alpine
 LABEL org.opencontainers.image.authors="m.buechner@dnb.de"

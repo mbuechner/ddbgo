@@ -1,12 +1,24 @@
 {
-    "_hash": "9ff518c694fd9de1da5c97e0a382604d7eb02bef06f15317db5f1497b2c1c000",
+    "_hash": "3a865f2b76aaf19f1ce2b907004087c8f02774c7036a2600348b268e1ef5964b",
     "patches": {
         "drupal/select2": [
             {
                 "package": "drupal/select2",
                 "description": "Changed tokenSeparator in Select2 module",
                 "url": "patches/Changed_tokenSeparator_in_Select2_module.patch",
-                "sha256": "743d8bd9df66c1d951f985a3f4a12744f3b001e8b52e5a532ad737449d9d0d63",
+                "sha256": "377594f8fad8983235ab657d7c3a300994fe692d1c134abe4c876450a02ef536",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/toolbar_menu": [
+            {
+                "package": "drupal/toolbar_menu",
+                "description": "Fix Gin class conflict and empty menu links (3271757)",
+                "url": "patches/toolbar_menu-gin-compatibility.patch",
+                "sha256": "1335616b7ff9546d063d50574cfdfffe7367344012b468331438987e68a5ac1e",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
@@ -18,7 +30,7 @@
                 "package": "drupal/unique_field_ajax",
                 "description": "Fixing bug with warning message at Unique Field Ajax",
                 "url": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch",
-                "sha256": "535fac7b31b9444528a916da6eec7897ddd8f447ed7328a74dd5ef3466f8b256",
+                "sha256": "0088ec152d1b281ff21dbae814f91d4ba88719ad8234729ade0139a00dc1d1b2",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
