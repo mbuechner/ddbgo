@@ -54,6 +54,7 @@ function ddbgo_gin_theme(): array {
     'ddbgo_workspace_navigation' => [
       'variables' => [
         'items' => [],
+        'is_authenticated' => FALSE,
         'account_label' => NULL,
         'account_links' => [],
       ],

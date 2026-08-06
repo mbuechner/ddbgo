@@ -2,15 +2,37 @@
  * Theme-integrated DDBgo workspace navigation.
  */
 
-.gin-frontend__header {
+.gin-frontend .gin-frontend__header {
+  box-sizing: border-box;
+  height: 4rem;
   padding-block: 0;
   position: relative;
   z-index: 100;
 }
 
-.gin-frontend__header-inner {
-  min-height: 4rem;
+.gin-frontend .gin-frontend__header-inner {
+  height: 100%;
+  align-items: stretch;
   flex-wrap: nowrap;
+}
+
+.gin-frontend .gin-frontend__branding {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  height: 100%;
+}
+
+.gin-frontend .gin-frontend__branding .site-logo {
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.gin-frontend .gin-frontend__branding .site-logo img {
+  width: auto;
+  height: 2.5rem;
+  min-height: 0;
+  max-height: 2.5rem;
 }
 
 .gin-frontend__primary-menu {
@@ -41,9 +63,11 @@
   content: none;
 }
 
-.ddbgo-workspace-navigation__toggle {
+.ddbgo-workspace-navigation__toggle,
+.ddbgo-workspace-navigation__link {
   --ddbgo-workspace-icon: none;
   appearance: none;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -56,10 +80,12 @@
   font: inherit;
   font-size: var(--gin-font-size-s);
   cursor: pointer;
+  text-decoration: none;
   white-space: nowrap;
 }
 
-.ddbgo-workspace-navigation__toggle::before {
+.ddbgo-workspace-navigation__toggle::before,
+.ddbgo-workspace-navigation__link::before {
   content: "";
   flex: 0 0 1rem;
   width: 1rem;
@@ -69,9 +95,34 @@
   mask: var(--ddbgo-workspace-icon) center / contain no-repeat;
 }
 
+/*
+ * Gin Frontend gives every primary-menu link a larger, semibold treatment.
+ * Keep the direct guest login link identical to the account toggle instead.
+ */
+.gin-frontend__primary-menu .ddbgo-workspace-navigation__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 4rem;
+  padding: 0.75rem 0.85rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--gin-color-text-light);
+  font: inherit;
+  font-size: var(--gin-font-size-s);
+  font-weight: var(--gin-font-weight-normal, 400);
+  line-height: normal;
+}
+
 .ddbgo-workspace-navigation__toggle:hover,
 .ddbgo-workspace-navigation__toggle:focus,
 .ddbgo-workspace-navigation__toggle:focus-visible,
+.ddbgo-workspace-navigation__link:hover,
+.ddbgo-workspace-navigation__link:focus,
+.ddbgo-workspace-navigation__link:focus-visible,
 .ddbgo-workspace-navigation__item.is-open > .ddbgo-workspace-navigation__toggle,
 .ddbgo-workspace-navigation__item.has-active-link > .ddbgo-workspace-navigation__toggle {
   background: var(--gin-color-primary-light);
@@ -177,20 +228,28 @@
   --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/gear.svg");
 }
 
-.ddbgo-workspace-navigation__toggle--account {
+.ddbgo-workspace-navigation__toggle--account,
+.ddbgo-workspace-navigation__link--account {
   --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/circle-user.svg");
 }
 
 @media (max-width: 900px) {
-  .gin-frontend__header-inner {
+  /* Keep branding and navigation in the same 64px row at every width. */
+  .gin-frontend .gin-frontend__header-inner {
     align-items: stretch;
-    flex-direction: column;
+    flex-direction: row;
     gap: 0;
     padding-inline: var(--gin-spacing-m);
   }
 
-  .ddbgo-workspace-navigation {
+  .gin-frontend .gin-frontend__primary-menu,
+  .gin-frontend .ddbgo-workspace-navigation {
+    min-width: 0;
+  }
+
+  .gin-frontend .ddbgo-workspace-navigation {
     overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .ddbgo-workspace-navigation__list,

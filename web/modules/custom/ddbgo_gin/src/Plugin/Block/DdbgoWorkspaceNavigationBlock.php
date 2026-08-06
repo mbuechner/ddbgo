@@ -58,7 +58,7 @@ final class DdbgoWorkspaceNavigationBlock extends BlockBase implements Container
    * {@inheritdoc}
    */
   protected function blockAccess(AccountInterface $account): AccessResultInterface {
-    return AccessResult::allowedIf($account->isAuthenticated())
+    return AccessResult::allowed()
       ->addCacheContexts(['user.roles:authenticated']);
   }
 
@@ -66,33 +66,36 @@ final class DdbgoWorkspaceNavigationBlock extends BlockBase implements Container
    * {@inheritdoc}
    */
   public function build(): array {
-    $elements = $this->toolbarMenuManager->getToolbarMenuElements();
-    uasort($elements, static fn ($a, $b): int => $a->weight() <=> $b->weight());
-
+    $is_authenticated = $this->currentUser->isAuthenticated();
+    $login_label = $this->t('Login', [], ['context' => 'DDBgo workspace navigation']);
     $items = [];
-    $cache_tags = ['toolbar_menu'];
-    foreach ($elements as $element_id => $element) {
-      $menu = $element->loadMenu();
-      if ($menu === NULL) {
-        continue;
-      }
+    $cache_tags = [];
 
-      // Reuse Toolbar Menu's own tree builder and Gin's toolbar menu template.
-      $tray = ToolbarMenuPrerender::prerenderToolbarTray(['#id' => $menu->id()]);
-      $items[] = [
-        'id' => $element_id,
-        'label' => $element->getDisplayLabel(),
-        'menu' => $tray['toolbar_menu_' . $menu->id()],
-      ];
-      $cache_tags = Cache::mergeTags($cache_tags, $element->getCacheTags());
-      $cache_tags = Cache::mergeTags($cache_tags, $menu->getCacheTags());
+    if ($is_authenticated) {
+      $elements = $this->toolbarMenuManager->getToolbarMenuElements();
+      uasort($elements, static fn ($a, $b): int => $a->weight() <=> $b->weight());
+      $cache_tags = ['toolbar_menu'];
+
+      foreach ($elements as $element_id => $element) {
+        $menu = $element->loadMenu();
+        if ($menu === NULL) {
+          continue;
+        }
+
+        // Reuse Toolbar Menu's own tree builder and Gin's toolbar menu template.
+        $tray = ToolbarMenuPrerender::prerenderToolbarTray(['#id' => $menu->id()]);
+        $items[] = [
+          'id' => $element_id,
+          'label' => $element->getDisplayLabel(),
+          'menu' => $tray['toolbar_menu_' . $menu->id()],
+        ];
+        $cache_tags = Cache::mergeTags($cache_tags, $element->getCacheTags());
+        $cache_tags = Cache::mergeTags($cache_tags, $menu->getCacheTags());
+      }
     }
 
-    return [
-      '#theme' => 'ddbgo_workspace_navigation',
-      '#items' => $items,
-      '#account_label' => $this->currentUser->getDisplayName(),
-      '#account_links' => [
+    $account_links = $is_authenticated
+      ? [
         'account' => [
           '#type' => 'link',
           '#title' => $this->t('My account'),
@@ -103,12 +106,34 @@ final class DdbgoWorkspaceNavigationBlock extends BlockBase implements Container
           '#title' => $this->t('Log out'),
           '#url' => Url::fromRoute('user.logout'),
         ],
-      ],
+      ]
+      : [
+        'login' => [
+          '#type' => 'link',
+          '#title' => $login_label,
+          '#url' => Url::fromRoute('user.login'),
+          '#attributes' => [
+            'class' => [
+              'ddbgo-workspace-navigation__link',
+              'ddbgo-workspace-navigation__link--account',
+            ],
+          ],
+        ],
+      ];
+
+    return [
+      '#theme' => 'ddbgo_workspace_navigation',
+      '#items' => $items,
+      '#is_authenticated' => $is_authenticated,
+      '#account_label' => $is_authenticated ? $this->currentUser->getDisplayName() : $login_label,
+      '#account_links' => $account_links,
       '#attached' => [
         'library' => ['ddbgo_gin/workspace_navigation'],
       ],
       '#cache' => [
-        'contexts' => ['route', 'user', 'user.permissions'],
+        'contexts' => $is_authenticated
+          ? ['route', 'user', 'user.permissions']
+          : ['route', 'user.roles:authenticated'],
         'tags' => $cache_tags,
       ],
     ];

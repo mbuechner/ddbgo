@@ -43,6 +43,9 @@
 
         navigation.querySelectorAll('.ddbgo-workspace-navigation__item').forEach((item) => {
           const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
+          if (!toggle) {
+            return;
+          }
 
           if (supportsHover) {
             item.addEventListener('mouseenter', () => openItem(navigation, item));
