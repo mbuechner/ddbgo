@@ -2,3 +2,25 @@ toolbar_icons:
   css:
     theme:
       css/ddbgo_gin.toolbar-icons.css: {}
+  js:
+    js/ddbgo_gin.toolbar-navigation.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+workspace_navigation:
+  css:
+    theme:
+      css/ddbgo_gin.workspace-navigation.css: {}
+  js:
+    js/ddbgo_gin.workspace-navigation.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+frontend_layout:
+  css:
+    theme:
+      css/ddbgo_gin.frontend-layout.css: {}
+  dependencies:
+    - gin_frontend/global

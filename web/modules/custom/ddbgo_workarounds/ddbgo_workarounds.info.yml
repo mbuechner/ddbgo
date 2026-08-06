@@ -1,9 +1,0 @@
-name: DDBgo Work-a-Rounds
-type: module
-description: Some smaller work-a-rounds to enable some stuff for DDBgo
-dependencies:
-package: ddbgo
-version: '1.1'
-core_version_requirement: ^10 || ^11
-project: 'ddbgo_workarounds'
-datestamp: 1583236883

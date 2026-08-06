@@ -2,21 +2,165 @@
 
 /**
  * @file
- * Gin toolbar icon overrides for selected toolbar menu entries.
+ * DDBgo integration and behavior for Gin-based themes.
  */
+
+use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\String\AbstractUnicodeString;
+use Symfony\Component\String\UnicodeString;
 
 /**
  * Implements hook_page_attachments().
  */
 function ddbgo_gin_page_attachments(array &$attachments): void {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $is_gin_based_theme = $active_theme->getName() === 'gin' || isset($active_theme->getBaseThemeExtensions()['gin']);
+  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
+    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
+
+  if ($is_gin_frontend) {
+    $attachments['#attached']['library'][] = 'ddbgo_gin/frontend_layout';
+  }
+
   if (
-    \Drupal::service('theme.manager')->getActiveTheme()->getName() !== 'gin' ||
+    !$is_gin_based_theme ||
     !\Drupal::currentUser()->hasPermission('access toolbar')
   ) {
     return;
   }
 
   $attachments['#attached']['library'][] = 'ddbgo_gin/toolbar_icons';
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ *
+ * The configured workspace menus are rendered in Gin Frontend's header. Keep
+ * the Drupal administration toolbar focused on administration links only.
+ */
+function ddbgo_gin_toolbar_alter(array &$items): void {
+  foreach (array_keys($items) as $key) {
+    if (str_starts_with($key, 'toolbar_menu_')) {
+      unset($items[$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ddbgo_gin_theme(): array {
+  return [
+    'ddbgo_workspace_navigation' => [
+      'variables' => [
+        'items' => [],
+        'account_label' => NULL,
+        'account_links' => [],
+      ],
+      'template' => 'ddbgo-workspace-navigation',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * Gin provides route-specific page templates (for example page--node) that
+ * otherwise take precedence over Gin Frontend's page template and omit its
+ * branding and navigation regions.
+ */
+function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
+  if (isset($theme_registry['page'])) {
+    $theme_registry['page__gin_frontend'] = $theme_registry['page'];
+
+    // Gin ships a dedicated page--node-add template which bypasses Gin
+    // Frontend's chrome. Point that exact suggestion at the active frontend
+    // page implementation as well.
+    $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+    $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
+      || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
+
+    if ($is_gin_frontend && isset($theme_registry['page__node_add'])) {
+      $theme_registry['page__node_add'] = $theme_registry['page'];
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for page templates.
+ */
+function ddbgo_gin_theme_suggestions_page_alter(array &$suggestions): void {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
+    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
+
+  if ($is_gin_frontend) {
+    $suggestions[] = 'page__gin_frontend';
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ *
+ * Prevents browsers from suggesting unrelated previous searches in the
+ * exposed full-text query fields used throughout DDBgo.
+ */
+function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (isset($form['query'])) {
+    $form['query']['#attributes']['autocomplete'] = 'off';
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Keeps submitted string values normalized to Unicode NFC and free of
+ * accidental leading or trailing whitespace before form-specific validation.
+ */
+function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $validators = $form['#validate'] ?? [];
+
+  // Form API expects a list, but custom forms occasionally provide one
+  // callback directly. Preserve that callback while normalizing the shape.
+  if (is_callable($validators)) {
+    $validators = [$validators];
+  }
+  elseif (!is_array($validators)) {
+    $validators = [];
+  }
+
+  if (!in_array('ddbgo_gin_normalize_form_values', $validators, TRUE)) {
+    array_unshift($validators, 'ddbgo_gin_normalize_form_values');
+  }
+
+  $form['#validate'] = $validators;
+}
+
+/**
+ * Normalizes all submitted form values before the form's own validators run.
+ */
+function ddbgo_gin_normalize_form_values(array &$form, FormStateInterface $form_state): void {
+  foreach ($form_state->getValues() as $key => $value) {
+    ddbgo_gin_normalize_form_value($value);
+    $form_state->setValue($key, $value);
+  }
+}
+
+/**
+ * Recursively trims and NFC-normalizes string values.
+ */
+function ddbgo_gin_normalize_form_value(mixed &$value): void {
+  if (is_array($value)) {
+    foreach ($value as &$nested_value) {
+      ddbgo_gin_normalize_form_value($nested_value);
+    }
+  }
+  elseif (is_string($value)) {
+    $value = (new UnicodeString($value))
+      ->normalize(AbstractUnicodeString::NFC)
+      ->trim()
+      ->toString();
+  }
 }
 
 /**

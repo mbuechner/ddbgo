@@ -1,6 +1,6 @@
 name: DDBgo Gin
 type: module
-description: Overrides Gin toolbar icons for selected toolbar menu entries.
+description: Integrates DDBgo navigation, layout, and shared form behavior with Gin-based themes.
 package: ddbgo
 core_version_requirement: ^10 || ^11
 dependencies:

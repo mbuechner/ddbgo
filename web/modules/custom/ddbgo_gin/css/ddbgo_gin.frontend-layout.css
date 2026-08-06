@@ -1,0 +1,358 @@
+/**
+ * Full-width layout for the DDBgo frontend.
+ *
+ * Gin Frontend centers its chrome and content in a 1200px container by
+ * default. DDBgo uses wide forms and tabular views, so every page region uses
+ * the complete viewport width while retaining Gin's responsive side padding.
+ */
+
+.gin-frontend.gin-frontend {
+  --gin-frontend-max-width: none;
+}
+
+.gin-frontend .gin-frontend__header-inner,
+.gin-frontend .gin-frontend__breadcrumb,
+.gin-frontend .gin-frontend__page-header,
+.gin-frontend .gin-frontend__main,
+.gin-frontend .gin-frontend__pre-footer,
+.gin-frontend .gin-frontend__footer-inner {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* Keep floating table headers at the viewport edge after branding scrolls. */
+.gin-frontend table.gin--sticky-table-header {
+  top: 0 !important;
+  inset-block-start: 0 !important;
+}
+
+/*
+ * Present read-only field output inside details as scannable label/value rows.
+ * The DOM order and native details/summary interaction remain unchanged.
+ */
+.gin-frontend details.claro-details > .claro-details__wrapper > .claro-details__description {
+  max-width: 80ch;
+  margin: 0 0 var(--gin-spacing-m);
+  padding-block-end: var(--gin-spacing-m);
+  border-block-end: 1px solid var(--gin-border-color);
+  font-size: var(--gin-font-size-s);
+  line-height: 1.5;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gin-spacing-xxs) var(--gin-spacing-l);
+  align-items: start;
+  margin: 0;
+  padding-block: var(--gin-spacing-s);
+  border-block-end: 1px solid var(--gin-border-color);
+  font-size: var(--gin-font-size-s);
+  line-height: 1.5;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field:last-child {
+  border-block-end: 0;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field::after {
+  display: none;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__label,
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__item,
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+  float: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__label {
+  color: var(--gin-color-title);
+  font-weight: var(--gin-font-weight-semibold, 600);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__item,
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+  color: var(--gin-color-text);
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+  display: grid;
+  gap: var(--gin-spacing-xxs);
+}
+
+@media (min-width: 48em) {
+  .gin-frontend details.claro-details > .claro-details__wrapper > .field {
+    grid-template-columns: minmax(8rem, 28%) minmax(0, 1fr);
+  }
+}
+
+/* Full-width, consistently sized form controls inside details. */
+.gin-frontend details.claro-details {
+  --ddbgo-details-control-height: calc(var(--input-padding-vertical) * 2 + var(--input-line-height));
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .form-item,
+.gin-frontend details.claro-details > .claro-details__wrapper .form-wrapper {
+  min-width: 0;
+  max-width: none;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper input.form-element:not(.form-boolean):not([type="button"]):not([type="color"]):not([type="hidden"]):not([type="image"]):not([type="reset"]):not([type="submit"]),
+.gin-frontend details.claro-details > .claro-details__wrapper select.form-element:not(.select2-hidden-accessible),
+.gin-frontend details.claro-details > .claro-details__wrapper textarea.form-element,
+.gin-frontend details.claro-details > .claro-details__wrapper .form-textarea-wrapper,
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single,
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--multiple {
+  color: var(--gin-color-text);
+  background-color: var(--gin-bg-input);
+  border: 1px solid var(--gin-border-color-form-element);
+  border-radius: var(--gin-border-m);
+  transition: var(--gin-transition);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container:not(.select2-container--disabled) .select2-selection:hover {
+  border-color: var(--gin-color-text);
+  box-shadow: inset 0 0 0 1px var(--gin-color-text);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--focus .select2-selection,
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--open .select2-selection,
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection:focus {
+  border-color: var(--gin-color-focus-border);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--disabled .select2-selection {
+  color: var(--gin-color-disabled);
+  background-color: var(--gin-color-disabled-bg) !important;
+  border-color: var(--gin-color-disabled-border);
+  box-shadow: none;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single {
+  box-sizing: border-box;
+  height: var(--ddbgo-details-control-height);
+  min-height: var(--ddbgo-details-control-height);
+  padding-block: calc(var(--input-padding-vertical) - 1px);
+  padding-inline: var(--input-padding-horizontal);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single .select2-selection__rendered {
+  color: inherit;
+  padding-inline: 0 2rem;
+  line-height: var(--input-line-height);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single .select2-selection__arrow {
+  inset-block-start: 0;
+  height: 100%;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--multiple {
+  box-sizing: border-box;
+  min-height: var(--ddbgo-details-control-height);
+  padding-block: calc(var(--input-padding-vertical) - 1px);
+  padding-inline: var(--input-padding-horizontal);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-search--inline .select2-search__field {
+  height: var(--input-line-height);
+  margin: 0;
+  line-height: var(--input-line-height);
+}
+
+/* Compact, state-aware bookmark action above the details on full node pages. */
+.gin-frontend .node--view-mode-full .flag-bookmark {
+  display: grid;
+  justify-items: end;
+  gap: var(--gin-spacing-xxs);
+  width: max-content;
+  max-width: 100%;
+  margin-block: 0 var(--gin-spacing-xs);
+  margin-inline-start: auto;
+}
+
+.gin-frontend .node--view-mode-full .flag-bookmark a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gin-spacing-xxs);
+  min-height: 2rem;
+  padding: var(--gin-spacing-xxs) var(--gin-spacing-xs);
+  border-radius: var(--gin-border-xs);
+  color: var(--gin-color-text-light);
+  font-size: var(--gin-font-size-xxs);
+  font-weight: var(--gin-font-weight-normal, 400);
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.gin-frontend .node--view-mode-full .flag-bookmark a::before {
+  content: "";
+  flex: 0 0 .75rem;
+  width: .75rem;
+  height: .75rem;
+  background-color: currentColor;
+  -webkit-mask: url("/libraries/fontawesome/svgs/regular/bookmark.svg") center / contain no-repeat;
+  mask: url("/libraries/fontawesome/svgs/regular/bookmark.svg") center / contain no-repeat;
+}
+
+.gin-frontend .node--view-mode-full .flag-bookmark.action-unflag a::before {
+  -webkit-mask-image: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
+  mask-image: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
+}
+
+.gin-frontend .node--view-mode-full .flag-bookmark a:hover,
+.gin-frontend .node--view-mode-full .flag-bookmark a:focus-visible {
+  background: var(--gin-color-primary-light);
+  color: var(--gin-color-primary-active);
+  text-decoration: none;
+}
+
+/* AJAX feedback remains above the details and is also announced by Flag. */
+.gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--gin-spacing-xs);
+  box-sizing: border-box;
+  max-width: min(30rem, 100%);
+  margin: 0;
+  padding: var(--gin-spacing-xs) var(--gin-spacing-s);
+  border: 1px solid var(--gin-color-green);
+  border-radius: var(--gin-border-s);
+  background: var(--gin-bg-green-light);
+  color: var(--gin-color-text);
+  font-size: var(--gin-font-size-xs);
+  line-height: 1.4;
+  text-align: start;
+  overflow-wrap: anywhere;
+  animation: ddbgo-flag-message 4s ease both;
+}
+
+.gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message::before {
+  content: "";
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-block-start: .1em;
+  background-color: var(--gin-color-green);
+  -webkit-mask: url("/libraries/fontawesome/svgs/solid/circle-check.svg") center / contain no-repeat;
+  mask: url("/libraries/fontawesome/svgs/solid/circle-check.svg") center / contain no-repeat;
+}
+
+@keyframes ddbgo-flag-message {
+  0% {
+    opacity: 0;
+  }
+
+  10%,
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ddbgo-flag-message-reduced-motion {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message {
+    animation-name: ddbgo-flag-message-reduced-motion;
+  }
+}
+
+/*
+ * Gin normally subtracts its fixed sidebar from the page width. Gin Frontend
+ * does not render the matching edit-form page wrapper, so use an explicit
+ * full-width grid: the main form fills the available space and the populated
+ * metadata sidebar occupies the right-hand column within that same width.
+ */
+body.gin--edit-form.gin--edit-form {
+  --gin-sidebar-offset: 0px;
+  padding-inline-end: 0;
+}
+
+body.gin--edit-form .gin-frontend .layout-node-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gin-spacing-l);
+  align-items: start;
+}
+
+body.gin--edit-form .gin-frontend .layout-region-node-main,
+body.gin--edit-form .gin-frontend .layout-region-node-footer,
+body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+  box-sizing: border-box;
+  float: none;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding-inline: 0;
+}
+
+body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+  position: static;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+}
+
+body.gin--edit-form .gin-frontend #gin-sidebar-draggable,
+body.gin--edit-form .gin-frontend .meta-sidebar__close {
+  display: none;
+}
+
+@media (min-width: 64em) {
+  body.gin--edit-form .gin-frontend .layout-node-form {
+    grid-template-columns:
+      minmax(0, 1fr)
+      clamp(
+        var(--gin-sidebar-min-width),
+        var(--gin-sidebar-width),
+        var(--gin-sidebar-max-width)
+      );
+  }
+
+  body.gin--edit-form .gin-frontend .layout-region-node-main,
+  body.gin--edit-form .gin-frontend .layout-region-node-footer {
+    grid-column: 1;
+  }
+
+  body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    inset-block-start: calc(var(--gin-toolbar-y-offset) + var(--gin-spacing-l));
+    max-height: calc(100vh - var(--gin-toolbar-y-offset) - var(--gin-spacing-xxl));
+    overflow-y: auto;
+    background: var(--gin-bg-layer);
+    border: 1px solid var(--gin-border-color-layer);
+    border-radius: var(--gin-border-m);
+  }
+
+  body.gin--edit-form .gin-frontend #gin-sidebar-draggable {
+    display: block;
+  }
+}

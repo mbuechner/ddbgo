@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Theme-integrated navigation for the configured Toolbar Menu entries.
+ */
+#}
+{% if items %}
+  <nav class="ddbgo-workspace-navigation" aria-label="{{ 'DDBgo workspace navigation'|t }}">
+    <ul class="ddbgo-workspace-navigation__list">
+      {% for item in items %}
+        {% set panel_id = 'ddbgo-workspace-navigation-' ~ item.id|clean_id %}
+        <li class="ddbgo-workspace-navigation__item ddbgo-workspace-navigation__item--{{ item.id|clean_class }}">
+          <button class="ddbgo-workspace-navigation__toggle toolbar-icon-toolbar-menu-{{ item.id|clean_class }}" type="button" aria-expanded="false" aria-controls="{{ panel_id }}">
+            <span>{{ item.label }}</span>
+          </button>
+          <div id="{{ panel_id }}" class="ddbgo-workspace-navigation__dropdown" hidden>
+            {{ item.menu }}
+          </div>
+        </li>
+      {% endfor %}
+      <li class="ddbgo-workspace-navigation__item ddbgo-workspace-navigation__item--account">
+        <button class="ddbgo-workspace-navigation__toggle ddbgo-workspace-navigation__toggle--account" type="button" aria-expanded="false" aria-controls="ddbgo-workspace-navigation-account">
+          <span>{{ account_label }}</span>
+        </button>
+        <div id="ddbgo-workspace-navigation-account" class="ddbgo-workspace-navigation__dropdown" hidden>
+          <ul class="toolbar-menu">
+            {% for link in account_links %}
+              <li>{{ link }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+{% endif %}

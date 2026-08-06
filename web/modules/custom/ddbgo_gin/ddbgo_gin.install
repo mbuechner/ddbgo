@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and requirements hooks for the DDBgo Gin module.
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+function ddbgo_gin_requirements(string $phase): array {
+  if ($phase !== 'runtime') {
+    return [];
+  }
+
+  return [
+    'ddbgo_gin' => [
+      'title' => t('DDBgo {{version}}'),
+      'value' => t('Git Tag: <a href="https://github.com/mbuechner/ddbgo/releases/tag/{{version}}">{{version}}</a>; Git Commit: <a href="https://github.com/mbuechner/ddbgo/commit/{{commitid}}">{{commitid}}</a>'),
+      'description' => t('DDBgo is installed correctly (%module).', [
+        '%module' => \Drupal::service('extension.list.module')->getPath('ddbgo_gin') . '/ddbgo_gin.module',
+      ]),
+      'severity' => REQUIREMENT_INFO,
+    ],
+  ];
+}
