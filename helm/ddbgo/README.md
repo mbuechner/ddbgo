@@ -388,6 +388,10 @@ Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
   `/health` direkt auf Port 8080 des Pods. Die Probe sendet standardmäßig
   `localhost` als `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage
   akzeptiert. Route, öffentliches DNS und Reverse Proxy sind nicht beteiligt.
+  Ist HTTP Basic Auth aktiviert, wechseln Startup-, Readiness- und
+  Liveness-Probe automatisch auf einen lokalen `curl`-Aufruf mit den Secret-
+  basierten Zugangsdaten. Dadurch wird weiterhin der echte Nginx-/Drupal-Endpunkt
+  geprüft, ohne an der Authentifizierung mit HTTP 401 zu scheitern.
 - Redis verlangt bei allen drei Probes die exakte authentifizierte Antwort
   `PONG`. Das Passwort erhält der Client über die Umgebungsvariable
   `REDISCLI_AUTH` aus dem Redis-Secret. Eine Redis-Fehlerantwort mit Exit-Code 0

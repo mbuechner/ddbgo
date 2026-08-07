@@ -102,6 +102,29 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- if or .Values.drupal.basicAuth.existingSecret (and .Values.drupal.env.HTPASSWD_USER .Values.drupal.env.HTPASSWD_PWD) -}}true{{- else -}}false{{- end -}}
 {{- end }}
 
+{{/* Use credentials for local Drupal probes whenever Nginx Basic Auth is enabled. */}}
+{{- define "ddbgo.drupalProbeHandler" -}}
+{{- if eq (include "ddbgo.httpAuthEnabled" .) "true" -}}
+exec:
+  command:
+    - /bin/sh
+    - -ec
+    - |-
+      exec curl --fail --silent --show-error \
+        --user "${HTPASSWD_USER}:${HTPASSWD_PWD}" \
+        --output /dev/null \
+        "${DDBGO_HEALTHCHECK_URL}"
+{{- else -}}
+httpGet:
+  path: {{ .Values.drupal.probes.path | quote }}
+  port: http
+  scheme: HTTP
+  httpHeaders:
+    - name: Host
+      value: {{ .Values.drupal.probes.hostHeader | quote }}
+{{- end -}}
+{{- end }}
+
 {{- define "ddbgo.redisSecretName" -}}
 {{- default (include "ddbgo.redisName" .) .Values.redis.secret.existingSecret }}
 {{- end }}

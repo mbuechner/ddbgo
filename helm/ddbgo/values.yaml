@@ -141,6 +141,8 @@ drupal:
   probes:
     # Nicht gecachter Drupal-Endpunkt. Kubernetes verbindet direkt mit Port 8080
     # des Pods; weder Route noch öffentliches DNS oder Reverse Proxy sind beteiligt.
+    # Bei aktivierter HTTP Basic Auth verwenden alle drei Probes automatisch die
+    # Zugangsdaten aus dem HTTP-Auth-Secret für einen lokalen curl-Aufruf.
     path: /health
     # HTTP-Host-Header für den lokalen Request. Nicht auf externalHost setzen:
     # localhost ist bereits Bestandteil der automatisch erzeugten Trusted Hosts.

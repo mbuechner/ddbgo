@@ -175,6 +175,8 @@ spec:
                 secretKeyRef:
                   name: {{ include "ddbgo.httpAuthSecretName" . }}
                   key: HTPASSWD_PWD
+            - name: DDBGO_HEALTHCHECK_URL
+              value: {{ printf "http://localhost:8080%s" .Values.drupal.probes.path | quote }}
             {{- end }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_PASSWORD
@@ -184,35 +186,17 @@ spec:
                   key: password
             {{- end }}
           startupProbe:
-            httpGet:
-              path: {{ .Values.drupal.probes.path | quote }}
-              port: http
-              scheme: HTTP
-              httpHeaders:
-                - name: Host
-                  value: {{ .Values.drupal.probes.hostHeader | quote }}
+            {{- include "ddbgo.drupalProbeHandler" . | nindent 12 }}
             periodSeconds: {{ .Values.drupal.probes.startup.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.startup.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.startup.failureThreshold }}
           readinessProbe:
-            httpGet:
-              path: {{ .Values.drupal.probes.path | quote }}
-              port: http
-              scheme: HTTP
-              httpHeaders:
-                - name: Host
-                  value: {{ .Values.drupal.probes.hostHeader | quote }}
+            {{- include "ddbgo.drupalProbeHandler" . | nindent 12 }}
             periodSeconds: {{ .Values.drupal.probes.readiness.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.readiness.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.readiness.failureThreshold }}
           livenessProbe:
-            httpGet:
-              path: {{ .Values.drupal.probes.path | quote }}
-              port: http
-              scheme: HTTP
-              httpHeaders:
-                - name: Host
-                  value: {{ .Values.drupal.probes.hostHeader | quote }}
+            {{- include "ddbgo.drupalProbeHandler" . | nindent 12 }}
             periodSeconds: {{ .Values.drupal.probes.liveness.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.liveness.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.liveness.failureThreshold }}

@@ -128,3 +128,6 @@
 {{- if and .Values.drupal.config.drushOptionsUri (not (or (hasPrefix "https://" .Values.drupal.config.drushOptionsUri) (hasPrefix "http://" .Values.drupal.config.drushOptionsUri))) }}
 {{- fail "drupal.config.drushOptionsUri must start with http:// or https://" }}
 {{- end }}
+{{- if not (hasPrefix "/" .Values.drupal.probes.path) }}
+{{- fail "drupal.probes.path must start with /" }}
+{{- end }}
