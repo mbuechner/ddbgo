@@ -1,0 +1,35 @@
+{{- if .Values.verticalPodAutoscaler.enabled }}
+{{- $workloads := list
+      (dict "enabled" true "name" (include "ddbgo.drupalName" .) "component" "drupal" "kind" "Deployment" "containerName" "drupal")
+      (dict "enabled" .Values.redis.enabled "name" (include "ddbgo.redisName" .) "component" "redis" "kind" "StatefulSet" "containerName" "redis")
+      (dict "enabled" .Values.database.enabled "name" (include "ddbgo.databaseName" .) "component" "db" "kind" "StatefulSet" "containerName" "mariadb") -}}
+{{- range $workload := $workloads }}
+{{- if $workload.enabled }}
+{{- include "ddbgo.assertAvailable" (dict "root" $ "apiVersion" "autoscaling.k8s.io/v1" "kind" "VerticalPodAutoscaler" "name" $workload.name) }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ $workload.name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $workload.component }}
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" $ | nindent 4 }}
+spec:
+  resourcePolicy:
+    containerPolicies:
+      - containerName: {{ $workload.containerName }}
+        controlledResources:
+          {{- toYaml $.Values.verticalPodAutoscaler.controlledResources | nindent 10 }}
+        controlledValues: {{ $.Values.verticalPodAutoscaler.controlledValues }}
+  targetRef:
+    apiVersion: apps/v1
+    kind: {{ $workload.kind }}
+    name: {{ $workload.name }}
+  updatePolicy:
+    updateMode: {{ $.Values.verticalPodAutoscaler.updateMode | quote }}
+---
+{{- end }}
+{{- end }}
+{{- end }}

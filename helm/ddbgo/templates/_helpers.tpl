@@ -94,6 +94,14 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- default (include "ddbgo.drupalName" .) .Values.drupal.secret.existingSecret }}
 {{- end }}
 
+{{- define "ddbgo.httpAuthSecretName" -}}
+{{- default (printf "%s-http-auth" (include "ddbgo.drupalName" .)) .Values.drupal.basicAuth.existingSecret }}
+{{- end }}
+
+{{- define "ddbgo.httpAuthEnabled" -}}
+{{- if or .Values.drupal.basicAuth.existingSecret (and .Values.drupal.env.HTPASSWD_USER .Values.drupal.env.HTPASSWD_PWD) -}}true{{- else -}}false{{- end -}}
+{{- end }}
+
 {{- define "ddbgo.redisSecretName" -}}
 {{- default (include "ddbgo.redisName" .) .Values.redis.secret.existingSecret }}
 {{- end }}

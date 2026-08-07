@@ -75,6 +75,9 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
 | `UPDATEDB_ON_STARTUP` | No | `no` | Runs Drupal database updates when the container starts if set to `yes`. |
 | `CACHEREBUILD_ON_STARTUP` | No | `no` | Rebuilds Drupal caches when the container starts if set to `yes`. |
+| `HTPASSWD_GREETING` | No | not set | Optional Nginx HTTP Basic Auth prompt. The container uses its built-in prompt if authentication is enabled and this variable is unset. |
+| `HTPASSWD_USER` | No | not set | Enables Nginx HTTP Basic Auth when set together with `HTPASSWD_PWD`. |
+| `HTPASSWD_PWD` | No | not set | Password for Nginx HTTP Basic Auth; has no effect without `HTPASSWD_USER`. |
 
 ### Composer project maintenance
 1. Find updateable packages:

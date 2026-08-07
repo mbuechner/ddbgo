@@ -20,6 +20,8 @@ Die Namen werden aus dem Release-Namen gebildet:
 | Redis StatefulSet, Service, Secret, PVC, ServiceAccount | `ddbgo-redis` | `ddbgo-t-redis` |
 | MariaDB StatefulSet, Service, Secret, PVC, ServiceAccount | `ddbgo-db` | `ddbgo-t-db` |
 | ImageStreams für Drupal, Redis und MariaDB | wie die jeweilige Komponente | wie die jeweilige Komponente |
+| VerticalPodAutoscaler für Drupal, Redis und MariaDB | wie die jeweilige Komponente | wie die jeweilige Komponente |
+| optionales HTTP-Basic-Auth-Secret | `ddbgo-drupal-http-auth` | `ddbgo-t-drupal-http-auth` |
 | Route (Name und Host) | `go.deutsche-digitale-bibliothek.de` | `go-t.deutsche-digitale-bibliothek.de` |
 
 Drei getrennte ServiceAccounts statt eines gemeinsamen Accounts halten die
@@ -117,8 +119,9 @@ sind reserviert und können hier nicht ersetzt werden.
 Ein normales Upgrade aktualisiert weiterhin die Ressourcen, die bereits zu
 diesem Release gehören. Ohne diese Ausnahme wären Helm-Upgrades nicht möglich.
 Bei `helm uninstall` werden Deployment, StatefulSets, Services, Route,
-ConfigMap, ServiceAccounts und ImageStreams entfernt. Die vom Chart erzeugten
-PVCs und Secrets tragen `helm.sh/resource-policy: keep` und bleiben erhalten.
+ConfigMap, ServiceAccounts, ImageStreams und VerticalPodAutoscaler entfernt. Die
+vom Chart erzeugten PVCs und Secrets tragen `helm.sh/resource-policy: keep` und
+bleiben erhalten.
 Die PVC-Aufbewahrung lässt sich je Komponente mit `persistence.retain=false`
 abschalten; Secrets werden zum Schutz persistenter Zugangsdaten immer behalten.
 
@@ -165,6 +168,7 @@ Erwartete Schlüssel in vorhandenen Secrets:
 | Drupal | `hash-salt` |
 | Redis | `password` |
 | MariaDB | `database`, `username`, `password`, `root-password` |
+| HTTP Basic Auth | `HTPASSWD_USER`, `HTPASSWD_PWD` |
 
 Die Redis-ACL wird beim Podstart ausschließlich aus `password` erzeugt und in
 ein flüchtiges `emptyDir` geschrieben. Ein eventuell aus einer älteren
@@ -199,6 +203,42 @@ Alle Werte lassen sich unter `drupal.resources`, `redis.resources` und
 Die beiden kurzlebigen Abhängigkeitsprüfungen vor dem Drupal-Start verwenden
 zusätzlich die sparsamen Werte unter `drupal.dependencyChecks.resources`. Da
 Init-Container nacheinander laufen, werden deren Anforderungen nicht addiert.
+
+## Vertical Pod Autoscaler
+
+Das Chart erzeugt standardmäßig drei `VerticalPodAutoscaler`-Ressourcen:
+
+| VPA | Ziel | Container |
+| --- | --- | --- |
+| `ddbgo[-t]-drupal` | `Deployment/ddbgo[-t]-drupal` | `drupal` |
+| `ddbgo[-t]-redis` | `StatefulSet/ddbgo[-t]-redis` | `redis` |
+| `ddbgo[-t]-db` | `StatefulSet/ddbgo[-t]-db` | `mariadb` |
+
+MariaDB und Redis sind bewusst als `StatefulSet` referenziert. Der Wert
+`containerName` bezeichnet den tatsächlichen Container im Pod und nicht den
+Namen des Workload-Objekts. Die Standardkonfiguration berücksichtigt CPU und
+Arbeitsspeicher mit `controlledValues: RequestsAndLimits`.
+
+`updateMode: "Off"` ist ein reiner Beobachtungsmodus: Der VPA-Recommender füllt
+Empfehlungen im Status der VPA-Ressource, verändert aber weder Pods noch deren
+Requests oder Limits. Anzeigen lassen sich die Empfehlungen beispielsweise mit:
+
+```sh
+oc describe verticalpodautoscaler ddbgo-t-drupal -n ddbgo-t
+```
+
+Der VPA-Operator und die CRD `verticalpodautoscalers.autoscaling.k8s.io` müssen
+im Cluster vorhanden sein. Ohne diese Cluster-Voraussetzung ist die Erzeugung
+vor der Installation zu deaktivieren:
+
+```yaml
+verticalPodAutoscaler:
+  enabled: false
+```
+
+Modus, kontrollierte Ressourcen und kontrollierte Werte stehen gemeinsam unter
+`verticalPodAutoscaler` in `values.yaml`. Das Chart validiert die zulässigen
+Werte und verlangt für dieses Setup exakt CPU und Arbeitsspeicher.
 
 ## Verzeichnisstruktur der PVCs
 
@@ -247,8 +287,11 @@ und außerhalb des Webroots. Die Standardkonfiguration ergibt daher:
 | `REDIS_PORT` | `6379` | – |
 | `REDIS_PASSWORD` | Schlüssel `password` im Redis-Secret | – |
 | `DRUSH_OPTIONS_URI` | `http://localhost:8080`; lokaler Drush-Request-Kontext | – |
-| `UPDATEDB_ON_STARTUP` | standardmäßig `no` | – |
-| `CACHEREBUILD_ON_STARTUP` | standardmäßig `no` | – |
+| `UPDATEDB_ON_STARTUP` | `drupal.env.UPDATEDB_ON_STARTUP`, Standard `no` | – |
+| `CACHEREBUILD_ON_STARTUP` | `drupal.env.CACHEREBUILD_ON_STARTUP`, Standard `no` | – |
+| `HTPASSWD_GREETING` | `drupal.env.HTPASSWD_GREETING`, Standard `<unset>` | – |
+| `HTPASSWD_USER` | optionales oder externes HTTP-Auth-Secret, Standard `<unset>` | – |
+| `HTPASSWD_PWD` | optionales oder externes HTTP-Auth-Secret, Standard `<unset>` | – |
 
 Die öffentlichen und privaten Mount-Pfade werden aus denselben Values erzeugt,
 die als `FILE_PUBLIC_PATH` und `FILE_PRIVATE_PATH` an Drupal übergeben werden.
@@ -256,12 +299,42 @@ Dadurch können ENV-Wert und Volume-Mount nicht mehr unbemerkt auseinanderlaufen
 Das Chart lehnt einen absoluten öffentlichen Pfad, einen privaten Pfad innerhalb
 des Webroots sowie einen relativen privaten oder temporären Pfad ab.
 
+`UPDATEDB_ON_STARTUP` und `CACHEREBUILD_ON_STARTUP` akzeptieren ausschließlich
+`yes` oder `no`. Beide stehen standardmäßig auf `no`, weil sie bei `yes` bei
+jedem Containerstart den Datenbankstand beziehungsweise Drupal-Cache verändern.
+
+Die drei `HTPASSWD_*`-Variablen sind standardmäßig nicht gesetzt und HTTP Basic
+Auth bleibt deaktiviert. Für eine direkte Konfiguration müssen Benutzername und
+Passwort gemeinsam gesetzt werden:
+
+```yaml
+drupal:
+  env:
+    HTPASSWD_GREETING: "Geschütztes System"
+    HTPASSWD_USER: "testsystem"
+    HTPASSWD_PWD: "nicht-in-git-speichern"
+```
+
+Das Chart legt Benutzername und Passwort dann im behaltenen Secret
+`<release>-drupal-http-auth` ab und referenziert es aus dem Drupal-Container.
+Produktiv sollte das Passwort nicht in einer eingecheckten Values-Datei stehen.
+Stattdessen kann ein extern verwaltetes Secret verwendet werden:
+
+```yaml
+drupal:
+  basicAuth:
+    existingSecret: ddbgo-drupal-http-auth
+```
+
+Dieses Secret muss die Schlüssel `HTPASSWD_USER` und `HTPASSWD_PWD` enthalten.
+`HTPASSWD_GREETING` kann unabhängig davon in `drupal.env` gesetzt werden. Bleibt
+es leer, wird die Variable nicht exportiert; das Container-Entrypoint verwendet
+bei aktivierter Authentifizierung dann seinen eingebauten Begrüßungstext.
+
 Die MariaDB-Variablen im Datenbank-Pod heißen dagegen `MARIADB_DATABASE`,
 `MARIADB_USER`, `MARIADB_PASSWORD` und `MARIADB_ROOT_PASSWORD`, weil das
 MariaDB-Image diese Namen erwartet. Drupal und MariaDB erhalten ihre Werte aus
-demselben Secret. Optionale HTTP-Basic-Auth-Variablen des DDBgo-Entrypoints
-werden vom Chart nicht gesetzt; ohne diese Variablen bleibt Basic Auth
-deaktiviert.
+demselben Secret.
 
 `TRUSTED_HOST_PATTERNS` wird nicht als redundanter fertiger String gepflegt.
 Das Chart leitet die Regeln aus `drupal.externalHost` und dem

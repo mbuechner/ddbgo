@@ -22,5 +22,8 @@ data:
   TRUSTED_HOST_PATTERNS: {{ include "ddbgo.drupalTrustedHostPatterns" . | quote }}
   DRUSH_OPTIONS_URI: {{ .Values.drupal.config.drushOptionsUri | quote }}
   TMP: {{ .Values.drupal.config.tempPath | quote }}
-  UPDATEDB_ON_STARTUP: {{ ternary "yes" "no" .Values.drupal.maintenance.updatedbOnStartup | quote }}
-  CACHEREBUILD_ON_STARTUP: {{ ternary "yes" "no" .Values.drupal.maintenance.cacheRebuildOnStartup | quote }}
+  UPDATEDB_ON_STARTUP: {{ .Values.drupal.env.UPDATEDB_ON_STARTUP | quote }}
+  CACHEREBUILD_ON_STARTUP: {{ .Values.drupal.env.CACHEREBUILD_ON_STARTUP | quote }}
+  {{- with .Values.drupal.env.HTPASSWD_GREETING }}
+  HTPASSWD_GREETING: {{ . | quote }}
+  {{- end }}

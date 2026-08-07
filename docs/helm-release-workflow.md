@@ -219,7 +219,7 @@ dazu besitzt, kann einmalig `oc new-project ddbgo-t` verwendet werden.
 ```sh
 helm status ddbgo-t -n ddbgo-t
 helm list -n ddbgo-t
-oc get deployment,statefulset,pod,service,route,pvc -n ddbgo-t
+oc get deployment,statefulset,pod,service,route,pvc,verticalpodautoscaler -n ddbgo-t
 oc rollout status deployment/ddbgo-t-drupal -n ddbgo-t --timeout=10m
 ```
 
@@ -312,7 +312,7 @@ veröffentlicht worden sein.
 ```sh
 helm status ddbgo -n ddbgo
 helm list -n ddbgo
-oc get deployment,statefulset,pod,service,route,pvc -n ddbgo
+oc get deployment,statefulset,pod,service,route,pvc,verticalpodautoscaler -n ddbgo
 oc rollout status deployment/ddbgo-drupal -n ddbgo --timeout=10m
 ```
 
@@ -342,8 +342,9 @@ Alternativ kann eine bekannte ältere Chartversion erneut mit
 `helm upgrade --install --version ...` angewendet werden.
 
 `helm uninstall` ist kein normaler Rollback-Mechanismus. Es entfernt Deployment,
-StatefulSets, Services, Route, ConfigMap, ServiceAccounts und ImageStreams. Die
-drei vom Chart erzeugten PVCs und Secrets bleiben mit
+StatefulSets, Services, Route, ConfigMap, ServiceAccounts, ImageStreams und
+VerticalPodAutoscaler. Die drei PVCs sowie die vom Chart erzeugten Secrets
+bleiben mit
 `helm.sh/resource-policy: keep` erhalten. Eine Neuinstallation mit demselben
 Release-Namen im selben Namespace übernimmt diese PVCs und Secrets automatisch,
 wenn deren Helm-Owner-Annotationen unverändert sind.

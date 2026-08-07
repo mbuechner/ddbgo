@@ -164,6 +164,18 @@ spec:
                 secretKeyRef:
                   name: {{ include "ddbgo.databaseSecretName" . }}
                   key: password
+            {{- if eq (include "ddbgo.httpAuthEnabled" .) "true" }}
+            - name: HTPASSWD_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.httpAuthSecretName" . }}
+                  key: HTPASSWD_USER
+            - name: HTPASSWD_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.httpAuthSecretName" . }}
+                  key: HTPASSWD_PWD
+            {{- end }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_PASSWORD
               valueFrom:

@@ -29,6 +29,19 @@ protection:
   # verändert.
   failOnExistingResource: true
 
+verticalPodAutoscaler:
+  # Erzeugt je einen VPA für Drupal, Redis und MariaDB. Voraussetzung ist, dass
+  # der Vertical Pod Autoscaler Operator samt CRD im Cluster installiert ist.
+  enabled: true
+  # Off sammelt ausschließlich Empfehlungen und verändert keine Pods.
+  updateMode: "Off"
+  # CPU und Arbeitsspeicher werden in den Empfehlungen berücksichtigt.
+  controlledResources:
+    - cpu
+    - memory
+  # Empfehlungen enthalten Requests und proportional angepasste Limits.
+  controlledValues: RequestsAndLimits
+
 # Optionale Registry-Secrets für alle Pods, z. B.:
 # imagePullSecrets:
 #   - name: ghcr-pull-secret
@@ -96,11 +109,23 @@ drupal:
     # Lokaler Request-Kontext für Drush. Drush benötigt dadurch weder DNS noch
     # Reverse Proxy oder OpenShift Route.
     drushOptionsUri: http://localhost:8080
-  maintenance:
-    # Beide Aktionen verändern Anwendungszustand und sind daher standardmäßig
-    # deaktiviert. Sie laufen bei jedem Containerstart, wenn sie aktiviert sind.
-    updatedbOnStartup: false
-    cacheRebuildOnStartup: false
+  env:
+    # Exakte Werte der gleichnamigen Container-Umgebungsvariablen. "yes" führt
+    # die jeweilige zustandsändernde Drush-Aktion bei jedem Containerstart aus.
+    UPDATEDB_ON_STARTUP: "no"
+    CACHEREBUILD_ON_STARTUP: "no"
+    # Leere Werte bedeuten <unset>. HTTP Basic Auth wird nur aktiviert, wenn
+    # HTPASSWD_USER und HTPASSWD_PWD gemeinsam gesetzt sind oder existingSecret
+    # verwendet wird. Das Passwort nicht in öffentliche Values-Dateien eintragen.
+    HTPASSWD_GREETING: ""
+    HTPASSWD_USER: ""
+    HTPASSWD_PWD: ""
+  basicAuth:
+    # Optionales extern verwaltetes Secret mit den Schlüsseln HTPASSWD_USER und
+    # HTPASSWD_PWD. Bei Verwendung müssen die beiden direkten Values leer sein.
+    # Ohne existingSecret erzeugt das Chart bei gesetzten direkten Values das
+    # behaltene Secret <release>-drupal-http-auth.
+    existingSecret: ""
   dependencyChecks:
     # Init-Container lassen Drupal erst starten, wenn ein authentifiziertes
     # SELECT 1 gegen MariaDB und – sofern aktiviert – Redis PING erfolgreich sind.

@@ -15,6 +15,27 @@
 {{- if lt (int .Values.drupal.dependencyChecks.retryIntervalSeconds) 1 }}
 {{- fail "drupal.dependencyChecks.retryIntervalSeconds must be at least 1" }}
 {{- end }}
+{{- if not (has .Values.verticalPodAutoscaler.updateMode (list "Off" "Initial" "Recreate" "InPlaceOrRecreate" "InPlace" "Auto")) }}
+{{- fail "verticalPodAutoscaler.updateMode must be one of Off, Initial, Recreate, InPlaceOrRecreate, InPlace or Auto" }}
+{{- end }}
+{{- if not (has .Values.verticalPodAutoscaler.controlledValues (list "RequestsAndLimits" "RequestsOnly")) }}
+{{- fail "verticalPodAutoscaler.controlledValues must be RequestsAndLimits or RequestsOnly" }}
+{{- end }}
+{{- if or (ne (len .Values.verticalPodAutoscaler.controlledResources) 2) (not (has "cpu" .Values.verticalPodAutoscaler.controlledResources)) (not (has "memory" .Values.verticalPodAutoscaler.controlledResources)) }}
+{{- fail "verticalPodAutoscaler.controlledResources must contain exactly cpu and memory" }}
+{{- end }}
+{{- if not (has .Values.drupal.env.UPDATEDB_ON_STARTUP (list "yes" "no")) }}
+{{- fail "drupal.env.UPDATEDB_ON_STARTUP must be yes or no" }}
+{{- end }}
+{{- if not (has .Values.drupal.env.CACHEREBUILD_ON_STARTUP (list "yes" "no")) }}
+{{- fail "drupal.env.CACHEREBUILD_ON_STARTUP must be yes or no" }}
+{{- end }}
+{{- if or (and .Values.drupal.env.HTPASSWD_USER (not .Values.drupal.env.HTPASSWD_PWD)) (and .Values.drupal.env.HTPASSWD_PWD (not .Values.drupal.env.HTPASSWD_USER)) }}
+{{- fail "drupal.env.HTPASSWD_USER and drupal.env.HTPASSWD_PWD must either both be set or both be empty" }}
+{{- end }}
+{{- if and .Values.drupal.basicAuth.existingSecret (or .Values.drupal.env.HTPASSWD_USER .Values.drupal.env.HTPASSWD_PWD) }}
+{{- fail "drupal.basicAuth.existingSecret is mutually exclusive with drupal.env.HTPASSWD_USER and drupal.env.HTPASSWD_PWD" }}
+{{- end }}
 {{- if and .Values.drupal.secret.create .Values.drupal.secret.existingSecret }}
 {{- fail "drupal.secret.create and drupal.secret.existingSecret are mutually exclusive" }}
 {{- end }}
