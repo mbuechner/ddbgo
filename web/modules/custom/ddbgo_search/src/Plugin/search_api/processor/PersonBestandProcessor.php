@@ -56,7 +56,7 @@ class PersonBestandProcessor extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL) {
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array {
     $properties = [];
 
     if (!$datasource) {
