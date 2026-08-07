@@ -105,7 +105,7 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 ## Docker
 Yes, there's a docker container for DDBgo available at GitHub: https://github.com/mbuechner/ddbgo/pkgs/container/ddbgo%2Fddbgo
 ```
-docker pull ghcr.io/mbuechner/ddbgo/ddbgo:tagged
+docker pull ghcr.io/mbuechner/ddbgo:tagged
 ```
 
 ## Helm / OpenShift

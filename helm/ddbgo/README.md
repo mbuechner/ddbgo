@@ -189,6 +189,11 @@ demselben Secret. Optionale HTTP-Basic-Auth-Variablen des DDBgo-Entrypoints
 werden vom Chart nicht gesetzt; ohne diese Variablen bleibt Basic Auth
 deaktiviert.
 
+MariaDB erhält zusätzlich ein beschreibbares `emptyDir` unter `/run/mariadb`.
+Das ist auf OpenShift erforderlich, weil die zufällig zugewiesene Container-UID
+den Unix-Socket nicht in das schreibgeschützte Verzeichnis des Images legen
+kann. Dieses Runtime-Volume enthält keine persistenten Daten.
+
 ## Passwörter und Persistenz
 
 Bleiben Passwortwerte leer, erzeugt das Chart sie bei der ersten Installation
@@ -204,13 +209,18 @@ StorageClasses können in `values.yaml` angepasst werden.
 ## Versionslinien
 
 - Drupal Core ist im Projekt-Lockfile auf `11.4.5` festgelegt.
-- Redis verwendet `8.2.7`; die 8.2-Linie ist GA und bis 1. September 2030
-  unterstützt.
-- MariaDB verwendet `11.8.8-ubi9`; MariaDB 11.8 ist eine LTS-Linie.
+- Redis verwendet den Tag `8.2-alpine`; die 8.2-Linie ist GA und bis
+  1. September 2030 unterstützt.
+- MariaDB verwendet `11.8-ubi9`; MariaDB 11.8 ist eine LTS-Linie und das
+  UBI-Image ist für OpenShift geeignet.
 
-Patch-Updates sollten automatisiert geprüft und nach einem Test als Änderung an
-`values.yaml` übernommen werden. Bewegliche Tags wie `latest` oder `lts` sind
-absichtlich nicht voreingestellt.
+Beide Tags bleiben innerhalb ihrer jeweiligen LTS-Linie beweglich und erhalten
+dadurch Patch- und Sicherheitsupdates ohne Änderung an `values.yaml`.
+`imagePullPolicy: Always` sorgt bei neu erzeugten Pods für eine Registry-Prüfung.
+Die Chart-Version steht zusätzlich als Pod-Template-Annotation in beiden
+StatefulSets, sodass ein Chart-Upgrade einen Rollout auslöst. Unbeschränkte Tags
+wie `latest`, `8`, `11` oder `lts`, die auf eine andere Versionslinie wechseln
+können, werden nicht verwendet.
 
 ## Veröffentlichung über GitHub
 

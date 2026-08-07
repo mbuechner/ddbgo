@@ -21,8 +21,9 @@ spec:
     metadata:
       labels:
         {{- include "ddbgo.selectorLabels" (dict "root" . "component" "redis") | nindent 8 }}
-      {{- with .Values.redis.podAnnotations }}
       annotations:
+        ddbgo.de/chart-version: {{ .Chart.Version | quote }}
+      {{- with .Values.redis.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
