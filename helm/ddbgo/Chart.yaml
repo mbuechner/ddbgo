@@ -13,6 +13,8 @@ maintainers:
     url: https://github.com/mbuechner
 annotations:
   charts.openshift.io/name: DDBgo
-  charts.openshift.io/provider: Deutsche Digitale Bibliothek
+  charts.openshift.io/provider: Michael Büchner, Deutsche Nationalbibliothek
+  charts.openshift.io/description: Kubernetes and OpenShift Helm chart for DDBgo with Redis and MariaDB
+  charts.openshift.io/documentationURL: https://github.com/mbuechner/ddbgo#readme
   charts.openshift.io/supportURL: https://github.com/mbuechner/ddbgo/issues
   org.opencontainers.image.source: https://github.com/mbuechner/ddbgo
