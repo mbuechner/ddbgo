@@ -1,0 +1,30 @@
+{{- if .Values.drupal.route.enabled }}
+{{- $name := .Values.drupal.route.name -}}
+{{- include "ddbgo.assertAvailable" (dict "root" . "apiVersion" "route.openshift.io/v1" "kind" "Route" "name" $name) }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: drupal
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+    {{- with .Values.drupal.route.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  host: {{ .Values.drupal.route.host }}
+  to:
+    kind: Service
+    name: {{ include "ddbgo.drupalName" . }}
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: {{ .Values.drupal.route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ .Values.drupal.route.tls.insecureEdgeTerminationPolicy }}
+  wildcardPolicy: None
+{{- end }}
+

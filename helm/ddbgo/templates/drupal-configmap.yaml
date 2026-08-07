@@ -1,0 +1,25 @@
+{{- $name := include "ddbgo.drupalName" . -}}
+{{- include "ddbgo.assertAvailable" (dict "root" . "apiVersion" "v1" "kind" "ConfigMap" "name" $name) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: drupal
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+data:
+  MYSQL_HOSTNAME: {{ include "ddbgo.databaseName" . | quote }}
+  MYSQL_PORT: "3306"
+  USE_REDIS: {{ ternary "true" "false" .Values.redis.enabled | quote }}
+  REDIS_HOST: {{ include "ddbgo.redisName" . | quote }}
+  REDIS_PORT: "6379"
+  UPDATE_FREE_ACCESS: {{ .Values.drupal.config.updateFreeAccess | quote }}
+  FILE_PUBLIC_PATH: {{ .Values.drupal.config.filePublicPath | quote }}
+  FILE_PRIVATE_PATH: {{ .Values.drupal.config.filePrivatePath | quote }}
+  TRUSTED_HOST_PATTERNS: {{ .Values.drupal.config.trustedHostPatterns | quote }}
+  DRUSH_OPTIONS_URI: {{ .Values.drupal.config.drushOptionsUri | quote }}
+  TMP: /tmp
+

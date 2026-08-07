@@ -1,0 +1,138 @@
+{{- $name := include "ddbgo.drupalName" . -}}
+{{- include "ddbgo.assertAvailable" (dict "root" . "apiVersion" "apps/v1" "kind" "Deployment" "name" $name) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: drupal
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.drupal.replicaCount }}
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "ddbgo.selectorLabels" (dict "root" . "component" "drupal") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ddbgo.selectorLabels" (dict "root" . "component" "drupal") | nindent 8 }}
+      {{- with .Values.drupal.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "ddbgo.drupalServiceAccountName" . }}
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.drupal.podSecurityContext | nindent 8 }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: prepare-storage
+          image: {{ printf "%s:%s" .Values.drupal.image.repository .Values.drupal.image.tag | quote }}
+          imagePullPolicy: {{ .Values.drupal.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - mkdir -p /storage/public /storage/private
+          securityContext:
+            {{- toYaml .Values.drupal.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: drupal-data
+              mountPath: /storage
+      containers:
+        - name: drupal
+          image: {{ printf "%s:%s" .Values.drupal.image.repository .Values.drupal.image.tag | quote }}
+          imagePullPolicy: {{ .Values.drupal.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.drupal.securityContext | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ $name }}
+          env:
+            - name: HASH_SALT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.drupalSecretName" . }}
+                  key: hash-salt
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: password
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.redisSecretName" . }}
+                  key: password
+            {{- end }}
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 30
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.drupal.resources | nindent 12 }}
+          volumeMounts:
+            - name: drupal-data
+              mountPath: /var/www/html/web/sites/default/files
+              subPath: public
+            - name: drupal-data
+              mountPath: /var/www/html/private
+              subPath: private
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: drupal-data
+          persistentVolumeClaim:
+            claimName: {{ include "ddbgo.drupalClaimName" . }}
+        - name: tmp
+          emptyDir: {}
+      {{- with .Values.drupal.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.drupal.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.drupal.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+

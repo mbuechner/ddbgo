@@ -1,0 +1,9 @@
+DDBgo was installed as release {{ .Release.Name }} in namespace {{ .Release.Namespace }}.
+
+Route: https://{{ .Values.drupal.route.host }}
+
+All chart-created resources carry helm.sh/resource-policy=keep. A Helm uninstall
+therefore removes the release record but deliberately leaves the resources in the
+cluster. Reinstalling with the same names will fail until those resources are
+explicitly referenced as existing resources or removed by an administrator.
+

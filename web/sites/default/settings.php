@@ -806,5 +806,9 @@ if ($use_redis) {
   $settings['redis.connection']['interface'] = 'PhpRedis';
   $settings['redis.connection']['host'] = $env('REDIS_HOST', '127.0.0.1');
   $settings['redis.connection']['port'] = (int) $env('REDIS_PORT', '6379');
+  $redis_password = $env('REDIS_PASSWORD', '');
+  if ($redis_password !== '') {
+    $settings['redis.connection']['password'] = $redis_password;
+  }
   $settings['cache']['default'] = 'cache.backend.redis';
 }

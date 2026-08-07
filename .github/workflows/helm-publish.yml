@@ -1,0 +1,120 @@
+name: Publish Helm chart
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - helm/ddbgo/**
+  workflow_dispatch:
+
+concurrency:
+  group: publish-ddbgo-helm-chart
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  CHART_DIR: helm/ddbgo
+  HELM_VERSION: v4.2.0
+  REGISTRY: ghcr.io
+  OCI_NAMESPACE: helm
+
+jobs:
+  publish:
+    name: Lint, package and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install Helm
+        uses: azure/setup-helm@v5.0.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Lint and render chart
+        shell: bash
+        run: |
+          set -euo pipefail
+          helm lint "$CHART_DIR" \
+            --namespace test-release \
+            --set 'naming.allowedReleaseNames={test-release}' \
+            --strict
+          helm template ddbgo "$CHART_DIR" \
+            --namespace ddbgo >/dev/null
+          helm template ddbgo-t "$CHART_DIR" \
+            --namespace ddbgo-t \
+            --values "$CHART_DIR/values-test.yaml" >/dev/null
+
+      - name: Read metadata and package chart
+        id: chart
+        shell: bash
+        run: |
+          set -euo pipefail
+          chart_name="$(awk '$1 == "name:" { print $2; exit }' "$CHART_DIR/Chart.yaml")"
+          chart_version="$(awk '$1 == "version:" { gsub(/\"/, "", $2); print $2; exit }' "$CHART_DIR/Chart.yaml")"
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          package_dir="$RUNNER_TEMP/helm-packages"
+          package="$package_dir/${chart_name}-${chart_version}.tgz"
+          repository="oci://${REGISTRY}/${owner}/${OCI_NAMESPACE}"
+          reference="${repository}/${chart_name}"
+
+          mkdir -p "$package_dir"
+          helm package "$CHART_DIR" --destination "$package_dir"
+
+          test -f "$package"
+          echo "name=$chart_name" >> "$GITHUB_OUTPUT"
+          echo "version=$chart_version" >> "$GITHUB_OUTPUT"
+          echo "package=$package" >> "$GITHUB_OUTPUT"
+          echo "repository=$repository" >> "$GITHUB_OUTPUT"
+          echo "reference=$reference" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GitHub Container Registry
+        shell: bash
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$GHCR_TOKEN" | helm registry login "$REGISTRY" \
+            --username "$GHCR_USERNAME" \
+            --password-stdin
+
+      - name: Refuse to overwrite an existing chart version
+        shell: bash
+        env:
+          CHART_REFERENCE: ${{ steps.chart.outputs.reference }}
+          CHART_VERSION: ${{ steps.chart.outputs.version }}
+        run: |
+          set -euo pipefail
+          if helm show chart "$CHART_REFERENCE" --version "$CHART_VERSION" >/dev/null 2>&1; then
+            echo "::error::${CHART_REFERENCE}:${CHART_VERSION} already exists. Increase version in Chart.yaml."
+            exit 1
+          fi
+
+      - name: Publish chart
+        shell: bash
+        env:
+          CHART_PACKAGE: ${{ steps.chart.outputs.package }}
+          CHART_REPOSITORY: ${{ steps.chart.outputs.repository }}
+        run: |
+          set -euo pipefail
+          helm push "$CHART_PACKAGE" "$CHART_REPOSITORY"
+
+      - name: Write job summary
+        shell: bash
+        env:
+          CHART_REFERENCE: ${{ steps.chart.outputs.reference }}
+          CHART_VERSION: ${{ steps.chart.outputs.version }}
+        run: |
+          {
+            echo '## Helm chart published'
+            echo
+            echo "\`${CHART_REFERENCE}\`"
+            echo
+            echo "Version: \`${CHART_VERSION}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

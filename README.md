@@ -71,6 +71,7 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `USE_REDIS` | No | `false` | Enables Redis cache backend integration when set to `true`. |
 | `REDIS_HOST` | No | `127.0.0.1` | Redis host name or IP address (used when `USE_REDIS=true`). |
 | `REDIS_PORT` | No | `6379` | Redis TCP port (used when `USE_REDIS=true`). |
+| `REDIS_PASSWORD` | No | not set | Redis password (used when `USE_REDIS=true` and authentication is enabled). |
 | `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
 
 ### Composer project maintenance
@@ -104,6 +105,14 @@ Yes, there's a docker container for DDBgo available at GitHub: https://github.co
 ```
 docker pull ghcr.io/mbuechner/ddbgo/ddbgo:tagged
 ```
+
+## Helm / OpenShift
+
+Das produktionsreife Helm-Chart für OpenShift einschließlich Redis und MariaDB
+liegt unter [`helm/ddbgo`](helm/ddbgo/README.md). Die Dokumentation beschreibt
+Produktiv- und Testinstallation, Namensschema, Kollisionsschutz sowie die
+Verwendung bestehender Secrets und PersistentVolumeClaims.
+
 ## Container build
 1. Checkout GitHub repository:
    `git clone https://github.com/mbuechner/ddbgo`

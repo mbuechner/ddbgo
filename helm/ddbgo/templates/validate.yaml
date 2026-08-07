@@ -1,0 +1,52 @@
+{{- if .Values.naming.enforceReleaseNamespaceMatch }}
+{{- if ne .Release.Name .Release.Namespace }}
+{{- fail (printf "release name %q must match namespace %q" .Release.Name .Release.Namespace) }}
+{{- end }}
+{{- end }}
+{{- if .Values.naming.allowedReleaseNames }}
+{{- if not (has .Release.Name .Values.naming.allowedReleaseNames) }}
+{{- fail (printf "release name %q is not allowed; expected one of: %s" .Release.Name (join ", " .Values.naming.allowedReleaseNames)) }}
+{{- end }}
+{{- end }}
+{{- if and .Values.drupal.secret.create .Values.drupal.secret.existingSecret }}
+{{- fail "drupal.secret.create and drupal.secret.existingSecret are mutually exclusive" }}
+{{- end }}
+{{- if and (not .Values.drupal.secret.create) (not .Values.drupal.secret.existingSecret) }}
+{{- fail "drupal.secret.existingSecret is required when drupal.secret.create=false" }}
+{{- end }}
+{{- if and .Values.redis.secret.create .Values.redis.secret.existingSecret }}
+{{- fail "redis.secret.create and redis.secret.existingSecret are mutually exclusive" }}
+{{- end }}
+{{- if and .Values.redis.enabled (not .Values.redis.secret.create) (not .Values.redis.secret.existingSecret) }}
+{{- fail "redis.secret.existingSecret is required when redis.secret.create=false" }}
+{{- end }}
+{{- if and .Values.redis.secret.password (not (regexMatch "^[A-Za-z0-9]{16,128}$" .Values.redis.secret.password)) }}
+{{- fail "redis.secret.password must contain 16 to 128 ASCII letters or digits so it is safe in a Redis ACL" }}
+{{- end }}
+{{- if and .Values.database.auth.create .Values.database.auth.existingSecret }}
+{{- fail "database.auth.create and database.auth.existingSecret are mutually exclusive" }}
+{{- end }}
+{{- if not .Values.database.enabled }}
+{{- fail "database.enabled must be true because this application requires MariaDB" }}
+{{- end }}
+{{- if and (not .Values.database.auth.create) (not .Values.database.auth.existingSecret) }}
+{{- fail "database.auth.existingSecret is required when database.auth.create=false" }}
+{{- end }}
+{{- if and .Values.drupal.persistence.create .Values.drupal.persistence.existingClaim }}
+{{- fail "drupal.persistence.create and drupal.persistence.existingClaim are mutually exclusive" }}
+{{- end }}
+{{- if and (not .Values.drupal.persistence.create) (not .Values.drupal.persistence.existingClaim) }}
+{{- fail "drupal.persistence.existingClaim is required when drupal.persistence.create=false" }}
+{{- end }}
+{{- if and .Values.redis.persistence.create .Values.redis.persistence.existingClaim }}
+{{- fail "redis.persistence.create and redis.persistence.existingClaim are mutually exclusive" }}
+{{- end }}
+{{- if and .Values.redis.enabled (not .Values.redis.persistence.create) (not .Values.redis.persistence.existingClaim) }}
+{{- fail "redis.persistence.existingClaim is required when redis.persistence.create=false" }}
+{{- end }}
+{{- if and .Values.database.persistence.create .Values.database.persistence.existingClaim }}
+{{- fail "database.persistence.create and database.persistence.existingClaim are mutually exclusive" }}
+{{- end }}
+{{- if and (not .Values.database.persistence.create) (not .Values.database.persistence.existingClaim) }}
+{{- fail "database.persistence.existingClaim is required when database.persistence.create=false" }}
+{{- end }}

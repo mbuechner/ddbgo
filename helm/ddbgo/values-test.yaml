@@ -1,0 +1,8 @@
+drupal:
+  route:
+    name: go-t.deutsche-digitale-bibliothek.de
+    host: go-t.deutsche-digitale-bibliothek.de
+  config:
+    trustedHostPatterns: '^go-t\.deutsche-digitale-bibliothek\.de$'
+    drushOptionsUri: https://go-t.deutsche-digitale-bibliothek.de
+

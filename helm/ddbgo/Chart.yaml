@@ -1,0 +1,13 @@
+apiVersion: v2
+name: ddbgo
+description: OpenShift Helm chart for DDBgo with Redis and MariaDB
+type: application
+version: 0.1.0
+appVersion: "11.4.5"
+kubeVersion: ">=1.25.0-0"
+icon: https://raw.githubusercontent.com/mbuechner/ddbgo/master/images/DDBgo_Logo.svg
+annotations:
+  charts.openshift.io/name: DDBgo
+  charts.openshift.io/provider: Deutsche Digitale Bibliothek
+  charts.openshift.io/supportURL: https://github.com/mbuechner/ddbgo/issues
+  org.opencontainers.image.source: https://github.com/mbuechner/ddbgo

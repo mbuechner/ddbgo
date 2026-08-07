@@ -1,0 +1,165 @@
+# Resource names are derived from the Helm release name. Install the production
+# release as "ddbgo" in namespace "ddbgo" and the test release as "ddbgo-t" in
+# namespace "ddbgo-t".
+naming:
+  enforceReleaseNamespaceMatch: true
+  allowedReleaseNames:
+    - ddbgo
+    - ddbgo-t
+
+# Helm must never adopt resources which existed before an install. Resources
+# created by this chart are retained on uninstall and on replacement.
+protection:
+  failOnExistingResource: true
+  keepOnDelete: true
+
+imagePullSecrets: []
+
+serviceAccounts:
+  create: true
+  annotations: {}
+  drupalName: ""
+  redisName: ""
+  databaseName: ""
+
+drupal:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/mbuechner/ddbgo/ddbgo
+    tag: tagged
+    pullPolicy: IfNotPresent
+  service:
+    port: 8080
+  route:
+    enabled: true
+    name: go.deutsche-digitale-bibliothek.de
+    host: go.deutsche-digitale-bibliothek.de
+    annotations: {}
+    tls:
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+  config:
+    updateFreeAccess: "false"
+    filePublicPath: sites/default/files
+    filePrivatePath: /var/www/html/private
+    trustedHostPatterns: '^go\.deutsche-digitale-bibliothek\.de$'
+    drushOptionsUri: https://go.deutsche-digitale-bibliothek.de
+  secret:
+    create: true
+    existingSecret: ""
+    # Generated once during the first install when left empty.
+    hashSalt: ""
+  persistence:
+    create: true
+    existingClaim: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+    storageClass: ""
+  podAnnotations: {}
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+redis:
+  enabled: true
+  image:
+    repository: redis
+    # Redis 8.2 is GA and has a published support horizon through 2030-09-01.
+    tag: 8.2.7-alpine
+    pullPolicy: IfNotPresent
+  secret:
+    create: true
+    existingSecret: ""
+    # Generated once during the first install when left empty.
+    password: ""
+  persistence:
+    create: true
+    existingClaim: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+    storageClass: ""
+  podAnnotations: {}
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+database:
+  enabled: true
+  image:
+    repository: mariadb
+    # MariaDB 11.8 is an LTS branch; the UBI image fits OpenShift environments.
+    tag: 11.8.8-ubi9
+    pullPolicy: IfNotPresent
+  auth:
+    create: true
+    existingSecret: ""
+    database: ddbgodb
+    username: ddbgo
+    # Generated once during the first install when left empty.
+    password: ""
+    rootPassword: ""
+  persistence:
+    create: true
+    existingClaim: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClass: ""
+  podAnnotations: {}
+  podSecurityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
