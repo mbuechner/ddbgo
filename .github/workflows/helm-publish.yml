@@ -197,7 +197,7 @@ jobs:
           else
             git worktree add --detach "$pages_dir" HEAD
             git -C "$pages_dir" switch --orphan gh-pages
-            git -C "$pages_dir" rm -rf .
+            git -C "$pages_dir" rm -rf --ignore-unmatch .
           fi
 
           channel_dir="$pages_dir/helm/$PAGES_CHANNEL"
