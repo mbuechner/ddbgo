@@ -11,6 +11,9 @@ metadata:
     app.kubernetes.io/component: redis
   annotations:
     {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+    {{- if .Values.redis.image.autoUpdate.enabled }}
+    image.openshift.io/triggers: {{ include "ddbgo.imageTrigger" (dict "root" . "name" $name "tag" .Values.redis.image.tag "container" "redis") | quote }}
+    {{- end }}
 spec:
   serviceName: {{ $name }}
   replicas: 1

@@ -1,0 +1,33 @@
+{{- $components := list
+  (dict "component" "drupal" "name" (include "ddbgo.drupalName" .) "image" .Values.drupal.image)
+  (dict "component" "redis" "name" (include "ddbgo.redisName" .) "image" .Values.redis.image)
+  (dict "component" "db" "name" (include "ddbgo.databaseName" .) "image" .Values.database.image)
+-}}
+{{- range $component := $components }}
+{{- if $component.image.autoUpdate.enabled }}
+{{- include "ddbgo.assertAvailable" (dict "root" $ "apiVersion" "image.openshift.io/v1" "kind" "ImageStream" "name" $component.name) }}
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: {{ $component.name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $component.component }}
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" $ | nindent 4 }}
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: {{ $component.image.tag | quote }}
+      from:
+        kind: DockerImage
+        name: {{ printf "%s:%s" $component.image.repository $component.image.tag | quote }}
+      importPolicy:
+        scheduled: {{ $component.image.autoUpdate.scheduledImport }}
+      referencePolicy:
+        type: Source
+{{- end }}
+{{- end }}

@@ -16,6 +16,7 @@ Die Namen werden aus dem Release-Namen gebildet:
 | Drupal Deployment, Service, ConfigMap, Secret, PVC, ServiceAccount | `ddbgo-drupal` | `ddbgo-t-drupal` |
 | Redis StatefulSet, Service, Secret, PVC, ServiceAccount | `ddbgo-redis` | `ddbgo-t-redis` |
 | MariaDB StatefulSet, Service, Secret, PVC, ServiceAccount | `ddbgo-db` | `ddbgo-t-db` |
+| ImageStreams für Drupal, Redis und MariaDB | wie die jeweilige Komponente | wie die jeweilige Komponente |
 | Route (Name und Host) | `go.deutsche-digitale-bibliothek.de` | `go-t.deutsche-digitale-bibliothek.de` |
 
 Drei getrennte ServiceAccounts statt eines gemeinsamen Accounts halten die
@@ -58,13 +59,14 @@ helm upgrade --install ddbgo ./helm/ddbgo \
 ```
 
 Das Anwendungs-Image verwendet standardmäßig den vom Projekt veröffentlichten
-Tag `tagged`. Für reproduzierbare Deployments sollte beim Installieren ein
-konkreter Release-Tag oder vorzugsweise ein Digest gesetzt werden:
+Tag `tagged`. Für ein reproduzierbares Deployment kann stattdessen ein konkreter
+Release-Tag gesetzt und die automatische Aktualisierung deaktiviert werden:
 
 ```sh
 helm upgrade --install ddbgo ./helm/ddbgo \
   --namespace ddbgo \
-  --set-string drupal.image.tag=v1.2.3
+  --set-string drupal.image.tag=v1.2.3 \
+  --set drupal.image.autoUpdate.enabled=false
 ```
 
 ## Schutz bestehender Ressourcen
@@ -209,18 +211,67 @@ StorageClasses können in `values.yaml` angepasst werden.
 ## Versionslinien
 
 - Drupal Core ist im Projekt-Lockfile auf `11.4.5` festgelegt.
-- Redis verwendet den Tag `8.2-alpine`; die 8.2-Linie ist GA und bis
+- Redis verwendet den Tag `docker.io/library/redis:8.2-alpine`; die 8.2-Linie ist GA und bis
   1. September 2030 unterstützt.
-- MariaDB verwendet `11.8-ubi9`; MariaDB 11.8 ist eine LTS-Linie und das
-  UBI-Image ist für OpenShift geeignet.
+- MariaDB verwendet `docker.io/library/mariadb:11.8-ubi9`; MariaDB 11.8 ist eine
+  LTS-Linie und das UBI-Image ist für OpenShift geeignet.
 
 Beide Tags bleiben innerhalb ihrer jeweiligen LTS-Linie beweglich und erhalten
 dadurch Patch- und Sicherheitsupdates ohne Änderung an `values.yaml`.
-`imagePullPolicy: Always` sorgt bei neu erzeugten Pods für eine Registry-Prüfung.
-Die Chart-Version steht zusätzlich als Pod-Template-Annotation in beiden
-StatefulSets, sodass ein Chart-Upgrade einen Rollout auslöst. Unbeschränkte Tags
-wie `latest`, `8`, `11` oder `lts`, die auf eine andere Versionslinie wechseln
-können, werden nicht verwendet.
+Unbeschränkte Tags wie `latest`, `8`, `11` oder `lts`, die auf eine andere
+Versionslinie wechseln können, werden nicht verwendet.
+
+## Automatische Image-Aktualisierung
+
+Das Chart erzeugt standardmäßig für Drupal, Redis und MariaDB jeweils einen
+OpenShift `ImageStream`. OpenShift importiert die konfigurierten Tags regelmäßig.
+Ändert sich der Digest eines Tags, aktualisiert ein Image-Change-Trigger das
+zugehörige Deployment beziehungsweise StatefulSet. Dadurch wird automatisch ein
+Rollout mit dem neuen Image gestartet. Bei Redis und MariaDB kann der Registry-Tag
+nur innerhalb der ausgewählten LTS-Linie auf einen neuen Patchstand zeigen.
+
+Die Aktualisierung ist für jede Komponente unabhängig konfigurierbar:
+
+```yaml
+drupal:
+  image:
+    autoUpdate:
+      enabled: true
+      scheduledImport: true
+
+redis:
+  image:
+    autoUpdate:
+      enabled: true
+      scheduledImport: true
+
+database:
+  image:
+    autoUpdate:
+      enabled: true
+      scheduledImport: true
+```
+
+- `enabled: false` entfernt ImageStream und Trigger der Komponente aus der
+  Chart-Verwaltung. Wegen `helm.sh/resource-policy: keep` wird ein bereits
+  erzeugter ImageStream dabei nicht automatisch gelöscht.
+- `scheduledImport: false` behält ImageStream und Trigger bei, beendet aber die
+  regelmäßige Prüfung der externen Registry. Ein Import kann dann kontrolliert
+  mit `oc import-image` angestoßen werden.
+- `imagePullPolicy: Always` stellt zusätzlich sicher, dass jeder neu erzeugte
+  Pod den aktuell referenzierten Digest aus der Registry abruft.
+
+Status und zuletzt importierte Images lassen sich beispielsweise so prüfen:
+
+```sh
+oc get imagestream -n ddbgo-t
+oc describe imagestream ddbgo-t-redis -n ddbgo-t
+oc rollout status statefulset/ddbgo-t-redis -n ddbgo-t
+```
+
+Der OpenShift-Import reagiert auf eine Änderung des Image-Digests. Er führt
+keine eigenen Anwendungstests durch. Für MariaDB sollte deshalb weiterhin ein
+Backup- und Wiederherstellungsverfahren vorhanden sein.
 
 ## Veröffentlichung über GitHub
 

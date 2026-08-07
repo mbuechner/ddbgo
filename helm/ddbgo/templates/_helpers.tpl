@@ -107,6 +107,13 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- default (include "ddbgo.databaseName" .) .Values.database.persistence.existingClaim }}
 {{- end }}
 
+{{/* OpenShift image change trigger for a container in a pod template. */}}
+{{- define "ddbgo.imageTrigger" -}}
+{{- $from := dict "kind" "ImageStreamTag" "name" (printf "%s:%s" .name .tag) "namespace" .root.Release.Namespace -}}
+{{- $trigger := dict "from" $from "fieldPath" (printf "spec.template.spec.containers[?(@.name==\"%s\")].image" .container) "paused" false -}}
+{{- list $trigger | toJson -}}
+{{- end }}
+
 {{/* Paths fixed by the DDBgo container image. */}}
 {{- define "ddbgo.drupalWebRoot" -}}
 /var/www/html/web

@@ -1,80 +1,129 @@
-# Resource names are derived from the Helm release name. Install the production
-# release as "ddbgo" in namespace "ddbgo" and the test release as "ddbgo-t" in
-# namespace "ddbgo-t".
+# DDBgo Helm-Chart: Standardwerte für OpenShift.
+# Umgebungsspezifische Abweichungen für das Testsystem stehen in values-test.yaml.
+
+# Alle Ressourcennamen werden aus dem Helm-Release-Namen abgeleitet. Produktion
+# wird als "ddbgo" im Namespace "ddbgo", Test als "ddbgo-t" in "ddbgo-t"
+# installiert.
 naming:
+  # Verhindert versehentliche Installationen mit abweichendem Release- und
+  # Namespace-Namen.
   enforceReleaseNamespaceMatch: true
+  # Leere Liste [] erlaubt beliebige Release-Namen. Die Vorgabe schützt das
+  # vereinbarte Namensschema.
   allowedReleaseNames:
     - ddbgo
     - ddbgo-t
 
-# Helm must never adopt resources which existed before an install. Resources
-# created by this chart are retained on uninstall and on replacement.
+# Schutz vorhandener Ressourcen.
 protection:
+  # Bricht ab, wenn bei der Erstinstallation gleichnamige Ressourcen existieren.
+  # Bei Upgrades werden nur Ressourcen mit passenden Helm-Owner-Annotationen
+  # verändert.
   failOnExistingResource: true
+  # Fügt helm.sh/resource-policy=keep hinzu. Helm löscht diese Ressourcen weder
+  # bei einem Uninstall noch beim Entfernen eines Templates aus dem Chart.
   keepOnDelete: true
 
+# Optionale Registry-Secrets für alle Pods, z. B.:
+# imagePullSecrets:
+#   - name: ghcr-pull-secret
 imagePullSecrets: []
 
 serviceAccounts:
+  # false: Das Chart legt keine ServiceAccounts an. Dann müssen Accounts mit
+  # den unten angegebenen oder den automatisch abgeleiteten Namen existieren.
   create: true
+  # Zusätzliche Annotationen für alle vom Chart erzeugten ServiceAccounts.
   annotations: {}
+  # Leere Werte erzeugen <release>-drupal, <release>-redis und <release>-db.
   drupalName: ""
   redisName: ""
   databaseName: ""
 
 drupal:
+  # Recreate wird als Deployment-Strategie verwendet, da der Drupal-PVC
+  # standardmäßig nur ReadWriteOnce unterstützt.
   replicaCount: 1
   image:
+    # Externes Container-Repository und dessen beweglicher Produktions-Tag.
+    # values-test.yaml überschreibt den Tag mit "test".
     repository: ghcr.io/mbuechner/ddbgo
     tag: tagged
+    # Always ist bei beweglichen Tags möglich; der ImageStream-Trigger setzt
+    # beim Rollout normalerweise eine eindeutige Digest-Referenz ein.
     pullPolicy: IfNotPresent
+    autoUpdate:
+      # Erzeugt einen ImageStream und einen Image-Change-Trigger. Eine Änderung
+      # des importierten Digests startet automatisch ein neues Deployment.
+      enabled: true
+      # true: OpenShift prüft das externe Repository regelmäßig. false: Import
+      # nur manuell, z. B. mit `oc import-image ddbgo-drupal -n ddbgo`.
+      scheduledImport: true
   service:
+    # Interner Service-Port und gleichzeitig Zielport der OpenShift Route.
     port: 8080
   route:
     enabled: true
+    # Route-Ressourcenname und öffentlicher DNS-Hostname.
     name: go.deutsche-digitale-bibliothek.de
     host: go.deutsche-digitale-bibliothek.de
     annotations: {}
     tls:
+      # TLS endet am OpenShift Router; HTTP wird auf HTTPS umgeleitet.
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
   config:
-    # Drupal expects the public path relative to its web root
-    # (/var/www/html/web). The private path must be absolute and outside it.
+    # Wird als UPDATE_FREE_ACCESS an den DDBgo-Container übergeben.
     updateFreeAccess: false
+    # Relativ zu /var/www/html/web; der PVC-Unterordner data/public wird dort
+    # eingebunden.
     filePublicPath: sites/default/files
+    # Absolut und außerhalb des Webroots; verwendet PVC-Unterordner data/private.
     filePrivatePath: /var/www/html/private
+    # Temporäres emptyDir; keine persistenten Daten dort ablegen.
     tempPath: /tmp
+    # Regulärer Ausdruck für Drupals trusted_host_patterns.
     trustedHostPatterns: '^go\.deutsche-digitale-bibliothek\.de$'
+    # Basis-URL für Drush-Aufrufe im Container.
     drushOptionsUri: https://go.deutsche-digitale-bibliothek.de
   maintenance:
-    # Both operations modify application state and are therefore opt-in.
+    # Beide Aktionen verändern Anwendungszustand und sind daher standardmäßig
+    # deaktiviert. Sie laufen bei jedem Containerstart, wenn sie aktiviert sind.
     updatedbOnStartup: false
     cacheRebuildOnStartup: false
   secret:
+    # true erzeugt das Secret <release>-drupal. Bei false muss existingSecret
+    # gesetzt sein und den Schlüssel "hash-salt" enthalten.
     create: true
     existingSecret: ""
-    # Generated once during the first install when left empty.
+    # Leer: Bei der Erstinstallation zufällig erzeugen und bei Upgrades behalten.
     hashSalt: ""
   persistence:
+    # true erzeugt den PVC <release>-drupal. Bei false muss existingClaim gesetzt
+    # sein. Das Chart löscht einen erzeugten PVC wegen resource-policy=keep nicht.
     create: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
     size: 5Gi
+    # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""
+  # Zusätzliche Annotationen am Pod-Template, nicht am Deployment selbst.
   podAnnotations: {}
+  # Keine feste UID/GID setzen: OpenShift weist sie über die SCC zu.
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
   securityContext:
+    # Restriktiver Container-Kontext, kompatibel mit der OpenShift restricted SCC.
     allowPrivilegeEscalation: false
     capabilities:
       drop:
         - ALL
     runAsNonRoot: true
   resources:
+    # Sparsame Standardwerte; für Last und Datenmenge produktiv bemessen.
     requests:
       cpu: 50m
       memory: 128Mi
@@ -86,36 +135,51 @@ drupal:
   affinity: {}
 
 redis:
+  # false deaktiviert Redis-Workload, Service, Secret, PVC und Image-Trigger.
   enabled: true
   image:
-    repository: redis
-    # Redis 8.2 is GA and has a published support horizon through 2030-09-01.
+    repository: docker.io/library/redis
+    # Beweglicher Patch-Tag innerhalb der Redis-8.2-LTS-Linie.
     tag: 8.2-alpine
     pullPolicy: Always
+    autoUpdate:
+      # Erstellt <release>-redis als ImageStream und versieht das StatefulSet mit
+      # einem Image-Change-Trigger.
+      enabled: true
+      # Regelmäßigen Import des oben angegebenen externen Tags aktivieren.
+      scheduledImport: true
   secret:
+    # Bei create=false muss existingSecret die Schlüssel "password" und
+    # "users.acl" enthalten.
     create: true
     existingSecret: ""
-    # Generated once during the first install when left empty.
+    # Leer: Einmalig erzeugen. Ein gesetztes Passwort muss 16-128 Zeichen aus
+    # A-Z, a-z und 0-9 enthalten, damit die generierte Redis-ACL sicher bleibt.
     password: ""
   persistence:
+    # Der PVC wird als /data mit subPath "data" eingebunden. Redis nutzt AOF.
     create: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
     size: 2Gi
+    # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""
   podAnnotations: {}
+  # Keine feste UID/GID setzen; OpenShift bestimmt diese über die SCC.
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
   securityContext:
+    # Gilt für Init- und Hauptcontainer.
     allowPrivilegeEscalation: false
     capabilities:
       drop:
         - ALL
     runAsNonRoot: true
   resources:
+    # Sparsame Ausgangswerte; insbesondere memory an Cachegröße/Last anpassen.
     requests:
       cpu: 25m
       memory: 64Mi
@@ -127,39 +191,55 @@ redis:
   affinity: {}
 
 database:
+  # MariaDB ist für DDBgo erforderlich; false wird vom Chart bewusst abgelehnt.
   enabled: true
   image:
-    repository: mariadb
-    # MariaDB 11.8 is an LTS branch; the UBI image fits OpenShift environments.
+    repository: docker.io/library/mariadb
+    # Beweglicher Patch-Tag innerhalb der MariaDB-11.8-LTS-Linie. Das UBI9-Image
+    # ist für den Betrieb mit OpenShift geeignet.
     tag: 11.8-ubi9
     pullPolicy: Always
+    autoUpdate:
+      # Erstellt <release>-db als ImageStream und versieht das StatefulSet mit
+      # einem Image-Change-Trigger.
+      enabled: true
+      # Regelmäßigen Import des oben angegebenen externen Tags aktivieren.
+      scheduledImport: true
   auth:
+    # Bei create=false muss existingSecret die Schlüssel "database", "username",
+    # "password" und "root-password" enthalten.
     create: true
     existingSecret: ""
     database: ddbgodb
     username: ddbgo
-    # Generated once during the first install when left empty.
+    # Leere Passwörter werden einmalig erzeugt und bei Upgrades weiterverwendet.
     password: ""
     rootPassword: ""
   persistence:
+    # Der PVC wird als /var/lib/mysql mit subPath "data" eingebunden.
     create: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
     size: 10Gi
+    # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""
   podAnnotations: {}
+  # Keine feste UID/GID setzen; /run/mariadb und /tmp sind beschreibbare
+  # emptyDirs, während OpenShift die Laufzeit-UID über die SCC vergibt.
   podSecurityContext:
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
   securityContext:
+    # Gilt für Init- und Hauptcontainer.
     allowPrivilegeEscalation: false
     capabilities:
       drop:
         - ALL
     runAsNonRoot: true
   resources:
+    # Sparsame Ausgangswerte; für produktive Datenmengen gezielt erhöhen.
     requests:
       cpu: 100m
       memory: 256Mi

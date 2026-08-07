@@ -11,6 +11,9 @@ metadata:
     app.kubernetes.io/component: db
   annotations:
     {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+    {{- if .Values.database.image.autoUpdate.enabled }}
+    image.openshift.io/triggers: {{ include "ddbgo.imageTrigger" (dict "root" . "name" $name "tag" .Values.database.image.tag "container" "mariadb") | quote }}
+    {{- end }}
 spec:
   serviceName: {{ $name }}
   replicas: 1
