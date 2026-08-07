@@ -69,11 +69,11 @@ drupal:
     runAsNonRoot: true
   resources:
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 50m
+      memory: 128Mi
     limits:
-      cpu: "1"
-      memory: 1Gi
+      cpu: 500m
+      memory: 512Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -110,11 +110,11 @@ redis:
     runAsNonRoot: true
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 25m
+      memory: 64Mi
     limits:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 250m
+      memory: 256Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -154,12 +154,11 @@ database:
     runAsNonRoot: true
   resources:
     requests:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: "2"
-      memory: 2Gi
+      cpu: "1"
+      memory: 1Gi
   nodeSelector: {}
   tolerations: []
   affinity: {}
-

@@ -109,6 +109,45 @@ Erwartete Schlüssel in vorhandenen Secrets:
 `password` übereinstimmt, beispielsweise
 `user default on >GEHEIM ~* &* +@all`.
 
+## Ressourcenbedarf
+
+Die Standardwerte sind für eine sparsame Einzelinstanz auf OpenShift
+ausgelegt:
+
+| Komponente | CPU-Request | CPU-Limit | Speicher-Request | Speicher-Limit |
+| --- | ---: | ---: | ---: | ---: |
+| Drupal | `50m` | `500m` | `128Mi` | `512Mi` |
+| Redis | `25m` | `250m` | `64Mi` | `256Mi` |
+| MariaDB | `100m` | `1` | `256Mi` | `1Gi` |
+
+Für Produktion sollten diese Werte nach Messung der tatsächlichen Last
+angepasst werden. Insbesondere Drupal und MariaDB können bei Importen,
+Cache-Neuaufbau oder Datenbankmigrationen vorübergehend mehr Speicher benötigen.
+Alle Werte lassen sich unter `drupal.resources`, `redis.resources` und
+`database.resources` überschreiben.
+
+## Verzeichnisstruktur der PVCs
+
+Jeder Anwendungscontainer bindet ausschließlich einen Unterpfad innerhalb
+seines PVCs ein. Im Wurzelverzeichnis legt das Chart nur den Ordner `data` an:
+
+```text
+<pvc-root>/
+└── data/
+```
+
+Redis und MariaDB schreiben direkt in ihren jeweiligen Ordner `data`. Beim
+Drupal-PVC liegen die öffentlichen und privaten Dateien getrennt unter
+`data/public` und `data/private`. Init-Container legen die benötigten
+Verzeichnisse vor dem Anwendungsstart an; die Hauptcontainer verwenden dafür
+Kubernetes-`subPath`-Mounts.
+
+Bei einem bereits befüllten PVC werden vorhandene Dateien im Wurzelverzeichnis
+nicht automatisch verschoben. Vor dem Upgrade müssen die Workloads gestoppt,
+die Daten gesichert und kontrolliert nach `data` beziehungsweise bei Drupal
+nach `data/public` und `data/private` migriert werden. Andernfalls starten die
+Anwendungen mit einem zunächst leeren Unterverzeichnis.
+
 ## Passwörter und Persistenz
 
 Bleiben Passwortwerte leer, erzeugt das Chart sie bei der ersten Installation

@@ -34,6 +34,19 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: prepare-storage
+          image: {{ printf "%s:%s" .Values.redis.image.repository .Values.redis.image.tag | quote }}
+          imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - mkdir -p /storage/data
+          securityContext:
+            {{- toYaml .Values.redis.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /storage
       containers:
         - name: redis
           image: {{ printf "%s:%s" .Values.redis.image.repository .Values.redis.image.tag | quote }}
@@ -77,6 +90,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+              subPath: data
             - name: redis-auth
               mountPath: /etc/redis
               readOnly: true
@@ -108,4 +122,3 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 {{- end }}
-

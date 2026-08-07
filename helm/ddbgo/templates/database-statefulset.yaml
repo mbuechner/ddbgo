@@ -34,6 +34,19 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: prepare-storage
+          image: {{ printf "%s:%s" .Values.database.image.repository .Values.database.image.tag | quote }}
+          imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - mkdir -p /storage/data
+          securityContext:
+            {{- toYaml .Values.database.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /storage
       containers:
         - name: mariadb
           image: {{ printf "%s:%s" .Values.database.image.repository .Values.database.image.tag | quote }}
@@ -89,6 +102,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/mysql
+              subPath: data
             - name: tmp
               mountPath: /tmp
       volumes:
@@ -110,4 +124,3 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 {{- end }}
-
