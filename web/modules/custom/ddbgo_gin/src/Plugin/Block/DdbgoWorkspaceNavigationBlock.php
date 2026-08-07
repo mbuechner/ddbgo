@@ -113,6 +113,7 @@ final class DdbgoWorkspaceNavigationBlock extends BlockBase implements Container
           '#title' => $login_label,
           '#url' => Url::fromRoute('user.login'),
           '#attributes' => [
+            'aria-label' => $login_label,
             'class' => [
               'ddbgo-workspace-navigation__link',
               'ddbgo-workspace-navigation__link--account',

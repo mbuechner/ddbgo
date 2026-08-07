@@ -37,7 +37,33 @@
   Drupal.behaviors.ddbgoWorkspaceNavigation = {
     attach(context) {
       once('ddbgo-workspace-navigation', '.ddbgo-workspace-navigation', context).forEach((navigation) => {
-        const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const menuToggle = navigation.querySelector('.ddbgo-workspace-navigation__menu-toggle');
+        if (!menuToggle) {
+          return;
+        }
+
+        const mobileNavigation = window.matchMedia('(max-width: 48em)');
+        const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+        const closeNavigation = (restoreFocus = false) => {
+          closeAll(navigation);
+          menuToggle.setAttribute('aria-expanded', 'false');
+          if (restoreFocus) {
+            menuToggle.focus();
+          }
+        };
+
+        menuToggle.addEventListener('click', () => {
+          const willOpen = menuToggle.getAttribute('aria-expanded') !== 'true';
+          if (willOpen) {
+            menuToggle.setAttribute('aria-expanded', 'true');
+          }
+          else {
+            closeNavigation();
+          }
+        });
+
+        mobileNavigation.addEventListener('change', () => closeNavigation());
 
         navigation.querySelectorAll('.toolbar-menu__trigger').forEach((trigger) => trigger.remove());
 
@@ -47,9 +73,17 @@
             return;
           }
 
-          if (supportsHover) {
-            item.addEventListener('mouseenter', () => openItem(navigation, item));
-            item.addEventListener('mouseleave', () => closeItem(item));
+          if (supportsHover.matches) {
+            item.addEventListener('mouseenter', () => {
+              if (!mobileNavigation.matches) {
+                openItem(navigation, item);
+              }
+            });
+            item.addEventListener('mouseleave', () => {
+              if (!mobileNavigation.matches) {
+                closeItem(item);
+              }
+            });
           }
 
           toggle.addEventListener('click', () => {
@@ -85,12 +119,15 @@
             if (openedItem) {
               closeItem(openedItem, true);
             }
+            else if (menuToggle.getAttribute('aria-expanded') === 'true') {
+              closeNavigation(true);
+            }
           }
         });
 
         document.addEventListener('click', (event) => {
           if (!navigation.contains(event.target)) {
-            closeAll(navigation);
+            closeNavigation();
           }
         });
       });
