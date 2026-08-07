@@ -1,7 +1,6 @@
 #!/bin/sh
 UPDATEDB_ON_STARTUP="${UPDATEDB_ON_STARTUP:-no}";
 CACHEREBUILD_ON_STARTUP="${CACHEREBUILD_ON_STARTUP:-no}";
-REDIS_MAXMEMORY="${REDIS_MAXMEMORY:-1gb}";
 
 if [ "$UPDATEDB_ON_STARTUP" = "yes" ]; then
   echo "Start Drupal Update DB...";

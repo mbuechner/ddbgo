@@ -21,5 +21,6 @@ data:
   FILE_PRIVATE_PATH: {{ .Values.drupal.config.filePrivatePath | quote }}
   TRUSTED_HOST_PATTERNS: {{ .Values.drupal.config.trustedHostPatterns | quote }}
   DRUSH_OPTIONS_URI: {{ .Values.drupal.config.drushOptionsUri | quote }}
-  TMP: /tmp
-
+  TMP: {{ .Values.drupal.config.tempPath | quote }}
+  UPDATEDB_ON_STARTUP: {{ ternary "yes" "no" .Values.drupal.maintenance.updatedbOnStartup | quote }}
+  CACHEREBUILD_ON_STARTUP: {{ ternary "yes" "no" .Values.drupal.maintenance.cacheRebuildOnStartup | quote }}

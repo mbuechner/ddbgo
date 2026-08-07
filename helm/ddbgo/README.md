@@ -148,6 +148,47 @@ die Daten gesichert und kontrolliert nach `data` beziehungsweise bei Drupal
 nach `data/public` und `data/private` migriert werden. Andernfalls starten die
 Anwendungen mit einem zunächst leeren Unterverzeichnis.
 
+## Anwendungsvariablen und Containerpfade
+
+Das DDBgo-Image enthält das Projekt unter `/var/www/html` und verwendet
+`/var/www/html/web` als Drupal-Webroot. Drupal erwartet den öffentlichen
+Dateipfad relativ zu diesem Webroot, den privaten Dateipfad dagegen absolut
+und außerhalb des Webroots. Die Standardkonfiguration ergibt daher:
+
+| Variable | Wert beziehungsweise Quelle | Zugehöriger Mount |
+| --- | --- | --- |
+| `MYSQL_DATABASE` | Schlüssel `database` im MariaDB-Secret | – |
+| `MYSQL_USER` | Schlüssel `username` im MariaDB-Secret | – |
+| `MYSQL_PASSWORD` | Schlüssel `password` im MariaDB-Secret | – |
+| `MYSQL_HOSTNAME` | MariaDB-Service `ddbgo[-t]-db` | – |
+| `MYSQL_PORT` | `3306` | – |
+| `HASH_SALT` | Schlüssel `hash-salt` im Drupal-Secret | – |
+| `UPDATE_FREE_ACCESS` | `false` | – |
+| `FILE_PUBLIC_PATH` | `sites/default/files` | `/var/www/html/web/sites/default/files` → PVC `data/public` |
+| `FILE_PRIVATE_PATH` | `/var/www/html/private` | `/var/www/html/private` → PVC `data/private` |
+| `TMP` | `/tmp` | `emptyDir` unter `/tmp` |
+| `TRUSTED_HOST_PATTERNS` | Regex passend zur Route | – |
+| `USE_REDIS` | aus `redis.enabled` | – |
+| `REDIS_HOST` | Redis-Service `ddbgo[-t]-redis` | – |
+| `REDIS_PORT` | `6379` | – |
+| `REDIS_PASSWORD` | Schlüssel `password` im Redis-Secret | – |
+| `DRUSH_OPTIONS_URI` | vollständige URL passend zur Route | – |
+| `UPDATEDB_ON_STARTUP` | standardmäßig `no` | – |
+| `CACHEREBUILD_ON_STARTUP` | standardmäßig `no` | – |
+
+Die öffentlichen und privaten Mount-Pfade werden aus denselben Values erzeugt,
+die als `FILE_PUBLIC_PATH` und `FILE_PRIVATE_PATH` an Drupal übergeben werden.
+Dadurch können ENV-Wert und Volume-Mount nicht mehr unbemerkt auseinanderlaufen.
+Das Chart lehnt einen absoluten öffentlichen Pfad, einen privaten Pfad innerhalb
+des Webroots sowie einen relativen privaten oder temporären Pfad ab.
+
+Die MariaDB-Variablen im Datenbank-Pod heißen dagegen `MARIADB_DATABASE`,
+`MARIADB_USER`, `MARIADB_PASSWORD` und `MARIADB_ROOT_PASSWORD`, weil das
+MariaDB-Image diese Namen erwartet. Drupal und MariaDB erhalten ihre Werte aus
+demselben Secret. Optionale HTTP-Basic-Auth-Variablen des DDBgo-Entrypoints
+werden vom Chart nicht gesetzt; ohne diese Variablen bleibt Basic Auth
+deaktiviert.
+
 ## Passwörter und Persistenz
 
 Bleiben Passwortwerte leer, erzeugt das Chart sie bei der ersten Installation

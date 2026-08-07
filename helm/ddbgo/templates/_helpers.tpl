@@ -107,3 +107,11 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- default (include "ddbgo.databaseName" .) .Values.database.persistence.existingClaim }}
 {{- end }}
 
+{{/* Paths fixed by the DDBgo container image. */}}
+{{- define "ddbgo.drupalWebRoot" -}}
+/var/www/html/web
+{{- end }}
+
+{{- define "ddbgo.drupalPublicFilesMountPath" -}}
+{{- printf "%s/%s" (include "ddbgo.drupalWebRoot" .) .Values.drupal.config.filePublicPath -}}
+{{- end }}

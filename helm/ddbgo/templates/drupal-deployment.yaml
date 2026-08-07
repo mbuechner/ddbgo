@@ -111,13 +111,13 @@ spec:
             {{- toYaml .Values.drupal.resources | nindent 12 }}
           volumeMounts:
             - name: drupal-data
-              mountPath: /var/www/html/web/sites/default/files
+              mountPath: {{ include "ddbgo.drupalPublicFilesMountPath" . | quote }}
               subPath: data/public
             - name: drupal-data
-              mountPath: /var/www/html/private
+              mountPath: {{ .Values.drupal.config.filePrivatePath | quote }}
               subPath: data/private
             - name: tmp
-              mountPath: /tmp
+              mountPath: {{ .Values.drupal.config.tempPath | quote }}
       volumes:
         - name: drupal-data
           persistentVolumeClaim:

@@ -65,7 +65,7 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `HASH_SALT` | Yes | `''` (empty) | Drupal hash salt for tokens and one-time links. |
 | `UPDATE_FREE_ACCESS` | No | `false` | Enables access to `update.php` without login when set to `true` (not recommended in production). |
 | `FILE_PUBLIC_PATH` | No | `sites/default/files` | Public files directory relative to Drupal web root. |
-| `FILE_PRIVATE_PATH` | No | `$app_root . '/../private'` | Private files directory path (should not be web-accessible). |
+| `FILE_PRIVATE_PATH` | No | `$app_root . '/../private'` | Absolute private-files path outside the Drupal web root. |
 | `TMP` | No | `sys_get_temp_dir()` | Temporary directory path used by Drupal. |
 | `TRUSTED_HOST_PATTERNS` | No | `^localhost$, ^127\.0\.0\.1$` | Comma-separated regex list for trusted host validation. |
 | `USE_REDIS` | No | `false` | Enables Redis cache backend integration when set to `true`. |
@@ -73,6 +73,8 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `REDIS_PORT` | No | `6379` | Redis TCP port (used when `USE_REDIS=true`). |
 | `REDIS_PASSWORD` | No | not set | Redis password (used when `USE_REDIS=true` and authentication is enabled). |
 | `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
+| `UPDATEDB_ON_STARTUP` | No | `no` | Runs Drupal database updates when the container starts if set to `yes`. |
+| `CACHEREBUILD_ON_STARTUP` | No | `no` | Rebuilds Drupal caches when the container starts if set to `yes`. |
 
 ### Composer project maintenance
 1. Find updateable packages:

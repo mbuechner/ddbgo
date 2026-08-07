@@ -50,3 +50,25 @@
 {{- if and (not .Values.database.persistence.create) (not .Values.database.persistence.existingClaim) }}
 {{- fail "database.persistence.existingClaim is required when database.persistence.create=false" }}
 {{- end }}
+{{- $publicPath := .Values.drupal.config.filePublicPath -}}
+{{- $privatePath := .Values.drupal.config.filePrivatePath -}}
+{{- $tempPath := .Values.drupal.config.tempPath -}}
+{{- $webRoot := include "ddbgo.drupalWebRoot" . -}}
+{{- if or (not $publicPath) (hasPrefix "/" $publicPath) (regexMatch "(^|/)\\.{1,2}($|/)" $publicPath) }}
+{{- fail "drupal.config.filePublicPath must be a non-empty relative path below /var/www/html/web without . or .. segments" }}
+{{- end }}
+{{- if or (not $privatePath) (not (hasPrefix "/" $privatePath)) }}
+{{- fail "drupal.config.filePrivatePath must be an absolute path" }}
+{{- end }}
+{{- if or (eq $privatePath $webRoot) (hasPrefix (printf "%s/" $webRoot) $privatePath) }}
+{{- fail "drupal.config.filePrivatePath must be outside the Drupal web root /var/www/html/web" }}
+{{- end }}
+{{- if or (not $tempPath) (not (hasPrefix "/" $tempPath)) }}
+{{- fail "drupal.config.tempPath must be an absolute path" }}
+{{- end }}
+{{- if not .Values.drupal.config.trustedHostPatterns }}
+{{- fail "drupal.config.trustedHostPatterns must not be empty" }}
+{{- end }}
+{{- if and .Values.drupal.config.drushOptionsUri (not (or (hasPrefix "https://" .Values.drupal.config.drushOptionsUri) (hasPrefix "http://" .Values.drupal.config.drushOptionsUri))) }}
+{{- fail "drupal.config.drushOptionsUri must start with http:// or https://" }}
+{{- end }}

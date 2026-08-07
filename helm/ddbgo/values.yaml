@@ -39,11 +39,18 @@ drupal:
       termination: edge
       insecureEdgeTerminationPolicy: Redirect
   config:
-    updateFreeAccess: "false"
+    # Drupal expects the public path relative to its web root
+    # (/var/www/html/web). The private path must be absolute and outside it.
+    updateFreeAccess: false
     filePublicPath: sites/default/files
     filePrivatePath: /var/www/html/private
+    tempPath: /tmp
     trustedHostPatterns: '^go\.deutsche-digitale-bibliothek\.de$'
     drushOptionsUri: https://go.deutsche-digitale-bibliothek.de
+  maintenance:
+    # Both operations modify application state and are therefore opt-in.
+    updatedbOnStartup: false
+    cacheRebuildOnStartup: false
   secret:
     create: true
     existingSecret: ""
