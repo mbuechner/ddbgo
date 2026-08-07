@@ -84,8 +84,8 @@
 {{- if or (not $tempPath) (not (hasPrefix "/" $tempPath)) }}
 {{- fail "drupal.config.tempPath must be an absolute path" }}
 {{- end }}
-{{- if not .Values.drupal.config.trustedHostPatterns }}
-{{- fail "drupal.config.trustedHostPatterns must not be empty" }}
+{{- if not .Values.drupal.externalHost }}
+{{- fail "drupal.externalHost must not be empty because it defines the Route and trusted host" }}
 {{- end }}
 {{- if and .Values.drupal.config.drushOptionsUri (not (or (hasPrefix "https://" .Values.drupal.config.drushOptionsUri) (hasPrefix "http://" .Values.drupal.config.drushOptionsUri))) }}
 {{- fail "drupal.config.drushOptionsUri must start with http:// or https://" }}

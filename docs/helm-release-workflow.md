@@ -146,15 +146,10 @@ Es sollte nie implizit „die neueste“ Testversion installiert werden.
 
    ```yaml
    drupal:
+     externalHost: go-t.deutsche-digitale-bibliothek.de
      image:
        tag: test
        pullPolicy: Always
-     route:
-       name: go-t.deutsche-digitale-bibliothek.de
-       host: go-t.deutsche-digitale-bibliothek.de
-     config:
-       trustedHostPatterns: '^go-t\.deutsche-digitale-bibliothek\.de$'
-       drushOptionsUri: https://go-t.deutsche-digitale-bibliothek.de
    ```
 
 7. Die angezeigten Änderungen prüfen und die Release-Erstellung beziehungsweise
@@ -163,6 +158,13 @@ Es sollte nie implizit „die neueste“ Testversion installiert werden.
 Das Testprofil ist nicht automatisch das Standardprofil des Charts. In der CLI
 wird deshalb `values-test.yaml` angegeben; in der Weboberfläche müssen die
 Testwerte in der YAML-Ansicht gesetzt werden.
+
+Die OpenShift-Route enthält keinen TLS-Block. Der vorgeschaltete Reverse Proxy
+terminiert HTTPS und leitet intern per HTTP an die Route weiter.
+`TRUSTED_HOST_PATTERNS`, Route-Name, Route-Host und Probe-Host werden automatisch
+aus `drupal.externalHost` und dem Drupal-Service-Namen erzeugt. Der Reverse Proxy
+muss `Host` und `X-Forwarded-Host` auf die öffentliche `go-t`-Domain sowie
+`X-Forwarded-Proto` auf `https` und `X-Forwarded-Port` auf `443` setzen.
 
 #### Über die CLI
 

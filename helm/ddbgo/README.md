@@ -6,6 +6,9 @@ Namespace. Es verwendet eine OpenShift `Route`, nicht privilegierte Container,
 eingetragene UID. Dadurch kann die OpenShift-SCC die projektspezifische UID
 vergeben.
 
+Die Route enthält bewusst keine TLS-Konfiguration. Sie wird clusterseitig über
+HTTP angesprochen; TLS/SSL endet am vorgeschalteten Reverse Proxy.
+
 ## Benennung
 
 Die Namen werden aus dem Release-Namen gebildet:
@@ -68,6 +71,18 @@ helm upgrade --install ddbgo ./helm/ddbgo \
   --set-string drupal.image.tag=v1.2.3 \
   --set drupal.image.autoUpdate.enabled=false
 ```
+
+Die öffentliche Domain wird pro Umgebung nur einmal gesetzt:
+
+```yaml
+drupal:
+  externalHost: go.deutsche-digitale-bibliothek.de
+```
+
+Das Chart verwendet diesen Wert für Route-Name, Route-Host, Trusted-Host-Regel
+und den Host-Header der Drupal-Probes. `values-test.yaml` überschreibt nur diesen
+Wert mit der Testdomain. Für temporäre Installationen kann auf dieselbe Weise
+eine beliebige andere Domain gesetzt werden.
 
 ## Schutz bestehender Ressourcen
 
@@ -200,12 +215,12 @@ und außerhalb des Webroots. Die Standardkonfiguration ergibt daher:
 | `FILE_PUBLIC_PATH` | `sites/default/files` | `/var/www/html/web/sites/default/files` → PVC `data/public` |
 | `FILE_PRIVATE_PATH` | `/var/www/html/private` | `/var/www/html/private` → PVC `data/private` |
 | `TMP` | `/tmp` | `emptyDir` unter `/tmp` |
-| `TRUSTED_HOST_PATTERNS` | Regex passend zur Route | – |
+| `TRUSTED_HOST_PATTERNS` | automatisch erzeugte Regex für localhost, `drupal.externalHost` und Drupal-Service | – |
 | `USE_REDIS` | aus `redis.enabled` | – |
 | `REDIS_HOST` | Redis-Service `ddbgo[-t]-redis` | – |
 | `REDIS_PORT` | `6379` | – |
 | `REDIS_PASSWORD` | Schlüssel `password` im Redis-Secret | – |
-| `DRUSH_OPTIONS_URI` | vollständige URL passend zur Route | – |
+| `DRUSH_OPTIONS_URI` | `http://localhost:8080`; lokaler Drush-Request-Kontext | – |
 | `UPDATEDB_ON_STARTUP` | standardmäßig `no` | – |
 | `CACHEREBUILD_ON_STARTUP` | standardmäßig `no` | – |
 
@@ -222,6 +237,38 @@ demselben Secret. Optionale HTTP-Basic-Auth-Variablen des DDBgo-Entrypoints
 werden vom Chart nicht gesetzt; ohne diese Variablen bleibt Basic Auth
 deaktiviert.
 
+`TRUSTED_HOST_PATTERNS` wird nicht als redundanter fertiger String gepflegt.
+Das Chart leitet die Regeln aus `drupal.externalHost` und dem
+Release-/Ressourcennamen ab. Literale Zusatzhosts können unter `additionalHosts`
+ergänzt werden. Sämtliche Regex-Sonderzeichen werden automatisch maskiert. Für
+Produktion ergibt sich standardmäßig:
+
+```text
+^localhost$, ^127\.0\.0\.1$, ^go\.deutsche-digitale-bibliothek\.de$, ^ddbgo-drupal$
+```
+
+Der vorgeschaltete Reverse Proxy muss den öffentlichen Host unverändert an den
+OpenShift-Router senden. Für Produktion sind insbesondere folgende Header
+erforderlich; im Testsystem wird entsprechend die `go-t`-Domain verwendet:
+
+```text
+Host: go.deutsche-digitale-bibliothek.de
+X-Forwarded-Host: go.deutsche-digitale-bibliothek.de
+X-Forwarded-Proto: https
+X-Forwarded-Port: 443
+```
+
+Der OpenShift-Router benötigt den öffentlichen `Host` zum Matchen der Route.
+Nginx übergibt diesen Host sowie das externe Scheme und den externen Port an
+PHP-FPM. Drupal erzeugt dadurch öffentliche URLs mit der HTTPS-Domain, obwohl
+Route und Pod intern per HTTP kommunizieren.
+
+Bei mehreren Proxy-Stufen können Header als Listen ankommen, beispielsweise
+`X-Forwarded-Proto: https, http` und `X-Forwarded-Port: 443, 80`. Nginx wertet
+bewusst den ersten, ursprünglichen Proto-Wert aus und normalisiert die an
+PHP-FPM übergebenen Werte auf `https` und `443`. Ein später angehängtes `http`
+des OpenShift-Routers überschreibt damit nicht die externe Client-Sicht.
+
 MariaDB erhält zusätzlich ein beschreibbares `emptyDir` unter `/run/mariadb`.
 Das ist auf OpenShift erforderlich, weil die zufällig zugewiesene Container-UID
 den Unix-Socket nicht in das schreibgeschützte Verzeichnis des Images legen
@@ -232,7 +279,7 @@ kann. Dieses Runtime-Volume enthält keine persistenten Daten.
 Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
 
 - Drupal verwendet für alle drei Prüfungen den nicht gecachten HTTP-Endpunkt
-  `/health` auf Port 8080. Die Probe sendet den konfigurierten Route-Host als
+  `/health` auf Port 8080. Die Probe sendet `drupal.externalHost` als
   `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage akzeptiert.
 - Redis führt `redis-cli ping` aus. Das Passwort erhält der Client über die
   Umgebungsvariable `REDISCLI_AUTH` aus dem Redis-Secret.

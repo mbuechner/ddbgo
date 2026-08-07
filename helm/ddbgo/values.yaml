@@ -38,6 +38,9 @@ serviceAccounts:
   databaseName: ""
 
 drupal:
+  # Zentrale öffentliche Domain. Route-Name/-Host, Trusted-Host-Regel und der
+  # Host-Header der Health-Probes werden daraus abgeleitet.
+  externalHost: go.deutsche-digitale-bibliothek.de
   # Recreate verhindert, dass während eines Rollouts zwei Drupal-Pods zugleich
   # Änderungen am gemeinsam verwendeten Dateispeicher durchführen.
   replicaCount: 1
@@ -61,14 +64,10 @@ drupal:
     port: 8080
   route:
     enabled: true
-    # Route-Ressourcenname und öffentlicher DNS-Hostname.
-    name: go.deutsche-digitale-bibliothek.de
-    host: go.deutsche-digitale-bibliothek.de
-    annotations: {}
-    tls:
-      # TLS endet am OpenShift Router; HTTP wird auf HTTPS umgeleitet.
-      termination: edge
-      insecureEdgeTerminationPolicy: Redirect
+    annotations:
+      # Vorhandene Forwarded-Header des externen Reverse Proxys beibehalten.
+      haproxy.router.openshift.io/set-forwarded-headers: if-none
+    # Kein TLS in der Route: HTTPS endet am vorgeschalteten Reverse Proxy.
   config:
     # Wird als UPDATE_FREE_ACCESS an den DDBgo-Container übergeben.
     updateFreeAccess: false
@@ -79,10 +78,16 @@ drupal:
     filePrivatePath: /var/www/html/private
     # Temporäres emptyDir; keine persistenten Daten dort ablegen.
     tempPath: /tmp
-    # Regulärer Ausdruck für Drupals trusted_host_patterns.
-    trustedHostPatterns: '^go\.deutsche-digitale-bibliothek\.de$'
-    # Basis-URL für Drush-Aufrufe im Container.
-    drushOptionsUri: https://go.deutsche-digitale-bibliothek.de
+    # TRUSTED_HOST_PATTERNS wird aus localhost, drupal.externalHost und dem
+    # Drupal-Ressourcennamen erzeugt. Alle Werte werden automatisch als exakte
+    # reguläre Ausdrücke escaped.
+    trustedHosts:
+      allowLocalhost: true
+      # Zusätzliche literale Hostnamen; keine regulären Ausdrücke eintragen.
+      additionalHosts: []
+    # Lokaler Request-Kontext für Drush. Drush benötigt dadurch weder DNS noch
+    # Reverse Proxy oder OpenShift Route.
+    drushOptionsUri: http://localhost:8080
   maintenance:
     # Beide Aktionen verändern Anwendungszustand und sind daher standardmäßig
     # deaktiviert. Sie laufen bei jedem Containerstart, wenn sie aktiviert sind.
@@ -90,7 +95,7 @@ drupal:
     cacheRebuildOnStartup: false
   probes:
     # Nicht gecachter Drupal-Endpunkt. Der Host-Header wird vom Template auf
-    # drupal.route.host gesetzt, damit trusted_host_patterns die Probe akzeptiert.
+    # drupal.externalHost gesetzt, damit trusted_host_patterns die Probe akzeptiert.
     path: /health
     startup:
       periodSeconds: 5

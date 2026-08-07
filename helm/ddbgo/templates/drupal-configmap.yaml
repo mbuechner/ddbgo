@@ -19,7 +19,7 @@ data:
   UPDATE_FREE_ACCESS: {{ .Values.drupal.config.updateFreeAccess | quote }}
   FILE_PUBLIC_PATH: {{ .Values.drupal.config.filePublicPath | quote }}
   FILE_PRIVATE_PATH: {{ .Values.drupal.config.filePrivatePath | quote }}
-  TRUSTED_HOST_PATTERNS: {{ .Values.drupal.config.trustedHostPatterns | quote }}
+  TRUSTED_HOST_PATTERNS: {{ include "ddbgo.drupalTrustedHostPatterns" . | quote }}
   DRUSH_OPTIONS_URI: {{ .Values.drupal.config.drushOptionsUri | quote }}
   TMP: {{ .Values.drupal.config.tempPath | quote }}
   UPDATEDB_ON_STARTUP: {{ ternary "yes" "no" .Values.drupal.maintenance.updatedbOnStartup | quote }}

@@ -99,7 +99,7 @@ spec:
               scheme: HTTP
               httpHeaders:
                 - name: Host
-                  value: {{ .Values.drupal.route.host | quote }}
+                  value: {{ .Values.drupal.externalHost | quote }}
             periodSeconds: {{ .Values.drupal.probes.startup.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.startup.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.startup.failureThreshold }}
@@ -110,7 +110,7 @@ spec:
               scheme: HTTP
               httpHeaders:
                 - name: Host
-                  value: {{ .Values.drupal.route.host | quote }}
+                  value: {{ .Values.drupal.externalHost | quote }}
             periodSeconds: {{ .Values.drupal.probes.readiness.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.readiness.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.readiness.failureThreshold }}
@@ -121,7 +121,7 @@ spec:
               scheme: HTTP
               httpHeaders:
                 - name: Host
-                  value: {{ .Values.drupal.route.host | quote }}
+                  value: {{ .Values.drupal.externalHost | quote }}
             periodSeconds: {{ .Values.drupal.probes.liveness.periodSeconds }}
             timeoutSeconds: {{ .Values.drupal.probes.liveness.timeoutSeconds }}
             failureThreshold: {{ .Values.drupal.probes.liveness.failureThreshold }}

@@ -1,6 +1,6 @@
 DDBgo was installed as release {{ .Release.Name }} in namespace {{ .Release.Namespace }}.
 
-Route: https://{{ .Values.drupal.route.host }}
+Route (cluster-side HTTP): http://{{ .Values.drupal.externalHost }}
 
 By default, helm uninstall removes all chart-created resources except the three
 PersistentVolumeClaims. Their persistence.retain settings keep the stored data.

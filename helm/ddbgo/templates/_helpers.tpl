@@ -109,6 +109,25 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- default (include "ddbgo.databaseName" .) .Values.database.persistence.existingClaim }}
 {{- end }}
 
+{{/* Exact trusted-host regexes derived from names and literal host values. */}}
+{{- define "ddbgo.drupalTrustedHostPatterns" -}}
+{{- $hosts := list -}}
+{{- if .Values.drupal.config.trustedHosts.allowLocalhost -}}
+  {{- $hosts = append $hosts "localhost" -}}
+  {{- $hosts = append $hosts "127.0.0.1" -}}
+{{- end -}}
+{{- $hosts = append $hosts .Values.drupal.externalHost -}}
+{{- $hosts = append $hosts (include "ddbgo.drupalName" .) -}}
+{{- range .Values.drupal.config.trustedHosts.additionalHosts -}}
+  {{- $hosts = append $hosts . -}}
+{{- end -}}
+{{- $patterns := list -}}
+{{- range ($hosts | uniq) -}}
+  {{- $patterns = append $patterns (printf "^%s$" (. | regexQuoteMeta)) -}}
+{{- end -}}
+{{- join ", " $patterns -}}
+{{- end }}
+
 {{/* OpenShift image change trigger for a container in a pod template. */}}
 {{- define "ddbgo.imageTrigger" -}}
 {{- $from := dict "kind" "ImageStreamTag" "name" (printf "%s:%s" .name .tag) "namespace" .root.Release.Namespace -}}
