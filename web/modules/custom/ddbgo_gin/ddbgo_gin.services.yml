@@ -1,0 +1,9 @@
+services:
+  ddbgo_gin.route_subscriber:
+    class: Drupal\ddbgo_gin\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  ddbgo_gin.user_key_auth_access_check:
+    class: Drupal\ddbgo_gin\Access\UserKeyAuthAccessCheck
+    tags:
+      - { name: access_check, applies_to: _ddbgo_administer_user_api_keys_access }
