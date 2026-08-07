@@ -113,6 +113,11 @@ liegt unter [`helm/ddbgo`](helm/ddbgo/README.md). Die Dokumentation beschreibt
 Produktiv- und Testinstallation, Namensschema, Kollisionsschutz sowie die
 Verwendung bestehender Secrets und PersistentVolumeClaims.
 
+Der vollständige Ablauf von der Test-Prerelease-Version über den Merge nach
+`master` bis zur gezielten Installation einer Produktionsversion ist im
+[`Helm-Release- und Deployment-Workflow`](docs/helm-release-workflow.md)
+dokumentiert.
+
 ## Container build
 1. Checkout GitHub repository:
    `git clone https://github.com/mbuechner/ddbgo`

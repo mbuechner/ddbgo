@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 env:
@@ -69,6 +69,7 @@ jobs:
           case "$GITHUB_REF_NAME" in
             test)
               channel="test"
+              pages_channel="test"
               chart_version="${base_version}-test.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}.sha${GITHUB_SHA::7}"
               release_name="ddbgo-t"
               release_namespace="ddbgo-t"
@@ -76,6 +77,7 @@ jobs:
               ;;
             master)
               channel="production"
+              pages_channel="stable"
               chart_version="$base_version"
               release_name="ddbgo"
               release_namespace="ddbgo"
@@ -99,6 +101,7 @@ jobs:
           test -f "$package"
           echo "name=$chart_name" >> "$GITHUB_OUTPUT"
           echo "channel=$channel" >> "$GITHUB_OUTPUT"
+          echo "pages-channel=$pages_channel" >> "$GITHUB_OUTPUT"
           echo "base-version=$base_version" >> "$GITHUB_OUTPUT"
           echo "version=$chart_version" >> "$GITHUB_OUTPUT"
           echo "package=$package" >> "$GITHUB_OUTPUT"
@@ -119,19 +122,51 @@ jobs:
             --username "$GHCR_USERNAME" \
             --password-stdin
 
-      - name: Refuse to overwrite an existing chart version
+      - name: Check existing OCI chart version
+        id: oci
         shell: bash
         env:
+          CHART_NAME: ${{ steps.chart.outputs.name }}
+          CHART_PACKAGE: ${{ steps.chart.outputs.package }}
           CHART_REFERENCE: ${{ steps.chart.outputs.reference }}
           CHART_VERSION: ${{ steps.chart.outputs.version }}
         run: |
           set -euo pipefail
-          if helm show chart "$CHART_REFERENCE" --version "$CHART_VERSION" >/dev/null 2>&1; then
-            echo "::error::${CHART_REFERENCE}:${CHART_VERSION} already exists. Increase version in Chart.yaml."
+
+          set +e
+          lookup_output="$(helm show chart "$CHART_REFERENCE" --version "$CHART_VERSION" 2>&1)"
+          lookup_status=$?
+          set -e
+
+          if [[ $lookup_status -eq 0 ]]; then
+            compare_dir="$RUNNER_TEMP/compare-oci"
+            mkdir -p "$compare_dir/local" "$compare_dir/remote" "$compare_dir/download"
+            helm pull "$CHART_REFERENCE" \
+              --version "$CHART_VERSION" \
+              --destination "$compare_dir/download"
+            tar -xzf "$CHART_PACKAGE" -C "$compare_dir/local"
+            tar -xzf "$compare_dir/download/${CHART_NAME}-${CHART_VERSION}.tgz" \
+              -C "$compare_dir/remote"
+
+            if ! diff -qr \
+              "$compare_dir/local/$CHART_NAME" \
+              "$compare_dir/remote/$CHART_NAME"; then
+              echo "::error::${CHART_REFERENCE}:${CHART_VERSION} exists with different content. Increase version in Chart.yaml."
+              exit 1
+            fi
+
+            echo 'exists=true' >> "$GITHUB_OUTPUT"
+            echo "OCI chart ${CHART_REFERENCE}:${CHART_VERSION} already exists with identical content; keeping it unchanged."
+          elif grep -Eiq 'not found|manifest unknown|name unknown' <<<"$lookup_output"; then
+            echo 'exists=false' >> "$GITHUB_OUTPUT"
+          else
+            echo "$lookup_output" >&2
+            echo '::error::Could not safely determine whether the OCI chart version already exists.'
             exit 1
           fi
 
-      - name: Publish chart
+      - name: Publish chart to GHCR
+        if: steps.oci.outputs.exists != 'true'
         shell: bash
         env:
           CHART_PACKAGE: ${{ steps.chart.outputs.package }}
@@ -140,11 +175,85 @@ jobs:
           set -euo pipefail
           helm push "$CHART_PACKAGE" "$CHART_REPOSITORY"
 
+      - name: Publish classic Helm repository to GitHub Pages
+        id: pages
+        shell: bash
+        env:
+          CHART_NAME: ${{ steps.chart.outputs.name }}
+          CHART_PACKAGE: ${{ steps.chart.outputs.package }}
+          CHART_VERSION: ${{ steps.chart.outputs.version }}
+          PAGES_CHANNEL: ${{ steps.chart.outputs['pages-channel'] }}
+        run: |
+          set -euo pipefail
+
+          pages_dir="$RUNNER_TEMP/gh-pages"
+          repo_name="${GITHUB_REPOSITORY#*/}"
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          pages_base_url="https://${owner}.github.io/${repo_name}"
+          repository_url="${pages_base_url}/helm/${PAGES_CHANNEL}"
+
+          if git fetch origin gh-pages:refs/remotes/origin/gh-pages; then
+            git worktree add --detach "$pages_dir" refs/remotes/origin/gh-pages
+          else
+            git worktree add --detach "$pages_dir" HEAD
+            git -C "$pages_dir" switch --orphan gh-pages
+            git -C "$pages_dir" rm -rf .
+          fi
+
+          channel_dir="$pages_dir/helm/$PAGES_CHANNEL"
+          target_package="$channel_dir/${CHART_NAME}-${CHART_VERSION}.tgz"
+          mkdir -p "$channel_dir"
+
+          if [[ -e "$target_package" ]]; then
+            compare_dir="$RUNNER_TEMP/compare-pages"
+            mkdir -p "$compare_dir/local" "$compare_dir/published"
+            tar -xzf "$CHART_PACKAGE" -C "$compare_dir/local"
+            tar -xzf "$target_package" -C "$compare_dir/published"
+            if ! diff -qr \
+              "$compare_dir/local/$CHART_NAME" \
+              "$compare_dir/published/$CHART_NAME"; then
+              echo "::error::$target_package exists with different content. Refusing to overwrite it."
+              exit 1
+            fi
+            echo "GitHub Pages package already exists with identical content; keeping it unchanged."
+          else
+            cp "$CHART_PACKAGE" "$target_package"
+          fi
+
+          if [[ ! -f "$channel_dir/index.yaml" ]] || \
+             ! grep -Fq "version: $CHART_VERSION" "$channel_dir/index.yaml"; then
+            helm repo index "$channel_dir" --url "$repository_url"
+          fi
+
+          touch "$pages_dir/.nojekyll"
+          if [[ ! -f "$pages_dir/index.html" ]]; then
+            printf '%s\n' \
+              '<!doctype html>' \
+              '<html lang="de"><head><meta charset="utf-8"><title>DDBgo Helm-Repositories</title></head>' \
+              '<body><h1>DDBgo Helm-Repositories</h1><ul>' \
+              '<li><a href="helm/stable/index.yaml">Stable</a></li>' \
+              '<li><a href="helm/test/index.yaml">Test</a></li>' \
+              '</ul></body></html>' > "$pages_dir/index.html"
+          fi
+
+          git -C "$pages_dir" config user.name 'github-actions[bot]'
+          git -C "$pages_dir" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$pages_dir" add .nojekyll index.html helm
+
+          if ! git -C "$pages_dir" diff --cached --quiet; then
+            git -C "$pages_dir" commit \
+              -m "Publish ${CHART_NAME} ${CHART_VERSION} to ${PAGES_CHANNEL}"
+            git -C "$pages_dir" push origin HEAD:gh-pages
+          fi
+
+          echo "repository-url=$repository_url" >> "$GITHUB_OUTPUT"
+
       - name: Write job summary
         shell: bash
         env:
           CHART_REFERENCE: ${{ steps.chart.outputs.reference }}
           CHART_VERSION: ${{ steps.chart.outputs.version }}
+          PAGES_REPOSITORY: ${{ steps.pages.outputs['repository-url'] }}
         run: |
           {
             echo '## Helm chart published'
@@ -154,6 +263,8 @@ jobs:
             echo "Channel: \`${{ steps.chart.outputs.channel }}\`"
             echo
             echo "Version: \`${CHART_VERSION}\`"
+            echo
+            echo "OpenShift repository: \`${PAGES_REPOSITORY}\`"
             echo
             echo '```sh'
             if [[ '${{ steps.chart.outputs.channel }}' == 'test' ]]; then

@@ -134,6 +134,10 @@ absichtlich nicht voreingestellt.
 
 ## Veröffentlichung über GitHub
 
+Der vollständige operative Ablauf einschließlich Auswahl, Installation,
+Abnahme und Rollback konkreter Test- und Produktionsversionen steht im
+[`Helm-Release- und Deployment-Workflow`](../../docs/helm-release-workflow.md).
+
 Die Action [`.github/workflows/helm-publish.yml`](../../.github/workflows/helm-publish.yml)
 veröffentlicht das Chart als OCI-Artefakt unter:
 
@@ -174,6 +178,75 @@ Branch `test` oder `master` ausgewählt sein.
 **Packages**. GitHub legt neue Pakete abhängig von den Account-Einstellungen
 möglicherweise zunächst als privat an. Für anonymen Abruf muss seine Sichtbarkeit
 einmalig auf **Public** gestellt werden.
+
+### GitHub Pages für den OpenShift Developer Catalog
+
+Zusätzlich zu GHCR pflegt dieselbe Action zwei klassische HTTP-Helm-Repositories
+auf dem Branch `gh-pages`:
+
+| Namespace | Repository-URL | Inhalt |
+| --- | --- | --- |
+| `ddbgo-t` | `https://mbuechner.github.io/ddbgo/helm/test/` | Test-Prereleases aus `test` |
+| `ddbgo` | `https://mbuechner.github.io/ddbgo/helm/stable/` | stabile Versionen aus `master` |
+
+Jeder Kanal besitzt eine eigene `index.yaml`. Bereits vorhandene Chartarchive
+werden vor dem Veröffentlichen inhaltlich verglichen und niemals überschrieben.
+Die Action verwendet keinen Force-Push und wird über `concurrency` serialisiert,
+damit Test- und Produktionspublikationen den Pages-Branch nicht gleichzeitig
+ändern.
+
+Einmalige GitHub-Konfiguration:
+
+1. Den Workflow zunächst auf `test` ausführen, damit der Branch `gh-pages`
+   angelegt wird.
+2. Unter **Settings → Actions → General → Workflow permissions** die Option
+   **Read and write permissions** erlauben, sofern eine Organisationsrichtlinie
+   Schreibzugriff nicht bereits zulässt.
+3. Unter **Settings → Pages** als Quelle **Deploy from a branch**, Branch
+   `gh-pages` und Verzeichnis `/ (root)` auswählen.
+4. Prüfen, ob
+   `https://mbuechner.github.io/ddbgo/helm/test/index.yaml` erreichbar ist.
+
+Repository für das Testprojekt:
+
+```yaml
+apiVersion: helm.openshift.io/v1beta1
+kind: ProjectHelmChartRepository
+metadata:
+  name: ddbgo
+  namespace: ddbgo-t
+spec:
+  name: DDBgo Test
+  description: Testversionen des DDBgo Helm-Charts
+  connectionConfig:
+    url: https://mbuechner.github.io/ddbgo/helm/test/
+```
+
+Repository für Produktion:
+
+```yaml
+apiVersion: helm.openshift.io/v1beta1
+kind: ProjectHelmChartRepository
+metadata:
+  name: ddbgo
+  namespace: ddbgo
+spec:
+  name: DDBgo
+  description: Stabile Versionen des DDBgo Helm-Charts
+  connectionConfig:
+    url: https://mbuechner.github.io/ddbgo/helm/stable/
+```
+
+Nach dem Anlegen erscheinen die Charts im jeweiligen OpenShift-Projekt im
+Developer Catalog:
+
+```sh
+oc apply -f ddbgo-test-repository.yaml
+oc apply -f ddbgo-production-repository.yaml
+
+oc get projecthelmchartrepositories -n ddbgo-t
+oc get projecthelmchartrepositories -n ddbgo
+```
 
 ### Installation aus GHCR
 
