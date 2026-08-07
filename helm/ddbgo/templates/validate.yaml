@@ -50,6 +50,24 @@
 {{- if and (not .Values.database.persistence.create) (not .Values.database.persistence.existingClaim) }}
 {{- fail "database.persistence.existingClaim is required when database.persistence.create=false" }}
 {{- end }}
+{{- $persistentComponents := list
+      (dict "enabled" true "component" "drupal" "name" (include "ddbgo.drupalClaimName" .) "persistence" .Values.drupal.persistence)
+      (dict "enabled" .Values.redis.enabled "component" "redis" "name" (include "ddbgo.redisClaimName" .) "persistence" .Values.redis.persistence)
+      (dict "enabled" .Values.database.enabled "component" "database" "name" (include "ddbgo.databaseClaimName" .) "persistence" .Values.database.persistence) -}}
+{{- range $item := $persistentComponents }}
+  {{- if $item.enabled }}
+    {{- if not (has "ReadWriteMany" $item.persistence.accessModes) }}
+      {{- fail (printf "%s.persistence.accessModes must contain ReadWriteMany because shared access is required" $item.component) -}}
+    {{- end }}
+    {{- $existingClaim := lookup "v1" "PersistentVolumeClaim" $.Release.Namespace $item.name -}}
+    {{- if $existingClaim }}
+      {{- $existingAccessModes := dig "spec" "accessModes" (list) $existingClaim -}}
+      {{- if not (has "ReadWriteMany" $existingAccessModes) }}
+        {{- fail (printf "PersistentVolumeClaim %s/%s does not provide required ReadWriteMany access; migrate its data to an RWX-capable volume before installing or upgrading" $.Release.Namespace $item.name) -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 {{- $publicPath := .Values.drupal.config.filePublicPath -}}
 {{- $privatePath := .Values.drupal.config.filePrivatePath -}}
 {{- $tempPath := .Values.drupal.config.tempPath -}}

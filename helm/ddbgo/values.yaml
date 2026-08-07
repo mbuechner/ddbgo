@@ -38,8 +38,8 @@ serviceAccounts:
   databaseName: ""
 
 drupal:
-  # Recreate wird als Deployment-Strategie verwendet, da der Drupal-PVC
-  # standardmäßig nur ReadWriteOnce unterstützt.
+  # Recreate verhindert, dass während eines Rollouts zwei Drupal-Pods zugleich
+  # Änderungen am gemeinsam verwendeten Dateispeicher durchführen.
   replicaCount: 1
   image:
     # Externes Container-Repository und dessen beweglicher Produktions-Tag.
@@ -119,8 +119,10 @@ drupal:
     # demselben Release und Namespace übernimmt diesen PVC wieder.
     retain: true
     existingClaim: ""
+    # Shared Access: ReadWriteMany ist verpflichtend und wird validiert. Die
+    # StorageClass muss diesen Access Mode unterstützen.
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     size: 5Gi
     # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""
@@ -181,8 +183,10 @@ redis:
     # Übernahme durch denselben Release-Namen im selben Namespace.
     retain: true
     existingClaim: ""
+    # Shared Access: ReadWriteMany ist verpflichtend und wird validiert. Die
+    # StorageClass muss diesen Access Mode unterstützen.
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     size: 2Gi
     # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""
@@ -245,8 +249,10 @@ database:
     # Übernahme durch denselben Release-Namen im selben Namespace.
     retain: true
     existingClaim: ""
+    # Shared Access: ReadWriteMany ist verpflichtend und wird validiert. Die
+    # StorageClass muss diesen Access Mode unterstützen.
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     size: 10Gi
     # Leer verwendet die Standard-StorageClass des Clusters.
     storageClass: ""

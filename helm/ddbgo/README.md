@@ -254,6 +254,19 @@ Init-Container legt darin getrennte Verzeichnisse an. Redis aktiviert AOF;
 MariaDB und Redis verwenden jeweils einen eigenen PVC. Die Standardgrößen und
 StorageClasses können in `values.yaml` angepasst werden.
 
+Alle drei PVCs fordern standardmäßig `ReadWriteMany` (RWX) an. Die ausgewählte
+StorageClass muss Shared Access unterstützen; andernfalls bleibt der jeweilige
+PVC im Status `Pending`. Eine geeignete StorageClass kann pro Komponente über
+`persistence.storageClass` gesetzt werden. Das Chart validiert, dass
+`persistence.accessModes` für jede aktivierte Komponente `ReadWriteMany`
+enthält.
+
+Ein bereits gebundener RWO-PVC kann nicht durch ein Helm-Upgrade in RWX
+umgewandelt werden. Erkennt das Chart einen vorhandenen PVC ohne
+`ReadWriteMany`, bricht es mit einer verständlichen Fehlermeldung ab. Die Daten
+müssen dann kontrolliert in einen neuen PVC einer RWX-fähigen StorageClass
+migriert werden; das Chart löscht oder verändert den alten PVC nicht automatisch.
+
 ## Versionslinien
 
 - Drupal Core ist im Projekt-Lockfile auf `11.4.5` festgelegt.
