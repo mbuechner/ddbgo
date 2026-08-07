@@ -91,6 +91,22 @@ drupal:
     # deaktiviert. Sie laufen bei jedem Containerstart, wenn sie aktiviert sind.
     updatedbOnStartup: false
     cacheRebuildOnStartup: false
+  probes:
+    # Nicht gecachter Drupal-Endpunkt. Der Host-Header wird vom Template auf
+    # drupal.route.host gesetzt, damit trusted_host_patterns die Probe akzeptiert.
+    path: /health
+    startup:
+      periodSeconds: 5
+      timeoutSeconds: 2
+      failureThreshold: 30
+    readiness:
+      periodSeconds: 10
+      timeoutSeconds: 2
+      failureThreshold: 3
+    liveness:
+      periodSeconds: 20
+      timeoutSeconds: 2
+      failureThreshold: 3
   secret:
     # true erzeugt das Secret <release>-drupal. Bei false muss existingSecret
     # gesetzt sein und den Schlüssel "hash-salt" enthalten.
@@ -137,6 +153,8 @@ drupal:
 redis:
   # false deaktiviert Redis-Workload, Service, Secret, PVC und Image-Trigger.
   enabled: true
+  # Das StatefulSet prüft Startup, Readiness und Liveness mit `redis-cli ping`.
+  # REDISCLI_AUTH wird dabei aus dem Redis-Secret bezogen.
   image:
     repository: docker.io/library/redis
     # Beweglicher Patch-Tag innerhalb der Redis-8.2-LTS-Linie.
@@ -193,6 +211,8 @@ redis:
 database:
   # MariaDB ist für DDBgo erforderlich; false wird vom Chart bewusst abgelehnt.
   enabled: true
+  # Startup und Readiness verwenden `healthcheck.sh --connect
+  # --innodb_initialized`; Liveness prüft mit `healthcheck.sh --connect`.
   image:
     repository: docker.io/library/mariadb
     # Beweglicher Patch-Tag innerhalb der MariaDB-11.8-LTS-Linie. Das UBI9-Image

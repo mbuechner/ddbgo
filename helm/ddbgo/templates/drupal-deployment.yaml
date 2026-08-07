@@ -93,23 +93,38 @@ spec:
                   key: password
             {{- end }}
           startupProbe:
-            tcpSocket:
+            httpGet:
+              path: {{ .Values.drupal.probes.path | quote }}
               port: http
-            periodSeconds: 5
-            timeoutSeconds: 2
-            failureThreshold: 30
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: {{ .Values.drupal.route.host | quote }}
+            periodSeconds: {{ .Values.drupal.probes.startup.periodSeconds }}
+            timeoutSeconds: {{ .Values.drupal.probes.startup.timeoutSeconds }}
+            failureThreshold: {{ .Values.drupal.probes.startup.failureThreshold }}
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: {{ .Values.drupal.probes.path | quote }}
               port: http
-            periodSeconds: 10
-            timeoutSeconds: 2
-            failureThreshold: 3
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: {{ .Values.drupal.route.host | quote }}
+            periodSeconds: {{ .Values.drupal.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.drupal.probes.readiness.timeoutSeconds }}
+            failureThreshold: {{ .Values.drupal.probes.readiness.failureThreshold }}
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: {{ .Values.drupal.probes.path | quote }}
               port: http
-            periodSeconds: 20
-            timeoutSeconds: 2
-            failureThreshold: 3
+              scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: {{ .Values.drupal.route.host | quote }}
+            periodSeconds: {{ .Values.drupal.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.drupal.probes.liveness.timeoutSeconds }}
+            failureThreshold: {{ .Values.drupal.probes.liveness.failureThreshold }}
           resources:
             {{- toYaml .Values.drupal.resources | nindent 12 }}
           volumeMounts:

@@ -196,6 +196,21 @@ Das ist auf OpenShift erforderlich, weil die zufällig zugewiesene Container-UID
 den Unix-Socket nicht in das schreibgeschützte Verzeichnis des Images legen
 kann. Dieses Runtime-Volume enthält keine persistenten Daten.
 
+## Zustandsprüfungen
+
+Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
+
+- Drupal verwendet für alle drei Prüfungen den nicht gecachten HTTP-Endpunkt
+  `/health` auf Port 8080. Die Probe sendet den konfigurierten Route-Host als
+  `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage akzeptiert.
+- Redis führt `redis-cli ping` aus. Das Passwort erhält der Client über die
+  Umgebungsvariable `REDISCLI_AUTH` aus dem Redis-Secret.
+- MariaDB verwendet das mit dem offiziellen Image gelieferte `healthcheck.sh`.
+  Startup und Readiness verlangen zusätzlich eine initialisierte InnoDB-Engine;
+  Liveness prüft die Verbindung zum Server.
+
+Pfad und Zeitwerte der Drupal-Probes sind unter `drupal.probes` konfigurierbar.
+
 ## Passwörter und Persistenz
 
 Bleiben Passwortwerte leer, erzeugt das Chart sie bei der ersten Installation
