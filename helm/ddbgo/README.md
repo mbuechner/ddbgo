@@ -163,12 +163,14 @@ Erwartete Schlüssel in vorhandenen Secrets:
 | Secret | Schlüssel |
 | --- | --- |
 | Drupal | `hash-salt` |
-| Redis | `password`, `users.acl` |
+| Redis | `password` |
 | MariaDB | `database`, `username`, `password`, `root-password` |
 
-`users.acl` muss eine gültige Redis-ACL enthalten, deren Passwort mit
-`password` übereinstimmt, beispielsweise
-`user default on >GEHEIM ~* &* +@all`.
+Die Redis-ACL wird beim Podstart ausschließlich aus `password` erzeugt und in
+ein flüchtiges `emptyDir` geschrieben. Ein eventuell aus einer älteren
+Chart-Version vorhandener Secret-Schlüssel `users.acl` wird aus
+Kompatibilitätsgründen toleriert, aber nicht mehr verwendet. Das Chart verändert
+das behaltene Secret dabei nicht.
 
 Vom Chart erzeugte Secrets werden zusammen mit den PVCs behalten. Bei einer
 Neuinstallation desselben Releases übernimmt das Chart sie und verwendet ihre
@@ -313,8 +315,10 @@ Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
   `/health` direkt auf Port 8080 des Pods. Die Probe sendet standardmäßig
   `localhost` als `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage
   akzeptiert. Route, öffentliches DNS und Reverse Proxy sind nicht beteiligt.
-- Redis führt `redis-cli ping` aus. Das Passwort erhält der Client über die
-  Umgebungsvariable `REDISCLI_AUTH` aus dem Redis-Secret.
+- Redis verlangt bei allen drei Probes die exakte authentifizierte Antwort
+  `PONG`. Das Passwort erhält der Client über die Umgebungsvariable
+  `REDISCLI_AUTH` aus dem Redis-Secret. Eine Redis-Fehlerantwort mit Exit-Code 0
+  gilt dadurch nicht versehentlich als erfolgreiche Probe.
 - MariaDB verwendet das mit dem offiziellen Image gelieferte `healthcheck.sh`.
   Startup und Readiness verlangen zusätzlich eine initialisierte InnoDB-Engine;
   Liveness prüft die Verbindung zum Server.
@@ -336,6 +340,8 @@ Solange eine Prüfung fehlschlägt, wartet sie und versucht es nach
 `drupal.dependencyChecks.retryIntervalSeconds` erneut. Der Drupal-Container wird
 erst nach beiden Erfolgen gestartet. Dadurch führen auch falsche Secrets oder
 noch nicht initialisierte Dienste nicht zu einem vorzeitigen Anwendungsstart.
+Der Redis-Check schreibt die empfangene Fehlerantwort ins Init-Container-Log,
+aber niemals das verwendete Passwort.
 
 ## Passwörter und Persistenz
 

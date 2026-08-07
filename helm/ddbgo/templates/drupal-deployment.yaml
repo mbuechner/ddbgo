@@ -92,11 +92,15 @@ spec:
             - /bin/sh
             - -ec
             - |
-              until [ "$(redis-cli --host "${REDIS_HOST}" --port "${REDIS_PORT}" ping 2>/dev/null)" = "PONG" ]; do
-                echo "Waiting for Redis at ${REDIS_HOST}:${REDIS_PORT} ..."
+              while true; do
+                REDIS_RESPONSE="$(redis-cli --host "${REDIS_HOST}" --port "${REDIS_PORT}" ping 2>&1)" || true
+                if [ "${REDIS_RESPONSE}" = "PONG" ]; then
+                  echo "Redis accepts authenticated connections."
+                  break
+                fi
+                echo "Waiting for Redis at ${REDIS_HOST}:${REDIS_PORT}; response: ${REDIS_RESPONSE}"
                 sleep "${WAIT_INTERVAL_SECONDS}"
               done
-              echo "Redis accepts authenticated connections."
           env:
             - name: REDIS_HOST
               value: {{ include "ddbgo.redisName" . | quote }}

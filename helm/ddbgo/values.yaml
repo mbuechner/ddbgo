@@ -198,9 +198,10 @@ redis:
       # Regelmäßigen Import des oben angegebenen externen Tags aktivieren.
       scheduledImport: true
   secret:
-    # Bei create=false muss existingSecret die Schlüssel "password" und
-    # "users.acl" enthalten. Erzeugte Secrets bleiben bei helm uninstall
-    # erhalten und werden erneut übernommen.
+    # Bei create=false muss existingSecret den Schlüssel "password" enthalten.
+    # Die Redis-ACL wird bei jedem Podstart daraus erzeugt, sodass Passwort und
+    # ACL nicht auseinanderlaufen können. Erzeugte Secrets bleiben bei
+    # helm uninstall erhalten und werden erneut übernommen.
     create: true
     existingSecret: ""
     # Leer: Einmalig erzeugen. Ein gesetztes Passwort muss 16-128 Zeichen aus

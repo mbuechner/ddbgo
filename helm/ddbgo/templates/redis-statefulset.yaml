@@ -45,12 +45,25 @@ spec:
           command:
             - /bin/sh
             - -ec
-            - mkdir -p /storage/data
+            - |-
+              mkdir -p /storage/data
+              PASSWORD_HASH="$(printf '%s' "${REDIS_PASSWORD}" | sha256sum)"
+              PASSWORD_HASH="${PASSWORD_HASH%% *}"
+              printf 'user default on #%s ~* &* +@all\n' "${PASSWORD_HASH}" > /generated-redis-auth/users.acl
+              chmod 0440 /generated-redis-auth/users.acl
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.redisSecretName" . }}
+                  key: password
           securityContext:
             {{- toYaml .Values.redis.securityContext | nindent 12 }}
           volumeMounts:
             - name: data
               mountPath: /storage
+            - name: redis-auth
+              mountPath: /generated-redis-auth
       containers:
         - name: redis
           image: {{ printf "%s:%s" .Values.redis.image.repository .Values.redis.image.tag | quote }}
@@ -60,7 +73,7 @@ spec:
             - --appendonly
             - "yes"
             - --aclfile
-            - /etc/redis/users.acl
+            - /generated-redis-auth/users.acl
           env:
             - name: REDISCLI_AUTH
               valueFrom:
@@ -75,18 +88,27 @@ spec:
               protocol: TCP
           startupProbe:
             exec:
-              command: [redis-cli, ping]
+              command:
+                - /bin/sh
+                - -ec
+                - test "$(redis-cli ping 2>/dev/null)" = "PONG"
             periodSeconds: 2
             timeoutSeconds: 2
             failureThreshold: 30
           readinessProbe:
             exec:
-              command: [redis-cli, ping]
+              command:
+                - /bin/sh
+                - -ec
+                - test "$(redis-cli ping 2>/dev/null)" = "PONG"
             periodSeconds: 10
             timeoutSeconds: 2
           livenessProbe:
             exec:
-              command: [redis-cli, ping]
+              command:
+                - /bin/sh
+                - -ec
+                - test "$(redis-cli ping 2>/dev/null)" = "PONG"
             periodSeconds: 20
             timeoutSeconds: 2
           resources:
@@ -96,7 +118,7 @@ spec:
               mountPath: /data
               subPath: data
             - name: redis-auth
-              mountPath: /etc/redis
+              mountPath: /generated-redis-auth
               readOnly: true
             - name: tmp
               mountPath: /tmp
@@ -105,12 +127,7 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "ddbgo.redisClaimName" . }}
         - name: redis-auth
-          secret:
-            secretName: {{ include "ddbgo.redisSecretName" . }}
-            defaultMode: 0440
-            items:
-              - key: users.acl
-                path: users.acl
+          emptyDir: {}
         - name: tmp
           emptyDir: {}
       {{- with .Values.redis.nodeSelector }}
