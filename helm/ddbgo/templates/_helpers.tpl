@@ -29,14 +29,13 @@ app.kubernetes.io/component: {{ .component | quote }}
 {{- define "ddbgo.protectionAnnotations" -}}
 meta.helm.sh/release-name: {{ .Release.Name | quote }}
 meta.helm.sh/release-namespace: {{ .Release.Namespace | quote }}
-{{- if .Values.protection.keepOnDelete }}
-helm.sh/resource-policy: keep
-{{- end }}
 {{- end }}
 
 {{/*
-Fail before an install can adopt or overwrite an existing object. During an
-upgrade, only objects carrying this release's ownership metadata are accepted.
+Fail before an install can adopt or overwrite an existing object. A retained
+PVC may be adopted during a reinstall when it still belongs to the same release
+and namespace. During an upgrade, only objects carrying this release's ownership
+metadata are accepted.
 This check needs a connected cluster; Helm itself performs the same ownership
 check when lookup is unavailable (for example, client-side helm template).
 */}}
@@ -45,13 +44,16 @@ check when lookup is unavailable (for example, client-side helm template).
 {{- if $root.Values.protection.failOnExistingResource -}}
   {{- $existing := lookup .apiVersion .kind $root.Release.Namespace .name -}}
   {{- if $existing -}}
+    {{- $annotations := dig "metadata" "annotations" (dict) $existing -}}
+    {{- $ownerName := get $annotations "meta.helm.sh/release-name" -}}
+    {{- $ownerNamespace := get $annotations "meta.helm.sh/release-namespace" -}}
+    {{- $ownedByRelease := and (eq $ownerName $root.Release.Name) (eq $ownerNamespace $root.Release.Namespace) -}}
     {{- if $root.Release.IsInstall -}}
-      {{- fail (printf "%s %s/%s already exists; refusing to overwrite or adopt it" .kind $root.Release.Namespace .name) -}}
+      {{- if not (and (default false .allowAdoption) $ownedByRelease) -}}
+        {{- fail (printf "%s %s/%s already exists and is not an adoptable retained resource of release %s/%s; refusing to overwrite it" .kind $root.Release.Namespace .name $root.Release.Namespace $root.Release.Name) -}}
+      {{- end -}}
     {{- else -}}
-      {{- $annotations := dig "metadata" "annotations" (dict) $existing -}}
-      {{- $ownerName := get $annotations "meta.helm.sh/release-name" -}}
-      {{- $ownerNamespace := get $annotations "meta.helm.sh/release-namespace" -}}
-      {{- if or (ne $ownerName $root.Release.Name) (ne $ownerNamespace $root.Release.Namespace) -}}
+      {{- if not $ownedByRelease -}}
         {{- fail (printf "%s %s/%s is not owned by release %s/%s; refusing to overwrite it" .kind $root.Release.Namespace .name $root.Release.Namespace $root.Release.Name) -}}
       {{- end -}}
     {{- end -}}

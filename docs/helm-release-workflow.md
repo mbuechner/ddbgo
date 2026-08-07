@@ -321,10 +321,30 @@ helm rollback ddbgo <REVISION> -n ddbgo --wait --timeout 15m
 Alternativ kann eine bekannte ältere Chartversion erneut mit
 `helm upgrade --install --version ...` angewendet werden.
 
-`helm uninstall` ist kein normaler Rollback-Mechanismus. Alle durch das Chart
-erzeugten Ressourcen tragen `helm.sh/resource-policy: keep` und bleiben nach
-einem Uninstall absichtlich im Cluster. Eine Neuinstallation unter denselben
-Namen würde anschließend wegen des Kollisionsschutzes abbrechen.
+`helm uninstall` ist kein normaler Rollback-Mechanismus. Es entfernt Deployment,
+StatefulSets, Services, Route, ConfigMap, Secrets, ServiceAccounts und
+ImageStreams. Die drei vom Chart erzeugten PVCs bleiben mit
+`helm.sh/resource-policy: keep` erhalten. Eine Neuinstallation mit demselben
+Release-Namen im selben Namespace übernimmt diese PVCs automatisch, wenn deren
+Helm-Owner-Annotationen unverändert sind.
+
+Da erzeugte Secrets entfernt werden, müssen für die Wiederverwendung des
+MariaDB-PVCs dieselben Datenbankzugangsdaten erneut angegeben oder über ein
+extern verwaltetes Secret referenziert werden. Vor dem Uninstall einer älteren
+Chart-Version muss zuerst auf die korrigierte Version aktualisiert werden, damit
+die frühere globale `keep`-Annotation von allen Nicht-PVC-Ressourcen entfernt
+wird.
+
+Ist die alte Version bereits deinstalliert, können die verwaisten
+Nicht-PVC-Ressourcen gezielt über das Release-Label entfernt werden:
+
+```sh
+oc delete deployment,statefulset,service,route,configmap,secret,serviceaccount,imagestream \
+  --selector app.kubernetes.io/instance=ddbgo-t \
+  --namespace ddbgo-t
+```
+
+Der PVC-Ressourcentyp wird dabei bewusst nicht angegeben.
 
 ## Fehlerfälle
 

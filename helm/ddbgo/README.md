@@ -74,17 +74,42 @@ helm upgrade --install ddbgo ./helm/ddbgo \
 `protection.failOnExistingResource=true` bewirkt:
 
 - Eine Erstinstallation bricht ab, wenn eine der zu erzeugenden Ressourcen
-  bereits vorhanden ist. Das Chart übernimmt und überschreibt sie nicht.
+  bereits vorhanden ist. Einzige Ausnahme sind behaltene PVCs, die nachweislich
+  demselben Release-Namen und Namespace gehören.
 - Ein Upgrade ändert nur Ressourcen, deren Helm-Metadaten exakt zu diesem
   Release und Namespace gehören.
-- `helm.sh/resource-policy: keep` schützt alle erzeugten Ressourcen vor dem
-  Löschen durch Uninstall, Rollback oder eine Entfernung aus dem Chart.
+- Fremde oder lediglich namensgleiche PVCs werden nicht übernommen. Sie müssen
+  explizit über `existingClaim` referenziert werden.
 
 Ein normales Upgrade aktualisiert weiterhin die Ressourcen, die bereits zu
 diesem Release gehören. Ohne diese Ausnahme wären Helm-Upgrades nicht möglich.
-Durch `keep` bleibt nach `helm uninstall` bewusst eine laufende, verwaiste
-Installation zurück. Eine spätere Entfernung ist deshalb ausschließlich eine
-explizite Administratorentscheidung.
+Bei `helm uninstall` werden Deployment, StatefulSets, Services, Route,
+ConfigMap, Secrets, ServiceAccounts und ImageStreams entfernt. Nur die vom
+Chart erzeugten PVCs tragen standardmäßig `helm.sh/resource-policy: keep` und
+bleiben erhalten. Das lässt sich je Komponente mit `persistence.retain=false`
+abschalten.
+
+Eine spätere Installation mit identischem Release-Namen und Namespace übernimmt
+die behaltenen PVCs automatisch, sofern deren Helm-Owner-Annotationen noch
+unverändert vorhanden sind. Vorhandene Daten werden dabei nicht gelöscht.
+
+Bestehende Installationen einer älteren Chart-Version müssen vor dem Uninstall
+zuerst auf diese Chart-Version aktualisiert werden. Erst das Upgrade entfernt
+die früher global gesetzte `keep`-Annotation von den nicht persistenten
+Ressourcen.
+
+Wurde die alte Version bereits deinstalliert, sind die behaltenen Ressourcen
+nicht mehr Teil eines Helm-Releases. Die Nicht-PVC-Ressourcen können dann anhand
+des Release-Labels gezielt entfernt werden, beispielsweise für Test:
+
+```sh
+oc delete deployment,statefulset,service,route,configmap,secret,serviceaccount,imagestream \
+  --selector app.kubernetes.io/instance=ddbgo-t \
+  --namespace ddbgo-t
+```
+
+Der Ressourcentyp `persistentvolumeclaim` ist absichtlich nicht Teil dieses
+Befehls.
 
 Bestehende Secrets und PVCs können referenziert werden. Dazu `create=false` und
 den vorhandenen Namen setzen, zum Beispiel:
@@ -110,6 +135,12 @@ Erwartete Schlüssel in vorhandenen Secrets:
 `users.acl` muss eine gültige Redis-ACL enthalten, deren Passwort mit
 `password` übereinstimmt, beispielsweise
 `user default on >GEHEIM ~* &* +@all`.
+
+Secrets werden beim Uninstall bewusst entfernt. Soll ein vorhandener MariaDB-PVC
+bei einer Neuinstallation weiterverwendet werden, müssen dieselben Zugangsdaten
+erneut gesetzt oder über ein extern verwaltetes `existingSecret` bereitgestellt
+werden. Ein neues zufälliges MariaDB-Passwort passt nicht zu den Benutzern in der
+bereits initialisierten Datenbank.
 
 ## Ressourcenbedarf
 
@@ -268,8 +299,8 @@ database:
 ```
 
 - `enabled: false` entfernt ImageStream und Trigger der Komponente aus der
-  Chart-Verwaltung. Wegen `helm.sh/resource-policy: keep` wird ein bereits
-  erzeugter ImageStream dabei nicht automatisch gelöscht.
+  Chart-Verwaltung. Der ImageStream wird beim Upgrade entfernt; der zugehörige
+  PVC bleibt davon unberührt.
 - `scheduledImport: false` behält ImageStream und Trigger bei, beendet aber die
   regelmäßige Prüfung der externen Registry. Ein Import kann dann kontrolliert
   mit `oc import-image` angestoßen werden.

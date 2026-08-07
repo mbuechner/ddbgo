@@ -20,9 +20,6 @@ protection:
   # Bei Upgrades werden nur Ressourcen mit passenden Helm-Owner-Annotationen
   # verändert.
   failOnExistingResource: true
-  # Fügt helm.sh/resource-policy=keep hinzu. Helm löscht diese Ressourcen weder
-  # bei einem Uninstall noch beim Entfernen eines Templates aus dem Chart.
-  keepOnDelete: true
 
 # Optionale Registry-Secrets für alle Pods, z. B.:
 # imagePullSecrets:
@@ -116,8 +113,11 @@ drupal:
     hashSalt: ""
   persistence:
     # true erzeugt den PVC <release>-drupal. Bei false muss existingClaim gesetzt
-    # sein. Das Chart löscht einen erzeugten PVC wegen resource-policy=keep nicht.
+    # sein.
     create: true
+    # true behält den erzeugten PVC bei helm uninstall. Eine Neuinstallation mit
+    # demselben Release und Namespace übernimmt diesen PVC wieder.
+    retain: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
@@ -177,6 +177,9 @@ redis:
   persistence:
     # Der PVC wird als /data mit subPath "data" eingebunden. Redis nutzt AOF.
     create: true
+    # true behält den erzeugten PVC bei helm uninstall und erlaubt seine erneute
+    # Übernahme durch denselben Release-Namen im selben Namespace.
+    retain: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
@@ -238,6 +241,9 @@ database:
   persistence:
     # Der PVC wird als /var/lib/mysql mit subPath "data" eingebunden.
     create: true
+    # true behält den erzeugten PVC bei helm uninstall und erlaubt seine erneute
+    # Übernahme durch denselben Release-Namen im selben Namespace.
+    retain: true
     existingClaim: ""
     accessModes:
       - ReadWriteOnce
