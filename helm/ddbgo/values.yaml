@@ -1,5 +1,11 @@
-# DDBgo Helm-Chart: Standardwerte für OpenShift.
+# DDBgo Helm-Chart: Standardwerte für Kubernetes und OpenShift.
 # Umgebungsspezifische Abweichungen für das Testsystem stehen in values-test.yaml.
+
+platform:
+  # openshift erzeugt Route, ImageStreams und Image-Change-Trigger. kubernetes
+  # erzeugt stattdessen ein networking.k8s.io/v1 Ingress. Für Kubernetes sollte
+  # zusätzlich values-kubernetes.yaml verwendet werden.
+  type: openshift
 
 # Alle Ressourcennamen werden aus dem Helm-Release-Namen abgeleitet. Produktion
 # wird als "ddbgo" im Namespace "ddbgo", Test als "ddbgo-t" in "ddbgo-t"
@@ -84,11 +90,21 @@ drupal:
     # Interner Service-Port und gleichzeitig Zielport der OpenShift Route.
     port: 8080
   route:
+    # Wird ausschließlich mit platform.type=openshift ausgewertet.
     enabled: true
     annotations:
       # Vorhandene Forwarded-Header des externen Reverse Proxys beibehalten.
       haproxy.router.openshift.io/set-forwarded-headers: if-none
     # Kein TLS in der Route: HTTPS endet am vorgeschalteten Reverse Proxy.
+  ingress:
+    # Wird ausschließlich mit platform.type=kubernetes ausgewertet. Das Ingress
+    # enthält wie die OpenShift Route bewusst keinen TLS-Block.
+    enabled: true
+    # Leer verwendet die Standard-IngressClass des Clusters.
+    className: ""
+    annotations: {}
+    path: /
+    pathType: Prefix
   config:
     # Wird als UPDATE_FREE_ACCESS an den DDBgo-Container übergeben.
     updateFreeAccess: false

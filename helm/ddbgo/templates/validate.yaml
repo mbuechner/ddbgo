@@ -3,6 +3,15 @@
 {{- fail (printf "release name %q must match namespace %q" .Release.Name .Release.Namespace) }}
 {{- end }}
 {{- end }}
+{{- if not (has .Values.platform.type (list "openshift" "kubernetes")) }}
+{{- fail "platform.type must be openshift or kubernetes" }}
+{{- end }}
+{{- if and (eq .Values.platform.type "kubernetes") (not (hasPrefix "/" .Values.drupal.ingress.path)) }}
+{{- fail "drupal.ingress.path must start with /" }}
+{{- end }}
+{{- if and (eq .Values.platform.type "kubernetes") (not (has .Values.drupal.ingress.pathType (list "Exact" "Prefix" "ImplementationSpecific"))) }}
+{{- fail "drupal.ingress.pathType must be Exact, Prefix or ImplementationSpecific" }}
+{{- end }}
 {{- if .Values.naming.allowedReleaseNames }}
 {{- if not (has .Release.Name .Values.naming.allowedReleaseNames) }}
 {{- fail (printf "release name %q is not allowed; expected one of: %s" .Release.Name (join ", " .Values.naming.allowedReleaseNames)) }}
@@ -123,7 +132,7 @@
 {{- fail "drupal.config.tempPath must be an absolute path" }}
 {{- end }}
 {{- if not .Values.drupal.externalHost }}
-{{- fail "drupal.externalHost must not be empty because it defines the Route and trusted host" }}
+{{- fail "drupal.externalHost must not be empty because it defines the Route or Ingress and trusted host" }}
 {{- end }}
 {{- if and .Values.drupal.config.drushOptionsUri (not (or (hasPrefix "https://" .Values.drupal.config.drushOptionsUri) (hasPrefix "http://" .Values.drupal.config.drushOptionsUri))) }}
 {{- fail "drupal.config.drushOptionsUri must start with http:// or https://" }}

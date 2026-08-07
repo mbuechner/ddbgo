@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/component: drupal
   annotations:
     {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
-    {{- if .Values.drupal.image.autoUpdate.enabled }}
+    {{- if and (eq .Values.platform.type "openshift") .Values.drupal.image.autoUpdate.enabled }}
     image.openshift.io/triggers: {{ include "ddbgo.imageTrigger" (dict "root" . "name" $name "tag" .Values.drupal.image.tag "container" "drupal") | quote }}
     {{- end }}
 spec:

@@ -46,11 +46,28 @@ jobs:
             --namespace test-release \
             --set 'naming.allowedReleaseNames={test-release}' \
             --strict
+          helm lint "$CHART_DIR" \
+            --namespace test-release \
+            --set 'naming.allowedReleaseNames={test-release}' \
+            --values "$CHART_DIR/values-kubernetes.yaml" \
+            --strict
           helm template ddbgo "$CHART_DIR" \
             --namespace ddbgo >/dev/null
           helm template ddbgo-t "$CHART_DIR" \
             --namespace ddbgo-t \
             --values "$CHART_DIR/values-test.yaml" >/dev/null
+          kubernetes_render="$RUNNER_TEMP/ddbgo-kubernetes.yaml"
+          helm template ddbgo "$CHART_DIR" \
+            --namespace ddbgo \
+            --values "$CHART_DIR/values-kubernetes.yaml" >"$kubernetes_render"
+          if grep -Eq 'route\.openshift\.io|image\.openshift\.io' "$kubernetes_render"; then
+            echo '::error::Kubernetes profile contains an OpenShift API or trigger annotation.'
+            exit 1
+          fi
+          helm template ddbgo-t "$CHART_DIR" \
+            --namespace ddbgo-t \
+            --values "$CHART_DIR/values-test.yaml" \
+            --values "$CHART_DIR/values-kubernetes.yaml" >/dev/null
 
       - name: Resolve release channel and package chart
         id: chart

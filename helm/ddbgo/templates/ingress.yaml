@@ -1,0 +1,32 @@
+{{- if and (eq .Values.platform.type "kubernetes") .Values.drupal.ingress.enabled }}
+{{- $name := .Values.drupal.externalHost -}}
+{{- include "ddbgo.assertAvailable" (dict "root" . "apiVersion" "networking.k8s.io/v1" "kind" "Ingress" "name" $name) }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "ddbgo.labels" . | nindent 4 }}
+    app.kubernetes.io/component: drupal
+  annotations:
+    {{- include "ddbgo.protectionAnnotations" . | nindent 4 }}
+    {{- with .Values.drupal.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- with .Values.drupal.ingress.className }}
+  ingressClassName: {{ . | quote }}
+  {{- end }}
+  rules:
+    - host: {{ .Values.drupal.externalHost | quote }}
+      http:
+        paths:
+          - path: {{ .Values.drupal.ingress.path | quote }}
+            pathType: {{ .Values.drupal.ingress.pathType }}
+            backend:
+              service:
+                name: {{ include "ddbgo.drupalName" . }}
+                port:
+                  number: {{ .Values.drupal.service.port }}
+{{- end }}

@@ -111,12 +111,13 @@ Yes, there's a docker container for DDBgo available at GitHub: https://github.co
 docker pull ghcr.io/mbuechner/ddbgo:tagged
 ```
 
-## Helm / OpenShift
+## Helm / Kubernetes und OpenShift
 
-Das produktionsreife Helm-Chart für OpenShift einschließlich Redis und MariaDB
+Das Helm-Chart für Kubernetes und OpenShift einschließlich Redis und MariaDB
 liegt unter [`helm/ddbgo`](helm/ddbgo/README.md). Die Dokumentation beschreibt
-Produktiv- und Testinstallation, Namensschema, Kollisionsschutz sowie die
-Verwendung bestehender Secrets und PersistentVolumeClaims.
+Produktiv- und Testinstallation, die Plattformprofile, das Namensschema,
+Kollisionsschutz sowie die Verwendung bestehender Secrets und
+PersistentVolumeClaims.
 
 Der vollständige Ablauf von der Test-Prerelease-Version über den Merge nach
 `master` bis zur gezielten Installation einer Produktionsversion ist im

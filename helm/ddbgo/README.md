@@ -1,13 +1,15 @@
-# DDBgo Helm-Chart für OpenShift
+# DDBgo Helm-Chart für Kubernetes und OpenShift
 
-Dieses Chart installiert DDBgo mit Redis und MariaDB in einem OpenShift-
-Namespace. Es verwendet eine OpenShift `Route`, nicht privilegierte Container,
+Dieses Chart installiert DDBgo mit Redis und MariaDB in einem Kubernetes-
+Namespace oder OpenShift-Projekt. Nicht privilegierte Container,
 `RuntimeDefault`-Seccomp, entfernte Linux-Capabilities und keine fest
-eingetragene UID. Dadurch kann die OpenShift-SCC die projektspezifische UID
-vergeben.
+eingetragene UID funktionieren mit Kubernetes Pod Security und erlauben
+OpenShift zugleich die Zuweisung einer projektspezifischen UID über die SCC.
 
-Die Route enthält bewusst keine TLS-Konfiguration. Sie wird clusterseitig über
-HTTP angesprochen; TLS/SSL endet am vorgeschalteten Reverse Proxy.
+`platform.type` wählt die plattformspezifischen Ressourcen. `openshift` erzeugt
+eine Route sowie ImageStreams und Image-Change-Trigger. `kubernetes` erzeugt
+stattdessen ein Standard-Ingress. Route und Ingress enthalten bewusst keine
+TLS-Konfiguration; TLS/SSL endet am vorgeschalteten Reverse Proxy.
 
 ## Benennung
 
@@ -22,7 +24,7 @@ Die Namen werden aus dem Release-Namen gebildet:
 | ImageStreams für Drupal, Redis und MariaDB | wie die jeweilige Komponente | wie die jeweilige Komponente |
 | VerticalPodAutoscaler für Drupal, Redis und MariaDB | wie die jeweilige Komponente | wie die jeweilige Komponente |
 | optionales HTTP-Basic-Auth-Secret | `ddbgo-drupal-http-auth` | `ddbgo-t-drupal-http-auth` |
-| Route (Name und Host) | `go.deutsche-digitale-bibliothek.de` | `go-t.deutsche-digitale-bibliothek.de` |
+| Route oder Ingress (Name und Host) | `go.deutsche-digitale-bibliothek.de` | `go-t.deutsche-digitale-bibliothek.de` |
 
 Drei getrennte ServiceAccounts statt eines gemeinsamen Accounts halten die
 Workloads nach dem Least-Privilege-Prinzip voneinander getrennt. Es werden
@@ -30,7 +32,8 @@ keine Rollen oder RoleBindings benötigt.
 
 ## Installation
 
-Voraussetzungen sind Helm 3 und ein angemeldeter OpenShift-Client.
+Voraussetzung ist Helm 3 sowie ein Zugriff auf den Zielcluster. Die
+Standardwerte verwenden OpenShift.
 
 Produktion:
 
@@ -52,6 +55,35 @@ helm upgrade --install ddbgo-t ./helm/ddbgo \
   --atomic \
   --timeout 15m
 ```
+
+Kubernetes-Produktion:
+
+```sh
+helm upgrade --install ddbgo ./helm/ddbgo \
+  --namespace ddbgo \
+  --create-namespace \
+  --values ./helm/ddbgo/values-kubernetes.yaml \
+  --atomic \
+  --timeout 15m
+```
+
+Kubernetes-Testsystem:
+
+```sh
+helm upgrade --install ddbgo-t ./helm/ddbgo \
+  --namespace ddbgo-t \
+  --create-namespace \
+  --values ./helm/ddbgo/values-test.yaml \
+  --values ./helm/ddbgo/values-kubernetes.yaml \
+  --atomic \
+  --timeout 15m
+```
+
+Die zuletzt angegebene Datei aktiviert Kubernetes und deaktiviert die dort nicht
+verfügbaren OpenShift-Image-Trigger. Falls der Cluster keine Standard-
+IngressClass besitzt, muss beispielsweise
+`--set-string drupal.ingress.className=nginx` ergänzt werden. Der Name hängt vom
+installierten Ingress-Controller ab.
 
 Vor einer Installation kann der serverseitige Dry-Run Namenskollisionen
 erkennen:
@@ -81,7 +113,8 @@ drupal:
   externalHost: go.deutsche-digitale-bibliothek.de
 ```
 
-Das Chart verwendet diesen Wert für Route-Name, Route-Host und Trusted-Host-Regel.
+Das Chart verwendet diesen Wert für Route-/Ingress-Name, Host und
+Trusted-Host-Regel.
 Die Drupal-Probes sind davon unabhängig. `values-test.yaml` überschreibt nur
 diesen Wert mit der Testdomain. Für temporäre Installationen kann auf dieselbe
 Weise eine beliebige andere Domain gesetzt werden.
@@ -118,10 +151,10 @@ sind reserviert und können hier nicht ersetzt werden.
 
 Ein normales Upgrade aktualisiert weiterhin die Ressourcen, die bereits zu
 diesem Release gehören. Ohne diese Ausnahme wären Helm-Upgrades nicht möglich.
-Bei `helm uninstall` werden Deployment, StatefulSets, Services, Route,
-ConfigMap, ServiceAccounts, ImageStreams und VerticalPodAutoscaler entfernt. Die
-vom Chart erzeugten PVCs und Secrets tragen `helm.sh/resource-policy: keep` und
-bleiben erhalten.
+Bei `helm uninstall` werden Deployment, StatefulSets, Services, Route oder
+Ingress, ConfigMap, ServiceAccounts, gegebenenfalls ImageStreams und
+VerticalPodAutoscaler entfernt. Die vom Chart erzeugten PVCs und Secrets tragen
+`helm.sh/resource-policy: keep` und bleiben erhalten.
 Die PVC-Aufbewahrung lässt sich je Komponente mit `persistence.retain=false`
 abschalten; Secrets werden zum Schutz persistenter Zugangsdaten immer behalten.
 
@@ -140,7 +173,7 @@ nicht mehr Teil eines Helm-Releases. Die Nicht-PVC-Ressourcen können dann anhan
 des Release-Labels gezielt entfernt werden, beispielsweise für Test:
 
 ```sh
-oc delete deployment,statefulset,service,route,configmap,serviceaccount,imagestream \
+oc delete deployment,statefulset,service,route,ingress,configmap,serviceaccount,imagestream,verticalpodautoscaler \
   --selector app.kubernetes.io/instance=ddbgo-t \
   --namespace ddbgo-t
 ```
@@ -185,7 +218,7 @@ verwendet werden.
 
 ## Ressourcenbedarf
 
-Die Standardwerte sind für eine sparsame Einzelinstanz auf OpenShift
+Die Standardwerte sind für eine sparsame Einzelinstanz auf Kubernetes oder OpenShift
 ausgelegt:
 
 | Komponente | CPU-Request | CPU-Limit | Speicher-Request | Speicher-Limit |
@@ -347,8 +380,9 @@ Produktion ergibt sich standardmäßig:
 ```
 
 Der vorgeschaltete Reverse Proxy muss den öffentlichen Host unverändert an den
-OpenShift-Router senden. Für Produktion sind insbesondere folgende Header
-erforderlich; im Testsystem wird entsprechend die `go-t`-Domain verwendet:
+OpenShift-Router beziehungsweise Kubernetes-Ingress-Controller senden. Für
+Produktion sind insbesondere folgende Header erforderlich; im Testsystem wird
+entsprechend die `go-t`-Domain verwendet:
 
 ```text
 Host: go.deutsche-digitale-bibliothek.de
@@ -357,16 +391,18 @@ X-Forwarded-Proto: https
 X-Forwarded-Port: 443
 ```
 
-Der OpenShift-Router benötigt den öffentlichen `Host` zum Matchen der Route.
-Nginx übergibt diesen Host sowie das externe Scheme und den externen Port an
-PHP-FPM. Drupal erzeugt dadurch öffentliche URLs mit der HTTPS-Domain, obwohl
-Route und Pod intern per HTTP kommunizieren.
+OpenShift-Router und Kubernetes-Ingress benötigen den öffentlichen `Host` zum
+Matchen von Route beziehungsweise Ingress. Nginx übergibt diesen Host sowie das
+externe Scheme und den externen Port an PHP-FPM. Drupal erzeugt dadurch
+öffentliche URLs mit der HTTPS-Domain, obwohl die clusterinterne Weiterleitung
+per HTTP erfolgt.
 
 Bei mehreren Proxy-Stufen können Header als Listen ankommen, beispielsweise
 `X-Forwarded-Proto: https, http` und `X-Forwarded-Port: 443, 80`. Nginx wertet
 bewusst den ersten, ursprünglichen Proto-Wert aus und normalisiert die an
 PHP-FPM übergebenen Werte auf `https` und `443`. Ein später angehängtes `http`
-des OpenShift-Routers überschreibt damit nicht die externe Client-Sicht.
+eines zwischengeschalteten Proxys überschreibt damit nicht die externe
+Client-Sicht.
 
 MariaDB erhält zusätzlich ein beschreibbares `emptyDir` unter `/run/mariadb`.
 Das ist auf OpenShift erforderlich, weil die zufällig zugewiesene Container-UID
@@ -460,8 +496,9 @@ Versionslinie wechseln können, werden nicht verwendet.
 
 ## Automatische Image-Aktualisierung
 
-Das Chart erzeugt standardmäßig für Drupal, Redis und MariaDB jeweils einen
-OpenShift `ImageStream`. OpenShift importiert die konfigurierten Tags regelmäßig.
+Mit `platform.type=openshift` erzeugt das Chart standardmäßig für Drupal, Redis
+und MariaDB jeweils einen OpenShift `ImageStream`. OpenShift importiert die
+konfigurierten Tags regelmäßig.
 Ändert sich der Digest eines Tags, aktualisiert ein Image-Change-Trigger das
 zugehörige Deployment beziehungsweise StatefulSet. Dadurch wird automatisch ein
 Rollout mit dem neuen Image gestartet. Bei Redis und MariaDB kann der Registry-Tag
@@ -509,6 +546,13 @@ oc rollout status statefulset/ddbgo-t-redis -n ddbgo-t
 Der OpenShift-Import reagiert auf eine Änderung des Image-Digests. Er führt
 keine eigenen Anwendungstests durch. Für MariaDB sollte deshalb weiterhin ein
 Backup- und Wiederherstellungsverfahren vorhanden sein.
+
+Standard-Kubernetes besitzt weder ImageStreams noch äquivalente native
+Image-Change-Trigger. `values-kubernetes.yaml` deaktiviert diese Funktionen und
+setzt für alle drei beweglichen Tags `imagePullPolicy: Always`. Dadurch wird ein
+neues Image bei einem Podstart geladen, aber ein neuer Registry-Digest löst
+allein noch keinen Rollout aus. Dafür ist ein separater GitOps-, Deployment- oder
+Image-Automation-Controller erforderlich.
 
 ## Veröffentlichung über GitHub
 

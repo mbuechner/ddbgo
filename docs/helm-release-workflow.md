@@ -10,6 +10,13 @@ Installation sind bewusst getrennt:
 - Es gibt kein automatisches Deployment auf einen Cluster und damit auch keine
   im Repository hinterlegten Cluster-Zugangsdaten.
 
+Das veröffentlichte Chart ist zusätzlich mit Standard-Kubernetes kompatibel.
+Die Publish-Action rendert bei jeder Veröffentlichung sowohl OpenShift als auch
+Kubernetes, jeweils für Produktion und Test. Für eine Kubernetes-Installation
+wird zusätzlich die im Chart enthaltene `values-kubernetes.yaml` angegeben;
+der operative Ablauf dieses Runbooks bleibt ansonsten auf die vorhandenen
+OpenShift-Systeme `ddbgo` und `ddbgo-t` ausgerichtet.
+
 ## Systeme und Veröffentlichungskanäle
 
 | Verwendung | Git-Branch | Chartversion | Helm-Repository | Release / Namespace |

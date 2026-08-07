@@ -1,3 +1,4 @@
+{{- if eq .Values.platform.type "openshift" }}
 {{- $components := list
   (dict "component" "drupal" "name" (include "ddbgo.drupalName" .) "image" .Values.drupal.image)
   (dict "component" "redis" "name" (include "ddbgo.redisName" .) "image" .Values.redis.image)
@@ -29,5 +30,6 @@ spec:
         scheduled: {{ $component.image.autoUpdate.scheduledImport }}
       referencePolicy:
         type: Source
+{{- end }}
 {{- end }}
 {{- end }}
