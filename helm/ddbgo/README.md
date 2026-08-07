@@ -84,17 +84,35 @@ Die Drupal-Probes sind davon unabhängig. `values-test.yaml` überschreibt nur
 diesen Wert mit der Testdomain. Für temporäre Installationen kann auf dieselbe
 Weise eine beliebige andere Domain gesetzt werden.
 
+## Kontakt-Annotationen
+
+Alle vom Chart erzeugten Kubernetes- und OpenShift-Ressourcen erhalten die
+Einträge aus `commonAnnotations`. Standardmäßig sind die vereinbarten
+Kontaktinformationen gesetzt:
+
+```yaml
+commonAnnotations:
+  dnb.contact/emails: m.buechner@dnb.de
+  dnb.contact/persons: Michael Büchner
+```
+
+Die Werte können in einer umgebungsspezifischen Values-Datei geändert oder um
+weitere Annotationen ergänzt werden. Ein leerer String unterdrückt die jeweilige
+Annotation. Die von Helm benötigten Owner- und `resource-policy`-Annotationen
+sind reserviert und können hier nicht ersetzt werden.
+
 ## Schutz bestehender Ressourcen
 
 `protection.failOnExistingResource=true` bewirkt:
 
 - Eine Erstinstallation bricht ab, wenn eine der zu erzeugenden Ressourcen
-  bereits vorhanden ist. Einzige Ausnahme sind behaltene PVCs, die nachweislich
-  demselben Release-Namen und Namespace gehören.
+  bereits vorhanden ist. Einzige Ausnahme sind behaltene PVCs und Secrets, die
+  nachweislich demselben Release-Namen und Namespace gehören.
 - Ein Upgrade ändert nur Ressourcen, deren Helm-Metadaten exakt zu diesem
   Release und Namespace gehören.
-- Fremde oder lediglich namensgleiche PVCs werden nicht übernommen. Sie müssen
-  explizit über `existingClaim` referenziert werden.
+- Fremde oder lediglich namensgleiche PVCs und Secrets werden nicht übernommen.
+  Sie müssen explizit über `existingClaim` beziehungsweise `existingSecret`
+  referenziert werden.
 
 Ein normales Upgrade aktualisiert weiterhin die Ressourcen, die bereits zu
 diesem Release gehören. Ohne diese Ausnahme wären Helm-Upgrades nicht möglich.
@@ -175,6 +193,10 @@ angepasst werden. Insbesondere Drupal und MariaDB können bei Importen,
 Cache-Neuaufbau oder Datenbankmigrationen vorübergehend mehr Speicher benötigen.
 Alle Werte lassen sich unter `drupal.resources`, `redis.resources` und
 `database.resources` überschreiben.
+
+Die beiden kurzlebigen Abhängigkeitsprüfungen vor dem Drupal-Start verwenden
+zusätzlich die sparsamen Werte unter `drupal.dependencyChecks.resources`. Da
+Init-Container nacheinander laufen, werden deren Anforderungen nicht addiert.
 
 ## Verzeichnisstruktur der PVCs
 
@@ -276,6 +298,13 @@ Das ist auf OpenShift erforderlich, weil die zufällig zugewiesene Container-UID
 den Unix-Socket nicht in das schreibgeschützte Verzeichnis des Images legen
 kann. Dieses Runtime-Volume enthält keine persistenten Daten.
 
+Die globale Transaktionsisolation von MariaDB ist unter
+`database.config.transactionIsolation` explizit auf `READ-COMMITTED` gesetzt.
+Das StatefulSet übergibt dazu beim Serverstart
+`--transaction-isolation=READ-COMMITTED`. Der Wert gilt als Standard für neu
+aufgebaute Verbindungen; ein Helm-Upgrade rollt den MariaDB-Pod mit dieser
+Einstellung neu aus.
+
 ## Zustandsprüfungen
 
 Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
@@ -294,6 +323,19 @@ Pfad, lokaler Host-Header und Zeitwerte der Drupal-Probes sind unter
 `drupal.probes` konfigurierbar. `httpGet.host` wird bewusst nicht gesetzt: Dieser
 Wert würde das Netzwerkziel der Kubelet-Probe ändern; `hostHeader` ändert nur den
 virtuellen HTTP-Host der direkten Pod-Anfrage.
+
+Vor dem eigentlichen Drupal-Container laufen außerdem zwei Init-Container
+nacheinander:
+
+1. `wait-for-database` führt mit den Zugangsdaten aus dem MariaDB-Secret ein
+   `SELECT 1` in der konfigurierten Datenbank aus.
+2. `wait-for-redis` erwartet mit dem Passwort aus dem Redis-Secret ein
+   authentifiziertes `PONG`. Bei `redis.enabled=false` entfällt dieser Check.
+
+Solange eine Prüfung fehlschlägt, wartet sie und versucht es nach
+`drupal.dependencyChecks.retryIntervalSeconds` erneut. Der Drupal-Container wird
+erst nach beiden Erfolgen gestartet. Dadurch führen auch falsche Secrets oder
+noch nicht initialisierte Dienste nicht zu einem vorzeitigen Anwendungsstart.
 
 ## Passwörter und Persistenz
 

@@ -39,6 +39,81 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       initContainers:
+        - name: wait-for-database
+          image: {{ printf "%s:%s" .Values.database.image.repository .Values.database.image.tag | quote }}
+          imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              until mariadb \
+                --protocol=TCP \
+                --host="${MYSQL_HOST}" \
+                --port="${MYSQL_PORT}" \
+                --user="${MYSQL_USER}" \
+                --password="${MYSQL_PASSWORD}" \
+                --execute="SELECT 1" \
+                "${MYSQL_DATABASE}" >/dev/null 2>&1; do
+                echo "Waiting for MariaDB at ${MYSQL_HOST}:${MYSQL_PORT} ..."
+                sleep "${WAIT_INTERVAL_SECONDS}"
+              done
+              echo "MariaDB accepts authenticated connections."
+          env:
+            - name: MYSQL_HOST
+              value: {{ include "ddbgo.databaseName" . | quote }}
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.databaseSecretName" . }}
+                  key: password
+            - name: WAIT_INTERVAL_SECONDS
+              value: {{ .Values.drupal.dependencyChecks.retryIntervalSeconds | quote }}
+          securityContext:
+            {{- toYaml .Values.database.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml .Values.drupal.dependencyChecks.resources | nindent 12 }}
+        {{- if .Values.redis.enabled }}
+        - name: wait-for-redis
+          image: {{ printf "%s:%s" .Values.redis.image.repository .Values.redis.image.tag | quote }}
+          imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              until [ "$(redis-cli --host "${REDIS_HOST}" --port "${REDIS_PORT}" ping 2>/dev/null)" = "PONG" ]; do
+                echo "Waiting for Redis at ${REDIS_HOST}:${REDIS_PORT} ..."
+                sleep "${WAIT_INTERVAL_SECONDS}"
+              done
+              echo "Redis accepts authenticated connections."
+          env:
+            - name: REDIS_HOST
+              value: {{ include "ddbgo.redisName" . | quote }}
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDISCLI_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "ddbgo.redisSecretName" . }}
+                  key: password
+            - name: WAIT_INTERVAL_SECONDS
+              value: {{ .Values.drupal.dependencyChecks.retryIntervalSeconds | quote }}
+          securityContext:
+            {{- toYaml .Values.redis.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml .Values.drupal.dependencyChecks.resources | nindent 12 }}
+        {{- end }}
         - name: prepare-storage
           image: {{ printf "%s:%s" .Values.drupal.image.repository .Values.drupal.image.tag | quote }}
           imagePullPolicy: {{ .Values.drupal.image.pullPolicy }}

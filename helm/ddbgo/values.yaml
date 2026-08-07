@@ -14,6 +14,14 @@ naming:
     - ddbgo
     - ddbgo-t
 
+# Zusätzliche Annotationen für alle vom Chart erzeugten Kubernetes- und
+# OpenShift-Ressourcen. Werte können je Umgebung überschrieben und weitere
+# Annotationen ergänzt werden; leere Strings werden ausgelassen.
+# Helm-Owner-Annotationen und resource-policy verwaltet das Chart selbst.
+commonAnnotations:
+  dnb.contact/emails: m.buechner@dnb.de
+  dnb.contact/persons: Michael Büchner
+
 # Schutz vorhandener Ressourcen.
 protection:
   # Bricht ab, wenn bei der Erstinstallation gleichnamige Ressourcen existieren.
@@ -93,6 +101,18 @@ drupal:
     # deaktiviert. Sie laufen bei jedem Containerstart, wenn sie aktiviert sind.
     updatedbOnStartup: false
     cacheRebuildOnStartup: false
+  dependencyChecks:
+    # Init-Container lassen Drupal erst starten, wenn ein authentifiziertes
+    # SELECT 1 gegen MariaDB und – sofern aktiviert – Redis PING erfolgreich sind.
+    retryIntervalSeconds: 5
+    # Kleine, nur während des Pod-Starts benötigte Ressourcen für beide Checks.
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   probes:
     # Nicht gecachter Drupal-Endpunkt. Kubernetes verbindet direkt mit Port 8080
     # des Pods; weder Route noch öffentliches DNS oder Reverse Proxy sind beteiligt.
@@ -230,6 +250,10 @@ database:
   enabled: true
   # Startup und Readiness verwenden `healthcheck.sh --connect
   # --innodb_initialized`; Liveness prüft mit `healthcheck.sh --connect`.
+  config:
+    # Globaler Standard für alle neu aufgebauten Datenbankverbindungen.
+    # MariaDB erwartet die Schreibweise mit Bindestrich.
+    transactionIsolation: READ-COMMITTED
   image:
     repository: docker.io/library/mariadb
     # Beweglicher Patch-Tag innerhalb der MariaDB-11.8-LTS-Linie. Das UBI9-Image

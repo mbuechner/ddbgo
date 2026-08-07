@@ -8,6 +8,13 @@
 {{- fail (printf "release name %q is not allowed; expected one of: %s" .Release.Name (join ", " .Values.naming.allowedReleaseNames)) }}
 {{- end }}
 {{- end }}
+{{- $commonAnnotations := .Values.commonAnnotations | default dict -}}
+{{- if or (hasKey $commonAnnotations "meta.helm.sh/release-name") (hasKey $commonAnnotations "meta.helm.sh/release-namespace") (hasKey $commonAnnotations "helm.sh/resource-policy") }}
+{{- fail "commonAnnotations must not override Helm ownership or resource-policy annotations" }}
+{{- end }}
+{{- if lt (int .Values.drupal.dependencyChecks.retryIntervalSeconds) 1 }}
+{{- fail "drupal.dependencyChecks.retryIntervalSeconds must be at least 1" }}
+{{- end }}
 {{- if and .Values.drupal.secret.create .Values.drupal.secret.existingSecret }}
 {{- fail "drupal.secret.create and drupal.secret.existingSecret are mutually exclusive" }}
 {{- end }}
@@ -28,6 +35,9 @@
 {{- end }}
 {{- if not .Values.database.enabled }}
 {{- fail "database.enabled must be true because this application requires MariaDB" }}
+{{- end }}
+{{- if not (has .Values.database.config.transactionIsolation (list "READ-UNCOMMITTED" "READ-COMMITTED" "REPEATABLE-READ" "SERIALIZABLE")) }}
+{{- fail "database.config.transactionIsolation must be one of READ-UNCOMMITTED, READ-COMMITTED, REPEATABLE-READ or SERIALIZABLE" }}
 {{- end }}
 {{- if and (not .Values.database.auth.create) (not .Values.database.auth.existingSecret) }}
 {{- fail "database.auth.existingSecret is required when database.auth.create=false" }}

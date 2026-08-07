@@ -155,6 +155,16 @@ Es sollte nie implizit „die neueste“ Testversion installiert werden.
 7. Die angezeigten Änderungen prüfen und die Release-Erstellung beziehungsweise
    das Upgrade bestätigen.
 
+Die Kontaktinformationen werden über die globalen Annotationen des Charts
+gesetzt und können bei Bedarf in der YAML-Ansicht umgebungsspezifisch
+überschrieben werden:
+
+```yaml
+commonAnnotations:
+  dnb.contact/emails: m.buechner@dnb.de
+  dnb.contact/persons: Michael Büchner
+```
+
 Das Testprofil ist nicht automatisch das Standardprofil des Charts. In der CLI
 wird deshalb `values-test.yaml` angegeben; in der Weboberfläche müssen die
 Testwerte in der YAML-Ansicht gesetzt werden.
@@ -168,6 +178,11 @@ prüfen `/health` direkt auf Port 8080 des Pods mit dem lokalen Host-Header
 beteiligt. Der Reverse Proxy
 muss `Host` und `X-Forwarded-Host` auf die öffentliche `go-t`-Domain sowie
 `X-Forwarded-Proto` auf `https` und `X-Forwarded-Port` auf `443` setzen.
+
+Beim Pod-Start wartet das Drupal-Deployment per Init-Container auf einen
+erfolgreichen authentifizierten MariaDB-Zugriff und auf ein authentifiziertes
+Redis-`PONG`. Der anschließende Rollout-Status wird deshalb erst erfolgreich,
+wenn beide Abhängigkeiten mit den konfigurierten Secrets erreichbar sind.
 
 #### Über die CLI
 

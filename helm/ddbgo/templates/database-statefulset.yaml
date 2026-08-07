@@ -62,6 +62,8 @@ spec:
         - name: mariadb
           image: {{ printf "%s:%s" .Values.database.image.repository .Values.database.image.tag | quote }}
           imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+          args:
+            - {{ printf "--transaction-isolation=%s" .Values.database.config.transactionIsolation | quote }}
           env:
             - name: HOME
               value: /tmp

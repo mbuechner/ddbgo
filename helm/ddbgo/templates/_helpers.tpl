@@ -27,6 +27,11 @@ app.kubernetes.io/component: {{ .component | quote }}
 {{- end }}
 
 {{- define "ddbgo.protectionAnnotations" -}}
+{{- range $key, $value := (.Values.commonAnnotations | default dict) }}
+{{- if ne (toString $value) "" }}
+{{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end }}
 meta.helm.sh/release-name: {{ .Release.Name | quote }}
 meta.helm.sh/release-namespace: {{ .Release.Namespace | quote }}
 {{- end }}
