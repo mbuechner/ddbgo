@@ -95,8 +95,9 @@ die nächste Entwicklung also mindestens mit `0.1.1` beginnen.
 
 ### 2. Testversion veröffentlichen
 
-Jeder Push auf `test`, der `helm/ddbgo/**` ändert, startet
-`.github/workflows/helm-publish.yml`. Aus `0.2.0` entsteht beispielsweise:
+Jeder Push auf `test`, der `helm/ddbgo/**` oder den Publish-Workflow selbst
+ändert, startet `.github/workflows/helm-publish.yml`. Aus `0.2.0` entsteht
+beispielsweise:
 
 ```text
 0.2.0-test.184.1.shad41a6cc
