@@ -135,31 +135,50 @@ absichtlich nicht voreingestellt.
 ## Veröffentlichung über GitHub
 
 Die Action [`.github/workflows/helm-publish.yml`](../../.github/workflows/helm-publish.yml)
-veröffentlicht das Chart als OCI-Artefakt in der GitHub Container Registry:
+veröffentlicht das Chart als OCI-Artefakt unter:
 
 ```text
 oci://ghcr.io/mbuechner/helm/ddbgo
 ```
 
-Sie läuft automatisch, wenn sich `helm/ddbgo/**` auf `master` ändert, und kann
-zusätzlich in GitHub unter **Actions → Publish Helm chart → Run workflow**
-gestartet werden. `GITHUB_TOKEN` genügt; ein zusätzliches Repository-Secret ist
-nicht erforderlich.
+Sie läuft bei Chart-Änderungen sowohl auf `test` als auch auf `master`. Beide
+Branches verwenden dieselbe Basisversion aus `Chart.yaml`; die veröffentlichte
+Version wird abhängig vom Branch gebildet:
 
-Eine bereits veröffentlichte Version wird niemals überschrieben. Vor jeder
-neuen Veröffentlichung muss deshalb `version` in `Chart.yaml` erhöht werden,
-beispielsweise von `0.1.0` auf `0.1.1`. Nach dem Merge nach `master` kann der
-Workflow unter **Actions** kontrolliert werden. Das Paket erscheint anschließend
-auf der GitHub-Profil- beziehungsweise Organisationsseite unter **Packages**.
+| Branch | Kanal | Beispielversion | Zielrelease |
+| --- | --- | --- | --- |
+| `test` | Test-Prerelease | `0.1.0-test.123.1.shaabc1234` | `ddbgo-t` in `ddbgo-t` |
+| `master` | Produktion | `0.1.0` | `ddbgo` in `ddbgo` |
 
-GitHub legt neue Container-Pakete abhängig von den Account-Einstellungen
-möglicherweise zunächst als privat an. Soll das Chart ohne Anmeldung abrufbar
-sein, muss die Sichtbarkeit in den Package-Einstellungen einmalig auf **Public**
-gestellt werden.
+Die Testversion enthält Workflow-Lauf, Versuch und Commit-ID. Sie ist dadurch
+eindeutig und kann eine vorhandene Version nicht überschreiben. Beim Merge von
+`test` nach `master` bleibt `Chart.yaml` unverändert; aus derselben Basisversion
+wird auf `master` die stabile Produktionsversion.
+
+Der typische Ablauf für die nächste Version ist:
+
+1. Auf `test` die Basisversion in `Chart.yaml` auf beispielsweise `0.2.0`
+   erhöhen.
+2. Änderungen auf `test` veröffentlichen und mit Versionen wie
+   `0.2.0-test.…` im Testsystem prüfen.
+3. `test` ohne zusätzliche Versionsänderung nach `master` mergen.
+4. Die Action veröffentlicht auf `master` genau `0.2.0` für Produktion.
+
+Eine bereits veröffentlichte Version wird nicht überschrieben. Weitere
+Änderungen nach einer Produktionsveröffentlichung erfordern deshalb die nächste
+Basisversion. Die Action kann auch unter
+**Actions → Publish Helm chart → Run workflow** gestartet werden; dabei muss als
+Branch `test` oder `master` ausgewählt sein.
+
+`GITHUB_TOKEN` genügt zum Veröffentlichen. Das Paket erscheint unter
+**Packages**. GitHub legt neue Pakete abhängig von den Account-Einstellungen
+möglicherweise zunächst als privat an. Für anonymen Abruf muss seine Sichtbarkeit
+einmalig auf **Public** gestellt werden.
 
 ### Installation aus GHCR
 
-Ein öffentliches Chart kann ohne vorheriges `helm repo add` installiert werden:
+Die genaue erzeugte Version steht in der Zusammenfassung des jeweiligen
+Action-Laufs. Ein öffentliches Produktionschart wird so installiert:
 
 ```sh
 helm upgrade --install ddbgo \
@@ -171,6 +190,26 @@ helm upgrade --install ddbgo \
   --timeout 15m
 ```
 
+Für das Testsystem wird die konkrete Prerelease-Version zusammen mit dem
+Testprofil verwendet:
+
+```sh
+helm upgrade --install ddbgo-t \
+  oci://ghcr.io/mbuechner/helm/ddbgo \
+  --version 0.1.0-test.123.1.shaabc1234 \
+  --namespace ddbgo-t \
+  --create-namespace \
+  --values ./helm/ddbgo/values-test.yaml \
+  --atomic \
+  --timeout 15m
+```
+
+Das Testprofil setzt den Drupal-Container auf den beweglichen Tag `test` und
+`imagePullPolicy: Always`. Die Chart-Version steht zusätzlich als Annotation im
+Pod-Template, sodass jede neue Testchart-Version einen Drupal-Rollout auslöst.
+Produktion verwendet weiterhin den freigegebenen Tag `tagged`, sofern kein
+konkreter Tag oder Digest übergeben wird.
+
 Bei einem privaten Paket ist zuerst eine Anmeldung mit einem klassischen GitHub
 Personal Access Token mit `read:packages` notwendig:
 
@@ -179,22 +218,6 @@ export CR_PAT='GITHUB_TOKEN'
 printf '%s' "$CR_PAT" | helm registry login ghcr.io \
   --username GITHUB_BENUTZERNAME \
   --password-stdin
-```
-
-Für das Testsystem kann das im Paket enthaltene Werteprofil zunächst entpackt
-und dann verwendet werden:
-
-```sh
-helm pull oci://ghcr.io/mbuechner/helm/ddbgo \
-  --version 0.1.0 \
-  --untar
-
-helm upgrade --install ddbgo-t ./ddbgo \
-  --namespace ddbgo-t \
-  --create-namespace \
-  --values ./ddbgo/values-test.yaml \
-  --atomic \
-  --timeout 15m
 ```
 
 Metadaten lassen sich vorab prüfen:
@@ -207,3 +230,8 @@ helm show values oci://ghcr.io/mbuechner/helm/ddbgo --version 0.1.0
 OCI-Repositories werden nicht mit `helm repo add` registriert. Der vollständige
 `oci://`-Pfad und die gewünschte Version werden direkt an `helm install`,
 `helm upgrade`, `helm pull` oder `helm show` übergeben.
+
+Die Publish-Action installiert nicht selbst auf einem OpenShift-Cluster, da
+dafür bewusst noch keine Cluster-Zugangsdaten im Repository definiert sind. Eine
+separate Deployment-Action kann darauf aufbauend über geschützte GitHub-
+Environments für `test` und `production` ergänzt werden.

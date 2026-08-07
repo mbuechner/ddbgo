@@ -21,8 +21,9 @@ spec:
     metadata:
       labels:
         {{- include "ddbgo.selectorLabels" (dict "root" . "component" "drupal") | nindent 8 }}
-      {{- with .Values.drupal.podAnnotations }}
       annotations:
+        ddbgo.de/chart-version: {{ .Chart.Version | quote }}
+      {{- with .Values.drupal.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
@@ -135,4 +136,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-

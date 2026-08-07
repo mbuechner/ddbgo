@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - test
     paths:
       - helm/ddbgo/**
   workflow_dispatch:
@@ -50,28 +51,62 @@ jobs:
             --namespace ddbgo-t \
             --values "$CHART_DIR/values-test.yaml" >/dev/null
 
-      - name: Read metadata and package chart
+      - name: Resolve release channel and package chart
         id: chart
         shell: bash
         run: |
           set -euo pipefail
           chart_name="$(awk '$1 == "name:" { print $2; exit }' "$CHART_DIR/Chart.yaml")"
-          chart_version="$(awk '$1 == "version:" { gsub(/\"/, "", $2); print $2; exit }' "$CHART_DIR/Chart.yaml")"
+          base_version="$(awk '$1 == "version:" { gsub(/\"/, "", $2); print $2; exit }' "$CHART_DIR/Chart.yaml")"
           owner="${GITHUB_REPOSITORY_OWNER,,}"
           package_dir="$RUNNER_TEMP/helm-packages"
+
+          if [[ ! "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Chart.yaml version must be a stable MAJOR.MINOR.PATCH version."
+            exit 1
+          fi
+
+          case "$GITHUB_REF_NAME" in
+            test)
+              channel="test"
+              chart_version="${base_version}-test.${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}.sha${GITHUB_SHA::7}"
+              release_name="ddbgo-t"
+              release_namespace="ddbgo-t"
+              values_file="values-test.yaml"
+              ;;
+            master)
+              channel="production"
+              chart_version="$base_version"
+              release_name="ddbgo"
+              release_namespace="ddbgo"
+              values_file=""
+              ;;
+            *)
+              echo "::error::Publishing is allowed only from the test or master branch."
+              exit 1
+              ;;
+          esac
+
           package="$package_dir/${chart_name}-${chart_version}.tgz"
           repository="oci://${REGISTRY}/${owner}/${OCI_NAMESPACE}"
           reference="${repository}/${chart_name}"
 
           mkdir -p "$package_dir"
-          helm package "$CHART_DIR" --destination "$package_dir"
+          helm package "$CHART_DIR" \
+            --version "$chart_version" \
+            --destination "$package_dir"
 
           test -f "$package"
           echo "name=$chart_name" >> "$GITHUB_OUTPUT"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+          echo "base-version=$base_version" >> "$GITHUB_OUTPUT"
           echo "version=$chart_version" >> "$GITHUB_OUTPUT"
           echo "package=$package" >> "$GITHUB_OUTPUT"
           echo "repository=$repository" >> "$GITHUB_OUTPUT"
           echo "reference=$reference" >> "$GITHUB_OUTPUT"
+          echo "release-name=$release_name" >> "$GITHUB_OUTPUT"
+          echo "release-namespace=$release_namespace" >> "$GITHUB_OUTPUT"
+          echo "values-file=$values_file" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GitHub Container Registry
         shell: bash
@@ -116,5 +151,15 @@ jobs:
             echo
             echo "\`${CHART_REFERENCE}\`"
             echo
+            echo "Channel: \`${{ steps.chart.outputs.channel }}\`"
+            echo
             echo "Version: \`${CHART_VERSION}\`"
+            echo
+            echo '```sh'
+            if [[ '${{ steps.chart.outputs.channel }}' == 'test' ]]; then
+              echo "helm upgrade --install ddbgo-t ${CHART_REFERENCE} --version ${CHART_VERSION} --namespace ddbgo-t --values helm/ddbgo/values-test.yaml"
+            else
+              echo "helm upgrade --install ddbgo ${CHART_REFERENCE} --version ${CHART_VERSION} --namespace ddbgo"
+            fi
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
