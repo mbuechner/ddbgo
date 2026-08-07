@@ -79,10 +79,10 @@ drupal:
   externalHost: go.deutsche-digitale-bibliothek.de
 ```
 
-Das Chart verwendet diesen Wert für Route-Name, Route-Host, Trusted-Host-Regel
-und den Host-Header der Drupal-Probes. `values-test.yaml` überschreibt nur diesen
-Wert mit der Testdomain. Für temporäre Installationen kann auf dieselbe Weise
-eine beliebige andere Domain gesetzt werden.
+Das Chart verwendet diesen Wert für Route-Name, Route-Host und Trusted-Host-Regel.
+Die Drupal-Probes sind davon unabhängig. `values-test.yaml` überschreibt nur
+diesen Wert mit der Testdomain. Für temporäre Installationen kann auf dieselbe
+Weise eine beliebige andere Domain gesetzt werden.
 
 ## Schutz bestehender Ressourcen
 
@@ -281,15 +281,19 @@ kann. Dieses Runtime-Volume enthält keine persistenten Daten.
 Alle drei Workloads besitzen Startup-, Readiness- und Liveness-Probes:
 
 - Drupal verwendet für alle drei Prüfungen den nicht gecachten HTTP-Endpunkt
-  `/health` auf Port 8080. Die Probe sendet `drupal.externalHost` als
-  `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage akzeptiert.
+  `/health` direkt auf Port 8080 des Pods. Die Probe sendet standardmäßig
+  `localhost` als `Host`-Header, damit Drupals `trusted_host_patterns` die Anfrage
+  akzeptiert. Route, öffentliches DNS und Reverse Proxy sind nicht beteiligt.
 - Redis führt `redis-cli ping` aus. Das Passwort erhält der Client über die
   Umgebungsvariable `REDISCLI_AUTH` aus dem Redis-Secret.
 - MariaDB verwendet das mit dem offiziellen Image gelieferte `healthcheck.sh`.
   Startup und Readiness verlangen zusätzlich eine initialisierte InnoDB-Engine;
   Liveness prüft die Verbindung zum Server.
 
-Pfad und Zeitwerte der Drupal-Probes sind unter `drupal.probes` konfigurierbar.
+Pfad, lokaler Host-Header und Zeitwerte der Drupal-Probes sind unter
+`drupal.probes` konfigurierbar. `httpGet.host` wird bewusst nicht gesetzt: Dieser
+Wert würde das Netzwerkziel der Kubelet-Probe ändern; `hostHeader` ändert nur den
+virtuellen HTTP-Host der direkten Pod-Anfrage.
 
 ## Passwörter und Persistenz
 

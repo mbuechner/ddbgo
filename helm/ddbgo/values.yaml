@@ -38,8 +38,8 @@ serviceAccounts:
   databaseName: ""
 
 drupal:
-  # Zentrale öffentliche Domain. Route-Name/-Host, Trusted-Host-Regel und der
-  # Host-Header der Health-Probes werden daraus abgeleitet.
+  # Zentrale öffentliche Domain. Route-Name/-Host und Trusted-Host-Regel werden
+  # daraus abgeleitet. Die internen Health-Probes verwenden diese Domain nicht.
   externalHost: go.deutsche-digitale-bibliothek.de
   # Recreate verhindert, dass während eines Rollouts zwei Drupal-Pods zugleich
   # Änderungen am gemeinsam verwendeten Dateispeicher durchführen.
@@ -94,9 +94,12 @@ drupal:
     updatedbOnStartup: false
     cacheRebuildOnStartup: false
   probes:
-    # Nicht gecachter Drupal-Endpunkt. Der Host-Header wird vom Template auf
-    # drupal.externalHost gesetzt, damit trusted_host_patterns die Probe akzeptiert.
+    # Nicht gecachter Drupal-Endpunkt. Kubernetes verbindet direkt mit Port 8080
+    # des Pods; weder Route noch öffentliches DNS oder Reverse Proxy sind beteiligt.
     path: /health
+    # HTTP-Host-Header für den lokalen Request. Nicht auf externalHost setzen:
+    # localhost ist bereits Bestandteil der automatisch erzeugten Trusted Hosts.
+    hostHeader: localhost
     startup:
       periodSeconds: 5
       timeoutSeconds: 2

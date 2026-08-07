@@ -161,8 +161,11 @@ Testwerte in der YAML-Ansicht gesetzt werden.
 
 Die OpenShift-Route enthält keinen TLS-Block. Der vorgeschaltete Reverse Proxy
 terminiert HTTPS und leitet intern per HTTP an die Route weiter.
-`TRUSTED_HOST_PATTERNS`, Route-Name, Route-Host und Probe-Host werden automatisch
-aus `drupal.externalHost` und dem Drupal-Service-Namen erzeugt. Der Reverse Proxy
+`TRUSTED_HOST_PATTERNS`, Route-Name und Route-Host werden automatisch aus
+`drupal.externalHost` und dem Drupal-Service-Namen erzeugt. Die Drupal-Probes
+prüfen `/health` direkt auf Port 8080 des Pods mit dem lokalen Host-Header
+`localhost`; öffentliche Domain, Route und Reverse Proxy sind daran nicht
+beteiligt. Der Reverse Proxy
 muss `Host` und `X-Forwarded-Host` auf die öffentliche `go-t`-Domain sowie
 `X-Forwarded-Proto` auf `https` und `X-Forwarded-Port` auf `443` setzen.
 
