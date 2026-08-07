@@ -65,6 +65,13 @@
       {{- if not (has "ReadWriteMany" $existingAccessModes) }}
         {{- fail (printf "PersistentVolumeClaim %s/%s does not provide required ReadWriteMany access; migrate its data to an RWX-capable volume before installing or upgrading" $.Release.Namespace $item.name) -}}
       {{- end }}
+      {{- if and (eq $item.component "database") $.Release.IsInstall $.Values.database.auth.create -}}
+        {{- $databaseSecretName := include "ddbgo.databaseSecretName" $ -}}
+        {{- $existingDatabaseSecret := lookup "v1" "Secret" $.Release.Namespace $databaseSecretName -}}
+        {{- if and (not $existingDatabaseSecret) (or (not $.Values.database.auth.password) (not $.Values.database.auth.rootPassword)) -}}
+          {{- fail (printf "retained MariaDB PVC %s/%s exists but Secret %s is missing; refusing to generate credentials that cannot match the initialized database. Supply the original password and rootPassword or set database.auth.create=false with an externally managed existingSecret" $.Release.Namespace $item.name $databaseSecretName) -}}
+        {{- end }}
+      {{- end }}
     {{- end }}
   {{- end }}
 {{- end }}

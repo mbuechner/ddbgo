@@ -3,10 +3,7 @@ DDBgo was installed as release {{ .Release.Name }} in namespace {{ .Release.Name
 Route (cluster-side HTTP): http://{{ .Values.drupal.externalHost }}
 
 By default, helm uninstall removes all chart-created resources except the three
-PersistentVolumeClaims. Their persistence.retain settings keep the stored data.
-A reinstall with the same release name and namespace adopts retained PVCs that
-still carry this release's Helm ownership metadata.
-
-Generated Secrets are not retained. Before uninstalling a release whose database
-PVC must be reused, preserve the MariaDB credentials and pass the same values or
-an existing Secret to the reinstall.
+PersistentVolumeClaims and chart-created Secrets. A reinstall with the same
+release name and namespace adopts retained PVCs and Secrets that still carry
+this release's Helm ownership metadata. Existing Secret data is reused so that
+persistent MariaDB and Redis data keep matching their credentials.

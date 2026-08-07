@@ -33,9 +33,9 @@ meta.helm.sh/release-namespace: {{ .Release.Namespace | quote }}
 
 {{/*
 Fail before an install can adopt or overwrite an existing object. A retained
-PVC may be adopted during a reinstall when it still belongs to the same release
-and namespace. During an upgrade, only objects carrying this release's ownership
-metadata are accepted.
+PVC or Secret may be adopted during a reinstall when it still belongs to the
+same release and namespace. During an upgrade, only objects carrying this
+release's ownership metadata are accepted.
 This check needs a connected cluster; Helm itself performs the same ownership
 check when lookup is unavailable (for example, client-side helm template).
 */}}

@@ -111,7 +111,8 @@ drupal:
       failureThreshold: 3
   secret:
     # true erzeugt das Secret <release>-drupal. Bei false muss existingSecret
-    # gesetzt sein und den Schlüssel "hash-salt" enthalten.
+    # gesetzt sein und den Schlüssel "hash-salt" enthalten. Erzeugte Secrets
+    # bleiben bei helm uninstall erhalten und werden erneut übernommen.
     create: true
     existingSecret: ""
     # Leer: Bei der Erstinstallation zufällig erzeugen und bei Upgrades behalten.
@@ -175,7 +176,8 @@ redis:
       scheduledImport: true
   secret:
     # Bei create=false muss existingSecret die Schlüssel "password" und
-    # "users.acl" enthalten.
+    # "users.acl" enthalten. Erzeugte Secrets bleiben bei helm uninstall
+    # erhalten und werden erneut übernommen.
     create: true
     existingSecret: ""
     # Leer: Einmalig erzeugen. Ein gesetztes Passwort muss 16-128 Zeichen aus
@@ -239,12 +241,15 @@ database:
       scheduledImport: true
   auth:
     # Bei create=false muss existingSecret die Schlüssel "database", "username",
-    # "password" und "root-password" enthalten.
+    # "password" und "root-password" enthalten. Erzeugte Secrets bleiben bei
+    # helm uninstall erhalten und werden erneut übernommen.
     create: true
     existingSecret: ""
     database: ddbgodb
     username: ddbgo
-    # Leere Passwörter werden einmalig erzeugt und bei Upgrades weiterverwendet.
+    # Bei einer frischen Datenbank werden leere Passwörter einmalig erzeugt und
+    # bei Upgrades weiterverwendet. Bei einem behaltenen MariaDB-PVC ohne altes
+    # Secret sind die ursprünglichen Werte oder existingSecret verpflichtend.
     password: ""
     rootPassword: ""
   persistence:

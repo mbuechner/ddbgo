@@ -99,14 +99,15 @@ eine beliebige andere Domain gesetzt werden.
 Ein normales Upgrade aktualisiert weiterhin die Ressourcen, die bereits zu
 diesem Release gehören. Ohne diese Ausnahme wären Helm-Upgrades nicht möglich.
 Bei `helm uninstall` werden Deployment, StatefulSets, Services, Route,
-ConfigMap, Secrets, ServiceAccounts und ImageStreams entfernt. Nur die vom
-Chart erzeugten PVCs tragen standardmäßig `helm.sh/resource-policy: keep` und
-bleiben erhalten. Das lässt sich je Komponente mit `persistence.retain=false`
-abschalten.
+ConfigMap, ServiceAccounts und ImageStreams entfernt. Die vom Chart erzeugten
+PVCs und Secrets tragen `helm.sh/resource-policy: keep` und bleiben erhalten.
+Die PVC-Aufbewahrung lässt sich je Komponente mit `persistence.retain=false`
+abschalten; Secrets werden zum Schutz persistenter Zugangsdaten immer behalten.
 
 Eine spätere Installation mit identischem Release-Namen und Namespace übernimmt
-die behaltenen PVCs automatisch, sofern deren Helm-Owner-Annotationen noch
-unverändert vorhanden sind. Vorhandene Daten werden dabei nicht gelöscht.
+die behaltenen PVCs und Secrets automatisch, sofern deren Helm-Owner-Annotationen
+noch unverändert vorhanden sind. Vorhandene Secret-Daten werden wiederverwendet,
+statt neue Zufallswerte zu erzeugen.
 
 Bestehende Installationen einer älteren Chart-Version müssen vor dem Uninstall
 zuerst auf diese Chart-Version aktualisiert werden. Erst das Upgrade entfernt
@@ -118,13 +119,13 @@ nicht mehr Teil eines Helm-Releases. Die Nicht-PVC-Ressourcen können dann anhan
 des Release-Labels gezielt entfernt werden, beispielsweise für Test:
 
 ```sh
-oc delete deployment,statefulset,service,route,configmap,secret,serviceaccount,imagestream \
+oc delete deployment,statefulset,service,route,configmap,serviceaccount,imagestream \
   --selector app.kubernetes.io/instance=ddbgo-t \
   --namespace ddbgo-t
 ```
 
-Der Ressourcentyp `persistentvolumeclaim` ist absichtlich nicht Teil dieses
-Befehls.
+Die Ressourcentypen `persistentvolumeclaim` und `secret` sind absichtlich nicht
+Teil dieses Befehls.
 
 Bestehende Secrets und PVCs können referenziert werden. Dazu `create=false` und
 den vorhandenen Namen setzen, zum Beispiel:
@@ -151,11 +152,12 @@ Erwartete Schlüssel in vorhandenen Secrets:
 `password` übereinstimmt, beispielsweise
 `user default on >GEHEIM ~* &* +@all`.
 
-Secrets werden beim Uninstall bewusst entfernt. Soll ein vorhandener MariaDB-PVC
-bei einer Neuinstallation weiterverwendet werden, müssen dieselben Zugangsdaten
-erneut gesetzt oder über ein extern verwaltetes `existingSecret` bereitgestellt
-werden. Ein neues zufälliges MariaDB-Passwort passt nicht zu den Benutzern in der
-bereits initialisierten Datenbank.
+Vom Chart erzeugte Secrets werden zusammen mit den PVCs behalten. Bei einer
+Neuinstallation desselben Releases übernimmt das Chart sie und verwendet ihre
+vorhandenen Werte. Fehlt das MariaDB-Secret trotz vorhandenem Daten-PVC, bricht
+das Chart ab, statt unbemerkt neue, zur Datenbank unpassende Zugangsdaten zu
+erzeugen. Alternativ kann weiterhin ein extern verwaltetes `existingSecret`
+verwendet werden.
 
 ## Ressourcenbedarf
 
