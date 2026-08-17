@@ -6,7 +6,11 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
 use Drupal\node\Form\NodeForm;
+use Drupal\node\NodeInterface;
 use Symfony\Component\String\AbstractUnicodeString;
 use Symfony\Component\String\UnicodeString;
 
@@ -111,6 +115,105 @@ function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterfac
   if (isset($form['query'])) {
     $form['query']['#attributes']['autocomplete'] = 'off';
   }
+
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
+    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
+
+  if (!$is_gin_frontend) {
+    return;
+  }
+
+  $form['#after_build'][] = 'ddbgo_gin_build_exposed_filter_details';
+}
+
+/**
+ * Groups finalized exposed filter widgets in Gin's native details element.
+ */
+function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface $form_state): array {
+  if (isset($form['ddbgo_exposed_filters'])) {
+    return $form;
+  }
+
+  // Views normally applies exposed labels during theme preprocessing. Since
+  // the elements are nested below, apply the same metadata before moving them.
+  foreach ($form['#info'] ?? [] as $info) {
+    $value_key = $info['value'] ?? NULL;
+    if (is_string($value_key) && isset($form[$value_key])) {
+      if (!empty($info['label'])) {
+        $form[$value_key]['#title'] = $info['label'];
+      }
+      if (!empty($info['description'])) {
+        $form[$value_key]['#description'] = $info['description'];
+      }
+    }
+  }
+
+  $filter_keys = [];
+  $tag_filter_keys = [];
+
+  foreach (Element::children($form) as $key) {
+    $type = $form[$key]['#type'] ?? NULL;
+    $classes = $form[$key]['#attributes']['class'] ?? [];
+    $classes = is_array($classes) ? $classes : [$classes];
+
+    if (
+      (is_string($type) && str_contains($type, 'tagify'))
+      || in_array('tagify-select-widget', $classes, TRUE)
+    ) {
+      $tag_filter_keys[] = $key;
+    }
+    elseif (is_string($type) && $type !== 'hidden') {
+      $filter_keys[] = $key;
+    }
+  }
+
+  if ($filter_keys === []) {
+    return $form;
+  }
+
+  if ($tag_filter_keys !== [] && isset($form['actions']['submit'])) {
+    // Use Better Exposed Filters' field-level autosubmit. Tagify dispatches a
+    // native change event on its underlying select after add/remove, which BEF
+    // forwards to the existing Views submit button (including AJAX behavior).
+    $form['actions']['submit']['#attributes']['data-bef-auto-submit-click'] = '';
+    $form['#attached']['library'][] = 'better_exposed_filters/auto_submit';
+  }
+
+  $details = [
+    '#type' => 'details',
+    '#title' => new TranslatableMarkup('Filter'),
+    '#open' => FALSE,
+    '#weight' => -100,
+    '#attributes' => [
+      'class' => ['ddbgo-exposed-filters'],
+    ],
+  ];
+
+  foreach ($filter_keys as $key) {
+    if (($form[$key]['#type'] ?? NULL) === 'actions') {
+      $form[$key]['#attributes']['class'][] = 'views-exposed-form__item';
+      $form[$key]['#attributes']['class'][] = 'views-exposed-form__item--actions';
+    }
+    else {
+      $form[$key]['#wrapper_attributes']['class'][] = 'views-exposed-form__item';
+    }
+
+    $details[$key] = $form[$key];
+    unset($form[$key]);
+  }
+
+  $form['ddbgo_exposed_filters'] = $details;
+
+  // Tag filters stay outside the collapsible details and therefore remain
+  // available as the full-width final row directly above the view results.
+  foreach ($tag_filter_keys as $key) {
+    $form[$key]['#weight'] = -90;
+    $form[$key]['#attributes']['data-bef-auto-submit'] = '';
+    $form[$key]['#wrapper_attributes']['class'][] = 'ddbgo-exposed-filter--tags';
+  }
+
+  return $form;
 }
 
 /**
@@ -118,6 +221,114 @@ function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterfac
  *
  * Normalizes editorial values for the supported DDBgo content types.
  */
+function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
+  $normalized = strtolower(trim($identifier));
+  $normalized = preg_replace('/[^a-z0-9_]+/', '_', $normalized);
+  $normalized = preg_replace('/_+/', '_', $normalized);
+  $normalized = trim($normalized, '_');
+
+  if ($normalized === '') {
+    return NULL;
+  }
+
+  foreach (['kwe', 'bestand', 'person', 'aggregator'] as $bundle_name) {
+    if (str_contains($normalized, $bundle_name)) {
+      return $bundle_name;
+    }
+  }
+
+  return NULL;
+}
+
+function ddbgo_gin_resolve_bundle_from_route(): ?string {
+  $route_match = \Drupal::routeMatch();
+
+  $node = $route_match->getParameter('node');
+  if ($node instanceof NodeInterface) {
+    return $node->bundle();
+  }
+
+  $node_type = $route_match->getParameter('node_type');
+  if ($node_type instanceof \Drupal\node\NodeTypeInterface) {
+    return $node_type->id();
+  }
+
+  $path = \Drupal::request()->getPathInfo();
+  if (is_string($path) && $path !== '') {
+    $normalized_path = rtrim(strtolower($path), '/');
+    $path_map = [
+      '/search/kwe' => 'kwe',
+      '/search/bestand' => 'bestand',
+      '/search/person' => 'person',
+      '/search/aggregator' => 'aggregator',
+      '/search/personen' => 'person',
+      '/admin/kwe' => 'kwe',
+      '/admin/bestand' => 'bestand',
+      '/admin/person' => 'person',
+      '/admin/aggregator' => 'aggregator',
+    ];
+
+    if (isset($path_map[$normalized_path])) {
+      return $path_map[$normalized_path];
+    }
+  }
+
+  $view_id = $route_match->getParameter('view_id');
+  if (is_string($view_id) && $view_id !== '') {
+    $bundle = ddbgo_gin_normalize_bundle_identifier($view_id);
+    if ($bundle !== NULL) {
+      return $bundle;
+    }
+  }
+
+  $route_name = $route_match->getRouteName();
+  if (is_string($route_name)) {
+    foreach (explode('.', $route_name) as $route_part) {
+      $bundle = ddbgo_gin_normalize_bundle_identifier($route_part);
+      if ($bundle !== NULL) {
+        return $bundle;
+      }
+    }
+  }
+
+  return NULL;
+}
+
+function ddbgo_gin_attribute_from_value(mixed $attributes): Attribute {
+  if ($attributes instanceof Attribute) {
+    return $attributes;
+  }
+
+  if (is_array($attributes)) {
+    return new Attribute($attributes);
+  }
+
+  return new Attribute();
+}
+
+function ddbgo_gin_preprocess_html(array &$variables): void {
+  $bundle = ddbgo_gin_resolve_bundle_from_route();
+
+  if ($bundle !== NULL && in_array($bundle, ['kwe', 'bestand', 'person', 'aggregator'], TRUE)) {
+    $attributes = ddbgo_gin_attribute_from_value($variables['html_attributes'] ?? []);
+    $attributes->setAttribute('data-ddbgo-node-bundle', $bundle);
+    $variables['html_attributes'] = $attributes;
+  }
+}
+
+function ddbgo_gin_preprocess_page_title(array &$variables): void {
+  $bundle = ddbgo_gin_resolve_bundle_from_route();
+
+  if ($bundle !== NULL && in_array($bundle, ['kwe', 'bestand', 'person', 'aggregator'], TRUE)) {
+    $attributes = ddbgo_gin_attribute_from_value($variables['title_attributes'] ?? []);
+    $attributes->addClass([
+      'page-title--ddbgo-type',
+      'page-title--ddbgo-type-' . $bundle,
+    ]);
+    $variables['title_attributes'] = $attributes;
+  }
+}
+
 function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   $form_object = $form_state->getFormObject();
   if (!$form_object instanceof NodeForm) {

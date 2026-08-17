@@ -4,6 +4,27 @@
  */
 
 (function (Drupal, once) {
+  function setActiveWorkspaceItem(navigation, bundleName) {
+    navigation.querySelectorAll('.ddbgo-workspace-navigation__item').forEach((item) => {
+      item.classList.remove('has-active-link');
+      const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
+      if (toggle) {
+        toggle.removeAttribute('aria-current');
+      }
+    });
+
+    const item = navigation.querySelector(`.ddbgo-workspace-navigation__item--${bundleName}`);
+    if (!item) {
+      return;
+    }
+
+    item.classList.add('has-active-link');
+    const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
+    if (toggle) {
+      toggle.setAttribute('aria-current', 'page');
+    }
+  }
+
   function openItem(navigation, item) {
     const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
     const dropdown = item.querySelector(':scope > .ddbgo-workspace-navigation__dropdown');
@@ -97,6 +118,12 @@
           });
         });
 
+        const activeBundle = document.documentElement.dataset.ddbgoNodeBundle
+          || document.documentElement.getAttribute('data-ddbgo-node-bundle');
+        if (activeBundle) {
+          setActiveWorkspaceItem(navigation, activeBundle);
+        }
+
         const currentPath = new URL(window.location.href).pathname.replace(/\/$/, '') || '/';
         navigation.querySelectorAll('.ddbgo-workspace-navigation__dropdown a[href]').forEach((link) => {
           // Gin prepends a hidden home link to every toolbar menu. It is only
@@ -106,7 +133,7 @@
           }
 
           const linkPath = new URL(link.href, document.baseURI).pathname.replace(/\/$/, '') || '/';
-          if (linkPath === currentPath && link.getAttribute('href') !== '#') {
+          if (!activeBundle && linkPath === currentPath && link.getAttribute('href') !== '#') {
             link.classList.add('is-active');
             link.setAttribute('aria-current', 'page');
             link.closest('.ddbgo-workspace-navigation__item')?.classList.add('has-active-link');

@@ -46,6 +46,9 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
    REDIS_HOST=127.0.0.1
    REDIS_PORT=6379
    TMP=/tmp
+   UPDATEDB_ON_STARTUP=no
+   CONFIG_IMPORT_ON_STARTUP=no
+   CACHEREBUILD_ON_STARTUP=no
    ```
 3. Use [Drush](https://www.drush.org/) command to run local server: `vendor/bin/drush rs`
 4. Access via  http://127.0.0.1:8888
@@ -74,6 +77,7 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `REDIS_PASSWORD` | No | not set | Redis password (used when `USE_REDIS=true` and authentication is enabled). |
 | `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
 | `UPDATEDB_ON_STARTUP` | No | `no` | Runs Drupal database updates when the container starts if set to `yes`. |
+| `CONFIG_IMPORT_ON_STARTUP` | No | `no` | Imports the Drupal configuration from [config/sync](config/sync) when the container starts if set to `yes`. |
 | `CACHEREBUILD_ON_STARTUP` | No | `no` | Rebuilds Drupal caches when the container starts if set to `yes`. |
 | `HTPASSWD_GREETING` | No | not set | Optional Nginx HTTP Basic Auth prompt. The container uses its built-in prompt if authentication is enabled and this variable is unset. |
 | `HTPASSWD_USER` | No | not set | Enables Nginx HTTP Basic Auth when set together with `HTPASSWD_PWD`. |
@@ -114,15 +118,11 @@ docker pull ghcr.io/mbuechner/ddbgo:tagged
 ## Helm / Kubernetes und OpenShift
 
 Das Helm-Chart für Kubernetes und OpenShift einschließlich Redis und MariaDB
-liegt unter [`helm/ddbgo`](helm/ddbgo/README.md). Die Dokumentation beschreibt
-Produktiv- und Testinstallation, die Plattformprofile, das Namensschema,
-Kollisionsschutz sowie die Verwendung bestehender Secrets und
-PersistentVolumeClaims.
-
-Der vollständige Ablauf von der Test-Prerelease-Version über den Merge nach
-`master` bis zur gezielten Installation einer Produktionsversion ist im
-[`Helm-Release- und Deployment-Workflow`](docs/helm-release-workflow.md)
-dokumentiert.
+liegt als vollständig eigenständiges, auslagerbares Repository unter
+[`helm/`](helm/README.md). Es enthält Profile für DDBgo und DDBpro, die
+chartbezogenen GitHub Actions sowie die Release-Dokumentation. Der
+Drupal-Container und seine Version werden ausschließlich über Values gewählt
+und unabhängig vom Chart veröffentlicht.
 
 ## Container build
 1. Checkout GitHub repository:
