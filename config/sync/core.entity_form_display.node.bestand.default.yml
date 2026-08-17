@@ -54,6 +54,24 @@ dependencies:
     - tagify
 third_party_settings:
   field_group:
+    group_status:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+        - field_bestandstags
+      label: Status
+      region: content
+      parent_name: group_bestand
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_status
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        required_fields: true
     group_allgemeines:
       children:
         - title
@@ -65,19 +83,16 @@ third_party_settings:
         - field_bemerkung
       label: Allgemeines
       region: content
-      parent_name: ''
-      weight: 1
-      format_type: html_element
+      parent_name: group_bestand
+      weight: 2
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_kultur_oder_wissenseinrich:
       children:
@@ -87,38 +102,32 @@ third_party_settings:
         - field_zwischenaggregatoren
       label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
       region: content
-      parent_name: ''
-      weight: 2
-      format_type: html_element
+      parent_name: group_bestand
+      weight: 3
+      format_type: tab
       format_settings:
         classes: fieldgroup_kwe
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_personen:
       children:
         - field_personen
       label: Personen
       region: content
-      parent_name: ''
-      weight: 3
-      format_type: html_element
+      parent_name: group_bestand
+      weight: 4
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_informationen:
       children:
@@ -130,19 +139,16 @@ third_party_settings:
         - field_erstingest
       label: Informationen
       region: content
-      parent_name: ''
+      parent_name: group_bestand
       weight: 5
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_europeana_archivportal:
       children:
@@ -161,40 +167,16 @@ third_party_settings:
         - group_ddb_objekte
       label: Europeana/Archivportal
       region: content
-      parent_name: ''
+      parent_name: group_bestand
       weight: 7
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_europeana
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: true
-    group_s:
-      children:
-        - field_status
-        - field_ablehnungsgrund
-        - field_bestandstags
-      label: Status
-      region: content
-      parent_name: ''
-      weight: 0
-      format_type: html_element
-      format_settings:
-        classes: fieldgroup_status
-        id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_coding_da_vinci:
       children:
@@ -204,19 +186,16 @@ third_party_settings:
         - field_coding_da_vinci_bemerkung
       label: 'Coding da Vinci'
       region: content
-      parent_name: ''
+      parent_name: group_bestand
       weight: 6
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_cdv
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_europeana_objekte_metadata:
       children:
@@ -225,17 +204,14 @@ third_party_settings:
       region: content
       parent_name: group_europeana_archivportal
       weight: 17
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_europeana_objekte_content_:
       children:
@@ -244,69 +220,68 @@ third_party_settings:
       region: content
       parent_name: group_europeana_archivportal
       weight: 16
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: true
     group_kontakt:
       children:
         - field_kontakt
       label: Kontakt
       region: content
-      parent_name: ''
+      parent_name: group_bestand
       weight: 4
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: false
     group_ddb_objekte:
       children:
         - field_ddb_objekte
       label: DDB-Objekte
-      region: hidden
+      region: content
       parent_name: group_europeana_archivportal
       weight: 11
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: false
-    group_tabs:
-      children: {  }
-      label: Tabs
-      region: hidden
+    group_bestand:
+      children:
+        - group_status
+        - group_allgemeines
+        - group_kultur_oder_wissenseinrich
+        - group_personen
+        - group_kontakt
+        - group_informationen
+        - group_coding_da_vinci
+        - group_europeana_archivportal
+      label: Bestand
+      region: content
       parent_name: ''
-      weight: 20
+      weight: 0
       format_type: tabs
       format_settings:
         classes: ''
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
-        direction: vertical
+        direction: horizontal
         width_breakpoint: 640
 id: node.bestand.default
 targetEntityType: node

@@ -60,18 +60,21 @@ third_party_settings:
   field_group:
     group_status:
       children:
-        - flag_bookmark
         - field_status
         - field_ablehnungsgrund
         - field_bestandstags
       label: Status
-      parent_name: ''
+      parent_name: group_bestand
       region: content
-      weight: 0
-      format_type: html_element
+      weight: 1
+      format_type: tab
       format_settings:
         classes: fieldgroup_status
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -88,13 +91,17 @@ third_party_settings:
         - field_beschreibung
         - field_bemerkung
       label: Allgemeines
-      parent_name: ''
+      parent_name: group_bestand
       region: content
-      weight: 1
-      format_type: html_element
+      weight: 2
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -109,13 +116,17 @@ third_party_settings:
         - field_aggregator
         - field_zwischenaggregatoren
       label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
-      parent_name: ''
+      parent_name: group_bestand
       region: content
-      weight: 2
-      format_type: html_element
+      weight: 3
+      format_type: tab
       format_settings:
         classes: fieldgroup_kwe
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -127,13 +138,17 @@ third_party_settings:
       children:
         - field_personen
       label: Personen
-      parent_name: ''
+      parent_name: group_bestand
       region: content
-      weight: 3
-      format_type: html_element
+      weight: 4
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -150,13 +165,17 @@ third_party_settings:
         - field_link_fragebogen
         - field_fragebogen
       label: Informationen
-      parent_name: ''
+      parent_name: group_bestand
       region: content
       weight: 5
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -171,13 +190,17 @@ third_party_settings:
         - field_link_zu_coding_da_vinci
         - field_coding_da_vinci_bemerkung
       label: 'Coding da Vinci'
-      parent_name: ''
+      parent_name: group_bestand
       region: content
       weight: 6
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_cdv
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -201,14 +224,17 @@ third_party_settings:
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
       label: 'Europeana/ Archivportal'
-      parent_name: ''
+      parent_name: group_bestand
       region: content
       weight: 7
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_europeana
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -223,10 +249,14 @@ third_party_settings:
       parent_name: group_europenana_archivportal
       region: content
       weight: 10
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_ddbobjekte
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -241,10 +271,14 @@ third_party_settings:
       parent_name: group_europenana_archivportal
       region: content
       weight: 16
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -259,10 +293,14 @@ third_party_settings:
       parent_name: group_europenana_archivportal
       region: content
       weight: 17
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: ''
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -274,13 +312,17 @@ third_party_settings:
       children:
         - field_kontakt
       label: Kontakt
-      parent_name: ''
+      parent_name: group_bestand
       region: content
       weight: 4
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -288,6 +330,28 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
+    group_bestand:
+      children:
+        - group_status
+        - group_allgemeines
+        - group_kultur_oder_wissenseinrich
+        - group_personen
+        - group_kontakt
+        - group_informationen
+        - group_coding_da_vinci
+        - group_europenana_archivportal
+      label: Bestand
+      parent_name: ''
+      region: content
+      weight: 1
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.bestand.default
 targetEntityType: node
 bundle: bestand
@@ -372,7 +436,8 @@ content:
   field_bestandstags:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: above
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -418,7 +483,8 @@ content:
   field_datenformat:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -554,7 +620,8 @@ content:
   field_jira_europeana:
     type: 'custom_formatters:jira_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -565,7 +632,8 @@ content:
   field_jira_hauptticket:
     type: 'custom_formatters:jira_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -576,7 +644,8 @@ content:
   field_jira_ticket_bei_europeana:
     type: 'custom_formatters:jira_link_bei_europeana'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -612,7 +681,8 @@ content:
   field_lieferweg:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -639,7 +709,8 @@ content:
   field_link_zu_coding_da_vinci:
     type: 'custom_formatters:label_als_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -709,6 +780,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -759,7 +831,7 @@ content:
   flag_bookmark:
     settings: {  }
     third_party_settings: {  }
-    weight: 15
+    weight: 0
     region: content
 hidden:
   langcode: true

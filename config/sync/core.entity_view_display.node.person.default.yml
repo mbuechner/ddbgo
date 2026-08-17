@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.person.field_telefonnummer
     - field.field.node.person.field_titel
     - field.field.node.person.field_vorname
-    - field.field.node.person.field_weihnachtsmailing
     - node.type.person
   module:
     - custom_formatters
@@ -24,7 +23,6 @@ third_party_settings:
         - field_titel
         - field_vorname
         - field_nachname
-        - field_weihnachtsmailing
         - field_email
         - field_telefonnummer
         - field_bemerkung
@@ -38,8 +36,10 @@ third_party_settings:
         show_empty_fields: true
         id: ''
         label_as_html: false
-        open: true
-        description: ''
+        open: false
+        required_fields: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -116,18 +116,6 @@ content:
         settings:
           empty_text: –
     weight: 3
-    region: content
-  field_weihnachtsmailing:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: false
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 5
     region: content
   flag_bookmark:
     settings: {  }

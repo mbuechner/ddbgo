@@ -20,6 +20,7 @@ dependencies:
   content:
     - 'taxonomy_term:ja_nein_feld:bb649cfd-b464-4206-a97d-43b50066ee27'
   module:
+    - better_exposed_filters
     - color_field
     - custom_formatters
     - link
@@ -999,7 +1000,7 @@ display:
             offset_label: Offset
           quantity: 9
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Suchen
           reset_button: false
@@ -1008,6 +1009,51 @@ display:
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: plain_text
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              search_api_fulltext:
+                plugin_id: default
+                advanced:
+                  placeholder_text: Suchen
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_coding_da_vinci_teilnahme:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
       access:
         type: role
         options:
@@ -1110,7 +1156,7 @@ display:
           exposed: true
           expose:
             operator_id: field_coding_da_vinci_teilnahme_op
-            label: 'Coding da Vinci-Teilnahme'
+            label: CdV-Teilnahme
             description: ''
             use_operator: false
             operator: field_coding_da_vinci_teilnahme_op
@@ -1265,7 +1311,7 @@ display:
           bypass_access: false
           skip_access: false
       relationships: {  }
-      use_ajax: false
+      use_ajax: true
       show_admin_links: true
       header: {  }
       footer:

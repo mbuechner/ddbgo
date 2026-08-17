@@ -61,7 +61,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: closed
@@ -83,7 +83,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_personen
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: closed
@@ -112,7 +112,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_informationen
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: closed
@@ -139,7 +139,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_europeana
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: closed
@@ -162,7 +162,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: ''
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: open
@@ -190,7 +190,7 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
-        show_empty_fields: false
+        show_empty_fields: true
         id: ''
         label_as_html: false
         formatter: closed

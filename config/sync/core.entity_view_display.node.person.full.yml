@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.person.field_telefonnummer
     - field.field.node.person.field_titel
     - field.field.node.person.field_vorname
-    - field.field.node.person.field_weihnachtsmailing
     - node.type.person
   module:
     - user
@@ -45,7 +44,6 @@ hidden:
   field_email: true
   field_telefonnummer: true
   field_titel: true
-  field_weihnachtsmailing: true
   langcode: true
   links: true
   search_api_excerpt: true

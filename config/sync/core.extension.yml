@@ -96,6 +96,7 @@ module:
   smtp: 0
   system: 0
   tagify: 0
+  tagify_facets: 0
   taxonomy: 0
   taxonomy_unique: 0
   term_merge: 0

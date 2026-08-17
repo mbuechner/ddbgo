@@ -7,7 +7,6 @@ dependencies:
     - field.storage.node.field_nachname
     - field.storage.node.field_telefonnummer
     - field.storage.node.field_vorname
-    - field.storage.node.field_weihnachtsmailing
     - search_api.server.default_server
   module:
     - ddbgo_search
@@ -75,14 +74,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_vorname
-  field_weihnachtsmailing:
-    label: 'E-Mail an Weihnachten'
-    datasource_id: 'entity:node'
-    property_path: field_weihnachtsmailing
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_weihnachtsmailing
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -111,9 +102,11 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  custom_value: {  }
   ddbgo_person_aggregator: {  }
   ddbgo_person_bestand: {  }
   ddbgo_person_kwe: {  }
+  entity_type: {  }
   ignorecase:
     weights:
       preprocess_index: -20
@@ -154,6 +147,7 @@ tracker_settings:
     indexing_order: lifo
 options:
   cron_limit: 50
+  delete_on_fail: true
   index_directly: true
   track_changes_in_references: true
 server: default_server

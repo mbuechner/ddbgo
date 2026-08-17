@@ -42,6 +42,23 @@ dependencies:
     - select2
 third_party_settings:
   field_group:
+    group_status:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+      label: Status
+      region: content
+      parent_name: group_aggregator
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_status
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        required_fields: true
     group_allgemeines:
       children:
         - title
@@ -54,20 +71,68 @@ third_party_settings:
         - field_bemerkung
       label: Allgemeines
       region: content
-      parent_name: ''
-      weight: 3
-      format_type: html_element
+      parent_name: group_aggregator
+      weight: 2
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: false
+    group_personen:
+      children:
+        - field_personen
+      label: Personen
+      region: content
+      parent_name: group_aggregator
+      weight: 3
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_personen
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: false
+    group_kontakt:
+      children:
+        - field_kontakt
+      label: Kontakt
+      region: content
+      parent_name: group_aggregator
+      weight: 4
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_kontakt
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: false
+    group_ausrichtung:
+      children:
+        - field_region_ort
+        - field_sparten
+        - field_bestandsart
+        - field_bemerkungen_2
+      label: Ausrichtung
+      region: content
+      parent_name: group_aggregator
+      weight: 5
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_ausrichtung
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
+        required_fields: true
     group_informationen:
       children:
         - field_vertragsstatus
@@ -86,100 +151,37 @@ third_party_settings:
         - field_bemerkungen
       label: Informationen
       region: content
-      parent_name: ''
-      weight: 7
-      format_type: html_element
+      parent_name: group_aggregator
+      weight: 6
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        formatter: closed
+        description: ''
         required_fields: false
-    group_personen:
+    group_aggregator:
       children:
-        - field_personen
-      label: Personen
-      region: content
-      parent_name: ''
-      weight: 4
-      format_type: html_element
-      format_settings:
-        classes: fieldgroup_personen
-        id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
-    group_kontakt:
-      children:
-        - field_kontakt
-      label: Kontakt
-      region: content
-      parent_name: ''
-      weight: 5
-      format_type: html_element
-      format_settings:
-        classes: fieldgroup_kontakt
-        id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: false
-    group_ausrichtung:
-      children:
-        - field_region_ort
-        - field_sparten
-        - field_bestandsart
-        - field_bemerkungen_2
-      label: Ausrichtung
-      region: content
-      parent_name: ''
-      weight: 6
-      format_type: html_element
-      format_settings:
-        classes: fieldgroup_ausrichtung
-        id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: true
-    group_status:
-      children:
-        - field_status
-        - field_ablehnungsgrund
-      label: Status
+        - group_status
+        - group_allgemeines
+        - group_personen
+        - group_kontakt
+        - group_ausrichtung
+        - group_informationen
+      label: Aggregator
       region: content
       parent_name: ''
       weight: 0
-      format_type: html_element
+      format_type: tabs
       format_settings:
-        classes: fieldgroup_status
+        classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        required_fields: true
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.aggregator.default
 targetEntityType: node
 bundle: aggregator

@@ -1501,7 +1501,7 @@ display:
           bypass_access: false
           skip_access: false
       relationships: {  }
-      use_ajax: false
+      use_ajax: true
       show_admin_links: true
       header: {  }
       footer:

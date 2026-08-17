@@ -12,10 +12,14 @@ dependencies:
     - field.storage.node.field_status
     - search_api.index.bestand
     - system.menu.bestand
+    - taxonomy.vocabulary.bestandstags
     - user.role.administrator
     - user.role.authenticated
     - user.role.ddb_team
+  content:
+    - 'taxonomy_term:bestandstags:dce888a7-a0bd-4428-b41f-5c4bb4870275'
   module:
+    - better_exposed_filters
     - color_field
     - custom_formatters
     - link
@@ -785,15 +789,63 @@ display:
             offset_label: Offset
           quantity: 9
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sort by'
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: plain_text
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: true
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              secondary_open: false
+              reset_button_always_show: true
+            filter:
+              search_api_fulltext:
+                plugin_id: default
+                advanced:
+                  placeholder_text: Suche
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_bestandstags:
+                plugin_id: bef_tagify_select
+                advanced:
+                  sort_options: true
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: true
+                  hide_label: false
+                  field_classes: ''
+                  match_operator: CONTAINS
+                  max_items: '0'
+                  placeholder: ''
       access:
         type: role
         options:
@@ -880,6 +932,51 @@ display:
             - title
             - title_aggregator
             - title_kwe
+        field_bestandstags:
+          id: field_bestandstags
+          table: search_api_index_bestand
+          field: field_bestandstags
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_bestandstags_op
+            label: ''
+            description: ''
+            use_operator: false
+            operator: field_bestandstags_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_bestandstags
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: bestandstags
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
@@ -1024,7 +1121,7 @@ display:
         options: {  }
       defaults:
         cache: false
-      exposed_block: true
+      exposed_block: false
       display_extenders: {  }
       path: search/bestand
       menu:

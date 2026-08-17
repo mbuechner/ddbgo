@@ -9,14 +9,13 @@ dependencies:
     - field.field.node.person.field_telefonnummer
     - field.field.node.person.field_titel
     - field.field.node.person.field_vorname
-    - field.field.node.person.field_weihnachtsmailing
     - node.type.person
   module:
     - field_group
     - select2
 third_party_settings:
   field_group:
-    group_allgemeines:
+    group_person:
       children:
         - field_titel
         - title
@@ -30,15 +29,14 @@ third_party_settings:
       region: content
       parent_name: ''
       weight: 0
-      format_type: details
+      format_type: tabs
       format_settings:
         classes: ''
         show_empty_fields: true
         id: ''
         label_as_html: false
-        open: true
-        description: ''
-        required_fields: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.person.default
 targetEntityType: node
 bundle: person
@@ -93,16 +91,6 @@ content:
     settings:
       size: 80
       placeholder: ''
-    third_party_settings: {  }
-  field_weihnachtsmailing:
-    type: select2_entity_reference
-    weight: 30
-    region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
     third_party_settings: {  }
   title:
     type: string_textfield

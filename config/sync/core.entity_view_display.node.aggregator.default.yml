@@ -47,6 +47,29 @@ dependencies:
     - user
 third_party_settings:
   field_group:
+    group_status:
+      children:
+        - field_status
+        - field_ablehnungsgrund
+      label: Status
+      parent_name: group_aggregator
+      region: content
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_status
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        element: fieldset
+        show_label: true
+        label_element: legend
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
     group_allgemeines:
       children:
         - field_kurzname
@@ -57,13 +80,17 @@ third_party_settings:
         - field_beschreibung
         - field_bemerkung
       label: Allgemeines
-      parent_name: ''
+      parent_name: group_aggregator
       region: content
       weight: 2
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -75,13 +102,17 @@ third_party_settings:
       children:
         - field_personen
       label: Personen
-      parent_name: ''
+      parent_name: group_aggregator
       region: content
       weight: 3
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -93,13 +124,17 @@ third_party_settings:
       children:
         - field_kontakt
       label: Kontakt
-      parent_name: ''
+      parent_name: group_aggregator
       region: content
       weight: 4
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -114,13 +149,17 @@ third_party_settings:
         - field_bestandsart
         - field_bemerkungen_2
       label: Ausrichtung
-      parent_name: ''
+      parent_name: group_aggregator
       region: content
       weight: 5
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_ausrichtung
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -145,13 +184,17 @@ third_party_settings:
         - field_fragebogen_aggregator
         - field_bemerkungen
       label: Informationen
-      parent_name: ''
+      parent_name: group_aggregator
       region: content
       weight: 6
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -159,26 +202,26 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-    group_status:
+    group_aggregator:
       children:
-        - flag_bookmark
-        - field_status
-        - field_ablehnungsgrund
-      label: Status
+        - group_status
+        - group_allgemeines
+        - group_personen
+        - group_kontakt
+        - group_geografische_ausrichtung
+        - group_informationen
+      label: Aggregator
       parent_name: ''
       region: content
-      weight: 0
-      format_type: html_element
+      weight: 1
+      format_type: tabs
       format_settings:
-        classes: fieldgroup_status
+        classes: ''
+        show_empty_fields: true
         id: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.aggregator.default
 targetEntityType: node
 bundle: aggregator
@@ -251,7 +294,8 @@ content:
   field_bestandsart:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -262,7 +306,8 @@ content:
   field_datenformat:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -273,7 +318,8 @@ content:
   field_ddburi:
     type: 'custom_formatters:label_als_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -296,7 +342,8 @@ content:
   field_jira_hauptticket:
     type: 'custom_formatters:jira_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -322,6 +369,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -393,7 +441,8 @@ content:
   field_region_ort:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -404,7 +453,8 @@ content:
   field_sichtbarkeit:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -415,7 +465,8 @@ content:
   field_sparten:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -542,7 +593,7 @@ content:
   flag_bookmark:
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 0
     region: content
 hidden:
   langcode: true
