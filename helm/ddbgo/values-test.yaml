@@ -1,5 +1,0 @@
-drupal:
-  externalHost: go-t.deutsche-digitale-bibliothek.de
-  image:
-    tag: test
-    pullPolicy: Always
