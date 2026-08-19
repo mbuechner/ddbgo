@@ -21,7 +21,6 @@ third_party_settings:
         - title
         - field_vorname
         - field_nachname
-        - field_weihnachtsmailing
         - field_email
         - field_telefonnummer
         - field_bemerkung
