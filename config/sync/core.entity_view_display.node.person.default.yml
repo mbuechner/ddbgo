@@ -36,10 +36,8 @@ third_party_settings:
         show_empty_fields: true
         id: ''
         label_as_html: false
-        open: false
-        required_fields: false
-        direction: horizontal
-        width_breakpoint: 640
+        open: true
+        description: ''
 id: node.person.default
 targetEntityType: node
 bundle: person

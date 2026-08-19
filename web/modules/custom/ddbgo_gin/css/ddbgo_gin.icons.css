@@ -1,5 +1,5 @@
 /**
- * Global icon mapping for DDBgo content types.
+ * Global icon mapping for DDBgo content types and shared fields.
  *
  * Components should consume these variables instead of defining their own
  * icon URLs so menus, page titles and field output always stay consistent.
@@ -9,4 +9,5 @@
   --ddbgo-content-type-icon-bestand: url("/libraries/fontawesome/svgs/solid/file-lines.svg");
   --ddbgo-content-type-icon-kwe: url("/libraries/fontawesome/svgs/solid/landmark.svg");
   --ddbgo-content-type-icon-person: url("/libraries/fontawesome/svgs/solid/users.svg");
+  --ddbgo-field-icon-contact: url("/libraries/fontawesome/svgs/solid/address-book.svg");
 }

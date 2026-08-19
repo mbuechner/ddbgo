@@ -479,10 +479,10 @@ content:
     label: hidden
     settings:
       shape: square
-      width: '50'
-      height: '50'
+      width: '150'
+      height: '80'
       opacity: true
-      data_attribute: false
+      data_attribute: true
     third_party_settings:
       empty_fields:
         handler: text

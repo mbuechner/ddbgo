@@ -314,7 +314,7 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: none
+        type: tag
         options: {  }
       empty:
         area_text_custom:
@@ -888,7 +888,7 @@ display:
         filter_groups: false
       display_description: ''
       display_extenders: {  }
-      block_description: Personen
+      block_description: 'Personen: Aggregator'
       block_hide_empty: true
     cache_metadata:
       max-age: -1
@@ -1526,6 +1526,7 @@ display:
           required: false
       display_description: ''
       display_extenders: {  }
+      block_description: 'Personen: Bestand'
       block_hide_empty: true
     cache_metadata:
       max-age: -1
@@ -1826,6 +1827,7 @@ display:
         fields: false
       display_description: ''
       display_extenders: {  }
+      block_description: 'Personen: KWE'
       block_hide_empty: true
     cache_metadata:
       max-age: -1

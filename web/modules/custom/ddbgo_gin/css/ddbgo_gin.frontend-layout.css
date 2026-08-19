@@ -239,11 +239,14 @@
 }
 
 /*
- * Display the shared multi-value people field as responsive cards. Aggregator,
- * KWE and Bestand use the same field and paragraph structure, so this remains
- * independent of a specific content type or paragraph bundle.
+ * Display shared multi-value people and contact fields as responsive cards.
+ * Aggregator, KWE and Bestand use the same field structures, so this remains
+ * independent of a specific content type.
  */
-.gin-frontend details.claro-details > .claro-details__wrapper > .field.field--name-field-personen.field__items {
+.gin-frontend details.claro-details > .claro-details__wrapper > .field:is(
+  .field--name-field-personen,
+  .field--name-field-kontakt
+).field__items {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: var(--gin-spacing-s);
@@ -251,11 +254,17 @@
   border-block-end: 0;
 }
 
-.gin-frontend .field--name-field-personen.field__items > .field__item {
+.gin-frontend :is(
+  .field--name-field-personen,
+  .field--name-field-kontakt
+).field__items > .field__item {
   min-width: 0;
 }
 
-.gin-frontend .field--name-field-personen.field__items > .field__item > .paragraph {
+.gin-frontend :is(
+  .field--name-field-personen,
+  .field--name-field-kontakt
+).field__items > .field__item > .paragraph {
   display: grid;
   box-sizing: border-box;
   height: 100%;
@@ -265,6 +274,22 @@
   border: 1px solid var(--gin-border-color-layer);
   border-radius: var(--gin-border-m);
   background: var(--gin-bg-layer);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field.field--name-field-kontakt.field__items {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+}
+
+@media (min-width: 48em) {
+  .gin-frontend .field--name-field-personen.field__items > .field__item:only-child {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .gin-frontend .field--name-field-kontakt.field__items > .field__item:only-child {
+    width: 100%;
+    max-width: 26rem;
+  }
 }
 
 .gin-frontend .field--name-field-personen .paragraph > .field--name-field-rolle {
@@ -291,6 +316,34 @@
   background-color: var(--gin-color-primary);
   -webkit-mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
   mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum {
+  display: flex;
+  gap: var(--gin-spacing-xs);
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--gin-color-text-light);
+  font-size: var(--gin-font-size-xs);
+  font-weight: var(--gin-font-weight-semibold, 600);
+  line-height: 1.35;
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum::before {
+  content: "";
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-block-start: .15em;
+  background-color: var(--gin-color-primary);
+  -webkit-mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
+  mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-bemerkung {
+  min-width: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 /* Full-width, consistently sized form controls inside details. */

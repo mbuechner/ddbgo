@@ -1,0 +1,33 @@
+uuid: 7c880529-e015-4eb7-a054-6c73f38f7e75
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.person
+  module:
+    - node
+    - views
+  theme:
+    - gin_frontend
+id: gin_frontend_views_block__person_person_aggregator
+theme: gin_frontend
+region: content
+weight: -2
+provider: null
+plugin: 'views_block:person-person_aggregator'
+settings:
+  id: 'views_block:person-person_aggregator'
+  label: ''
+  label_display: visible
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: null
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      person: person
