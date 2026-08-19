@@ -1,3 +1,8 @@
+content_type_icons:
+  css:
+    theme:
+      css/ddbgo_gin.content-type-icons.css: {}
+
 toolbar_icons:
   css:
     theme:
@@ -7,6 +12,7 @@ toolbar_icons:
   dependencies:
     - core/drupal
     - core/once
+    - ddbgo_gin/content_type_icons
 
 workspace_navigation:
   css:
@@ -17,10 +23,12 @@ workspace_navigation:
   dependencies:
     - core/drupal
     - core/once
+    - ddbgo_gin/content_type_icons
 
 frontend_layout:
   css:
     theme:
       css/ddbgo_gin.frontend-layout.css: {}
   dependencies:
+    - ddbgo_gin/content_type_icons
     - gin_frontend/global

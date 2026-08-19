@@ -20,31 +20,35 @@
 }
 
 .gin-frontend .page-title--ddbgo-type-aggregator {
-  --ddbgo-type-icon: url("/libraries/fontawesome/svgs/solid/sitemap.svg");
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-aggregator);
 }
 
 .gin-frontend .page-title--ddbgo-type-bestand {
-  --ddbgo-type-icon: url("/libraries/fontawesome/svgs/solid/file-lines.svg");
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-bestand);
 }
 
 .gin-frontend .page-title--ddbgo-type-kwe {
-  --ddbgo-type-icon: url("/libraries/fontawesome/svgs/solid/landmark.svg");
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-kwe);
 }
 
 .gin-frontend .page-title--ddbgo-type-person {
-  --ddbgo-type-icon: url("/libraries/fontawesome/svgs/solid/users.svg");
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-person);
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-kwe {
-  --icon: url("/libraries/fontawesome/svgs/solid/landmark.svg");
+  --icon: var(--ddbgo-content-type-icon-kwe);
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-aggregator {
-  --icon: url("/libraries/fontawesome/svgs/solid/sitemap.svg");
+  --icon: var(--ddbgo-content-type-icon-aggregator);
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-bestand {
-  --icon: url("/libraries/fontawesome/svgs/solid/file-lines.svg");
+  --icon: var(--ddbgo-content-type-icon-bestand);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-person {
+  --icon: var(--ddbgo-content-type-icon-person);
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-einstellungen {

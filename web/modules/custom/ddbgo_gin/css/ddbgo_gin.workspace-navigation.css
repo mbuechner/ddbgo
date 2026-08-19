@@ -257,19 +257,19 @@
 }
 
 .ddbgo-workspace-navigation__item--kwe .ddbgo-workspace-navigation__toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/landmark.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-content-type-icon-kwe);
 }
 
 .ddbgo-workspace-navigation__item--aggregator .ddbgo-workspace-navigation__toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/sitemap.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-content-type-icon-aggregator);
 }
 
 .ddbgo-workspace-navigation__item--person .ddbgo-workspace-navigation__toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/users.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-content-type-icon-person);
 }
 
 .ddbgo-workspace-navigation__item--bestand .ddbgo-workspace-navigation__toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/file-lines.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-content-type-icon-bestand);
 }
 
 .ddbgo-workspace-navigation__item--einstellungen .ddbgo-workspace-navigation__toggle {
