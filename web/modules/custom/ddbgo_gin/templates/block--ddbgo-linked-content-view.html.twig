@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Displays a linked-content View block as a collapsed detail.
+ */
+#}
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'ddbgo-linked-content-view',
+    'claro-details',
+  ]
+%}
+<details{{ attributes.addClass(classes) }}>
+  <summary{{ title_attributes.addClass('claro-details__summary') }}>{{ label }}</summary>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div class="claro-details__wrapper details-wrapper ddbgo-linked-content-view__content">
+    {{ content }}
+  </div>
+</details>

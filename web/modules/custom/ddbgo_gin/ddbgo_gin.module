@@ -56,6 +56,10 @@ function ddbgo_gin_toolbar_alter(array &$items): void {
  */
 function ddbgo_gin_theme(): array {
   return [
+    'block__ddbgo_linked_content_view' => [
+      'base hook' => 'block',
+      'template' => 'block--ddbgo-linked-content-view',
+    ],
     'ddbgo_workspace_navigation' => [
       'variables' => [
         'items' => [],
@@ -66,6 +70,24 @@ function ddbgo_gin_theme(): array {
       'template' => 'ddbgo-workspace-navigation',
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for block templates.
+ */
+function ddbgo_gin_theme_suggestions_block_alter(array &$suggestions, array $variables): void {
+  $plugin_id = $variables['elements']['#plugin_id'] ?? NULL;
+  $linked_content_views = [
+    'views_block:aggregator-block_1',
+    'views_block:kwe-block',
+    'views_block:person-person_aggregator',
+    'views_block:person-person_bestand',
+    'views_block:person-person_kwe',
+  ];
+
+  if (is_string($plugin_id) && in_array($plugin_id, $linked_content_views, TRUE)) {
+    $suggestions[] = 'block__ddbgo_linked_content_view';
+  }
 }
 
 /**

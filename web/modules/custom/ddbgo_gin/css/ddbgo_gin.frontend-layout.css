@@ -232,6 +232,25 @@
   gap: var(--gin-spacing-xxs);
 }
 
+/* Collapsible linked-content Views below full entity nodes. */
+.gin-frontend .ddbgo-linked-content-view {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin-block: var(--gin-spacing-m);
+}
+
+.gin-frontend .ddbgo-linked-content-view > .claro-details__summary {
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend .ddbgo-linked-content-view > .ddbgo-linked-content-view__content {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
 @media (min-width: 48em) {
   .gin-frontend details.claro-details > .claro-details__wrapper > .field {
     grid-template-columns: minmax(8rem, 28%) minmax(0, 1fr);

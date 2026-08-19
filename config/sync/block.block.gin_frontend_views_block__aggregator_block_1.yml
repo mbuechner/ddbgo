@@ -1,0 +1,33 @@
+uuid: a9d999db-326c-48fb-9d8e-14b8b3b9ecdd
+langcode: de
+status: true
+dependencies:
+  config:
+    - views.view.aggregator
+  module:
+    - node
+    - views
+  theme:
+    - gin_frontend
+id: gin_frontend_views_block__aggregator_block_1
+theme: gin_frontend
+region: content
+weight: 0
+provider: null
+plugin: 'views_block:aggregator-block_1'
+settings:
+  id: 'views_block:aggregator-block_1'
+  label: ''
+  label_display: visible
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: null
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      aggregator: aggregator
