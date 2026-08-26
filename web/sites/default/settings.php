@@ -967,6 +967,7 @@ if ($use_redis && !\Drupal\Core\Installer\InstallerKernel::installationAttempted
 // credentials out of Drupal's active and exported configuration.
 $smtp_enabled = $env_bool('SMTP_ENABLED');
 $config['smtp.settings']['smtp_on'] = $smtp_enabled;
+$config['system.mail']['interface']['default'] = $smtp_enabled ? 'SMTPMailSystem' : 'php_mail';
 
 if ($smtp_enabled) {
   $smtp_host = $env('SMTP_HOST', '');
