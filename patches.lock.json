@@ -1,12 +1,12 @@
 {
-    "_hash": "2e87aaa7ff118f128ca7018419ac2b4059236e281f7be7345b698bd6a331df61",
+    "_hash": "484910ae0ac97b8ed9b76a154235e96ea0cc50c73a3b05b11c525c9c5f62f2dd",
     "patches": {
         "drupal/select2": [
             {
                 "package": "drupal/select2",
                 "description": "Changed tokenSeparator in Select2 module",
                 "url": "patches/Changed_tokenSeparator_in_Select2_module.patch",
-                "sha256": "fc553328cc621ee275055859cbd94ed56b185d082f687149ffe24dcbdcbaba26",
+                "sha256": "743d8bd9df66c1d951f985a3f4a12744f3b001e8b52e5a532ad737449d9d0d63",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
@@ -19,18 +19,6 @@
                 "description": "Fixing bug with warning message at Unique Field Ajax",
                 "url": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch",
                 "sha256": "841b5673a753db1943c8c167e98677193c4f414818401d724e6dbbc35532788b",
-                "depth": 1,
-                "extra": {
-                    "provenance": "root"
-                }
-            }
-        ],
-        "drupal/custom_formatters": [
-            {
-                "package": "drupal/custom_formatters",
-                "description": "Custom Formatters: Drupal 10 fixes (combined)",
-                "url": "patches/custom_formatters-drupal10-fixes.patch",
-                "sha256": "3ccf422cfbe39f2efc1bfddf24946f68aa190bdfd765fa4e11af6b48b955d6e5",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
