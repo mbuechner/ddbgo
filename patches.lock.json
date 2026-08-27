@@ -1,5 +1,5 @@
 {
-    "_hash": "484910ae0ac97b8ed9b76a154235e96ea0cc50c73a3b05b11c525c9c5f62f2dd",
+    "_hash": "9ff518c694fd9de1da5c97e0a382604d7eb02bef06f15317db5f1497b2c1c000",
     "patches": {
         "drupal/select2": [
             {
@@ -18,7 +18,7 @@
                 "package": "drupal/unique_field_ajax",
                 "description": "Fixing bug with warning message at Unique Field Ajax",
                 "url": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch",
-                "sha256": "841b5673a753db1943c8c167e98677193c4f414818401d724e6dbbc35532788b",
+                "sha256": "535fac7b31b9444528a916da6eec7897ddd8f447ed7328a74dd5ef3466f8b256",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
