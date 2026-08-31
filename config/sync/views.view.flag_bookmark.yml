@@ -36,7 +36,7 @@ display:
           admin_label: ''
           entity_type: flagging
           plugin_id: bulk_form
-          label: Massenaktualisierung
+          label: Auswahl
           exclude: false
           alter:
             alter_text: false
@@ -78,8 +78,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           action_title: Aktion
-          include_exclude: exclude
-          selected_actions: {  }
+          include_exclude: include
+          selected_actions:
+            flag_delete_flagging: flag_delete_flagging
         counter:
           id: counter
           table: views
@@ -331,6 +332,56 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        link_flag:
+          id: link_flag
+          table: flagging
+          field: link_flag
+          relationship: flag_relationship
+          group_type: group
+          admin_label: ''
+          label: 'Lesezeichen entfernen'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: flagging
+          plugin_id: flag_link
       pager:
         type: full
         options:
@@ -442,6 +493,7 @@ display:
             title: title
             type: type
             created: created
+            link_flag: link_flag
           default: '-1'
           info:
             flagging_bulk_form:
@@ -471,6 +523,11 @@ display:
             created:
               sortable: true
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            link_flag:
               align: ''
               separator: ''
               empty_column: false

@@ -246,6 +246,31 @@
   text-decoration-line: none;
 }
 
+/* Keep columns aligned across the separate tables produced by View grouping. */
+.gin-frontend .view-flag-bookmark table.views-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.gin-frontend .view-flag-bookmark :is(
+  th,
+  td
+).views-field-flagging-bulk-form {
+  width: 3.25rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-counter {
+  width: 4rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-created {
+  width: 10.5rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-link-flag {
+  width: 14rem;
+}
+
 /*
  * Present read-only field output inside details as scannable label/value rows.
  * The DOM order and native details/summary interaction remain unchanged.
