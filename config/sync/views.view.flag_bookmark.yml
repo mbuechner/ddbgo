@@ -200,7 +200,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: node_type
-          label: Typ
+          label: ''
           exclude: true
           alter:
             alter_text: false
@@ -233,7 +233,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -380,7 +380,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Keine Lesezeichen verfügbar.'
+          content: '<span class="ddbgo-view-empty-marker">Keine Lesezeichen verfügbar.</span>'
           tokenize: false
       sorts:
         type:
@@ -450,8 +450,6 @@ display:
               empty_column: false
               responsive: ''
             counter:
-              sortable: true
-              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
@@ -533,9 +531,11 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - flag.flag.bookmark
   block:
     id: block
     display_title: Block
@@ -680,9 +680,11 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - flag.flag.bookmark
   page:
     id: page
     display_title: Page
@@ -706,6 +708,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - flag.flag.bookmark
