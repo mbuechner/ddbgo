@@ -307,6 +307,11 @@ display:
           use_highlighting: true
           multi_type: separator
           multi_separator: ', '
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          filter_type: xss_admin
       pager:
         type: full
         options:

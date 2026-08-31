@@ -26,7 +26,7 @@ field_settings:
     type: text
     configuration:
       roles:
-        authenticated: authenticated
+        - authenticated
       view_mode:
         'entity:node':
           aggregator: default
@@ -63,6 +63,7 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  custom_value: {  }
   entity_type: {  }
   highlight:
     weights:
@@ -74,7 +75,6 @@ processor_settings:
     excerpt_length: 512
     exclude_fields:
       - nid
-      - title
     highlight: always
     highlight_partial: true
   html_filter:
@@ -87,11 +87,11 @@ processor_settings:
     title: true
     alt: false
     tags:
-      b: 2
-      h1: 5
-      h2: 3
-      h3: 2
-      strong: 2
+      b: 2.0
+      h1: 5.0
+      h2: 3.0
+      h3: 2.0
+      strong: 2.0
   ignorecase:
     weights:
       preprocess_index: -49
@@ -132,6 +132,7 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 50
+  delete_on_fail: true
   index_directly: true
   track_changes_in_references: true
 server: default_server
