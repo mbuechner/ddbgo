@@ -6,6 +6,7 @@ dependencies:
     - views.view.aggregator
   module:
     - node
+    - system
     - views
   theme:
     - gin_frontend
@@ -31,3 +32,7 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       aggregator: aggregator
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/node/*/edit\r\n/node/*/revisions\r\n/node/*/delete"

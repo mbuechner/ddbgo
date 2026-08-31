@@ -3,6 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
+    - custom_formatters.formatter.isil_link
     - field.storage.node.field_ddb_id
     - field.storage.node.field_isil
     - field.storage.node.field_stadt
@@ -18,6 +19,7 @@ dependencies:
   module:
     - better_exposed_filters
     - color_field
+    - custom_formatters
     - search_api
     - user
 id: suche_kwe
@@ -651,10 +653,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-            link_rel: canonical
+          type: 'custom_formatters:isil_link'
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
