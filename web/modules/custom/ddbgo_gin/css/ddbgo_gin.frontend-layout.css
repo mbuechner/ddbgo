@@ -175,6 +175,57 @@
 }
 
 /*
+ * Keep text links identifiable without relying on color. Component links such
+ * as buttons and navigation retain their more specific component styling.
+ */
+.gin-frontend.gin-frontend :where(
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) :where(a:any-link:not(
+  .button,
+  .action-link,
+  .tabs__link,
+  .pager__link,
+  [role="button"]
+)) {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+.gin-frontend.gin-frontend :where(
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) :where(a:any-link:not(
+  .button,
+  .action-link,
+  .tabs__link,
+  .pager__link,
+  [role="button"]
+):is(:hover, :focus-visible)) {
+  text-decoration-line: none;
+}
+
+/* Gin reverses the link behavior in table cells; use the common behavior. */
+:is(#ddbgo-table-link-specificity, .gin-frontend).gin-frontend table td :where(a:any-link:not(
+  .button,
+  .action-link,
+  [role="button"]
+)) {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+:is(#ddbgo-table-link-specificity, .gin-frontend).gin-frontend table td :where(a:any-link:not(
+  .button,
+  .action-link,
+  [role="button"]
+):is(:hover, :focus-visible)) {
+  text-decoration-line: none;
+}
+
+/*
  * Present read-only field output inside details as scannable label/value rows.
  * The DOM order and native details/summary interaction remain unchanged.
  */
