@@ -1,7 +1,7 @@
 favicon:
   mimetype: image/png
   path: modules/custom/ddbgo_gin/images/favicon/favicon-32x32.png
-  use_default: 0
+  use_default: 1
 logo:
   path: modules/custom/ddbgo_gin/images/logo-ddbpro.svg
   use_default: 0
@@ -15,7 +15,7 @@ preset_accent_color: teal
 accent_color: '#a5003b'
 preset_focus_color: gin
 focus_color: '#81002d'
-high_contrast_mode: 1
+high_contrast_mode: 0
 classic_toolbar: vertical
 sticky_action_buttons: 1
 secondary_toolbar_frontend: 1
