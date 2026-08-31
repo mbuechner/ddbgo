@@ -905,9 +905,10 @@ display:
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             placeholder: Suchbegriff
           is_grouped: false
@@ -954,9 +955,10 @@ display:
             operator_list: {  }
             identifier: field_bestandstags
             required: false
-            remember: false
+            remember: true
             multiple: true
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             reduce: false
           is_grouped: false

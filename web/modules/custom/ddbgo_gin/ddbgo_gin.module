@@ -194,6 +194,19 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
     return $form;
   }
 
+  $user_input = $form_state->getUserInput();
+  $has_active_filter = FALSE;
+  foreach ($filter_keys as $key) {
+    if (
+      ($form[$key]['#type'] ?? NULL) !== 'actions'
+      && array_key_exists($key, $user_input)
+      && ddbgo_gin_exposed_filter_has_selection($form[$key], $user_input[$key])
+    ) {
+      $has_active_filter = TRUE;
+      break;
+    }
+  }
+
   if ($tag_filter_keys !== [] && isset($form['actions']['submit'])) {
     // Use Better Exposed Filters' field-level autosubmit. Tagify dispatches a
     // native change event on its underlying select after add/remove, which BEF
@@ -205,7 +218,7 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   $details = [
     '#type' => 'details',
     '#title' => new TranslatableMarkup('Filter'),
-    '#open' => FALSE,
+    '#open' => $has_active_filter,
     '#weight' => -100,
     '#attributes' => [
       'class' => ['ddbgo-exposed-filters'],
@@ -236,6 +249,35 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   }
 
   return $form;
+}
+
+/**
+ * Determines whether an exposed filter differs from its empty default value.
+ */
+function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): bool {
+  $values = is_array($input) ? $input : [$input];
+  $default_value = $element['#default_value'] ?? array_key_first($element['#options'] ?? []);
+  $multiple = $element['#multiple'] ?? FALSE;
+
+  foreach ($values as $value) {
+    if (is_array($value)) {
+      if (ddbgo_gin_exposed_filter_has_selection($element, $value)) {
+        return TRUE;
+      }
+      continue;
+    }
+
+    if ($multiple) {
+      if ($value !== '' && $value !== NULL) {
+        return TRUE;
+      }
+    }
+    elseif ($value !== $default_value && ($value || $default_value === 0)) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 /**

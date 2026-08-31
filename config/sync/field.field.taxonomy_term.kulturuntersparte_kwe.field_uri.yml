@@ -1,0 +1,19 @@
+uuid: be00e36c-9e6c-4997-850b-30bcd976fed1
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_uri
+    - taxonomy.vocabulary.kulturuntersparte_kwe
+id: taxonomy_term.kulturuntersparte_kwe.field_uri
+field_name: field_uri
+entity_type: taxonomy_term
+bundle: kulturuntersparte_kwe
+label: URI
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

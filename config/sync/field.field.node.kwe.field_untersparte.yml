@@ -1,0 +1,29 @@
+uuid: 1a83da9b-219b-45fa-8703-188c53b58e98
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_untersparte
+    - node.type.kwe
+    - taxonomy.vocabulary.kulturuntersparte_kwe
+id: node.kwe.field_untersparte
+field_name: field_untersparte
+entity_type: node
+bundle: kwe
+label: Untersparte
+description: 'Die DDB-Untersparte für die KWE.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      kulturuntersparte_kwe: kulturuntersparte_kwe
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: kulturuntersparte_kwe
+field_type: entity_reference

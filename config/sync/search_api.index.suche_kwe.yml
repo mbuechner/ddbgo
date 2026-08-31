@@ -10,6 +10,7 @@ dependencies:
     - field.storage.node.field_sparte
     - field.storage.node.field_stadt
     - field.storage.node.field_status
+    - field.storage.node.field_untersparte
     - field.storage.node.field_vertragsstatus
     - field.storage.node.field_zustimmungsformular
     - search_api.server.default_server
@@ -21,6 +22,16 @@ name: KWE
 description: ''
 read_only: false
 field_settings:
+  aggregated_sparte:
+    label: Sparte
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: concat
+      separator: ', '
+      fields:
+        - 'entity:node/field_sparte:entity:name'
+        - 'entity:node/field_untersparte:entity:name'
   field_bemerkung:
     label: Bemerkung
     datasource_id: 'entity:node'
@@ -54,6 +65,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_kurzname
+  field_sparte:
+    label: Sparte
+    datasource_id: 'entity:node'
+    property_path: field_sparte
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_sparte
   field_stadt:
     label: Stadt
     datasource_id: 'entity:node'
@@ -71,6 +90,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_status
+  field_untersparte:
+    label: Untersparte
+    datasource_id: 'entity:node'
+    property_path: field_untersparte
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_untersparte
   field_zustimmungsformular:
     label: Zustimmungsformular
     datasource_id: 'entity:node'
@@ -97,16 +124,6 @@ field_settings:
     dependencies:
       module:
         - node
-  sparte:
-    label: 'Sparte » Taxonomie-Begriff » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_sparte:entity:name'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_sparte
-      module:
-        - taxonomy
   status:
     label: status
     datasource_id: 'entity:node'
@@ -154,6 +171,7 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  custom_value: {  }
   entity_type: {  }
   ignorecase:
     weights:
@@ -161,6 +179,7 @@ processor_settings:
       preprocess_query: -20
     all_fields: true
     fields:
+      - aggregated_sparte
       - field_bemerkung
       - field_ddb_id
       - field_isil
@@ -168,7 +187,6 @@ processor_settings:
       - field_stadt
       - field_status
       - name
-      - sparte
       - title
       - zustimmungsformular
   language_with_fallback: {  }
@@ -179,13 +197,13 @@ processor_settings:
       preprocess_query: -6
     all_fields: true
     fields:
+      - aggregated_sparte
       - field_bemerkung
       - field_ddb_id
       - field_isil
       - field_kurzname
       - field_stadt
       - name
-      - sparte
       - title
       - zustimmungsformular
     spaces: ''
@@ -197,6 +215,7 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 50
+  delete_on_fail: true
   index_directly: true
   track_changes_in_references: true
 server: default_server

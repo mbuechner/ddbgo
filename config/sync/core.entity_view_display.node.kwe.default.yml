@@ -33,6 +33,7 @@ dependencies:
     - field.field.node.kwe.field_status
     - field.field.node.kwe.field_strasse
     - field.field.node.kwe.field_telefonnummer
+    - field.field.node.kwe.field_untersparte
     - field.field.node.kwe.field_url
     - field.field.node.kwe.field_vertrag
     - field.field.node.kwe.field_vertragskonstrukt
@@ -179,6 +180,7 @@ third_party_settings:
         - field_bundesland
         - field_land
         - field_sparte
+        - field_untersparte
         - field_telefonnummer
         - field_email
         - field_url
@@ -279,7 +281,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 17
+    weight: 18
     region: content
   field_bemerkung_archivportal:
     type: basic_string
@@ -360,7 +362,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 15
+    weight: 16
     region: content
   field_erstingest_archivportal:
     type: datetime_default
@@ -553,6 +555,18 @@ content:
         handler: text
         settings:
           empty_text: –
+    weight: 15
+    region: content
+  field_untersparte:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
     weight: 14
     region: content
   field_url:
@@ -569,7 +583,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 16
+    weight: 17
     region: content
   field_vertrag:
     type: file_default

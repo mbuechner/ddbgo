@@ -1132,7 +1132,7 @@ display:
         type: basic
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sort by'
           expose_sort_order: false
@@ -1197,9 +1197,10 @@ display:
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             placeholder: Suchbegriff
           is_grouped: false
@@ -1250,9 +1251,10 @@ display:
             operator_list: {  }
             identifier: field_europeana_lieferung
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             reduce: false
           is_grouped: false
@@ -1295,9 +1297,10 @@ display:
             operator_list: {  }
             identifier: europeana_lieferung_ueber_ddb
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             reduce: false
           is_grouped: false
@@ -1344,9 +1347,10 @@ display:
             operator_list: {  }
             identifier: datum_des_status
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             min_placeholder: ''
             max_placeholder: ''

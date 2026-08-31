@@ -7,7 +7,6 @@
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
-
 /**
  * Load any .env file. See /.env.example.
  *
@@ -16,9 +15,4 @@ use Dotenv\Exception\InvalidPathException;
  * Linux and Windows.
  */
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__);
-try {
-  $dotenv->load();
-}
-catch (InvalidPathException $e) {
-  // Do nothing. Production environments rarely use .env files.
-}
+$dotenv->safeLoad();

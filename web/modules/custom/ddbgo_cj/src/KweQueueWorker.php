@@ -253,13 +253,22 @@ final class KweQueueWorker {
       'field_bundesland' => ['bundesland', 'state'],
       'field_land' => ['land', 'country'],
       'field_sparte' => ['kultursparte_kwe', 'sector'],
+      'field_untersparte' => ['kulturuntersparte_kwe', 'subsector'],
     ];
     foreach ($references as $field_name => [$vocabulary, $value_key]) {
       if (!isset($values[$value_key]) || !$node->hasField($field_name)) {
         continue;
       }
       $term_id = $this->findTermId($vocabulary, $values[$value_key]);
-      if ($term_id !== NULL && (int) $node->get($field_name)->target_id !== $term_id) {
+      if ($term_id === NULL) {
+        $this->logger->warning('No taxonomy term in @vocabulary matches API value @value for node @id; @field remains unchanged.', [
+          '@vocabulary' => $vocabulary,
+          '@value' => $values[$value_key],
+          '@id' => $node->id(),
+          '@field' => $field_name,
+        ]);
+      }
+      elseif ((int) $node->get($field_name)->target_id !== $term_id) {
         $node->set($field_name, ['target_id' => $term_id]);
         $changed = TRUE;
       }
@@ -324,6 +333,7 @@ final class KweQueueWorker {
       'state' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="state"]/@uri',
       'country' => '/*[local-name()="organization"]/*[local-name()="address"]/*[local-name()="country"]/@uri',
       'sector' => '/*[local-name()="organization"]/*[local-name()="sector"]',
+      'subsector' => '/*[local-name()="organization"]/*[local-name()="subsector"]',
       'telephone' => '/*[local-name()="organization"]/*[local-name()="telephone"]',
       'email' => '/*[local-name()="organization"]/*[local-name()="email"]',
       'url' => '/*[local-name()="organization"]/*[local-name()="url"]',

@@ -1003,7 +1003,7 @@ display:
         type: bef
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sort by'
           expose_sort_order: false
@@ -1113,9 +1113,10 @@ display:
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             placeholder: Suchbegriff
           is_grouped: false
@@ -1164,9 +1165,10 @@ display:
             operator_list: {  }
             identifier: field_coding_da_vinci_teilnahme
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             reduce: false
           is_grouped: false

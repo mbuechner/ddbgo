@@ -1,0 +1,9 @@
+uuid: 13f46407-4071-4b80-81bf-0444192f6bdf
+langcode: de
+status: true
+dependencies: {  }
+name: Kulturuntersparte-KWE
+vid: kulturuntersparte_kwe
+description: 'Kulturuntersparten der Deutsche Digitale Bibliothek (Nutzung bei KWE)'
+weight: 0
+new_revision: false

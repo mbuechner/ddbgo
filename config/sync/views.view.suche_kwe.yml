@@ -3,20 +3,21 @@ langcode: de
 status: true
 dependencies:
   config:
-    - custom_formatters.formatter.isil_link
     - field.storage.node.field_ddb_id
     - field.storage.node.field_isil
     - field.storage.node.field_stadt
     - field.storage.node.field_status
     - search_api.index.suche_kwe
     - system.menu.kwe
+    - taxonomy.vocabulary.kultursparte_kwe
+    - taxonomy.vocabulary.kulturuntersparte_kwe
     - taxonomy.vocabulary.zustimmungsformular
     - user.role.administrator
     - user.role.authenticated
     - user.role.ddb_team
   module:
+    - better_exposed_filters
     - color_field
-    - custom_formatters
     - search_api
     - user
 id: suche_kwe
@@ -473,14 +474,14 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-        sparte:
-          id: sparte
+        aggregated_sparte:
+          id: aggregated_sparte
           table: search_api_index_suche_kwe
-          field: sparte
+          field: aggregated_sparte
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: search_api_field
+          plugin_id: search_api
           label: Sparte
           exclude: false
           alter:
@@ -514,35 +515,22 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: –
+          empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
+          link_to_item: false
+          use_highlighting: false
+          multi_type: separator
+          multi_separator: ', '
           delta_limit: 0
           delta_offset: 0
           delta_reversed: false
           delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
         field_ddb_id:
           id: field_ddb_id
           table: search_api_index_suche_kwe
@@ -663,8 +651,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: 'custom_formatters:isil_link'
-          settings: {  }
+          type: string
+          settings:
+            link_to_entity: false
+            link_rel: canonical
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -682,6 +672,10 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ','
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
       pager:
         type: full
         options:
@@ -705,15 +699,90 @@ display:
             offset_label: Versatz
           quantity: 9
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
           sort_desc_label: Absteigend
+          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: plain_text
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              search_api_fulltext:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_sparte:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_untersparte:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_zustimmungsformular:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
       access:
         type: role
         options:
@@ -773,9 +842,10 @@ display:
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             expose_fields: false
             placeholder: Suchbegriff
@@ -804,6 +874,98 @@ display:
             - sparte
             - title
             - zustimmungsformular
+        field_sparte:
+          id: field_sparte
+          table: search_api_index_suche_kwe
+          field: field_sparte
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_sparte_op
+            label: Sparte
+            description: ''
+            use_operator: false
+            operator: field_sparte_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_sparte
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: kultursparte_kwe
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_untersparte:
+          id: field_untersparte
+          table: search_api_index_suche_kwe
+          field: field_untersparte
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_untersparte_op
+            label: Untersparte
+            description: ''
+            use_operator: false
+            operator: field_untersparte_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_untersparte
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: kulturuntersparte_kwe
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
         field_zustimmungsformular:
           id: field_zustimmungsformular
           table: search_api_index_suche_kwe
@@ -826,9 +988,10 @@ display:
             operator_list: {  }
             identifier: field_zustimmungsformular
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
             reduce: false
           is_grouped: false
@@ -866,7 +1029,7 @@ display:
             field_stadt: field_stadt
             name: name
             zustimmungsformular: zustimmungsformular
-            sparte: sparte
+            aggregated_sparte: aggregated_sparte
             field_ddb_id: field_ddb_id
             field_isil: field_isil
           default: title
@@ -913,7 +1076,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            sparte:
+            aggregated_sparte:
               sortable: true
               default_sort_order: asc
               align: ''

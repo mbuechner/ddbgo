@@ -58,3 +58,17 @@ field_validation_rules:
     field_name: field_ddburi
     column: value
     error_message: 'Dieser URI von der Deutschen Digitale Bibliothek ist bereits in DDBgo bei einer Kultur- oder Wissenseinrichtung vorhanden!'
+  d1bb8412-8ae9-4334-b3e0-0791902c546b:
+    id: expression_constraint_rule
+    title: 'Untersparte nur bei Sparte Archiv'
+    data:
+      validate_mode: default
+      expression: 'value == null or (this.getEntity().get("field_sparte").entity != null and this.getEntity().get("field_sparte").entity.get("field_uri").value == "http://ddb.vocnet.org/sparte/sparte001")'
+      message: 'Eine Untersparte darf nur ausgewählt werden, wenn als Sparte „Archiv“ ausgewählt ist.'
+    weight: -5
+    uuid: d1bb8412-8ae9-4334-b3e0-0791902c546b
+    field_name: field_untersparte
+    column: target_id
+    error_message: 'Eine Untersparte darf nur ausgewählt werden, wenn als Sparte „Archiv“ ausgewählt ist.'
+    roles: {  }
+    condition: {  }
