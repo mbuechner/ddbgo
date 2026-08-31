@@ -339,6 +339,8 @@ display:
           relationship: flag_relationship
           group_type: group
           admin_label: ''
+          entity_type: flagging
+          plugin_id: flag_link
           label: 'Lesezeichen entfernen'
           exclude: false
           alter:
@@ -380,8 +382,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: flagging
-          plugin_id: flag_link
       pager:
         type: full
         options:
