@@ -752,7 +752,7 @@ display:
       path: bookmarks
       menu:
         type: normal
-        title: Lesezeichen
+        title: 'Meine Lesezeichen'
         description: ''
         weight: -48
         expanded: false
