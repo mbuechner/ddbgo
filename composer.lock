@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86e3b4c2cd46a971158a4a42529a38f1",
+    "content-hash": "76065abf1e13812ad6f03a805d7d7505",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1706,17 +1706,17 @@
         },
         {
             "name": "drupal/color_field",
-            "version": "3.0.2",
+            "version": "3.1.0-beta1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/color_field.git",
-                "reference": "3.0.2"
+                "reference": "3.1.0-beta1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/color_field-3.0.2.zip",
-                "reference": "3.0.2",
-                "shasum": "2778e454798a59d3e9fd27f56a161562e2d1f0fe"
+                "url": "https://ftp.drupal.org/files/projects/color_field-3.1.0-beta1.zip",
+                "reference": "3.1.0-beta1",
+                "shasum": "994085aa7cc13cd66f0fb593d68bcf98ffac17c3"
             },
             "require": {
                 "drupal/core": "^9 || ^10 || ^11"
@@ -1729,11 +1729,11 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "3.0.2",
-                    "datestamp": "1743394003",
+                    "version": "3.1.0-beta1",
+                    "datestamp": "1782779175",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -1863,26 +1863,33 @@
         },
         {
             "name": "drupal/content_lock",
-            "version": "2.4.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/content_lock.git",
-                "reference": "8.x-2.4"
+                "reference": "3.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/content_lock-8.x-2.4.zip",
-                "reference": "8.x-2.4",
-                "shasum": "99d149e530555aae12b44292efe5887d373e862e"
+                "url": "https://ftp.drupal.org/files/projects/content_lock-3.0.0.zip",
+                "reference": "3.0.0",
+                "shasum": "d60fa4d10a25d35fe251498381eb48ef795d9840"
             },
             "require": {
-                "drupal/core": "^9.0 || ^10.0"
+                "drupal/core": "^10.2 || ^11"
+            },
+            "require-dev": {
+                "drupal/conflict": "^3.0@ALPHA",
+                "drupal/trash": "^3.0"
+            },
+            "suggest": {
+                "drupal/conflict": "For entity translation level locking"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.4",
-                    "datestamp": "1715783058",
+                    "version": "3.0.0",
+                    "datestamp": "1782214655",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -1895,30 +1902,54 @@
             ],
             "authors": [
                 {
-                    "name": "alexpott",
-                    "homepage": "https://www.drupal.org/user/157725"
+                    "name": "Christian Fritsch (chr.fritsch)",
+                    "homepage": "https://www.drupal.org/u/chrfritsch",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "astonvictor",
-                    "homepage": "https://www.drupal.org/user/3466615"
+                    "name": "Daniel Bosen (daniel.bosen)",
+                    "homepage": "https://www.drupal.org/u/danielbosen",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "chr.fritsch",
-                    "homepage": "https://www.drupal.org/user/2103716"
+                    "name": "Christopher Gervais (ergonlogic)",
+                    "homepage": "https://www.drupal.org/u/ergonlogic",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "daniel.bosen",
-                    "homepage": "https://www.drupal.org/user/404865"
+                    "name": "Joseph Zhao (pandaski)",
+                    "homepage": "https://www.drupal.org/u/pandaski",
+                    "role": "Maintainer"
                 },
                 {
-                    "name": "volkerk",
-                    "homepage": "https://www.drupal.org/user/57527"
+                    "name": "Volker Killesreiter (volkerk)",
+                    "homepage": "https://www.drupal.org/u/volkerk",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Alex Pott (alexpott)",
+                    "homepage": "https://www.drupal.org/u/alexpott",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "mark burdett (mfb)",
+                    "homepage": "https://www.drupal.org/u/mfb",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Viktor Holovachek (AstonVictor)",
+                    "homepage": "https://www.drupal.org/u/astonvictor",
+                    "role": "Maintainer"
                 }
             ],
             "description": "Prevents multiple users from trying to edit a content entity simultaneously to prevent edit conflicts.",
             "homepage": "https://www.drupal.org/project/content_lock",
+            "keywords": [
+                "Drupal"
+            ],
             "support": {
-                "source": "https://git.drupalcode.org/project/content_lock"
+                "source": "https://git.drupalcode.org/project/content_lock",
+                "issues": "https://www.drupal.org/project/issues/content_lock"
             }
         },
         {
@@ -11709,6 +11740,7 @@
     "aliases": [],
     "minimum-stability": "beta",
     "stability-flags": {
+        "drupal/color_field": 10,
         "drupal/conditional_fields": 15,
         "drupal/field_validation": 10,
         "drupal/flag": 10,
@@ -11723,5 +11755,5 @@
         "php": "8.3",
         "ext-gd": "1"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
