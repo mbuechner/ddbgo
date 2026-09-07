@@ -54,3 +54,14 @@ unique_field_submit:
     - core/drupalSettings
     - core/once
     - core/drupal.announce
+
+form_help:
+  css:
+    theme:
+      css/ddbgo_gin.form-help.css: {}
+  js:
+    js/ddbgo_gin.form-help.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - gin/gin_description_toggle

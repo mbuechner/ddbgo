@@ -1,0 +1,6 @@
+{# Shared tooltip content: Twig preserves rich help text and existing field IDs.
+   The inner box scrolls independently so the decorative arrow stays visible. #}
+<div{{ tooltip_attributes.setAttribute('id', tooltip_id).setAttribute('role', 'tooltip').addClass(description_classes, 'ddbgo-help-tooltip') }}>
+  <span class="ddbgo-help-tooltip__arrow" aria-hidden="true"></span>
+  <div class="ddbgo-help-tooltip__content">{{ description }}</div>
+</div>

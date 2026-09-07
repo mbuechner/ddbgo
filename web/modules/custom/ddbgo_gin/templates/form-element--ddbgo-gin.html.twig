@@ -12,7 +12,8 @@
 Most of core-provided js assumes that the CSS class pattern js-form-item-[something] or
 js-form-type-[something] exists on form items. We have to keep them.
 #}
-{% set show_description_toggle = description_toggle and description.content %}
+{% set show_description_toggle = description_toggle and description.content and label_display in ['before', 'after', 'invisible'] %}
+{% set tooltip_id = description.attributes.id ?: 'ddbgo-help'|clean_unique_id %}
 {%
   set classes = [
     'js-form-item',
@@ -31,20 +32,26 @@ js-form-type-[something] exists on form items. We have to keep them.
 {%
   set description_classes = [
     'form-item__description',
-    description_display == 'invisible' ? 'visually-hidden',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
   ]
 %}
 <div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
     {% if show_description_toggle %}
-      <div class="help-icon">
+      <div class="help-icon ddbgo-form-help">
         {{ label }}
-        {{ attach_library('gin/gin_description_toggle') }}
         {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
           label: element['#title'],
           description: description.content,
-          description_id: description.attributes.id,
+          description_id: tooltip_id,
           mouseover: element['#ddbgo_help_mouseover'],
+        } only %}
+        {# Keep the description next to its help button in reading order. #}
+        {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+          tooltip_attributes: description.attributes,
+          tooltip_id: tooltip_id,
+          description_classes: description_classes,
+          description: description.content,
         } only %}
       </div>
     {% else %}
@@ -57,7 +64,7 @@ js-form-type-[something] exists on form items. We have to keep them.
   {% if prefix is not empty %}
     <span class="form-item__prefix{{disabled == 'disabled' ? ' is-disabled'}}">{{ prefix }}</span>
   {% endif %}
-  {% if description_display == 'before' and description.content %}
+  {% if not show_description_toggle and description_display == 'before' and description.content %}
     <div{{ description.attributes.addClass(description_classes) }}>
       {{ description.content }}
     </div>
@@ -68,14 +75,20 @@ js-form-type-[something] exists on form items. We have to keep them.
   {% endif %}
   {% if label_display == 'after' %}
     {% if show_description_toggle %}
-      <div class="help-icon">
+      <div class="help-icon ddbgo-form-help">
         {{ label }}
-        {{ attach_library('gin/gin_description_toggle') }}
         {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
           label: element['#title'],
           description: description.content,
-          description_id: description.attributes.id,
+          description_id: tooltip_id,
           mouseover: element['#ddbgo_help_mouseover'],
+        } only %}
+        {# Keep the description next to its help button in reading order. #}
+        {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+          tooltip_attributes: description.attributes,
+          tooltip_id: tooltip_id,
+          description_classes: description_classes,
+          description: description.content,
         } only %}
       </div>
     {% else %}
@@ -90,7 +103,7 @@ js-form-type-[something] exists on form items. We have to keep them.
       {{ errors }}
     </div>
   {% endif %}
-  {% if description_display in ['after', 'invisible'] and description.content %}
+  {% if not show_description_toggle and description_display in ['after', 'invisible'] and description.content %}
     <div{{ description.attributes.addClass(description_classes) }}>
       {{ description.content }}
     </div>

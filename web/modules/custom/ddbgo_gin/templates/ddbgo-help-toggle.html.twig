@@ -1,10 +1,9 @@
-{#
-  Shared markup for Gin's help buttons. The name and existing help text
-  are available before behaviors run, including in server-rendered AJAX forms.
-  Gin's existing behavior remains responsible for opening the description.
-#}
-<button class="help-icon__description-toggle" type="button"
+{# Names and the tooltip relationship are rendered before JavaScript runs.
+   The description follows the button in its wrapper template (outside summary
+   for details). It stays readable inline when JavaScript is unavailable. #}
+{{ attach_library('ddbgo_gin/form_help') }}
+<button class="ddbgo-help-toggle" type="button"
   aria-label="{{ mouseover ? 'Hilfe zu @label'|t({'@label': label|striptags|trim}) : 'Weitere Informationen'|t }}"
-  {% if description %}title="{{ description|render|striptags|trim }}"{% endif %}
-  {% if description_id %}aria-controls="{{ description_id }}"{% endif %}>
+  aria-describedby="{{ description_id }}">
+  <span aria-hidden="true">?</span>
 </button>

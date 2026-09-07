@@ -11,6 +11,7 @@
  */
 #}
 {% set show_description_toggle = description_toggle and description %}
+{% set tooltip_id = description_attributes.id ?: 'ddbgo-help'|clean_unique_id %}
 {%
   set classes = [
     'form-item',
@@ -29,21 +30,26 @@
 {%
   set description_classes = [
     'form-item__description',
-    description_display == 'invisible' ? 'visually-hidden',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
   ]
 %}
 <div {{ attributes.addClass(classes) }}>
   {% if show_description_toggle %}
-  <div class="help-icon">
+  <div class="help-icon ddbgo-form-help">
   {% endif %}
   {% if title %}
   <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
   {% endif %}
   {% if show_description_toggle %}
-    {{ attach_library('gin/gin_description_toggle') }}
     {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
       description: description,
-      description_id: description_attributes.id,
+      description_id: tooltip_id,
+    } only %}
+    {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+      tooltip_attributes: description_attributes,
+      tooltip_id: tooltip_id,
+      description_classes: description_classes,
+      description: description,
     } only %}
   </div>
   {% endif %}
@@ -53,7 +59,7 @@
     {{ errors }}
   </div>
 {% endif %}
-{% if description %}
+{% if description and not show_description_toggle %}
   <div{{ description_attributes.addClass(description_classes) }}>
     {{ description }}
   </div>

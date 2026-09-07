@@ -2,11 +2,6 @@
  * Shared help controls and Gin-aware table, pager and dropbutton styling.
  */
 
-/* Help icons open descriptions on click in both content and search forms. */
-button.help-icon__description-toggle {
-  cursor: pointer;
-}
-
 table th {
   color: var(--gin-color-text);
   background: var(--gin-bg-layer2);

@@ -9,7 +9,9 @@ und die unten beschriebenen Gin-Korrekturen begrenzt.
 - `form-element--ddbgo-gin`, `fieldset--ddbgo-gin`, `details--ddbgo-gin` und
   `datetime-wrapper--ddbgo-gin` übernehmen die Struktur der Gin-Formularwrapper.
   Das gemeinsame `ddbgo-help-toggle.html.twig` liefert Button-Typ, zugänglichen
-  Namen und bei allen Formularhilfen die vorhandene Beschreibung als Mouseover-Text.
+  Namen und die Zuordnung zur Beschreibung über `aria-describedby`. Die Beschreibung
+  erhält `role="tooltip"` und folgt unmittelbar dem Button (bei Details
+  direkt nach dem Summary). Bestehende Beschreibungs-IDs bleiben erhalten.
   Die Namen stehen damit auch vor dem Start von JavaScript und in AJAX-Antworten
   im HTML. Suchhilfen bleiben in der Views-Konfiguration, Feldhilfen in ihrer bisherigen Konfiguration.
 - `ddbgo-workspace-navigation.html.twig` und `menu--ddbgo-gin.html.twig` rendern
@@ -44,18 +46,25 @@ Die Overrides gelten nur für Gin und davon abgeleitete Themes.
 - `ddbgo_gin.workspace-navigation.js`: Öffnen/Schließen, Escape und Fokus,
   mobile Menübedienung sowie Positionierung am Bildschirmrand. Markierungen
   und HTML-Struktur werden hier nicht mehr nachträglich ergänzt.
+- `ddbgo_gin.form-help.js`: Öffnet die in Twig gerenderten Hilfetexte bei Hover
+  und Tastaturfokus. Escape schließt ohne Fokuswechsel, Klick/Touch hält die Hilfe
+  bis zum nächsten Klick, Fokuswechsel oder Klick außerhalb offen. Der Mauszeiger
+  bleibt ein normaler Pfeil. Der Tooltip bleibt beim überfahren seines Textes
+  sichtbar. Die Popover API verhindert Abschneiden durch Container; die Position
+  passt sich Fenstergröße und Scrollen an. Hilfen innerhalb von Details werden
+  während der Anzeige vorübergehend an `body` angehängt, weil geschlossene Details
+  auch ihre Popovers verbergen. Danach kehren sie an die ursprüngliche Stelle
+  zurück; ihre ID und Screenreader-Zuordnung ändern sich nicht. Ohne JavaScript
+  bleibt der Text im Formular lesbar. Gin verwendet für diese Buttons einen
+  anderen Selektor und überschreibt ihre Attribute daher nicht.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden nach Tagify-Änderungen.
-  Zusätzlich wird bei Suchhilfen die Zuordnung zum Beschreibungselement nach
-  Gins Behavior wiederhergestellt: Gin setzt `aria-controls` derzeit auf den
-  Platzhalter `target`. Namen und Mouseover-Texte kommen ausschließlich aus Twig.
 - `ddbgo_gin.toolbar-navigation.js`: Kompatibilitätskorrektur für Gins
   Verwaltungsnavigation. Ein Klick auf einen Verwaltungslink bzw. dessen
   Beschriftung folgt dem Ziel; der Aufklapp-Auslöser bleibt bedienbar. Das greift
   in Gins Ereignisbehandlung ein und lässt sich nicht allein durch statisches
   Markup ersetzen. Bei Änderungen an Gins Toolbar erneut prüfen.
-- Gins eigenes Description-Toggle-Behavior und Flags AJAX-Verhalten werden
-  weiterverwendet. Es gibt kein eigenes JavaScript mehr zur Benennung der
-  Hilfeschaltflächen oder zum Verschieben des Lesezeichens.
+- Flags AJAX-Verhalten wird weiterverwendet. Es gibt kein eigenes JavaScript
+  zur Benennung der Hilfeschaltflächen oder zum Verschieben des Lesezeichens.
 
 Formularvalidierung, Normalisierung und Filteraufbau bleiben in PHP/Form API.
 CSS übernimmt Gestaltung, Umbrüche und responsive Anordnung.
@@ -80,3 +89,21 @@ Change-Handler von Unique Field AJAX, kontrolliert aber die Antwortzeiten lokal.
 Es werden keine Formulardaten an den Server gesendet. Geprüft werden direkte
 Speicherklicks, parallele Prüfungen, Austausch von Eingabefeldern und Buttons,
 Mehrfachklicks, native Validierung, Fehler, Reset und unbeteiligte Formulare.
+
+## Regressionstest für Formularhilfen
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/form-help.test.cjs
+```
+
+Die ausgegebene HTML-Datei im Browser öffnen. Der Test verwendet die tatsächliche
+Tooltip-Library und prüft Hover, Fokus, Escape, Klick, Verlassen, wiederholtes
+Attach, AJAX, geschlossene Details und die Position am Bildschirmrand. Er sendet
+keine Formulare ab. Zusätzlich mit schmalem Browserfenster prüfen. Die technischen
+Tests ersetzen keinen manuellen Test mit NVDA oder VoiceOver.
+
+Die Tooltip-Gestaltung nutzt Gins Variablen `--gin-tooltip-bg`, `--gin-border-s`
+und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
+`gin/tooltip`-Library erzeugt das Markup per JavaScript und bietet selbst keine
+ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
+bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.

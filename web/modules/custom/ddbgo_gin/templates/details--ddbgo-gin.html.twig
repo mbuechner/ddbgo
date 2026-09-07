@@ -27,6 +27,7 @@
   @todo Remove prefix after https://www.drupal.org/node/2981732 has been solved.
 #}
 {% set show_description_toggle = description_toggle and description %}
+{% set tooltip_id = 'ddbgo-help'|clean_unique_id %}
 {%
   set classes = [
     'claro-details',
@@ -54,7 +55,7 @@
   set description_classes = [
   'claro-details__description',
   disabled ? 'is-disabled',
-  description_display == 'invisible' ? 'visually-hidden',
+  description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
 ]
 %}
 <details{{ attributes.addClass(classes) }}>
@@ -72,13 +73,21 @@
       {{- title -}}
       <span class="required-mark"></span>
       {% if show_description_toggle %}
-        {{ attach_library('gin/gin_description_toggle') }}
         {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
-      description: description,
-    } only %}
+          description: description,
+          description_id: tooltip_id,
+        } only %}
       {% endif %}
     </summary>
   {%- endif -%}
+  {% if show_description_toggle %}
+    {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+      tooltip_attributes: create_attribute(),
+      tooltip_id: tooltip_id,
+      description_classes: description_classes,
+      description: description,
+    } only %}
+  {% endif %}
   <div{{ content_attributes.addClass(content_wrapper_classes) }}>
     {% if accordion or accordion_item %}
     <div{{ create_attribute({class: inner_wrapper_classes}) }}>
@@ -89,7 +98,7 @@
           {{ errors }}
         </div>
       {% endif %}
-      {%- if description -%}
+      {%- if description and not show_description_toggle -%}
         <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
       {%- endif -%}
       {%- if children -%}
