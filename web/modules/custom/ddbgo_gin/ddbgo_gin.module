@@ -186,6 +186,9 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
       }
       if (!empty($info['description'])) {
         $form[$value_key]['#description'] = $info['description'];
+        // Gin enables its help button automatically only on content forms.
+        // Opt exposed filters in as well, keeping their help text in Views config.
+        $form[$value_key]['#description_toggle'] = TRUE;
       }
     }
   }

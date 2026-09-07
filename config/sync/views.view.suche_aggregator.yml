@@ -175,11 +175,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -319,11 +319,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         title_1_1:
@@ -389,11 +389,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
       pager:
@@ -482,7 +482,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Suche nach ID, Aggregator oder Namen zugeordneter Einrichtungen und Bestände. Farbige Statusanzeigen und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -510,9 +510,10 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - nid_search
             - title
-            - title_1
             - title_2
+            - title_1
       style:
         type: table
         options:

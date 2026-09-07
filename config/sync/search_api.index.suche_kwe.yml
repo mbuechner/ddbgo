@@ -159,6 +159,15 @@ field_settings:
         - field.storage.node.field_zustimmungsformular
       module:
         - taxonomy
+  # Separate Volltextkopie: Das numerische ID-Feld bleibt fuer die Sortierung erhalten.
+  nid_search:
+    label: 'ID (Volltextsuche)'
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
 datasource_settings:
   'entity:node':
     bundles:
@@ -210,6 +219,18 @@ processor_settings:
     ignored: ._-
     overlap_cjk: 1
     minimum_word_size: '3'
+  # Views muessen dazu die Search-API-Ausgabe mit use_highlighting verwenden.
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
+    excerpt: false
+    excerpt_length: 256
+    excerpt_always: false
+    highlight: always
+    highlight_partial: true
+    exclude_fields: {  }
 tracker_settings:
   default:
     indexing_order: fifo

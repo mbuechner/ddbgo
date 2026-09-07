@@ -192,11 +192,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -276,7 +276,7 @@ display:
         field_kwe:
           id: field_kwe
           table: search_api_index_bestand
-          field: field_kwe
+          field: title_kwe
           relationship: none
           group_type: group
           admin_label: ''
@@ -336,33 +336,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         field_europeana_lieferung_enum:
           id: field_europeana_lieferung_enum
           table: search_api_index_bestand
-          field: field_europeana_lieferung_enum
+          field: name_5
           relationship: none
           group_type: group
           admin_label: ''
@@ -422,57 +406,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              akademischer_titel:
-                display_method: label
-              bestandsart:
-                display_method: label
-              bundesland:
-                display_method: label
-                view_mode: default
-              coding_da_vinci_event:
-                display_method: label
-              datenformat:
-                display_method: label
-              europeana:
-                display_method: label
-              europeanastatus:
-                display_method: label
-              favorienkarussell:
-                display_method: label
-              fragebogen:
-                display_method: label
-              ja_nein_feld:
-                display_method: label
-              ja_nein_teilweise_feld:
-                display_method: label
-              kultursparte:
-                display_method: label
-                view_mode: default
-              land:
-                display_method: label
-                view_mode: default
-              lieferweg:
-                display_method: label
-              medientyp:
-                display_method: label
-              personenrolle:
-                display_method: label
-              region_ort:
-                display_method: label
-              sichtbarkeit:
-                display_method: label
-              vertragskonstrukt:
-                display_method: label
-              vertragsstatus:
-                display_method: label
         field_ueber_welchen_weg:
           id: field_ueber_welchen_weg
           table: search_api_index_bestand
@@ -536,11 +476,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_2:
@@ -606,11 +546,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_ddb_objekte:
@@ -885,11 +825,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_7:
@@ -955,11 +895,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_datum_des_status_der_europ:
@@ -1191,7 +1131,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Suche in den angezeigten Texten, IDs, Objektzahlen und Datumsangaben. Farbige Statusanzeigen, die DDBdash-Linkspalte und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID, Anzahl der Objekte (einschließlich Medientypen), beide JIRA-Ticket-Spalten und Statusdatum.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -1219,16 +1159,18 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - field_jira_europeana
-            - field_jira_hauptticket
-            - field_jira_ticket_bei_europeana
-            - field_ueber_welchen_weg
-            - name
-            - name_1
             - nid
             - title
-            - title_aggregator
             - title_kwe
+            - name_5
+            - field_ueber_welchen_weg
+            - europeana_lieferung_search
+            - object_count_search
+            - field_jira_europeana
+            - field_jira_ticket_bei_europeana
+            - name_1
+            - name_7
+            - europeana_status_date_search
         field_europeana_lieferung_enum:
           id: field_europeana_lieferung_enum
           table: search_api_index_bestand

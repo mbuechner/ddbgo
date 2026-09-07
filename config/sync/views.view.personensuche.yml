@@ -178,11 +178,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_vorname:
@@ -248,11 +248,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_email:
@@ -447,7 +447,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
           delta_limit: 0
@@ -505,7 +505,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
         ddbgo_person_aggregator:
@@ -558,7 +558,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
       pager:
@@ -659,7 +659,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Suche nach ID, Namen, E-Mail, Telefonnummer oder zugeordneten Einrichtungen, Beständen und Aggregatoren. Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID, E-Mail und Telefonnummer.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -687,14 +687,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - ddbgo_person_aggregator
-            - ddbgo_person_bestand
-            - ddbgo_person_kwe
-            - field_email
+            - nid_search
             - field_nachname
-            - field_telefonnummer
             - field_vorname
-            - title
+            - field_email
+            - field_telefonnummer
+            - ddbgo_person_kwe
+            - ddbgo_person_bestand
+            - ddbgo_person_aggregator
       filter_groups:
         operator: AND
         groups: {  }

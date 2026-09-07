@@ -90,6 +90,15 @@ field_settings:
     dependencies:
       module:
         - node
+  # Separate Volltextkopie: Das numerische ID-Feld bleibt fuer die Sortierung erhalten.
+  nid_search:
+    label: 'ID (Volltextsuche)'
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
 datasource_settings:
   'entity:node':
     bundles:
@@ -142,6 +151,30 @@ processor_settings:
     ignored: ._-
     overlap_cjk: 1
     minimum_word_size: '2'
+  # Views muessen dazu die Search-API-Ausgabe mit use_highlighting verwenden.
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
+    excerpt: false
+    excerpt_length: 256
+    excerpt_always: false
+    highlight: always
+    highlight_partial: true
+    exclude_fields: {  }
+  html_filter:
+    weights:
+      preprocess_index: -50
+      preprocess_query: -50
+    all_fields: false
+    fields:
+      - ddbgo_person_aggregator
+      - ddbgo_person_bestand
+      - ddbgo_person_kwe
+    title: false
+    alt: false
+    tags: {  }
 tracker_settings:
   default:
     indexing_order: lifo

@@ -1,0 +1,5 @@
+services:
+  ddbgo_search.original_search_values:
+    class: Drupal\ddbgo_search\EventSubscriber\OriginalSearchValuesSubscriber
+    tags:
+      - { name: event_subscriber }

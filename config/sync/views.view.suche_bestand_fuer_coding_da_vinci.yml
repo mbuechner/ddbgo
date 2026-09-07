@@ -187,11 +187,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -271,7 +271,7 @@ display:
         field_kwe:
           id: field_kwe
           table: search_api_index_bestand
-          field: field_kwe
+          field: title_kwe
           relationship: none
           group_type: group
           admin_label: ''
@@ -331,29 +331,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         field_status_kwe:
           id: field_status_kwe
           table: search_api_index_bestand
@@ -431,7 +415,7 @@ display:
         field_aggregator:
           id: field_aggregator
           table: search_api_index_bestand
-          field: field_aggregator
+          field: title_aggregator
           relationship: none
           group_type: group
           admin_label: ''
@@ -491,29 +475,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         name_4:
           id: name_4
           table: search_api_index_bestand
@@ -577,11 +545,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_3:
@@ -647,17 +615,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_datenformat:
           id: field_datenformat
           table: search_api_index_bestand
-          field: field_datenformat
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
@@ -717,53 +685,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              akademischer_titel:
-                display_method: label
-              bestandsart:
-                display_method: label
-              bundesland:
-                display_method: label
-                view_mode: default
-              datenformat:
-                display_method: label
-              europeana:
-                display_method: label
-              fragebogen:
-                display_method: label
-              ja_nein_feld:
-                display_method: label
-              ja_nein_teilweise_feld:
-                display_method: label
-              kultursparte:
-                display_method: label
-                view_mode: default
-              land:
-                display_method: label
-                view_mode: default
-              lieferweg:
-                display_method: label
-              medientyp:
-                display_method: label
-              personenrolle_aggregator:
-                display_method: label
-              personenrolle_bestand:
-                display_method: label
-              personenrolle_kwe:
-                display_method: label
-              region_ort:
-                display_method: label
-              vertragskonstrukt:
-                display_method: label
-              vertragsstatus:
-                display_method: label
         field_jira_hauptticket:
           id: field_jira_hauptticket
           table: search_api_index_bestand
@@ -1107,7 +1035,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Suche in den angezeigten Textspalten und IDs. Farbige Statusanzeigen, die Linkspalten zu DDBdash und Coding da Vinci sowie Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID und JIRA-Hauptticket.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -1135,14 +1063,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - field_jira_hauptticket
-            - name
-            - name_1
-            - name_3
             - nid
             - title
-            - title_aggregator
             - title_kwe
+            - title_aggregator
+            - name_4
+            - name_3
+            - name
+            - field_jira_hauptticket
         field_coding_da_vinci_teilnahme:
           id: field_coding_da_vinci_teilnahme
           table: search_api_index_bestand

@@ -45,3 +45,4 @@ frontend_layout:
     - ddbgo_gin/icons
     - ddbgo_gin/theme_components
     - gin_frontend/global
+    - gin/gin_description_toggle

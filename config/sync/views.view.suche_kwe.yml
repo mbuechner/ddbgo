@@ -183,11 +183,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -329,11 +329,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name:
@@ -399,11 +399,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         zustimmungsformular:
@@ -469,11 +469,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         aggregated_sparte:
@@ -526,7 +526,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
           delta_limit: 0
@@ -596,11 +596,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_isil:
@@ -836,7 +836,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Suche in den angezeigten Textspalten und IDs. Farbige Statusanzeigen und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID und ISIL.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -866,15 +866,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - field_bemerkung
-            - field_ddb_id
-            - field_isil
-            - field_kurzname
+            - nid_search
+            - title
             - field_stadt
             - name
-            - sparte
-            - title
             - zustimmungsformular
+            - aggregated_sparte
+            - field_ddb_id
+            - field_isil
         field_sparte:
           id: field_sparte
           table: search_api_index_suche_kwe
