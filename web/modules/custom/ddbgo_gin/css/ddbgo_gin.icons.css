@@ -1,5 +1,5 @@
 /**
- * Global icon mapping for DDBgo content types and shared fields.
+ * Global icon mapping for DDBgo components, content types and shared fields.
  *
  * Components should consume these variables instead of defining their own
  * icon URLs so menus, page titles and field output always stay consistent.
@@ -10,4 +10,11 @@
   --ddbgo-content-type-icon-kwe: url("/libraries/fontawesome/svgs/solid/landmark.svg");
   --ddbgo-content-type-icon-person: url("/libraries/fontawesome/svgs/solid/users.svg");
   --ddbgo-field-icon-contact: url("/libraries/fontawesome/svgs/solid/address-book.svg");
+  --ddbgo-icon-account: url("/libraries/fontawesome/svgs/solid/circle-user.svg");
+  --ddbgo-icon-bookmark: url("/libraries/fontawesome/svgs/regular/bookmark.svg");
+  --ddbgo-icon-bookmark-filled: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
+  --ddbgo-icon-menu: url("/libraries/fontawesome/svgs/solid/bars.svg");
+  --ddbgo-icon-settings: url("/libraries/fontawesome/svgs/solid/gear.svg");
+  --ddbgo-icon-start: url("/modules/custom/ddbgo_gin/images/logo-signet-adaptive.svg");
+  --ddbgo-icon-success: url("/libraries/fontawesome/svgs/solid/circle-check.svg");
 }

@@ -588,7 +588,7 @@ display:
         options:
           submit_button: Suchen
           reset_button: true
-          reset_button_label: Reset
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: Sortierung
           expose_sort_order: false
           sort_asc_label: Asc

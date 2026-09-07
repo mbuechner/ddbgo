@@ -15,13 +15,13 @@ logo:
 third_party_settings:
   shortcut:
     module_link: true
-preset_accent_color: teal
+preset_accent_color: custom
 preset_focus_color: gin
 enable_darkmode: auto
 classic_toolbar: vertical
 secondary_toolbar_frontend: true
-high_contrast_mode: false
-accent_color: '#a5003b'
+high_contrast_mode: true
+accent_color: '#084441'
 focus_color: '#81002d'
 layout_density: small
 show_description_toggle: true

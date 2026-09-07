@@ -52,11 +52,11 @@
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-einstellungen {
-  --icon: url("/libraries/fontawesome/svgs/solid/gear.svg");
+  --icon: var(--ddbgo-icon-settings);
 }
 
 .toolbar .toolbar-bar .toolbar-icon-toolbar-menu-start {
-  --icon: url("/modules/custom/ddbgo_gin/images/logo-signet-adaptive.svg");
+  --icon: var(--ddbgo-icon-start);
 }
 
 /* Keep the DDB logo as image instead of monochrome mask. */
@@ -64,7 +64,7 @@
   -webkit-mask-image: none;
   mask-image: none;
   background-color: transparent;
-  background-image: url("/modules/custom/ddbgo_gin/images/logo-signet-adaptive.svg");
+  background-image: var(--ddbgo-icon-start);
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

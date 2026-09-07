@@ -1,0 +1,113 @@
+/**
+ * Gin-aware replacements for Claro's fixed table and dropbutton colors.
+ */
+
+table th {
+  color: var(--gin-color-text);
+  background: var(--gin-bg-layer2);
+}
+
+table th.sortable-heading.is-active {
+  color: var(--gin-color-primary);
+}
+
+table th.sortable-heading.is-active > a {
+  color: inherit;
+}
+
+table th.sortable-heading.is-active > a::before {
+  border-block-end-color: currentColor;
+  border-block-end-width: .125rem;
+}
+
+.gin--dark-mode table th,
+.gin--dark-mode table th .form-item__label {
+  color: var(--gin-color-text);
+}
+
+.gin--dark-mode table th.sortable-heading.is-active > a,
+.gin--dark-mode table th.sortable-heading.is-active > a:hover,
+.gin--dark-mode table th.sortable-heading.is-active > a:active {
+  color: var(--gin-color-primary) !important;
+}
+
+.gin--dark-mode table th.sortable-heading.is-active > a::before,
+.gin--dark-mode table th.sortable-heading > a:hover::before {
+  background-color: transparent;
+  border-block-end-width: .125rem;
+}
+
+.pager__items {
+  gap: var(--gin-spacing-xxs);
+}
+
+.pager__link,
+.pager__current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 2.25rem;
+  block-size: 2.25rem;
+  padding: var(--gin-spacing-xxs) var(--gin-spacing-xs);
+  border: 1px solid transparent;
+  border-radius: var(--gin-border-xs);
+  color: var(--gin-color-text);
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.pager .pager__link,
+.pager .pager__current {
+  border-radius: var(--gin-border-xs);
+}
+
+.pager .pager__item--first .pager__link::before,
+.pager .pager__item--previous .pager__link::before,
+.pager .pager__item--next .pager__link::after,
+.pager .pager__item--last .pager__link::after {
+  content: none !important;
+}
+
+.pager__link:hover {
+  color: var(--gin-color-button-text);
+  background: var(--gin-color-primary-hover);
+}
+
+.pager__link:focus-visible {
+  outline: 2px solid var(--gin-color-focus-border);
+  outline-offset: 2px;
+}
+
+.pager__current {
+  border-color: var(--gin-color-primary);
+  color: var(--gin-color-button-text);
+  background: var(--gin-color-primary);
+  cursor: default;
+}
+
+.pager__item--ellipsis {
+  color: var(--gin-color-text-light);
+}
+
+.dropbutton__toggle {
+  border-inline-start-color: var(--gin-border-color) !important;
+}
+
+.dropbutton__item:first-of-type ~ .dropbutton__item {
+  border-color: var(--gin-border-color);
+  background: var(--gin-bg-layer);
+}
+
+.dropbutton__item:first-of-type ~ .dropbutton__item > :is(a, .button) {
+  color: var(--gin-color-text);
+  background: var(--gin-bg-layer);
+}
+
+.dropbutton__item:first-of-type ~ .dropbutton__item > :is(a, .button):hover,
+.dropbutton__item:first-of-type ~ .dropbutton__item > :is(a, .button):focus-visible {
+  color: var(--gin-color-primary);
+  background: var(--gin-color-primary-light);
+}
+

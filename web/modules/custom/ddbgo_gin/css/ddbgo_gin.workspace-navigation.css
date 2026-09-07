@@ -8,6 +8,17 @@
   padding-block: 0;
   position: relative;
   z-index: 100;
+  border-block-end: 1px solid color-mix(in srgb, var(--gin-border-color) 72%, transparent);
+  background: var(--gin-bg-layer);
+  box-shadow: 0 1px 2px rgba(20, 20, 30, .04);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .gin-frontend .gin-frontend__header {
+    background: color-mix(in srgb, var(--gin-bg-layer) 84%, transparent);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    backdrop-filter: saturate(150%) blur(16px);
+  }
 }
 
 .gin-frontend .gin-frontend__header-inner {
@@ -51,7 +62,7 @@
 }
 
 .ddbgo-workspace-navigation__menu-toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/bars.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-icon-menu);
   appearance: none;
   box-sizing: border-box;
   display: none;
@@ -71,6 +82,12 @@
   font-weight: var(--gin-font-weight-normal, 400);
   line-height: normal;
   cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 120ms ease;
 }
 
 .ddbgo-workspace-navigation__menu-toggle::before {
@@ -127,6 +144,18 @@
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 120ms ease;
+}
+
+.ddbgo-workspace-navigation__menu-toggle:active,
+.ddbgo-workspace-navigation__toggle:active,
+.ddbgo-workspace-navigation__link:active {
+  transform: scale(.98);
 }
 
 .ddbgo-workspace-navigation__toggle::before,
@@ -194,12 +223,25 @@
   box-shadow: 0 0.75rem 1.75rem rgba(20, 20, 30, 0.18);
 }
 
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .ddbgo-workspace-navigation__dropdown {
+    background: color-mix(in srgb, var(--gin-bg-layer) 90%, transparent);
+    -webkit-backdrop-filter: saturate(145%) blur(18px);
+    backdrop-filter: saturate(145%) blur(18px);
+  }
+}
+
 .ddbgo-workspace-navigation__item:last-child .ddbgo-workspace-navigation__dropdown {
   inset-inline: auto 0;
 }
 
 .ddbgo-workspace-navigation__dropdown[hidden] {
   display: none;
+}
+
+.ddbgo-workspace-navigation__dropdown:not([hidden]) {
+  transform-origin: top center;
+  animation: ddbgo-menu-reveal 180ms cubic-bezier(.2, .8, .2, 1) both;
 }
 
 .ddbgo-workspace-navigation__dropdown .toolbar-menu,
@@ -236,6 +278,15 @@
   font-weight: var(--gin-font-weight-normal, 400);
   line-height: 1.3;
   text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 120ms ease;
+}
+
+.ddbgo-workspace-navigation__dropdown .toolbar-menu a:active {
+  transform: scale(.985);
 }
 
 .ddbgo-workspace-navigation__dropdown .toolbar-menu a:hover,
@@ -251,7 +302,7 @@
 }
 
 .ddbgo-workspace-navigation__item--start .ddbgo-workspace-navigation__toggle::before {
-  background: url("../images/logo-signet-adaptive.svg") center / contain no-repeat;
+  background: var(--ddbgo-icon-start) center / contain no-repeat;
   -webkit-mask: none;
   mask: none;
 }
@@ -273,12 +324,12 @@
 }
 
 .ddbgo-workspace-navigation__item--einstellungen .ddbgo-workspace-navigation__toggle {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/gear.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-icon-settings);
 }
 
 .ddbgo-workspace-navigation__toggle--account,
 .ddbgo-workspace-navigation__link--account {
-  --ddbgo-workspace-icon: url("/libraries/fontawesome/svgs/solid/circle-user.svg");
+  --ddbgo-workspace-icon: var(--ddbgo-icon-account);
 }
 
 /* Use compact, still-labelled icon controls before the menu would wrap. */
@@ -349,6 +400,8 @@
 
   .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
     display: flex;
+    transform-origin: top center;
+    animation: ddbgo-menu-reveal 180ms cubic-bezier(.2, .8, .2, 1) both;
   }
 
   .ddbgo-workspace-navigation__menu-toggle:hover,
@@ -400,6 +453,48 @@
     width: auto;
     min-height: 4rem;
     border-radius: 0;
+  }
+}
+
+@keyframes ddbgo-menu-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-.35rem) scale(.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ddbgo-workspace-navigation__menu-toggle,
+  .ddbgo-workspace-navigation__toggle,
+  .ddbgo-workspace-navigation__link,
+  .ddbgo-workspace-navigation__dropdown .toolbar-menu a {
+    transition: none;
+  }
+
+  .ddbgo-workspace-navigation__dropdown:not([hidden]),
+  .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
+    animation: none;
+  }
+
+  .ddbgo-workspace-navigation__menu-toggle:active,
+  .ddbgo-workspace-navigation__toggle:active,
+  .ddbgo-workspace-navigation__link:active,
+  .ddbgo-workspace-navigation__dropdown .toolbar-menu a:active {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .gin-frontend .gin-frontend__header,
+  .ddbgo-workspace-navigation__dropdown {
+    background: var(--gin-bg-layer);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 

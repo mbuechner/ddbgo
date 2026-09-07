@@ -168,6 +168,25 @@
   margin-inline: 0;
 }
 
+/* Long entity titles must remain fully readable at every viewport width. */
+.gin-frontend .gin-frontend__page-header .block-page-title-block {
+  width: 100%;
+  min-width: 0;
+}
+
+.gin-frontend .gin-frontend__page-header .page-title {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-inline-end: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
 /* Keep floating table headers at the viewport edge after branding scrolls. */
 .gin-frontend table.gin--sticky-table-header {
   top: 0 !important;
@@ -275,6 +294,38 @@
  * Present read-only field output inside details as scannable label/value rows.
  * The DOM order and native details/summary interaction remain unchanged.
  */
+.gin-frontend details.claro-details > .claro-details__summary {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.gin-frontend details.claro-details[open] > .claro-details__summary {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--gin-color-primary) 22%, transparent);
+}
+
+.gin-frontend details.claro-details[open] > .claro-details__wrapper {
+  transform-origin: top center;
+  animation: ddbgo-details-reveal 280ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes ddbgo-details-reveal {
+  from {
+    opacity: .2;
+    transform: translateY(-.4rem) scale(.995);
+  }
+
+  65% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .gin-frontend details.claro-details > .claro-details__wrapper > .claro-details__description {
   max-width: 80ch;
   margin: 0 0 var(--gin-spacing-m);
@@ -390,6 +441,34 @@
   border: 1px solid var(--gin-border-color-layer);
   border-radius: var(--gin-border-m);
   background: var(--gin-bg-layer);
+  box-shadow:
+    0 1px 2px rgba(20, 20, 30, .05),
+    0 4px 12px rgba(20, 20, 30, .03);
+  transition:
+    border-color 180ms ease,
+    box-shadow 220ms cubic-bezier(.2, .8, .2, 1),
+    transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gin-frontend :is(
+    .field--name-field-personen,
+    .field--name-field-kontakt
+  ).field__items > .field__item > .paragraph:hover {
+    border-color: color-mix(in srgb, var(--gin-color-primary) 35%, var(--gin-border-color-layer));
+    box-shadow:
+      0 2px 4px rgba(20, 20, 30, .06),
+      0 12px 28px rgba(20, 20, 30, .1);
+    transform: translateY(-2px);
+  }
+}
+
+.gin-frontend :is(
+  .field--name-field-personen,
+  .field--name-field-kontakt
+).field__items > .field__item > .paragraph:focus-within {
+  border-color: var(--gin-color-focus-border);
+  box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
 }
 
 .gin-frontend details.claro-details > .claro-details__wrapper > .field.field--name-field-kontakt.field__items {
@@ -544,8 +623,37 @@
   line-height: var(--input-line-height);
 }
 
-/* Compact, state-aware bookmark action above the details on full node pages. */
-.gin-frontend .node--view-mode-full .flag-bookmark {
+/* Keep local node tasks and the bookmark action in one responsive row. */
+.gin-frontend .ddbgo-page-actions {
+  position: relative;
+  display: flex;
+  gap: var(--gin-spacing-s);
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.gin-frontend .ddbgo-page-actions > .block-local-tasks-block {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+@media (min-width: 48em) {
+  .gin-frontend .ddbgo-page-actions .is-horizontal .tabs--primary {
+    width: auto;
+    overflow: visible;
+    flex-wrap: wrap;
+  }
+}
+
+/* Compact, state-aware bookmark action on full node pages. */
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) {
   display: grid;
   justify-items: end;
   gap: var(--gin-spacing-xxs);
@@ -555,7 +663,10 @@
   margin-inline-start: auto;
 }
 
-.gin-frontend .node--view-mode-full .flag-bookmark a {
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) a {
   display: inline-flex;
   align-items: center;
   gap: var(--gin-spacing-xxs);
@@ -567,32 +678,59 @@
   font-weight: var(--gin-font-weight-normal, 400);
   line-height: 1.2;
   text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 120ms ease;
 }
 
-.gin-frontend .node--view-mode-full .flag-bookmark a::before {
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) a:active {
+  transform: scale(.97);
+}
+
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) a::before {
   content: "";
   flex: 0 0 .75rem;
   width: .75rem;
   height: .75rem;
   background-color: currentColor;
-  -webkit-mask: url("/libraries/fontawesome/svgs/regular/bookmark.svg") center / contain no-repeat;
-  mask: url("/libraries/fontawesome/svgs/regular/bookmark.svg") center / contain no-repeat;
+  -webkit-mask: var(--ddbgo-icon-bookmark) center / contain no-repeat;
+  mask: var(--ddbgo-icon-bookmark) center / contain no-repeat;
 }
 
-.gin-frontend .node--view-mode-full .flag-bookmark.action-unflag a::before {
-  -webkit-mask-image: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
-  mask-image: url("/libraries/fontawesome/svgs/solid/bookmark.svg");
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+).action-unflag a::before {
+  -webkit-mask-image: var(--ddbgo-icon-bookmark-filled);
+  mask-image: var(--ddbgo-icon-bookmark-filled);
 }
 
-.gin-frontend .node--view-mode-full .flag-bookmark a:hover,
-.gin-frontend .node--view-mode-full .flag-bookmark a:focus-visible {
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) a:hover,
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) a:focus-visible {
   background: var(--gin-color-primary-light);
   color: var(--gin-color-primary-active);
   text-decoration: none;
 }
 
-/* AJAX feedback remains above the details and is also announced by Flag. */
-.gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message {
+/* Flag AJAX feedback appears below the action and is announced by Flag. */
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) .js-flag-message {
   display: inline-flex;
   align-items: flex-start;
   gap: var(--gin-spacing-xs);
@@ -602,8 +740,10 @@
   padding: var(--gin-spacing-xs) var(--gin-spacing-s);
   border: 1px solid var(--gin-color-green);
   border-radius: var(--gin-border-s);
-  background: var(--gin-bg-green-light);
+  background: var(--gin-bg-layer);
+  background: color-mix(in srgb, var(--gin-color-green) 10%, var(--gin-bg-layer));
   color: var(--gin-color-text);
+  box-shadow: 0 4px 14px rgba(20, 20, 30, .14);
   font-size: var(--gin-font-size-xs);
   line-height: 1.4;
   text-align: start;
@@ -611,29 +751,95 @@
   animation: ddbgo-flag-message 4s ease both;
 }
 
-.gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message::before {
+.gin-frontend :is(
+  .node--view-mode-full .flag-bookmark,
+  .ddbgo-page-actions .flag-bookmark
+) .js-flag-message::before {
   content: "";
   flex: 0 0 1rem;
   width: 1rem;
   height: 1rem;
   margin-block-start: .1em;
   background-color: var(--gin-color-green);
-  -webkit-mask: url("/libraries/fontawesome/svgs/solid/circle-check.svg") center / contain no-repeat;
-  mask: url("/libraries/fontawesome/svgs/solid/circle-check.svg") center / contain no-repeat;
+  -webkit-mask: var(--ddbgo-icon-success) center / contain no-repeat;
+  mask: var(--ddbgo-icon-success) center / contain no-repeat;
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
+  position: absolute;
+  inset-block-start: calc(100% + var(--gin-spacing-xs));
+  inset-inline-end: 0;
+  z-index: 20;
+  width: max-content;
+  max-width: min(30rem, calc(100vw - var(--gin-spacing-m) - var(--gin-spacing-m)));
+}
+
+@media (max-width: 48em) {
+  .gin-frontend .ddbgo-page-actions {
+    display: block;
+  }
+
+  .gin-frontend .ddbgo-page-actions > .block-local-tasks-block {
+    width: 100%;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark {
+    position: absolute;
+    inset-block-start: .875rem;
+    inset-inline-end: 3.25rem;
+    z-index: 2;
+    transform: none;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark a {
+    justify-content: center;
+    gap: 0;
+    box-sizing: border-box;
+    width: 2rem;
+    min-height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--gin-border-s);
+    background: transparent;
+    box-shadow: none;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark a::before {
+    flex: 0 0 auto;
+    width: .875rem;
+    height: .875rem;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark.action-unflag a {
+    background: var(--gin-color-primary-light);
+    color: var(--gin-color-primary-active);
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
+    inset-inline-end: -3.25rem;
+    width: min(20rem, calc(100vw - var(--gin-spacing-m) - var(--gin-spacing-m)));
+    max-width: none;
+  }
 }
 
 @keyframes ddbgo-flag-message {
   0% {
-    opacity: 0;
-  }
-
-  10%,
-  85% {
     opacity: 1;
+    transform: translateY(-.25rem) scale(.985);
   }
 
+  12%,
   100% {
-    opacity: 0;
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -645,7 +851,40 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gin-frontend .node--view-mode-full .flag-bookmark .js-flag-message {
+  .gin-frontend details.claro-details > .claro-details__summary {
+    transition: none;
+  }
+
+  .gin-frontend details.claro-details[open] > .claro-details__wrapper {
+    animation: none;
+  }
+
+  .gin-frontend :is(
+    .field--name-field-personen,
+    .field--name-field-kontakt
+  ).field__items > .field__item > .paragraph,
+  .gin-frontend :is(
+    .node--view-mode-full .flag-bookmark,
+    .ddbgo-page-actions .flag-bookmark
+  ) a {
+    transition: none;
+  }
+
+  .gin-frontend :is(
+    .field--name-field-personen,
+    .field--name-field-kontakt
+  ).field__items > .field__item > .paragraph:hover,
+  .gin-frontend :is(
+    .node--view-mode-full .flag-bookmark,
+    .ddbgo-page-actions .flag-bookmark
+  ) a:active {
+    transform: none;
+  }
+
+  .gin-frontend :is(
+    .node--view-mode-full .flag-bookmark,
+    .ddbgo-page-actions .flag-bookmark
+  ) .js-flag-message {
     animation-name: ddbgo-flag-message-reduced-motion;
   }
 }
@@ -680,9 +919,10 @@ body.gin--edit-form .gin-frontend .layout-region-node-secondary {
 }
 
 body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+  align-self: start;
   position: static;
   height: auto;
-  margin: 0;
+  margin-block: 0;
   overflow: visible;
   visibility: visible;
   opacity: 1;
@@ -710,11 +950,18 @@ body.gin--edit-form .gin-frontend .meta-sidebar__close {
     grid-column: 1;
   }
 
+  body.gin--edit-form .gin-frontend .layout-region-node-main {
+    grid-row: 1;
+    align-self: start;
+    margin-block: 0;
+  }
+
   body.gin--edit-form .gin-frontend .layout-region-node-secondary {
     grid-column: 2;
     grid-row: 1;
     position: sticky;
     inset-block-start: calc(var(--gin-toolbar-y-offset) + var(--gin-spacing-l));
+    margin-block-start: var(--gin-spacing-m);
     max-height: calc(100vh - var(--gin-toolbar-y-offset) - var(--gin-spacing-xxl));
     overflow-y: auto;
     background: var(--gin-bg-layer);

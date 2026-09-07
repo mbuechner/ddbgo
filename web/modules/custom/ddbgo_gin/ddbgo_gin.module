@@ -27,10 +27,13 @@ function ddbgo_gin_page_attachments(array &$attachments): void {
     $attachments['#attached']['library'][] = 'ddbgo_gin/frontend_layout';
   }
 
-  if (
-    !$is_gin_based_theme ||
-    !\Drupal::currentUser()->hasPermission('access toolbar')
-  ) {
+  if (!$is_gin_based_theme) {
+    return;
+  }
+
+  $attachments['#attached']['library'][] = 'ddbgo_gin/theme_components';
+
+  if (!\Drupal::currentUser()->hasPermission('access toolbar')) {
     return;
   }
 
@@ -59,6 +62,10 @@ function ddbgo_gin_theme(): array {
     'block__ddbgo_linked_content_view' => [
       'base hook' => 'block',
       'template' => 'block--ddbgo-linked-content-view',
+    ],
+    'pager__ddbgo_gin' => [
+      'base hook' => 'pager',
+      'template' => 'pager--ddbgo-gin',
     ],
     'ddbgo_workspace_navigation' => [
       'variables' => [
@@ -124,6 +131,18 @@ function ddbgo_gin_theme_suggestions_page_alter(array &$suggestions): void {
 
   if ($is_gin_frontend) {
     $suggestions[] = 'page__gin_frontend';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for pagers.
+ */
+function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+  $is_gin_based_theme = $active_theme->getName() === 'gin' || isset($active_theme->getBaseThemeExtensions()['gin']);
+
+  if ($is_gin_based_theme) {
+    $suggestions[] = 'pager__ddbgo_gin';
   }
 }
 
@@ -208,11 +227,10 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   }
 
   if ($tag_filter_keys !== [] && isset($form['actions']['submit'])) {
-    // Use Better Exposed Filters' field-level autosubmit. Tagify dispatches a
-    // native change event on its underlying select after add/remove, which BEF
-    // forwards to the existing Views submit button (including AJAX behavior).
-    $form['actions']['submit']['#attributes']['data-bef-auto-submit-click'] = '';
-    $form['#attached']['library'][] = 'better_exposed_filters/auto_submit';
+    // Keep the regular Views submit as the single submission path. The
+    // frontend behavior clicks it after Tagify has synchronized its select,
+    // preserving both normal and AJAX-enabled Views behavior.
+    $form['actions']['submit']['#attributes']['data-ddbgo-tag-auto-submit-click'] = '';
   }
 
   $details = [
@@ -232,6 +250,10 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
     }
     else {
       $form[$key]['#wrapper_attributes']['class'][] = 'views-exposed-form__item';
+      // Keep Views' configured identifier in the submitted request even
+      // though the element is rendered inside the details container.
+      $form[$key]['#parents'] = [$key];
+      $form[$key]['#name'] = $key;
     }
 
     $details[$key] = $form[$key];
@@ -244,7 +266,7 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   // available as the full-width final row directly above the view results.
   foreach ($tag_filter_keys as $key) {
     $form[$key]['#weight'] = -90;
-    $form[$key]['#attributes']['data-bef-auto-submit'] = '';
+    $form[$key]['#attributes']['data-ddbgo-tag-auto-submit'] = '';
     $form[$key]['#wrapper_attributes']['class'][] = 'ddbgo-exposed-filter--tags';
   }
 
@@ -283,7 +305,7 @@ function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): b
 /**
  * Implements hook_form_alter().
  *
- * Normalizes editorial values for the supported DDBgo content types.
+ * Normalizes shared controls and values in DDBgo forms.
  */
 function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
   $normalized = strtolower(trim($identifier));
@@ -415,6 +437,8 @@ function ddbgo_gin_preprocess_flag(array &$variables): void {
 }
 
 function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  ddbgo_gin_set_reset_button_labels($form);
+
   if ($form_id === 'views_form_flag_bookmark_page') {
     ddbgo_gin_alter_bookmark_bulk_form($form);
   }
@@ -445,6 +469,19 @@ function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, stri
   }
 
   $form['#validate'] = $validators;
+}
+
+/**
+ * Uses one consistent German label for native form reset controls.
+ */
+function ddbgo_gin_set_reset_button_labels(array &$element): void {
+  if (($element['#type'] ?? NULL) === 'reset') {
+    $element['#value'] = new TranslatableMarkup('Zurücksetzen');
+  }
+
+  foreach (Element::children($element) as $key) {
+    ddbgo_gin_set_reset_button_labels($element[$key]);
+  }
 }
 
 /**
