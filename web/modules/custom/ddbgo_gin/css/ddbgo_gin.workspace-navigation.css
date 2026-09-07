@@ -297,15 +297,6 @@
   list-style: none;
 }
 
-/* Gin's structural home entry and extra expander are not workspace actions. */
-.ddbgo-workspace-navigation__dropdown .toolbar-menu .menu-item__tools {
-  display: none;
-}
-
-.ddbgo-workspace-navigation__dropdown .toolbar-menu__trigger {
-  display: none !important;
-}
-
 /* Long labels may wrap at every viewport size, including compact tablet menus. */
 .ddbgo-workspace-navigation__dropdown .toolbar-menu a,
 .gin-frontend__primary-menu .ddbgo-workspace-navigation__dropdown .toolbar-menu a {

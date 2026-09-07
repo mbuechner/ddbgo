@@ -1,0 +1,19 @@
+{# Workspace panels are link lists, without Gin's toolbar home/close controls. #}
+{% import _self as menus %}
+{{ menus.links(items, attributes) }}
+
+{% macro links(items, attributes) %}
+  {% if items %}
+    <ul{{ attributes.addClass('toolbar-menu') }}>
+      {% for item in items %}
+        <li{{ item.attributes }}>
+          {{ link(item.title, item.url, {
+            'class': item.ddbgo_current ? ['is-active'] : [],
+            'aria-current': item.ddbgo_current ? 'page' : null,
+          }) }}
+          {{ _self.links(item.below, create_attribute()) }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

@@ -13,8 +13,8 @@
       <ul id="ddbgo-workspace-navigation-menu" class="ddbgo-workspace-navigation__list">
         {% for item in items %}
           {% set panel_id = 'ddbgo-workspace-navigation-' ~ item.id|clean_id %}
-          <li class="ddbgo-workspace-navigation__item ddbgo-workspace-navigation__item--{{ item.id|clean_class }}">
-            <button class="ddbgo-workspace-navigation__toggle toolbar-icon-toolbar-menu-{{ item.id|clean_class }}" type="button" aria-label="{{ item.label }}" title="{{ item.label }}" aria-expanded="false" aria-controls="{{ panel_id }}">
+          <li class="ddbgo-workspace-navigation__item ddbgo-workspace-navigation__item--{{ item.id|clean_class }}{{ item.active ? ' has-active-link' : '' }}">
+            <button class="ddbgo-workspace-navigation__toggle toolbar-icon-toolbar-menu-{{ item.id|clean_class }}" type="button" aria-label="{{ item.label }}" title="{{ item.label }}" aria-expanded="false" aria-controls="{{ panel_id }}"{% if item.active %} aria-current="true"{% endif %}>
               <span>{{ item.label }}</span>
             </button>
             <div id="{{ panel_id }}" class="ddbgo-workspace-navigation__dropdown" hidden>

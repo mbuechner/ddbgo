@@ -1,0 +1,10 @@
+{#
+  Shared markup for Gin's help buttons. The name and existing help text
+  are available before behaviors run, including in server-rendered AJAX forms.
+  Gin's existing behavior remains responsible for opening the description.
+#}
+<button class="help-icon__description-toggle" type="button"
+  aria-label="{{ mouseover ? 'Hilfe zu @label'|t({'@label': label|striptags|trim}) : 'Weitere Informationen'|t }}"
+  {% if description %}title="{{ description|render|striptags|trim }}"{% endif %}
+  {% if description_id %}aria-controls="{{ description_id }}"{% endif %}>
+</button>

@@ -37,7 +37,6 @@ frontend_layout:
     theme:
       css/ddbgo_gin.frontend-layout.css: {}
   js:
-    js/ddbgo_gin.bookmark.js: {}
     js/ddbgo_gin.exposed-filters.js: {}
   dependencies:
     - core/drupal

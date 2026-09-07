@@ -5,6 +5,7 @@
  * DDBgo integration and behavior for Gin-based themes.
  */
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -58,7 +59,7 @@ function ddbgo_gin_toolbar_alter(array &$items): void {
  * Implements hook_theme().
  */
 function ddbgo_gin_theme(): array {
-  return [
+  $hooks = [
     'block__ddbgo_linked_content_view' => [
       'base hook' => 'block',
       'template' => 'block--ddbgo-linked-content-view',
@@ -77,6 +78,38 @@ function ddbgo_gin_theme(): array {
       'template' => 'ddbgo-workspace-navigation',
     ],
   ];
+
+  // Explicit suggestions let module templates override Gin without changing
+  // the installed theme. Keep Gin's preprocessors through the base hooks.
+  foreach (['form_element', 'fieldset', 'details', 'datetime_wrapper', 'menu', 'flag'] as $hook) {
+    $hooks[$hook . '__ddbgo_gin'] = [
+      'base hook' => $hook,
+      'template' => str_replace('_', '-', $hook) . '--ddbgo-gin',
+    ];
+  }
+  $hooks['ddbgo_page_actions'] = [
+    'variables' => ['tasks' => [], 'bookmark' => []],
+    'template' => 'ddbgo-page-actions',
+  ];
+  return $hooks;
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ *
+ * Use accessible form wrappers only with Gin. Workspace menus opt in through
+ * their render array, so administration menus keep their own templates.
+ */
+function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables, string $hook): void {
+  $theme = \Drupal::service('theme.manager')->getActiveTheme();
+  if ($theme->getName() !== 'gin' && !isset($theme->getBaseThemeExtensions()['gin'])) {
+    return;
+  }
+  if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper'], TRUE)
+    || ($hook === 'menu' && ($variables['theme_hook_original'] ?? '') === 'menu__ddbgo_gin')
+    || ($hook === 'flag' && ($variables['flag'] ?? NULL)?->id() === 'bookmark')) {
+    $suggestions[] = $hook . '__ddbgo_gin';
+  }
 }
 
 /**
@@ -189,6 +222,7 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
         // Gin enables its help button automatically only on content forms.
         // Opt exposed filters in as well, keeping their help text in Views config.
         $form[$value_key]['#description_toggle'] = TRUE;
+        $form[$value_key]['#ddbgo_help_mouseover'] = TRUE;
       }
     }
   }
@@ -306,9 +340,7 @@ function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): b
 }
 
 /**
- * Implements hook_form_alter().
- *
- * Normalizes shared controls and values in DDBgo forms.
+ * Resolves a DDBgo bundle name from route and View identifiers.
  */
 function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
   $normalized = strtolower(trim($identifier));
@@ -329,6 +361,9 @@ function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
   return NULL;
 }
 
+/**
+ * Determines the workspace for content, edit forms and search displays.
+ */
 function ddbgo_gin_resolve_bundle_from_route(): ?string {
   $route_match = \Drupal::routeMatch();
 
@@ -383,6 +418,9 @@ function ddbgo_gin_resolve_bundle_from_route(): ?string {
   return NULL;
 }
 
+/**
+ * Accepts either Drupal Attribute objects or unprocessed attribute arrays.
+ */
 function ddbgo_gin_attribute_from_value(mixed $attributes): Attribute {
   if ($attributes instanceof Attribute) {
     return $attributes;
@@ -395,16 +433,9 @@ function ddbgo_gin_attribute_from_value(mixed $attributes): Attribute {
   return new Attribute();
 }
 
-function ddbgo_gin_preprocess_html(array &$variables): void {
-  $bundle = ddbgo_gin_resolve_bundle_from_route();
-
-  if ($bundle !== NULL && in_array($bundle, ['kwe', 'bestand', 'person', 'aggregator'], TRUE)) {
-    $attributes = ddbgo_gin_attribute_from_value($variables['html_attributes'] ?? []);
-    $attributes->setAttribute('data-ddbgo-node-bundle', $bundle);
-    $variables['html_attributes'] = $attributes;
-  }
-}
-
+/**
+ * Implements hook_preprocess_page_title().
+ */
 function ddbgo_gin_preprocess_page_title(array &$variables): void {
   $bundle = ddbgo_gin_resolve_bundle_from_route();
 
@@ -419,6 +450,68 @@ function ddbgo_gin_preprocess_page_title(array &$variables): void {
 }
 
 /**
+ * Finds the visible primary tab block that can host the current node's bookmark.
+ *
+ * Check the block placement/access instead of assuming a configured block ID.
+ * Bubble these dependencies even when no block is visible so cached node links
+ * also update when administrators change the header or its visibility rules.
+ */
+function ddbgo_gin_bookmark_header_block(CacheableMetadata $cache): ?string {
+  $cache->addCacheContexts(['route', 'theme'])->addCacheTags(['config:block_list']);
+  $theme = \Drupal::service('theme.manager')->getActiveTheme();
+  if (($theme->getName() !== 'gin_frontend' && !isset($theme->getBaseThemeExtensions()['gin_frontend']))
+    || \Drupal::routeMatch()->getRouteName() !== 'entity.node.canonical'
+    || !\Drupal::routeMatch()->getParameter('node') instanceof NodeInterface) {
+    return NULL;
+  }
+  $region_cache = [];
+  $regions = \Drupal::service('block.repository')->getVisibleBlocksPerRegion($region_cache);
+  if (isset($region_cache['header'])) {
+    $cache->addCacheableDependency($region_cache['header']);
+  }
+  foreach ($regions['header'] ?? [] as $id => $block) {
+    $cache->addCacheableDependency($block);
+    if ($block->getPluginId() === 'local_tasks_block' && $block->getPlugin()->getConfiguration()['primary']) {
+      return $id;
+    }
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Render the bookmark beside the tabs without moving DOM nodes after load.
+ * Flag's link builder retains access checks, AJAX behavior and user cache data.
+ */
+function ddbgo_gin_preprocess_page(array &$variables): void {
+  $cache = CacheableMetadata::createFromRenderArray($variables);
+  $block_id = ddbgo_gin_bookmark_header_block($cache);
+  $cache->applyTo($variables);
+  if ($block_id === NULL || !isset($variables['page']['header'][$block_id]) || !\Drupal::hasService('flag')) {
+    return;
+  }
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $flags = \Drupal::service('flag')->getAllFlags('node', $node->bundle());
+  $flag = $flags['bookmark'] ?? NULL;
+  $cache->addCacheTags(['config:flag.flag.bookmark'])->applyTo($variables);
+  if ($flag === NULL || !$flag->status() || !in_array('full', $flag->get('flagTypeConfig')['show_in_links'] ?? [], TRUE)) {
+    return;
+  }
+  // Keep Flag's lazy placeholder: the personal flag state must not be baked
+  // into the cached page alongside the otherwise shared local tasks.
+  $bookmark = [
+    '#lazy_builder' => ['flag.link_builder:build', ['node', $node->id(), 'bookmark', 'ddbgo_page_actions']],
+    '#create_placeholder' => TRUE,
+  ];
+  $variables['page']['header'][$block_id] = [
+    '#theme' => 'ddbgo_page_actions',
+    '#tasks' => $variables['page']['header'][$block_id],
+    '#bookmark' => $bookmark,
+  ];
+}
+
+/**
  * Implements hook_preprocess_HOOK() for flag links.
  *
  * A bookmark removed from the bookmark View no longer belongs in its result
@@ -426,6 +519,14 @@ function ddbgo_gin_preprocess_page_title(array &$variables): void {
  * immediately omits the affected row.
  */
 function ddbgo_gin_preprocess_flag(array &$variables): void {
+  if (($variables['flag'] ?? NULL)?->id() === 'bookmark' && ($variables['view_mode'] ?? NULL) === 'full'
+    && in_array('full', $variables['flag']->get('flagTypeConfig')['show_in_links'] ?? [], TRUE)) {
+    $cache = CacheableMetadata::createFromRenderArray($variables);
+    $variables['ddbgo_bookmark_in_header'] = ddbgo_gin_bookmark_header_block($cache) !== NULL
+      && ($variables['flaggable'] ?? NULL)?->id() === \Drupal::routeMatch()->getParameter('node')?->id();
+    $cache->applyTo($variables);
+  }
+
   if (
     \Drupal::routeMatch()->getRouteName() !== 'view.flag_bookmark.page'
     || ($variables['action'] ?? NULL) !== 'unflag'
@@ -439,6 +540,11 @@ function ddbgo_gin_preprocess_flag(array &$variables): void {
   $variables['attributes'] = $attributes;
 }
 
+/**
+ * Implements hook_form_alter().
+ *
+ * Form values and validation belong in Form API, independently of the theme.
+ */
 function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   ddbgo_gin_set_reset_button_labels($form);
 

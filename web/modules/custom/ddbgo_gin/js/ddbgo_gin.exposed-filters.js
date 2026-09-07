@@ -1,6 +1,6 @@
 /**
  * @file
- * Adds search help and keeps Tagify-based Views filters in sync with results.
+ * Keeps Gin help relationships and Tagify-based Views filters in sync.
  */
 
 (function (Drupal, once) {
@@ -17,14 +17,9 @@
           return;
         }
 
-        // Keep Gin's click/keyboard toggle and add the same text as a native
-        // mouseover hint. The button must never submit the exposed search form.
-        button.type = 'button';
-        button.title = description.textContent.trim();
-        const label = container.querySelector('label');
-        button.setAttribute('aria-label', Drupal.t('Hilfe zu @label', {
-          '@label': label ? label.textContent.trim() : Drupal.t('Filter'),
-        }));
+        // Names, types and mouseover text are rendered by Twig. Gin currently
+        // overwrites aria-controls with "target" during attachment; restore the
+        // actual description ID after that behavior, including AJAX refreshes.
         if (description.id) {
           button.setAttribute('aria-controls', description.id);
         }
@@ -39,31 +34,31 @@
         '[data-ddbgo-tag-auto-submit]',
         context,
       ).forEach((tagFilter) => {
-          let isSubmitQueued = false;
-          let pendingSelection = '';
+        let isSubmitQueued = false;
+        let pendingSelection = '';
 
-          const selectedValues = () =>
-            Array.from(tagFilter.selectedOptions, (option) => option.value)
-              .sort()
-              .join('\u0000');
+        const selectedValues = () =>
+          Array.from(tagFilter.selectedOptions, (option) => option.value)
+            .sort()
+            .join('\u0000');
 
         tagFilter.addEventListener('change', () => {
-            pendingSelection = selectedValues();
+          pendingSelection = selectedValues();
 
-            if (isSubmitQueued) {
+          if (isSubmitQueued) {
+            return;
+          }
+
+          isSubmitQueued = true;
+
+          // Tagify emits multiple synchronous change events while updating
+          // its hidden select. Submit only after that update cycle has ended.
+          window.queueMicrotask(() => {
+            isSubmitQueued = false;
+
+            if (selectedValues() !== pendingSelection) {
               return;
             }
-
-            isSubmitQueued = true;
-
-            // Tagify emits multiple synchronous change events while updating
-            // its hidden select. Submit only after that update cycle has ended.
-            window.queueMicrotask(() => {
-              isSubmitQueued = false;
-
-              if (selectedValues() !== pendingSelection) {
-                return;
-              }
 
             const form = tagFilter.closest('form');
             if (!form) {

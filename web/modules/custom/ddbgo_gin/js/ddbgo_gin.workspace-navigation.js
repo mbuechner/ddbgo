@@ -13,35 +13,6 @@
 
 (function (Drupal, once) {
   /**
-   * Highlights the workspace associated with the current content type.
-   *
-   * @param {HTMLElement} navigation
-   *   Workspace navigation root.
-   * @param {string} bundleName
-   *   Drupal bundle machine name matching a workspace item's CSS suffix.
-   */
-  function setActiveWorkspaceItem(navigation, bundleName) {
-    navigation.querySelectorAll('.ddbgo-workspace-navigation__item').forEach((item) => {
-      item.classList.remove('has-active-link');
-      const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
-      if (toggle) {
-        toggle.removeAttribute('aria-current');
-      }
-    });
-
-    const item = navigation.querySelector(`.ddbgo-workspace-navigation__item--${bundleName}`);
-    if (!item) {
-      return;
-    }
-
-    item.classList.add('has-active-link');
-    const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
-    if (toggle) {
-      toggle.setAttribute('aria-current', 'page');
-    }
-  }
-
-  /**
    * Keeps an open floating panel one root-font-size away from viewport edges.
    *
    * Mobile panels use normal document flow and need no horizontal correction.
@@ -167,9 +138,6 @@
           navigation.querySelectorAll('.ddbgo-workspace-navigation__item.is-open').forEach(positionDropdown);
         });
 
-        // The workspace buttons replace Gin's nested toolbar expanders.
-        navigation.querySelectorAll('.toolbar-menu__trigger').forEach((trigger) => trigger.remove());
-
         // Native button clicks cover mouse, touch, Enter and Space alike.
         navigation.querySelectorAll('.ddbgo-workspace-navigation__item').forEach((item) => {
           const toggle = item.querySelector(':scope > .ddbgo-workspace-navigation__toggle');
@@ -186,31 +154,6 @@
               closeItem(item);
             }
           });
-        });
-
-        // Content/edit pages belong to their bundle's workspace even when
-        // their URL is not one of the menu's direct destinations.
-        const activeBundle = document.documentElement.dataset.ddbgoNodeBundle
-          || document.documentElement.getAttribute('data-ddbgo-node-bundle');
-        if (activeBundle) {
-          setActiveWorkspaceItem(navigation, activeBundle);
-        }
-
-        // Otherwise match paths, ignoring query strings and trailing slashes.
-        const currentPath = new URL(window.location.href).pathname.replace(/\/$/, '') || '/';
-        navigation.querySelectorAll('.ddbgo-workspace-navigation__dropdown a[href]').forEach((link) => {
-          // Gin prepends a hidden home link to every toolbar menu. It is only
-          // structural and must never determine the active workspace tab.
-          if (link.closest('.menu-item__tools')) {
-            return;
-          }
-
-          const linkPath = new URL(link.href, document.baseURI).pathname.replace(/\/$/, '') || '/';
-          if (!activeBundle && linkPath === currentPath && link.getAttribute('href') !== '#') {
-            link.classList.add('is-active');
-            link.setAttribute('aria-current', 'page');
-            link.closest('.ddbgo-workspace-navigation__item')?.classList.add('has-active-link');
-          }
         });
 
         // Escape closes the inner panel first, then the mobile list if needed.
