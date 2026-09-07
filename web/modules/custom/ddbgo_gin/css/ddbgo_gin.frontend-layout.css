@@ -502,13 +502,17 @@
   overflow-wrap: anywhere;
 }
 
-.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person::before {
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person::before,
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum::before {
   content: "";
   flex: 0 0 1rem;
   width: 1rem;
   height: 1rem;
   margin-block-start: .15em;
   background-color: var(--gin-color-primary);
+}
+
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person::before {
   -webkit-mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
   mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
 }
@@ -525,12 +529,6 @@
 }
 
 .gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum::before {
-  content: "";
-  flex: 0 0 1rem;
-  width: 1rem;
-  height: 1rem;
-  margin-block-start: .15em;
-  background-color: var(--gin-color-primary);
   -webkit-mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
   mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
 }

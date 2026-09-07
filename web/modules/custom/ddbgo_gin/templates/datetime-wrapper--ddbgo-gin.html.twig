@@ -18,7 +18,7 @@
     'form-datetime-wrapper',
     show_description_toggle ? 'help-icon__description-container',
   ]
-  %}
+%}
 {%
   set title_classes = [
     'form-item__label',
@@ -35,17 +35,15 @@
 %}
 <div {{ attributes.addClass(classes) }}>
   {% if show_description_toggle %}
-  <div class="help-icon ddbgo-form-help">
+    <div class="help-icon ddbgo-form-help">
   {% endif %}
   {% if title %}
-  <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
+    <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
   {% endif %}
   {% if show_description_toggle %}
-    {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
-      description: description,
-      description_id: tooltip_id,
-    } only %}
-    {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+    {% include '@ddbgo_gin/ddbgo-help.html.twig' with {
+      label: null,
+      contextual_label: false,
       tooltip_attributes: description_attributes,
       tooltip_id: tooltip_id,
       description_classes: description_classes,
@@ -54,14 +52,14 @@
   </div>
   {% endif %}
   {{ content }}
-{% if errors %}
-  <div class="form-item__error-message">
-    {{ errors }}
-  </div>
-{% endif %}
-{% if description and not show_description_toggle %}
-  <div{{ description_attributes.addClass(description_classes) }}>
-    {{ description }}
-  </div>
-{% endif %}
+  {% if errors %}
+    <div class="form-item__error-message">
+      {{ errors }}
+    </div>
+  {% endif %}
+  {% if description and not show_description_toggle %}
+    <div{{ description_attributes.addClass(description_classes) }}>
+      {{ description }}
+    </div>
+  {% endif %}
 </div>

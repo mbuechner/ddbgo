@@ -35,19 +35,15 @@ js-form-type-[something] exists on form items. We have to keep them.
     description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
   ]
 %}
-<div{{ attributes.addClass(classes) }}>
-  {% if label_display in ['before', 'invisible'] %}
+{# Render once: checkbox/radio labels follow their input, other labels precede it. #}
+{% set label_with_help %}
+  {% if label_display in ['before', 'after', 'invisible'] %}
     {% if show_description_toggle %}
       <div class="help-icon ddbgo-form-help">
         {{ label }}
-        {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
+        {% include '@ddbgo_gin/ddbgo-help.html.twig' with {
           label: element['#title'],
-          description: description.content,
-          description_id: tooltip_id,
-          mouseover: element['#ddbgo_help_mouseover'],
-        } only %}
-        {# Keep the description next to its help button in reading order. #}
-        {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+          contextual_label: element['#ddbgo_help_mouseover'],
           tooltip_attributes: description.attributes,
           tooltip_id: tooltip_id,
           description_classes: description_classes,
@@ -57,6 +53,11 @@ js-form-type-[something] exists on form items. We have to keep them.
     {% else %}
       {{ label }}
     {% endif %}
+  {% endif %}
+{% endset %}
+<div{{ attributes.addClass(classes) }}>
+  {% if label_display in ['before', 'invisible'] %}
+    {{ label_with_help }}
   {% endif %}
   {% if show_description_toggle %}
   <div class="help-icon__element-has-description">
@@ -74,26 +75,7 @@ js-form-type-[something] exists on form items. We have to keep them.
     <span class="form-item__suffix{{disabled == 'disabled' ? ' is-disabled'}}">{{ suffix }}</span>
   {% endif %}
   {% if label_display == 'after' %}
-    {% if show_description_toggle %}
-      <div class="help-icon ddbgo-form-help">
-        {{ label }}
-        {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
-          label: element['#title'],
-          description: description.content,
-          description_id: tooltip_id,
-          mouseover: element['#ddbgo_help_mouseover'],
-        } only %}
-        {# Keep the description next to its help button in reading order. #}
-        {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
-          tooltip_attributes: description.attributes,
-          tooltip_id: tooltip_id,
-          description_classes: description_classes,
-          description: description.content,
-        } only %}
-      </div>
-    {% else %}
-      {{ label }}
-    {% endif %}
+    {{ label_with_help }}
   {% endif %}
   {% if show_description_toggle %}
   </div>

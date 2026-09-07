@@ -32,42 +32,42 @@
 {% set tooltip_id = description.attributes.id ?: 'ddbgo-help'|clean_unique_id %}
 {%
   set classes = [
-  'fieldset',
-  attributes.hasClass('fieldgroup') ? 'fieldset--group',
-  'js-form-item',
-  'form-item',
-  'js-form-wrapper',
-  'form-wrapper',
-  show_description_toggle ? 'help-icon__description-container',
-]
+    'fieldset',
+    attributes.hasClass('fieldgroup') ? 'fieldset--group',
+    'js-form-item',
+    'form-item',
+    'js-form-wrapper',
+    'form-wrapper',
+    show_description_toggle ? 'help-icon__description-container',
+  ]
 %}
 {%
   set wrapper_classes = [
-  'fieldset__wrapper',
-  attributes.hasClass('fieldgroup') ? 'fieldset__wrapper--group',
-]
+    'fieldset__wrapper',
+    attributes.hasClass('fieldgroup') ? 'fieldset__wrapper--group',
+  ]
 %}
 {%
   set legend_span_classes = [
-  'fieldset__label',
-  attributes.hasClass('fieldgroup') ? 'fieldset__label--group',
-  required ? 'js-form-required',
-  required ? 'form-required',
-]
+    'fieldset__label',
+    attributes.hasClass('fieldgroup') ? 'fieldset__label--group',
+    required ? 'js-form-required',
+    required ? 'form-required',
+  ]
 %}
 {%
   set legend_classes = [
-  'fieldset__legend',
-  attributes.hasClass('fieldgroup') and not attributes.hasClass('form-composite') ? 'fieldset__legend--group',
-  attributes.hasClass('form-composite') ? 'fieldset__legend--composite',
-  title_display == 'invisible' ? 'fieldset__legend--invisible' : 'fieldset__legend--visible',
-]
+    'fieldset__legend',
+    attributes.hasClass('fieldgroup') and not attributes.hasClass('form-composite') ? 'fieldset__legend--group',
+    attributes.hasClass('form-composite') ? 'fieldset__legend--composite',
+    title_display == 'invisible' ? 'fieldset__legend--invisible' : 'fieldset__legend--visible',
+  ]
 %}
 {%
   set description_classes = [
-  'fieldset__description',
-  description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
-]
+    'fieldset__description',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
+  ]
 %}
 <fieldset{{ attributes.addClass(classes) }}>
   {% if show_description_toggle %}
@@ -80,11 +80,9 @@
     </legend>
   {% endif %}
   {% if show_description_toggle %}
-      {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
-        description: description.content,
-        description_id: tooltip_id,
-      } only %}
-      {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+      {% include '@ddbgo_gin/ddbgo-help.html.twig' with {
+        label: null,
+        contextual_label: false,
         tooltip_attributes: description.attributes,
         tooltip_id: tooltip_id,
         description_classes: description_classes,

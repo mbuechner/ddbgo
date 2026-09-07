@@ -28,19 +28,25 @@ function ddbgo_gin_library_info_alter(array &$libraries, string $extension): voi
 }
 
 /**
+ * Checks the active theme and its ancestors without caching across theme switches.
+ *
+ * Form rendering and AJAX can negotiate another theme in the same request.
+ * Cache metadata remains the responsibility of the calling hook/render array.
+ */
+function ddbgo_gin_is_theme(string $name): bool {
+  $theme = \Drupal::service('theme.manager')->getActiveTheme();
+  return $theme->getName() === $name || isset($theme->getBaseThemeExtensions()[$name]);
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function ddbgo_gin_page_attachments(array &$attachments): void {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-  $is_gin_based_theme = $active_theme->getName() === 'gin' || isset($active_theme->getBaseThemeExtensions()['gin']);
-  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
-    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
-
-  if ($is_gin_frontend) {
+  if (ddbgo_gin_is_theme('gin_frontend')) {
     $attachments['#attached']['library'][] = 'ddbgo_gin/frontend_layout';
   }
 
-  if (!$is_gin_based_theme) {
+  if (!ddbgo_gin_is_theme('gin')) {
     return;
   }
 
@@ -113,8 +119,7 @@ function ddbgo_gin_theme(): array {
  * their render array, so administration menus keep their own templates.
  */
 function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables, string $hook): void {
-  $theme = \Drupal::service('theme.manager')->getActiveTheme();
-  if ($theme->getName() !== 'gin' && !isset($theme->getBaseThemeExtensions()['gin'])) {
+  if (!ddbgo_gin_is_theme('gin')) {
     return;
   }
   if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper'], TRUE)
@@ -156,11 +161,7 @@ function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
     // Gin ships a dedicated page--node-add template which bypasses Gin
     // Frontend's chrome. Point that exact suggestion at the active frontend
     // page implementation as well.
-    $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-    $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
-      || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
-
-    if ($is_gin_frontend && isset($theme_registry['page__node_add'])) {
+    if (ddbgo_gin_is_theme('gin_frontend') && isset($theme_registry['page__node_add'])) {
       $theme_registry['page__node_add'] = $theme_registry['page'];
     }
   }
@@ -170,11 +171,7 @@ function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
  * Implements hook_theme_suggestions_HOOK_alter() for page templates.
  */
 function ddbgo_gin_theme_suggestions_page_alter(array &$suggestions): void {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
-    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
-
-  if ($is_gin_frontend) {
+  if (ddbgo_gin_is_theme('gin_frontend')) {
     $suggestions[] = 'page__gin_frontend';
   }
 }
@@ -183,10 +180,7 @@ function ddbgo_gin_theme_suggestions_page_alter(array &$suggestions): void {
  * Implements hook_theme_suggestions_HOOK_alter() for pagers.
  */
 function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-  $is_gin_based_theme = $active_theme->getName() === 'gin' || isset($active_theme->getBaseThemeExtensions()['gin']);
-
-  if ($is_gin_based_theme) {
+  if (ddbgo_gin_is_theme('gin')) {
     $suggestions[] = 'pager__ddbgo_gin';
   }
 }
@@ -202,11 +196,7 @@ function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterfac
     $form['query']['#attributes']['autocomplete'] = 'off';
   }
 
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-  $is_gin_frontend = $active_theme->getName() === 'gin_frontend'
-    || isset($active_theme->getBaseThemeExtensions()['gin_frontend']);
-
-  if (!$is_gin_frontend) {
+  if (!ddbgo_gin_is_theme('gin_frontend')) {
     return;
   }
 
@@ -356,8 +346,8 @@ function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): b
  */
 function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
   $normalized = strtolower(trim($identifier));
-  $normalized = preg_replace('/[^a-z0-9_]+/', '_', $normalized);
-  $normalized = preg_replace('/_+/', '_', $normalized);
+  // Every run of separators (including underscores) becomes one underscore.
+  $normalized = preg_replace('/[^a-z0-9]+/', '_', $normalized);
   $normalized = trim($normalized, '_');
 
   if ($normalized === '') {
@@ -438,11 +428,7 @@ function ddbgo_gin_attribute_from_value(mixed $attributes): Attribute {
     return $attributes;
   }
 
-  if (is_array($attributes)) {
-    return new Attribute($attributes);
-  }
-
-  return new Attribute();
+  return new Attribute(is_array($attributes) ? $attributes : []);
 }
 
 /**
@@ -470,8 +456,7 @@ function ddbgo_gin_preprocess_page_title(array &$variables): void {
  */
 function ddbgo_gin_bookmark_header_block(CacheableMetadata $cache): ?string {
   $cache->addCacheContexts(['route', 'theme'])->addCacheTags(['config:block_list']);
-  $theme = \Drupal::service('theme.manager')->getActiveTheme();
-  if (($theme->getName() !== 'gin_frontend' && !isset($theme->getBaseThemeExtensions()['gin_frontend']))
+  if (!ddbgo_gin_is_theme('gin_frontend')
     || \Drupal::routeMatch()->getRouteName() !== 'entity.node.canonical'
     || !\Drupal::routeMatch()->getParameter('node') instanceof NodeInterface) {
     return NULL;

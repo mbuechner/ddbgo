@@ -1,0 +1,13 @@
+{# Shared adjacent help control. Details keeps separate includes around summary.
+   Existing description IDs and caller-supplied attributes must be preserved. #}
+{% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
+  label: label,
+  description_id: tooltip_id,
+  mouseover: contextual_label,
+} only %}
+{% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+  tooltip_attributes: tooltip_attributes,
+  tooltip_id: tooltip_id,
+  description_classes: description_classes,
+  description: description,
+} only %}

@@ -25,9 +25,10 @@
     const available = Math.max(0, onTop ? above : below);
     tooltip.style.setProperty('--ddbgo-tooltip-height', `${available}px`);
     const top = onTop ? anchor.top - Math.min(rect.height, available) : anchor.bottom;
-    const left = Math.max(gutter, Math.min(anchor.left + anchor.width / 2 - rect.width / 2, width - rect.width - gutter));
+    const center = anchor.left + anchor.width / 2;
+    const left = Math.max(gutter, Math.min(center - rect.width / 2, width - rect.width - gutter));
     tooltip.dataset.placement = onTop ? 'top' : 'bottom';
-    tooltip.style.setProperty('--ddbgo-tooltip-arrow-left', `${Math.max(10, Math.min(anchor.left + anchor.width / 2 - left, rect.width - 10))}px`);
+    tooltip.style.setProperty('--ddbgo-tooltip-arrow-left', `${Math.max(10, Math.min(center - left, rect.width - 10))}px`);
     tooltip.style.left = `${left}px`;
     tooltip.style.top = `${Math.max(gutter, top)}px`;
   }
@@ -46,6 +47,12 @@
     if (active === view) {
       active = null;
     }
+  }
+
+  /** Explicit dismissal wins over focus/hover until the next interaction. */
+  function dismiss(view) {
+    view.dismissed = true;
+    close(view);
   }
 
   function open(view) {
@@ -88,7 +95,16 @@
         if (!tooltip) {
           return;
         }
-        const view = { button, tooltip, focused: false, overButton: false, overTooltip: false, pinned: false, dismissed: false };
+        // Pointer, focus and click are independent reasons to keep help open.
+        const view = {
+          button,
+          tooltip,
+          focused: false,
+          overButton: false,
+          overTooltip: false,
+          pinned: false,
+          dismissed: false,
+        };
         tooltip.dataset.ddbgoTooltipReady = '';
         tooltip.hidden = true;
         if (typeof tooltip.showPopover === 'function') {
@@ -126,8 +142,7 @@
           event.stopPropagation();
           // Focus/hover may already have opened it before the first click.
           if (view.pinned) {
-            view.dismissed = true;
-            close(view);
+            dismiss(view);
           }
           else {
             view.dismissed = false;
@@ -140,16 +155,14 @@
       once('ddbgo-form-help-dismiss', 'html').forEach(() => {
         document.addEventListener('keydown', (event) => {
           if (event.key === 'Escape' && active) {
-            active.dismissed = true;
-            close(active);
+            dismiss(active);
             event.preventDefault();
             event.stopPropagation();
           }
         });
         document.addEventListener('pointerdown', (event) => {
           if (active && !active.button.contains(event.target) && !active.tooltip.contains(event.target)) {
-            active.dismissed = true;
-            close(active);
+            dismiss(active);
           }
         });
         const reposition = () => {

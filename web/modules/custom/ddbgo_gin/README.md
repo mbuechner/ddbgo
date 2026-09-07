@@ -8,7 +8,9 @@ und die unten beschriebenen Gin-Korrekturen begrenzt.
 
 - `form-element--ddbgo-gin`, `fieldset--ddbgo-gin`, `details--ddbgo-gin` und
   `datetime-wrapper--ddbgo-gin` übernehmen die Struktur der Gin-Formularwrapper.
-  Das gemeinsame `ddbgo-help-toggle.html.twig` liefert Button-Typ, zugänglichen
+  `ddbgo-help.html.twig` setzt Button und Tooltip gemeinsam zusammen. Details
+  bindet beide Teile getrennt ein, damit sein Hilfetext außerhalb von Summary bleibt.
+  `ddbgo-help-toggle.html.twig` liefert Button-Typ, zugänglichen
   Namen und die Zuordnung zur Beschreibung über `aria-describedby`. Die Beschreibung
   erhält `role="tooltip"` und folgt unmittelbar dem Button (bei Details
   direkt nach dem Summary). Bestehende Beschreibungs-IDs bleiben erhalten.
@@ -31,6 +33,12 @@ Twig-Blöcke für die Hilfeschaltflächen anbietet. Bei Gin-Updates diese vier D
 mit den Originalen unter `web/themes/contrib/gin/templates/form/` vergleichen.
 Die Overrides gelten nur für Gin und davon abgeleitete Themes.
 
+Die Tooltip-Gestaltung nutzt Gins Variablen `--gin-tooltip-bg`, `--gin-border-s`
+und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
+`gin/tooltip`-Library erzeugt das Markup per JavaScript und bietet selbst keine
+ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
+bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
+
 ## Verbleibendes JavaScript
 
 - `ddbgo_gin.unique-field-submit.js`: Verhindert fehlende Feldwerte beim Speichern
@@ -49,7 +57,7 @@ Die Overrides gelten nur für Gin und davon abgeleitete Themes.
 - `ddbgo_gin.form-help.js`: Öffnet die in Twig gerenderten Hilfetexte bei Hover
   und Tastaturfokus. Escape schließt ohne Fokuswechsel, Klick/Touch hält die Hilfe
   bis zum nächsten Klick, Fokuswechsel oder Klick außerhalb offen. Der Mauszeiger
-  bleibt ein normaler Pfeil. Der Tooltip bleibt beim überfahren seines Textes
+  bleibt ein normaler Pfeil. Der Tooltip bleibt beim Überfahren seines Textes
   sichtbar. Die Popover API verhindert Abschneiden durch Container; die Position
   passt sich Fenstergröße und Scrollen an. Hilfen innerhalb von Details werden
   während der Anzeige vorübergehend an `body` angehängt, weil geschlossene Details
@@ -102,8 +110,50 @@ Attach, AJAX, geschlossene Details und die Position am Bildschirmrand. Er sendet
 keine Formulare ab. Zusätzlich mit schmalem Browserfenster prüfen. Die technischen
 Tests ersetzen keinen manuellen Test mit NVDA oder VoiceOver.
 
-Die Tooltip-Gestaltung nutzt Gins Variablen `--gin-tooltip-bg`, `--gin-border-s`
-und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
-`gin/tooltip`-Library erzeugt das Markup per JavaScript und bietet selbst keine
-ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
-bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
+## Zuständigkeiten und Konfiguration
+
+| Bereich | Zuständigkeit |
+| --- | --- |
+| `ddbgo_gin.module` | Drupal-Hooks, Theme-Auswahl, Suchfilter, Lesezeichen und Formularnormalisierung |
+| `DdbgoWorkspaceNavigationBlock` | Zugriffsgeprüfte Menüstruktur, aktuelle Links und Cache-Metadaten |
+| `RouteSubscriber` / `UserKeyAuthAccessCheck` | Titel der Anlegeformulare und Zugriffsprüfung für API-Schlüssel |
+| `ddbgo_gin.libraries.yml` | Assets und Abhängigkeiten; Kommentare nennen die jeweilige Einbindestelle |
+| `ddbgo_gin.services.yml` / `ddbgo_gin.permissions.yml` | Registrierung der Route-/Access-Dienste und der administrativen Berechtigung |
+| `ddbgo_gin.install` | Statusanzeige mit beim Build ersetzten Versionsplatzhaltern |
+
+Das Modul hat keine eigene installierbare Fachkonfiguration. Menüdefinitionen,
+Blockplatzierungen, Gin-Einstellungen sowie Such- und Feldhilfen liegen in der
+Projektkonfiguration unter `config/sync`. Diese Einstellungen werden durch die
+Darstellungshooks verwendet, nicht beim Seitenaufruf umgeschrieben.
+
+`ddbgo_gin_is_theme()` prüft das aktive Theme einschließlich seiner Basisthemes.
+Die Abfrage wird bewusst nicht statisch zwischengespeichert: Theme-Wechsel während
+des Renderns müssen sofort berücksichtigt werden. Form-API-Normalisierung und
+Unique-Field-Schutz gelten dagegen auch außerhalb von Gin.
+
+Bei Vereinfachungen müssen folgende Verträge erhalten bleiben:
+
+- Die Filtergruppierung bewahrt `#parents` und `#name`, damit Views weiterhin
+  dieselben GET-Parameter erhält. Tagify verwendet den vorhandenen Submit-Button.
+- Beschreibungs-IDs und ARIA-Verknüpfungen stammen aus Twig. Hilfe-Buttons und
+  Hilfetexte werden gemeinsam eingebunden; Details benötigt die getrennte Ausgabe.
+- Persönliche Lesezeichen bleiben Flag-Lazy-Builder mit ihren Cache-Abhängigkeiten.
+  Zugriffsrechte und Sichtbarkeit werden nicht durch Client-Code ersetzt.
+- Gin-Abhängigkeiten liefern weiterhin CSS für Checkboxen und Formularwrapper.
+  Scheinbar doppelte CSS-Selektoren mit höherer Spezifität überschreiben gezielt
+  Regeln von Gin/Gin Frontend und sind nicht automatisch überflüssig.
+- Die bestehende Trim-/NFC-Normalisierung läuft vor den Formularvalidatoren der vier
+  Inhaltstypen. Sie gehört zum Speichern und ist unabhängig von der Suchindexierung.
+
+## PHP-/Twig-Integrationstest
+
+In der installierten DDBgo-Umgebung vom Projektverzeichnis aus:
+
+```sh
+vendor/bin/drush php:script web/modules/custom/ddbgo_gin/tests/php/module.test.php
+```
+
+Der Test prüft Theme-Wechsel, Bereichszuordnung, Attribute, Suchparameter und die
+Beschriftungspositionen vor/hinter Eingabefeldern einschließlich unsichtbarer und
+fehlender Beschriftungen. Er speichert weder Inhalte noch Konfiguration. Für die
+Browsertests weiterhin die oben beschriebenen HTML-Testseiten verwenden.

@@ -72,27 +72,19 @@
   height: 100%;
 }
 
-/* Mobile menu trigger; only displayed by the <= 48em layout below. */
-.ddbgo-workspace-navigation__menu-toggle {
-  --ddbgo-workspace-icon: var(--ddbgo-icon-menu);
+/* Shared control appearance; layout-specific overrides follow below. */
+.ddbgo-workspace-navigation__menu-toggle,
+.ddbgo-workspace-navigation__toggle,
+.ddbgo-workspace-navigation__link {
   appearance: none;
   box-sizing: border-box;
-  display: none;
   align-items: center;
-  justify-content: center;
-  gap: var(--gin-spacing-xs);
-  min-width: 2.75rem;
   min-height: 4rem;
-  height: 100%;
-  padding: .75rem .85rem;
   border: 0;
-  border-block-end: 3px solid transparent;
   background: transparent;
   color: var(--gin-color-text-light);
   font: inherit;
   font-size: var(--gin-font-size-s);
-  font-weight: var(--gin-font-weight-normal, 400);
-  line-height: normal;
   cursor: pointer;
   transition:
     color 160ms ease,
@@ -102,7 +94,23 @@
     transform 120ms ease;
 }
 
-.ddbgo-workspace-navigation__menu-toggle::before {
+/* Mobile trigger is only displayed by the <= 48em layout. */
+.ddbgo-workspace-navigation__menu-toggle {
+  --ddbgo-workspace-icon: var(--ddbgo-icon-menu);
+  display: none;
+  justify-content: center;
+  gap: var(--gin-spacing-xs);
+  min-width: 2.75rem;
+  height: 100%;
+  padding: .75rem .85rem;
+  border-block-end: 3px solid transparent;
+  font-weight: var(--gin-font-weight-normal, 400);
+  line-height: normal;
+}
+
+.ddbgo-workspace-navigation__menu-toggle::before,
+.ddbgo-workspace-navigation__toggle::before,
+.ddbgo-workspace-navigation__link::before {
   content: "";
   flex: 0 0 .9rem;
   width: .9rem;
@@ -143,29 +151,13 @@
 .ddbgo-workspace-navigation__toggle,
 .ddbgo-workspace-navigation__link {
   --ddbgo-workspace-icon: none;
-  appearance: none;
-  box-sizing: border-box;
   display: flex;
-  align-items: center;
   gap: 0.45rem;
-  min-height: 4rem;
   padding: 0.75rem 0.85rem;
-  border: 0;
   border-bottom: 3px solid transparent;
-  background: transparent;
-  color: var(--gin-color-text-light);
-  font: inherit;
-  font-size: var(--gin-font-size-s);
   line-height: 1.2;
-  cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
-  transition:
-    color 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 120ms ease;
 }
 
 .ddbgo-workspace-navigation__menu-toggle:active,
@@ -177,13 +169,6 @@
 /* Icon masks follow the text color; the DDBGo logo is overridden below. */
 .ddbgo-workspace-navigation__toggle::before,
 .ddbgo-workspace-navigation__link::before {
-  content: "";
-  flex: 0 0 .9rem;
-  width: .9rem;
-  height: .9rem;
-  background-color: currentColor;
-  -webkit-mask: var(--ddbgo-workspace-icon) center / contain no-repeat;
-  mask: var(--ddbgo-workspace-icon) center / contain no-repeat;
   transform: scale(0.96);
   transform-origin: center;
 }

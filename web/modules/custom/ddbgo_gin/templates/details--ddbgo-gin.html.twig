@@ -53,28 +53,27 @@
 %}
 {%
   set description_classes = [
-  'claro-details__description',
-  disabled ? 'is-disabled',
-  description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
-]
+    'claro-details__description',
+    disabled ? 'is-disabled',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
+  ]
 %}
 <details{{ attributes.addClass(classes) }}>
   {%- if title -%}
     {%
-      set summary_classes = [
-        'claro-details__summary',
-        required ? 'js-form-required',
-        required ? 'form-required',
-        accordion ? 'claro-details__summary--accordion',
-        accordion_item ? 'claro-details__summary--accordion-item',
-      ]
-    %}
+  set summary_classes = [
+    'claro-details__summary',
+    required ? 'js-form-required',
+    required ? 'form-required',
+    accordion ? 'claro-details__summary--accordion',
+    accordion_item ? 'claro-details__summary--accordion-item',
+  ]
+%}
     <summary{{ summary_attributes.addClass(summary_classes) }}>
       {{- title -}}
       <span class="required-mark"></span>
       {% if show_description_toggle %}
         {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
-          description: description,
           description_id: tooltip_id,
         } only %}
       {% endif %}
