@@ -948,7 +948,7 @@ display:
           exposed: true
           expose:
             operator_id: field_bestandstags_op
-            label: ''
+            label: 'Nach Bestandstags filtern'
             description: ''
             use_operator: false
             operator: field_bestandstags_op
