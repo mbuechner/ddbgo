@@ -1131,7 +1131,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Suche in den angezeigten Texten, IDs, Objektzahlen und Datumsangaben. Farbige Statusanzeigen, die DDBdash-Linkspalte und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID, Anzahl der Objekte (einschließlich Medientypen), beide JIRA-Ticket-Spalten und Statusdatum.'
+            description: 'Suche in den angezeigten Texten, IDs, Objektzahlen und Datumsangaben. Die DDBdash-Linkspalte und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID, Anzahl der Objekte (einschließlich Medientypen), beide JIRA-Ticket-Spalten und Statusdatum.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false

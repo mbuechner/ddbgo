@@ -7,3 +7,8 @@ services:
     class: Drupal\ddbgo_gin\Access\UserKeyAuthAccessCheck
     tags:
       - { name: access_check, applies_to: _ddbgo_administer_user_api_keys_access }
+  cache_context.ddbgo_view_filters:
+    class: Drupal\ddbgo_gin\Cache\Context\RememberedViewsFiltersCacheContext
+    arguments: ['@request_stack']
+    tags:
+      - { name: cache.context }

@@ -157,3 +157,34 @@ Der Test prüft Theme-Wechsel, Bereichszuordnung, Attribute, Suchparameter und d
 Beschriftungspositionen vor/hinter Eingabefeldern einschließlich unsichtbarer und
 fehlender Beschriftungen. Er speichert weder Inhalte noch Konfiguration. Für die
 Browsertests weiterhin die oben beschriebenen HTML-Testseiten verwenden.
+## Suchfilter zurücksetzen und Cache
+
+Views kann die letzte Filterauswahl in der Sitzung speichern. Damit kann eine
+Suchseite ohne URL-Parameter trotzdem einen Suchbegriff und Dropdown-Auswahlen
+enthalten. Ein ausschließlich nach URL variierender Render-Cache liefert nach
+„Zurücksetzen“ möglicherweise diese frühere Darstellung erneut aus.
+
+Der Cache-Kontext `ddbgo_view_filters:VIEW_ID` berücksichtigt daher die gespeicherten
+Filterwerte der jeweiligen View. Er wird nur Formularen mit aktivierter
+Merkfunktion hinzugefügt und an die umgebende Ausgabe weitergereicht. Änderungen
+und Reset innerhalb derselben Sitzung ergeben unterschiedliche Cache-Varianten.
+Suchbegriffe erscheinen dabei nur gehasht im Cache-Schlüssel; die Suchergebnis-
+und Index-Caches bleiben aktiv.
+
+Der Reset bleibt ein normaler Submit mit den vorhandenen Core-/BEF-Callbacks.
+Bei solchen Formularen entfällt BEFs `reset_ajax`-Library: Sie besucht lediglich
+die URL ohne Parameter und überspringt damit das Löschen der Sitzungswerte.
+`data-drupal-selector="edit-reset"` sorgt zusätzlich dafür, dass Core Views den
+Reset von AJAX ausnimmt. Suchen und andere AJAX-Aktionen bleiben unverändert.
+
+Regressionstest (keine gespeicherten Inhalte oder Konfiguration werden verändert):
+
+```sh
+vendor/bin/drush php:script web/modules/custom/ddbgo_gin/tests/php/exposed-reset.test.php
+```
+
+Der Test prüft wechselnde Sitzungswerte und die Reset-/Cache-Anbindung aller
+sieben Suchformulare. Zusätzlich im Browser eine Suche mit Dropdown-Auswahl
+anwenden, die URL ohne Parameter aufrufen, zurücksetzen und dieselbe URL erneut
+laden. Die Felder müssen nach Reset auch bei gefülltem Cache leer beziehungsweise
+auf ihrer konfigurierten Standardauswahl stehen.

@@ -827,7 +827,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Suche in den angezeigten Textspalten und IDs. Farbige Statusanzeigen, die DDBdash-Linkspalte und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID und JIRA-Hauptticket.'
+            description: 'Suche in den angezeigten Textspalten und IDs. Die DDBdash-Linkspalte und Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID und JIRA-Hauptticket.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false

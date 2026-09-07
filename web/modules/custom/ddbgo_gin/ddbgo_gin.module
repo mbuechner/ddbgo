@@ -196,11 +196,42 @@ function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterfac
     $form['query']['#attributes']['autocomplete'] = 'off';
   }
 
+  // A clean URL can still restore remembered filters. Cache their values as
+  // well as the URL, otherwise Reset can reload stale form/result markup.
+  $view = $form_state->get('view');
+  if ($view instanceof \Drupal\views\ViewExecutable) {
+    foreach ($view->display_handler->getOption('filters') as $filter) {
+      if (!empty($filter['exposed']) && (!empty($filter['expose']['remember']) || !empty($filter['group_info']['remember']))) {
+        $form['#cache']['contexts'][] = 'ddbgo_view_filters:' . $view->id();
+        $form['#after_build'][] = 'ddbgo_gin_prepare_exposed_reset';
+        break;
+      }
+    }
+  }
+
   if (!ddbgo_gin_is_theme('gin_frontend')) {
     return;
   }
 
   $form['#after_build'][] = 'ddbgo_gin_build_exposed_filter_details';
+}
+
+/**
+ * Keeps Reset as a native submit so BEF clears remembered filters server-side.
+ *
+ * BEF's reset_ajax script only visits the clean URL, retaining session values.
+ * Use core Views' reserved reset selector to exclude this button from AJAX.
+ * Run after FormBuilder assigns selectors, before the visual filter grouping.
+ */
+function ddbgo_gin_prepare_exposed_reset(array $form, FormStateInterface $form_state): array {
+  if (isset($form['actions']['reset'])) {
+    $form['actions']['reset']['#attributes']['data-drupal-selector'] = 'edit-reset';
+    $form['#attached']['library'] = array_values(array_diff(
+      $form['#attached']['library'] ?? [],
+      ['better_exposed_filters/reset_ajax'],
+    ));
+  }
+  return $form;
 }
 
 /**
