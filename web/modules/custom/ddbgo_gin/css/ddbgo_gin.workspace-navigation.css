@@ -1,7 +1,18 @@
 /**
+ * @file
  * Theme-integrated DDBgo workspace navigation.
+ *
+ * Layouts: labelled buttons above 80em, compact icons from 48em to 80em,
+ * and a vertically scrolling menu up to 48em. Keep the mobile breakpoint
+ * aligned with ddbgo_gin.workspace-navigation.js.
+ *
+ * JavaScript synchronizes aria-expanded, hidden and .is-open, and supplies
+ * --ddbgo-dropdown-shift to keep floating panels within the viewport.
+ * Selectors scoped to .gin-frontend__primary-menu override Gin Frontend's
+ * general list/link styles without affecting other navigation regions.
  */
 
+/* Header: also the containing block for the full-width mobile menu. */
 .gin-frontend .gin-frontend__header {
   box-sizing: border-box;
   height: 4rem;
@@ -61,6 +72,7 @@
   height: 100%;
 }
 
+/* Mobile menu trigger; only displayed by the <= 48em layout below. */
 .ddbgo-workspace-navigation__menu-toggle {
   --ddbgo-workspace-icon: var(--ddbgo-icon-menu);
   appearance: none;
@@ -100,11 +112,13 @@
   mask: var(--ddbgo-workspace-icon) center / contain no-repeat;
 }
 
+/* Desktop row: explicitly cancel Gin Frontend's generic flex wrapping. */
 .ddbgo-workspace-navigation__list,
 .gin-frontend__primary-menu .ddbgo-workspace-navigation__list {
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
+  flex-wrap: nowrap;
   gap: 0;
   height: 100%;
   list-style: none;
@@ -112,6 +126,7 @@
   padding: 0;
 }
 
+/* Each desktop button anchors its own absolutely positioned dropdown. */
 .ddbgo-workspace-navigation__item {
   position: relative;
   list-style: none;
@@ -124,6 +139,7 @@
   content: none;
 }
 
+/* Shared button/link appearance and pointer feedback. */
 .ddbgo-workspace-navigation__toggle,
 .ddbgo-workspace-navigation__link {
   --ddbgo-workspace-icon: none;
@@ -158,6 +174,7 @@
   transform: scale(.98);
 }
 
+/* Icon masks follow the text color; the DDBGo logo is overridden below. */
 .ddbgo-workspace-navigation__toggle::before,
 .ddbgo-workspace-navigation__link::before {
   content: "";
@@ -169,6 +186,22 @@
   mask: var(--ddbgo-workspace-icon) center / contain no-repeat;
   transform: scale(0.96);
   transform-origin: center;
+}
+
+/* Decorative caret follows the same expanded state announced to screen readers. */
+.ddbgo-workspace-navigation__toggle::after {
+  content: "";
+  flex: 0 0 .4rem;
+  width: .4rem;
+  height: .4rem;
+  margin-inline-start: .2rem;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: translateY(-.1rem) rotate(45deg);
+}
+
+.ddbgo-workspace-navigation__toggle[aria-expanded="true"]::after {
+  transform: translateY(.1rem) rotate(225deg);
 }
 
 /*
@@ -193,6 +226,7 @@
   line-height: normal;
 }
 
+/* Hover only highlights. Opening is controlled by button activation in JS. */
 .ddbgo-workspace-navigation__toggle:hover,
 .ddbgo-workspace-navigation__toggle:focus,
 .ddbgo-workspace-navigation__toggle:focus-visible,
@@ -208,14 +242,20 @@
   box-shadow: inset 0 0 0 1px var(--gin-color-primary) !important;
 }
 
+/* Floating panels: cap width and allow JS to correct their horizontal position.
+ * Align every panel with its button's trailing edge: the navigation sits at
+ * the right of the header, so panels should extend into the space to its left.
+ * JS corrects any remaining overflow at the opposite viewport edge.
+ * The separate translate property preserves the reveal animation's transform. */
 .ddbgo-workspace-navigation__dropdown {
   box-sizing: border-box;
   position: absolute;
   inset-block-start: calc(100% - 1px);
-  inset-inline-start: 0;
+  inset-inline: auto 0;
   z-index: 101;
   min-width: 16rem;
   max-width: min(26rem, calc(100vw - 2rem));
+  translate: var(--ddbgo-dropdown-shift, 0px) 0;
   padding: 0.5rem;
   border: 1px solid var(--gin-border-color);
   border-radius: 0 0 var(--gin-border-l) var(--gin-border-l);
@@ -231,10 +271,7 @@
   }
 }
 
-.ddbgo-workspace-navigation__item:last-child .ddbgo-workspace-navigation__dropdown {
-  inset-inline: auto 0;
-}
-
+/* Hidden panels must also leave the tab order and accessibility tree. */
 .ddbgo-workspace-navigation__dropdown[hidden] {
   display: none;
 }
@@ -244,6 +281,7 @@
   animation: ddbgo-menu-reveal 180ms cubic-bezier(.2, .8, .2, 1) both;
 }
 
+/* Render the reused toolbar menus as ordinary, single-column link lists. */
 .ddbgo-workspace-navigation__dropdown .toolbar-menu,
 .gin-frontend__primary-menu .ddbgo-workspace-navigation__dropdown .toolbar-menu {
   display: block;
@@ -259,6 +297,7 @@
   list-style: none;
 }
 
+/* Gin's structural home entry and extra expander are not workspace actions. */
 .ddbgo-workspace-navigation__dropdown .toolbar-menu .menu-item__tools {
   display: none;
 }
@@ -267,6 +306,7 @@
   display: none !important;
 }
 
+/* Long labels may wrap at every viewport size, including compact tablet menus. */
 .ddbgo-workspace-navigation__dropdown .toolbar-menu a,
 .gin-frontend__primary-menu .ddbgo-workspace-navigation__dropdown .toolbar-menu a {
   display: block;
@@ -278,6 +318,8 @@
   font-weight: var(--gin-font-weight-normal, 400);
   line-height: 1.3;
   text-decoration: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
   transition:
     color 150ms ease,
     background-color 150ms ease,
@@ -301,6 +343,7 @@
   box-shadow: none !important;
 }
 
+/* Workspace icons reuse the shared ddbgo_gin/icons library. */
 .ddbgo-workspace-navigation__item--start .ddbgo-workspace-navigation__toggle::before {
   background: var(--ddbgo-icon-start) center / contain no-repeat;
   -webkit-mask: none;
@@ -332,7 +375,7 @@
   --ddbgo-workspace-icon: var(--ddbgo-icon-account);
 }
 
-/* Use compact, still-labelled icon controls before the menu would wrap. */
+/* Compact row: hide labels visually while retaining their accessible names. */
 @media (min-width: 48.001em) and (max-width: 80em) {
   .ddbgo-workspace-navigation__toggle > span {
     position: absolute;
@@ -354,7 +397,7 @@
 }
 
 @media (max-width: 48em) {
-  /* Keep branding and the mobile menu trigger in one 64px row. */
+  /* Keep branding and the mobile menu trigger in one 4rem row. */
   .gin-frontend .gin-frontend__header-inner {
     align-items: stretch;
     flex-direction: row;
@@ -377,18 +420,20 @@
     display: flex;
   }
 
+  /* Use block layout when open, not Gin Frontend's wrapping flex layout.
+   * A short viewport must produce vertical scrolling, never another column.
+   * Submenus stay in normal flow and share this one scroll container. */
   .gin-frontend .gin-frontend__primary-menu .ddbgo-workspace-navigation__list {
     position: absolute;
     inset-block-start: 100%;
     inset-inline: 0;
     z-index: 102;
     display: none;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-start;
     box-sizing: border-box;
     width: 100%;
+    max-width: 100%;
     height: auto;
+    /* Account for the header and any Gin toolbar; dvh tracks browser chrome. */
     max-height: calc(100dvh - 4rem - var(--gin-toolbar-y-offset, 0px));
     padding: var(--gin-spacing-xs) clamp(1rem, 3vw, var(--gin-spacing-m));
     overflow-y: auto;
@@ -398,8 +443,8 @@
     box-shadow: 0 .75rem 1.75rem rgba(20, 20, 30, .18);
   }
 
-  .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
-    display: flex;
+  .gin-frontend .gin-frontend__primary-menu .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
+    display: block;
     transform-origin: top center;
     animation: ddbgo-menu-reveal 180ms cubic-bezier(.2, .8, .2, 1) both;
   }
@@ -415,7 +460,9 @@
   }
 
   .ddbgo-workspace-navigation__item {
+    display: block;
     width: 100%;
+    min-width: 0;
   }
 
   .ddbgo-workspace-navigation__toggle,
@@ -426,14 +473,22 @@
     padding: var(--gin-spacing-xs) var(--gin-spacing-s);
     border: 1px solid transparent;
     border-radius: var(--gin-border-s);
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  .ddbgo-workspace-navigation__dropdown,
-  .ddbgo-workspace-navigation__item:last-child .ddbgo-workspace-navigation__dropdown {
+  /* Let long account names shrink and wrap inside their flex buttons. */
+  .ddbgo-workspace-navigation__toggle > span {
+    min-width: 0;
+  }
+
+  /* Inline mobile panels must ignore desktop positioning and its JS shift. */
+  .ddbgo-workspace-navigation__dropdown {
     position: static;
     width: 100%;
     min-width: 0;
     max-width: none;
+    translate: none;
     margin-block: var(--gin-spacing-xxs) var(--gin-spacing-xs);
     padding: var(--gin-spacing-xxs) 0 var(--gin-spacing-xxs) var(--gin-spacing-l);
     border: 0;
@@ -445,8 +500,6 @@
   .ddbgo-workspace-navigation__dropdown .toolbar-menu a,
   .gin-frontend__primary-menu .ddbgo-workspace-navigation__dropdown .toolbar-menu a {
     padding: var(--gin-spacing-xs) var(--gin-spacing-s);
-    white-space: normal;
-    overflow-wrap: anywhere;
   }
 
   .gin-frontend__primary-menu .ddbgo-workspace-navigation--anonymous .ddbgo-workspace-navigation__link {
@@ -456,6 +509,7 @@
   }
 }
 
+/* Motion is decorative; state changes remain immediate and work without it. */
 @keyframes ddbgo-menu-reveal {
   from {
     opacity: 0;
@@ -477,7 +531,7 @@
   }
 
   .ddbgo-workspace-navigation__dropdown:not([hidden]),
-  .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
+  .gin-frontend .gin-frontend__primary-menu .ddbgo-workspace-navigation__menu-toggle[aria-expanded="true"] + .ddbgo-workspace-navigation__list {
     animation: none;
   }
 
@@ -489,6 +543,7 @@
   }
 }
 
+/* Respect users who prefer opaque surfaces instead of blurred backgrounds. */
 @media (prefers-reduced-transparency: reduce) {
   .gin-frontend .gin-frontend__header,
   .ddbgo-workspace-navigation__dropdown {
