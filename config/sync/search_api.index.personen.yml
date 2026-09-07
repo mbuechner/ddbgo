@@ -82,19 +82,18 @@ field_settings:
     dependencies:
       module:
         - node
-  title:
-    label: Titel
-    datasource_id: 'entity:node'
-    property_path: title
-    type: text
-    dependencies:
-      module:
-        - node
-  # Separate Volltextkopie: Das numerische ID-Feld bleibt fuer die Sortierung erhalten.
   nid_search:
     label: 'ID (Volltextsuche)'
     datasource_id: 'entity:node'
     property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
+  title:
+    label: Titel
+    datasource_id: 'entity:node'
+    property_path: title
     type: text
     dependencies:
       module:
@@ -116,6 +115,29 @@ processor_settings:
   ddbgo_person_bestand: {  }
   ddbgo_person_kwe: {  }
   entity_type: {  }
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
+    excerpt: false
+    excerpt_always: false
+    excerpt_length: 256
+    exclude_fields: {  }
+    highlight: always
+    highlight_partial: true
+  html_filter:
+    weights:
+      preprocess_index: -50
+      preprocess_query: -50
+    all_fields: false
+    fields:
+      - ddbgo_person_aggregator
+      - ddbgo_person_bestand
+      - ddbgo_person_kwe
+    title: false
+    alt: false
+    tags: {  }
   ignorecase:
     weights:
       preprocess_index: -20
@@ -151,30 +173,6 @@ processor_settings:
     ignored: ._-
     overlap_cjk: 1
     minimum_word_size: '2'
-  # Views muessen dazu die Search-API-Ausgabe mit use_highlighting verwenden.
-  highlight:
-    weights:
-      postprocess_query: 0
-    prefix: '<mark>'
-    suffix: '</mark>'
-    excerpt: false
-    excerpt_length: 256
-    excerpt_always: false
-    highlight: always
-    highlight_partial: true
-    exclude_fields: {  }
-  html_filter:
-    weights:
-      preprocess_index: -50
-      preprocess_query: -50
-    all_fields: false
-    fields:
-      - ddbgo_person_aggregator
-      - ddbgo_person_bestand
-      - ddbgo_person_kwe
-    title: false
-    alt: false
-    tags: {  }
 tracker_settings:
   default:
     indexing_order: lifo

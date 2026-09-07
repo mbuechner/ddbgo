@@ -687,14 +687,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - nid_search
-            - field_nachname
-            - field_vorname
-            - field_email
-            - field_telefonnummer
-            - ddbgo_person_kwe
-            - ddbgo_person_bestand
             - ddbgo_person_aggregator
+            - ddbgo_person_bestand
+            - ddbgo_person_kwe
+            - field_email
+            - field_nachname
+            - field_telefonnummer
+            - field_vorname
+            - nid_search
       filter_groups:
         operator: AND
         groups: {  }

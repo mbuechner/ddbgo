@@ -1063,14 +1063,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - field_jira_hauptticket
+            - name
+            - name_3
+            - name_4
             - nid
             - title
-            - title_kwe
             - title_aggregator
-            - name_4
-            - name_3
-            - name
-            - field_jira_hauptticket
+            - title_kwe
         field_coding_da_vinci_teilnahme:
           id: field_coding_da_vinci_teilnahme
           table: search_api_index_bestand

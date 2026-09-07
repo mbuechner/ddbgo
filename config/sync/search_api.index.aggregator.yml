@@ -125,6 +125,14 @@ field_settings:
     dependencies:
       module:
         - node
+  nid_search:
+    label: 'ID (Volltextsuche)'
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -144,26 +152,6 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: 'ddbgo_aggregator_kwe:title'
     type: text
-  # Separate Volltextkopie: Das numerische ID-Feld bleibt fuer die Sortierung erhalten.
-  nid_search:
-    label: 'ID (Volltextsuche)'
-    datasource_id: 'entity:node'
-    property_path: nid
-    type: text
-    dependencies:
-      module:
-        - node
-  # Volltextkopien ergaenzen die unveraenderten Felder fuer exakte Filter.
-  vertragsstatus_search:
-    label: 'Vertragsstatus » Taxonomie-Begriff » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_vertragsstatus:entity:name'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_vertragsstatus
-      module:
-        - taxonomy
   vertragskonstrukt_search:
     label: 'Vertragskonstrukt » Taxonomie-Begriff » Name'
     datasource_id: 'entity:node'
@@ -172,6 +160,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_vertragskonstrukt
+      module:
+        - taxonomy
+  vertragsstatus_search:
+    label: 'Vertragsstatus » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragsstatus:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_vertragsstatus
       module:
         - taxonomy
 datasource_settings:
@@ -188,6 +186,17 @@ processor_settings:
   aggregated_field: {  }
   ddbgo_aggregator_bestand: {  }
   ddbgo_aggregator_kwe: {  }
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
+    excerpt: false
+    excerpt_always: false
+    excerpt_length: 256
+    exclude_fields: {  }
+    highlight: always
+    highlight_partial: true
   ignorecase:
     weights:
       preprocess_index: -20
@@ -227,18 +236,6 @@ processor_settings:
     spaces: ''
     overlap_cjk: 1
     minimum_word_size: '3'
-  # Views muessen dazu die Search-API-Ausgabe mit use_highlighting verwenden.
-  highlight:
-    weights:
-      postprocess_query: 0
-    prefix: '<mark>'
-    suffix: '</mark>'
-    excerpt: false
-    excerpt_length: 256
-    excerpt_always: false
-    highlight: always
-    highlight_partial: true
-    exclude_fields: {  }
 tracker_settings:
   default:
     indexing_order: fifo

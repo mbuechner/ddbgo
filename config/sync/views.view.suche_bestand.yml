@@ -855,12 +855,12 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - field_jira_hauptticket
+            - name
             - nid
             - title
-            - title_kwe
             - title_aggregator
-            - name
-            - field_jira_hauptticket
+            - title_kwe
         field_bestandstags:
           id: field_bestandstags
           table: search_api_index_bestand

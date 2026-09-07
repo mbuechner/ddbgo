@@ -512,8 +512,8 @@ display:
           fields:
             - nid_search
             - title
-            - title_2
             - title_1
+            - title_2
       style:
         type: table
         options:

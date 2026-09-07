@@ -34,6 +34,24 @@ name: Bestand
 description: ''
 read_only: false
 field_settings:
+  europeana_lieferung_search:
+    label: 'Europeana-Lieferung » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_europeana_lieferung:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_europeana_lieferung
+      module:
+        - taxonomy
+  europeana_status_date_search:
+    label: "Datum des Status' der Europeana-Lieferung"
+    datasource_id: 'entity:node'
+    property_path: field_datum_des_status_der_europ
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_datum_des_status_der_europ
   field_aggregator:
     label: Aggregator
     datasource_id: 'entity:node'
@@ -253,6 +271,16 @@ field_settings:
     dependencies:
       module:
         - node
+  object_count_search:
+    label: 'Objektanzahl und Medientyp (Listenansicht)'
+    property_path: aggregated_field
+    type: text
+    configuration:
+      type: concat
+      separator: ' '
+      fields:
+        - 'entity:node/field_ddb_objekte:entity:field_anzahl_der_objekte'
+        - 'entity:node/field_ddb_objekte:entity:field_medientyp:entity:name'
   title:
     label: Titel
     datasource_id: 'entity:node'
@@ -284,36 +312,6 @@ field_settings:
         - field.storage.node.field_kwe
       module:
         - node
-  # Volltextkopien ergaenzen die unveraenderten Filter- und Datumsfelder.
-  europeana_lieferung_search:
-    label: 'Europeana-Lieferung » Taxonomie-Begriff » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_europeana_lieferung:entity:name'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_europeana_lieferung
-      module:
-        - taxonomy
-  europeana_status_date_search:
-    label: "Datum des Status' der Europeana-Lieferung"
-    datasource_id: 'entity:node'
-    property_path: field_datum_des_status_der_europ
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_datum_des_status_der_europ
-  # Entspricht den beiden sichtbaren Angaben der Paragraph-Listenansicht.
-  object_count_search:
-    label: 'Objektanzahl und Medientyp (Listenansicht)'
-    property_path: aggregated_field
-    type: text
-    configuration:
-      type: concat
-      separator: ' '
-      fields:
-        - 'entity:node/field_ddb_objekte:entity:field_anzahl_der_objekte'
-        - 'entity:node/field_ddb_objekte:entity:field_medientyp:entity:name'
 datasource_settings:
   'entity:node':
     bundles:
@@ -326,6 +324,17 @@ datasource_settings:
 processor_settings:
   add_url: {  }
   aggregated_field: {  }
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark>'
+    suffix: '</mark>'
+    excerpt: false
+    excerpt_always: false
+    excerpt_length: 256
+    exclude_fields: {  }
+    highlight: always
+    highlight_partial: true
   ignorecase:
     weights:
       preprocess_index: -20
@@ -378,18 +387,6 @@ processor_settings:
     ignored: ._-
     overlap_cjk: 1
     minimum_word_size: '3'
-  # Views muessen dazu die Search-API-Ausgabe mit use_highlighting verwenden.
-  highlight:
-    weights:
-      postprocess_query: 0
-    prefix: '<mark>'
-    suffix: '</mark>'
-    excerpt: false
-    excerpt_length: 256
-    excerpt_always: false
-    highlight: always
-    highlight_partial: true
-    exclude_fields: {  }
 tracker_settings:
   default:
     indexing_order: fifo

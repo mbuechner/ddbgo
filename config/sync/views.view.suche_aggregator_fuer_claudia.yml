@@ -1008,16 +1008,16 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - nid_search
-            - title
+            - field_jira_hauptticket
             - name
-            - vertragsstatus_search
-            - vertragskonstrukt_search
             - name_2
             - name_3
             - name_4
             - name_5
-            - field_jira_hauptticket
+            - nid_search
+            - title
+            - vertragskonstrukt_search
+            - vertragsstatus_search
       style:
         type: table
         options:

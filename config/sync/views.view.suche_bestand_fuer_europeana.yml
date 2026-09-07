@@ -1159,18 +1159,18 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - nid
-            - title
-            - title_kwe
-            - name_5
-            - field_ueber_welchen_weg
             - europeana_lieferung_search
-            - object_count_search
+            - europeana_status_date_search
             - field_jira_europeana
             - field_jira_ticket_bei_europeana
+            - field_ueber_welchen_weg
             - name_1
+            - name_5
             - name_7
-            - europeana_status_date_search
+            - nid
+            - object_count_search
+            - title
+            - title_kwe
         field_europeana_lieferung_enum:
           id: field_europeana_lieferung_enum
           table: search_api_index_bestand

@@ -20,7 +20,7 @@ preset_focus_color: gin
 enable_darkmode: auto
 classic_toolbar: vertical
 secondary_toolbar_frontend: true
-high_contrast_mode: true
+high_contrast_mode: false
 accent_color: '#084441'
 focus_color: '#81002d'
 layout_density: small

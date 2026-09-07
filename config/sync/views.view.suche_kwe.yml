@@ -866,14 +866,14 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - nid_search
-            - title
-            - field_stadt
-            - name
-            - zustimmungsformular
             - aggregated_sparte
             - field_ddb_id
             - field_isil
+            - field_stadt
+            - name
+            - nid_search
+            - title
+            - zustimmungsformular
         field_sparte:
           id: field_sparte
           table: search_api_index_suche_kwe
