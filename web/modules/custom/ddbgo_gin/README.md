@@ -31,6 +31,16 @@ Die Overrides gelten nur für Gin und davon abgeleitete Themes.
 
 ## Verbleibendes JavaScript
 
+- `ddbgo_gin.unique-field-submit.js`: Verhindert fehlende Feldwerte beim Speichern
+  während einer Dublettenprüfung. Das Script wird über die Library von
+  `unique_field_ajax` geladen, unabhängig vom Theme. Es wartet auf laufende
+  Formularanfragen einschließlich ihrer DOM-Aktualisierungen und setzt den
+  Speichervorgang genau einmal mit dem ursprünglichen Submit-Button fort.
+  Ein zusätzlicher Eventloop-Schritt berücksichtigt die beim Verlassen eines
+  Feldes erst zeitversetzt gestartete Prüfung. Pflichtfeldvalidierung und
+  Drupals Schutz gegen doppeltes Absenden bleiben aktiv. Bei AJAX-Fehlern oder
+  einem Formular-Reset wird der vorgemerkte Speichervorgang abgebrochen.
+
 - `ddbgo_gin.workspace-navigation.js`: Öffnen/Schließen, Escape und Fokus,
   mobile Menübedienung sowie Positionierung am Bildschirmrand. Markierungen
   und HTML-Struktur werden hier nicht mehr nachträglich ergänzt.
@@ -55,3 +65,18 @@ Zur Prüfung Anlegeformulare aller vier Inhaltstypen, alle sieben Suchseiten,
 Inhaltsseiten mit Lesezeichen und die mobile Navigation öffnen. Hilfenamen
 bereits im Seitenquelltext kontrollieren; Klick, Tastatur, AJAX und einen
 zweiten Seitenaufruf mit gefülltem Cache ebenfalls prüfen.
+
+## Regressionstest für das Speichern bei laufender Dublettenprüfung
+
+Vom Projektverzeichnis aus ausführen:
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/unique-field-submit.test.cjs
+```
+
+Die ausgegebene temporäre HTML-Datei im Browser öffnen. Am Ende steht `PASS`
+oder `FAIL`. Die Testseite verwendet die installierten Drupal-Callbacks und den
+Change-Handler von Unique Field AJAX, kontrolliert aber die Antwortzeiten lokal.
+Es werden keine Formulardaten an den Server gesendet. Geprüft werden direkte
+Speicherklicks, parallele Prüfungen, Austausch von Eingabefeldern und Buttons,
+Mehrfachklicks, native Validierung, Fehler, Reset und unbeteiligte Formulare.

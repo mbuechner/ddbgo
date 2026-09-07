@@ -45,3 +45,12 @@ frontend_layout:
     - ddbgo_gin/theme_components
     - gin_frontend/global
     - gin/gin_description_toggle
+
+unique_field_submit:
+  js:
+    js/ddbgo_gin.unique-field-submit.js: {}
+  dependencies:
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+    - core/drupal.announce

@@ -16,6 +16,18 @@ use Symfony\Component\String\AbstractUnicodeString;
 use Symfony\Component\String\UnicodeString;
 
 /**
+ * Implements hook_library_info_alter().
+ *
+ * Load the submit guard wherever Unique Field AJAX is used, including forms
+ * rendered with other themes. Keep the contrib module and its warnings intact.
+ */
+function ddbgo_gin_library_info_alter(array &$libraries, string $extension): void {
+  if ($extension === 'unique_field_ajax' && isset($libraries['unique_event'])) {
+    $libraries['unique_event']['dependencies'][] = 'ddbgo_gin/unique_field_submit';
+  }
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function ddbgo_gin_page_attachments(array &$attachments): void {
