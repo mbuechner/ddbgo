@@ -82,6 +82,10 @@ foreach (['before', 'after', 'invisible', 'none'] as $placement) {
       'description_toggle' => $help,
     ];
     $html = $renderer->executeInRenderContext(new RenderContext(), static fn () => Drupal::service('twig')->render('@ddbgo_gin/form-element--ddbgo-gin.html.twig', $variables));
+    $dom = new DOMDocument();
+    @$dom->loadHTML($html);
+    $description = $dom->getElementById('field-help');
+    $check($description->hasAttribute('hidden') === ($help && $placement !== 'none'), 'Only tooltip descriptions start hidden in rendered HTML');
     $check(substr_count($html, 'Help text') === 1, 'Description rendered exactly once');
     $check(substr_count($html, 'id="field-help"') === 1, 'Description ID remains unique');
     $check(str_contains($html, 'ddbgo-help-toggle') === ($help && $placement !== 'none'), 'Help follows label visibility');

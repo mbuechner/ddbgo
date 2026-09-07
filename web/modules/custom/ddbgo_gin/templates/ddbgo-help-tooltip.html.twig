@@ -1,6 +1,8 @@
 {# Shared tooltip content: Twig preserves rich help text and existing field IDs.
+   Start hidden in HTML, including AJAX fragments, to avoid a flash before JS/CSS.
+   aria-describedby keeps referencing the same text while it is hidden.
    The inner box scrolls independently so the decorative arrow stays visible. #}
-<div{{ tooltip_attributes.setAttribute('id', tooltip_id).setAttribute('role', 'tooltip').addClass(description_classes, 'ddbgo-help-tooltip') }}>
+<div{{ tooltip_attributes.setAttribute('id', tooltip_id).setAttribute('role', 'tooltip').setAttribute('hidden', 'hidden').addClass(description_classes, 'ddbgo-help-tooltip') }}>
   <span class="ddbgo-help-tooltip__arrow" aria-hidden="true"></span>
   <div class="ddbgo-help-tooltip__content">{{ description }}</div>
 </div>

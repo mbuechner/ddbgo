@@ -1,6 +1,6 @@
 {# Names and the tooltip relationship are rendered before JavaScript runs.
    The description follows the button in its wrapper template (outside summary
-   for details). It stays readable inline when JavaScript is unavailable. #}
+   for details). The no-script CSS fallback keeps it readable without JavaScript. #}
 {{ attach_library('ddbgo_gin/form_help') }}
 <button class="ddbgo-help-toggle" type="button"
   aria-label="{{ mouseover ? 'Hilfe zu @label'|t({'@label': label|striptags|trim}) : 'Weitere Informationen'|t }}"

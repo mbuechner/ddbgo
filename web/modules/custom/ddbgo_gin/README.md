@@ -55,16 +55,19 @@ bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
   mobile Menübedienung sowie Positionierung am Bildschirmrand. Markierungen
   und HTML-Struktur werden hier nicht mehr nachträglich ergänzt.
 - `ddbgo_gin.form-help.js`: Öffnet die in Twig gerenderten Hilfetexte bei Hover
-  und Tastaturfokus. Escape schließt ohne Fokuswechsel, Klick/Touch hält die Hilfe
-  bis zum nächsten Klick, Fokuswechsel oder Klick außerhalb offen. Der Mauszeiger
+  und Tastaturfokus. Twig rendert die Tooltip-Texte bereits mit `hidden`, damit sie
+  auch vor dem Laden von CSS/JavaScript und in AJAX-Antworten nicht aufblitzen
+  oder das Layout verschieben. Escape schließt ohne Fokuswechsel, Klick/Touch
+  hält die Hilfe bis zum nächsten Klick, Fokuswechsel oder Klick außerhalb offen.
+  Der Mauszeiger
   bleibt ein normaler Pfeil. Der Tooltip bleibt beim Überfahren seines Textes
   sichtbar. Die Popover API verhindert Abschneiden durch Container; die Position
   passt sich Fenstergröße und Scrollen an. Hilfen innerhalb von Details werden
   während der Anzeige vorübergehend an `body` angehängt, weil geschlossene Details
   auch ihre Popovers verbergen. Danach kehren sie an die ursprüngliche Stelle
   zurück; ihre ID und Screenreader-Zuordnung ändern sich nicht. Ohne JavaScript
-  bleibt der Text im Formular lesbar. Gin verwendet für diese Buttons einen
-  anderen Selektor und überschreibt ihre Attribute daher nicht.
+  bleibt der Text im Formular über die CSS-Abfrage `scripting: none` lesbar.
+  Gin verwendet für diese Buttons einen anderen Selektor und überschreibt ihre Attribute daher nicht.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden nach Tagify-Änderungen.
 - `ddbgo_gin.toolbar-navigation.js`: Kompatibilitätskorrektur für Gins
   Verwaltungsnavigation. Ein Klick auf einen Verwaltungslink bzw. dessen
@@ -105,8 +108,9 @@ node web/modules/custom/ddbgo_gin/tests/js/form-help.test.cjs
 ```
 
 Die ausgegebene HTML-Datei im Browser öffnen. Der Test verwendet die tatsächliche
-Tooltip-Library und prüft Hover, Fokus, Escape, Klick, Verlassen, wiederholtes
-Attach, AJAX, geschlossene Details und die Position am Bildschirmrand. Er sendet
+Tooltip-Library und prüft die anfängliche Sichtbarkeit vor CSS und verzögertem
+JavaScript, das Layout beim Attach sowie Hover, Fokus, Escape, Klick, Verlassen,
+wiederholtes Attach, AJAX, geschlossene Details und die Position am Bildschirmrand. Er sendet
 keine Formulare ab. Zusätzlich mit schmalem Browserfenster prüfen. Die technischen
 Tests ersetzen keinen manuellen Test mit NVDA oder VoiceOver.
 

@@ -54,7 +54,7 @@ button.ddbgo-help-toggle:focus-visible {
   grid-column: 1 / -1;
 }
 
-/* Without JS, descriptions remain visible in the normal reading order. */
+/* Only initialized tooltips receive popup styling; Twig hides them before JS. */
 .ddbgo-help-tooltip[data-ddbgo-tooltip-ready] {
   position: fixed;
   inset: auto;
@@ -77,6 +77,15 @@ button.ddbgo-help-toggle:focus-visible {
 
 .ddbgo-help-tooltip[hidden] {
   display: none !important;
+}
+
+/* Preserve inline help when scripting is disabled, without waiting for JS to
+ * declare its availability. Keep initialized/closed tooltips hidden.
+ * https://www.w3.org/TR/mediaqueries-5/#scripting */
+@media (scripting: none) {
+  .ddbgo-help-tooltip[hidden]:not([data-ddbgo-tooltip-ready]) {
+    display: block !important;
+  }
 }
 
 .ddbgo-help-tooltip__content > :first-child {
