@@ -39,7 +39,7 @@ dependencies:
     - field.field.node.bestand.field_link_zu_coding_da_vinci
     - field.field.node.bestand.field_link_zu_ddbdash
     - field.field.node.bestand.field_personen
-    - field.field.node.bestand.field_status
+    - field.field.node.bestand.field_record_status
     - field.field.node.bestand.field_status_fragebogen
     - field.field.node.bestand.field_ueber_welchen_weg
     - field.field.node.bestand.field_url
@@ -47,7 +47,7 @@ dependencies:
     - field.field.node.bestand.field_zwischenaggregatoren
     - node.type.bestand
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - datetime
     - empty_fields
@@ -60,7 +60,7 @@ third_party_settings:
   field_group:
     group_status:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
         - field_bestandstags
       label: Status
@@ -747,20 +747,11 @@ content:
           empty_text: 'keine Personen'
     weight: 20
     region: content
-  field_status:
-    type: color_field_formatter_swatch
-    label: hidden
-    settings:
-      shape: square
-      width: '50'
-      height: '50'
-      opacity: true
-      data_attribute: false
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
     weight: 16
     region: content
   field_status_fragebogen:
@@ -829,6 +820,7 @@ content:
     weight: 14
     region: content
 hidden:
+  field_status: true
   flag_bookmark: true
   langcode: true
   links: true

@@ -9,7 +9,7 @@ dependencies:
     - field.storage.node.field_kurzname
     - field.storage.node.field_sparte
     - field.storage.node.field_stadt
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_untersparte
     - field.storage.node.field_vertragsstatus
     - field.storage.node.field_zustimmungsformular
@@ -80,11 +80,11 @@ field_settings:
   field_status:
     label: Status
     datasource_id: 'entity:node'
-    property_path: field_status
+    property_path: field_record_status
     type: string
     dependencies:
       config:
-        - field.storage.node.field_status
+        - field.storage.node.field_record_status
   field_untersparte:
     label: Untersparte
     datasource_id: 'entity:node'

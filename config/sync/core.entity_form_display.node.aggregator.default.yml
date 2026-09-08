@@ -23,7 +23,7 @@ dependencies:
     - field.field.node.aggregator.field_region_ort
     - field.field.node.aggregator.field_sichtbarkeit
     - field.field.node.aggregator.field_sparten
-    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_record_status
     - field.field.node.aggregator.field_status_fragebogen
     - field.field.node.aggregator.field_url
     - field.field.node.aggregator.field_vertrag
@@ -34,7 +34,7 @@ dependencies:
     - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
-    - color_field
+    - options
     - field_group
     - file
     - link
@@ -44,7 +44,7 @@ third_party_settings:
   field_group:
     group_status:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
       label: Status
       region: content
@@ -199,17 +199,17 @@ content:
         caa98ec2-aa07-42bd-864e-0a9174c212a7:
           entity_type: node
           bundle: aggregator
-          dependee: field_status
+          dependee: field_record_status
           settings:
             state: '!disabled'
             condition: value
             grouping: AND
-            values_set: 4
-            value: ''
-            values: '#D2222D'
+            values_set: 1
+            value: rejected
+            values: {  }
             value_form:
               -
-                color: ''
+                value: rejected
             effect: show
             effect_options: {  }
             selector: ''
@@ -438,12 +438,11 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
-  field_status:
-    type: color_field_widget_box
+  field_record_status:
+    type: options_select
     weight: 1
     region: content
-    settings:
-      default_colors: '#D2222D,#FFBF00,#238823'
+    settings: {  }
     third_party_settings: {  }
   field_status_fragebogen:
     type: options_select
@@ -510,6 +509,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_status: true
   created: true
   langcode: true
   path: true

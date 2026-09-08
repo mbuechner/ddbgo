@@ -7,7 +7,7 @@ dependencies:
     - field.storage.node.field_ddb_id
     - field.storage.node.field_isil
     - field.storage.node.field_stadt
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - search_api.index.suche_kwe
     - system.menu.kwe
     - taxonomy.vocabulary.kultursparte_kwe
@@ -18,7 +18,7 @@ dependencies:
     - user.role.ddb_team
   module:
     - better_exposed_filters
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - search_api
     - user
@@ -239,14 +239,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: true
-            data_attribute: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1140,7 +1135,7 @@ display:
         - 'config:field.storage.node.field_ddb_id'
         - 'config:field.storage.node.field_isil'
         - 'config:field.storage.node.field_stadt'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.suche_kwe'
         - 'search_api_list:suche_kwe'
   page_1:
@@ -1173,6 +1168,6 @@ display:
         - 'config:field.storage.node.field_ddb_id'
         - 'config:field.storage.node.field_isil'
         - 'config:field.storage.node.field_stadt'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.suche_kwe'
         - 'search_api_list:suche_kwe'

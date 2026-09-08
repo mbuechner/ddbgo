@@ -109,11 +109,35 @@ function ddbgo_gin_theme(): array {
     'variables' => ['tasks' => [], 'bookmark' => []],
     'template' => 'ddbgo-page-actions',
   ];
+  $hooks['ddbgo_record_status'] = [
+    'variables' => ['status' => 'unknown', 'label' => 'Keine Angabe'],
+    'template' => 'ddbgo-record-status',
+  ];
   $hooks['input__ddbgo_gin_paragraph_add'] = [
     'base hook' => 'input',
     'template' => 'input--ddbgo-gin-paragraph-add',
   ];
   return $hooks;
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Maintenance mode alone does not stop privileged/API/queue writers. Keep the
+ * migration snapshot stable until the operator completes the deployment.
+ */
+function ddbgo_gin_node_presave(NodeInterface $node): void {
+  if (in_array($node->bundle(), \Drupal\ddbgo_gin\Status\RecordStatus::BUNDLES, TRUE)
+    && \Drupal::state()->get('ddbgo_gin.status_migrating')) {
+    throw new \RuntimeException('Status migration in progress; node writes are temporarily blocked.');
+  }
+}
+
+/**
+ * Implements hook_node_predelete().
+ */
+function ddbgo_gin_node_predelete(NodeInterface $node): void {
+  ddbgo_gin_node_presave($node);
 }
 
 /**

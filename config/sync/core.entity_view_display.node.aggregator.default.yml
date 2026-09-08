@@ -26,7 +26,7 @@ dependencies:
     - field.field.node.aggregator.field_region_ort
     - field.field.node.aggregator.field_sichtbarkeit
     - field.field.node.aggregator.field_sparten
-    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_record_status
     - field.field.node.aggregator.field_status_fragebogen
     - field.field.node.aggregator.field_url
     - field.field.node.aggregator.field_vertrag
@@ -37,7 +37,7 @@ dependencies:
     - field.field.node.aggregator.field_zwischenaggregatoren
     - node.type.aggregator
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - empty_fields
     - entity_reference_revisions
@@ -49,7 +49,7 @@ third_party_settings:
   field_group:
     group_status:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
       label: Status
       parent_name: group_aggregator
@@ -474,20 +474,11 @@ content:
           empty_text: –
     weight: 14
     region: content
-  field_status:
-    type: color_field_formatter_swatch
-    label: hidden
-    settings:
-      shape: square
-      width: '150'
-      height: '80'
-      opacity: true
-      data_attribute: true
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
     weight: 8
     region: content
   field_status_fragebogen:
@@ -591,6 +582,7 @@ content:
     weight: 19
     region: content
 hidden:
+  field_status: true
   flag_bookmark: true
   langcode: true
   links: true

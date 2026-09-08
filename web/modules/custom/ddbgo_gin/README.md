@@ -308,3 +308,15 @@ sieben Suchformulare. Zusätzlich im Browser eine Suche mit Dropdown-Auswahl
 anwenden, die URL ohne Parameter aufrufen, zurücksetzen und dieselbe URL erneut
 laden. Die Felder müssen nach Reset auch bei gefülltem Cache leer beziehungsweise
 auf ihrer konfigurierten Standardauswahl stehen.
+
+## Migration des Statusfelds
+
+Der gemeinsame Status-Formatter zeigt außerhalb von Tabellen eine farbig
+hinterlegte Statusfläche in Inhaltsbreite mit Text. In Tabellen erscheint nur das Farbsymbol
+mit Mouseover-Hinweis; der Statusname bleibt für Screenreader lesbar. Beim
+Drucken und im erzwungenen Farbmodus bleibt der Text auch dort sichtbar.
+Die Darstellung wird ausschließlich über Twig und CSS gesteuert.
+
+Die Umstellung von Farbwerten auf eine Drupal-Liste erfordert Update 11002 vor
+dem Konfigurationsimport. Ablauf, Prüfbefehle und Rückweg stehen in
+[STATUS-MIGRATION.md](STATUS-MIGRATION.md). Die alten Farbwerte bleiben erhalten.

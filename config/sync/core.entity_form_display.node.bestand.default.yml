@@ -35,7 +35,7 @@ dependencies:
     - field.field.node.bestand.field_link_zu_coding_da_vinci
     - field.field.node.bestand.field_link_zu_ddbdash
     - field.field.node.bestand.field_personen
-    - field.field.node.bestand.field_status
+    - field.field.node.bestand.field_record_status
     - field.field.node.bestand.field_status_fragebogen
     - field.field.node.bestand.field_ueber_welchen_weg
     - field.field.node.bestand.field_url
@@ -43,7 +43,7 @@ dependencies:
     - field.field.node.bestand.field_zwischenaggregatoren
     - node.type.bestand
   module:
-    - color_field
+    - options
     - conditional_fields
     - datetime
     - field_group
@@ -56,7 +56,7 @@ third_party_settings:
   field_group:
     group_status:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
         - field_bestandstags
       label: Status
@@ -300,17 +300,17 @@ content:
         ca678b0f-8130-4183-a5fc-b35c07eb6525:
           entity_type: node
           bundle: bestand
-          dependee: field_status
+          dependee: field_record_status
           settings:
             state: '!disabled'
             condition: value
             grouping: AND
-            values_set: 4
-            value: ''
-            values: '#D2222D'
+            values_set: 1
+            value: rejected
+            values: {  }
             value_form:
               -
-                color: ''
+                value: rejected
             effect: show
             effect_options: {  }
             selector: ''
@@ -580,12 +580,11 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
     third_party_settings: {  }
-  field_status:
-    type: color_field_widget_box
+  field_record_status:
+    type: options_select
     weight: 1
     region: content
-    settings:
-      default_colors: '#D2222D,#FFBF00,#238823'
+    settings: {  }
     third_party_settings: {  }
   field_status_fragebogen:
     type: options_select
@@ -635,6 +634,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_status: true
   created: true
   langcode: true
   path: true

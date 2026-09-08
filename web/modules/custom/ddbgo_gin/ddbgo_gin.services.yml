@@ -1,4 +1,11 @@
 services:
+  ddbgo_gin.status_migration:
+    class: Drupal\ddbgo_gin\Status\StatusMigration
+    arguments: ['@database', '@config.storage', '@entity.last_installed_schema.repository']
+  ddbgo_gin.status_import:
+    class: Drupal\ddbgo_gin\EventSubscriber\StatusImportSubscriber
+    tags:
+      - { name: event_subscriber }
   ddbgo_gin.route_subscriber:
     class: Drupal\ddbgo_gin\Routing\RouteSubscriber
     tags:

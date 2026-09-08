@@ -12,7 +12,7 @@ dependencies:
     - field.storage.node.field_jira_ticket_bei_europeana
     - field.storage.node.field_kwe
     - field.storage.node.field_link_zu_ddbdash
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_ueber_welchen_weg
     - search_api.index.bestand
     - system.menu.bestand
@@ -24,7 +24,7 @@ dependencies:
   content:
     - 'taxonomy_term:europeana:ea20445b-9ef5-41c5-84fd-61872d0d4519'
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - datetime
     - entity_reference_revisions
@@ -248,14 +248,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
-            data_attribute: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1480,7 +1475,7 @@ display:
         - 'config:field.storage.node.field_jira_ticket_bei_europeana'
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_ueber_welchen_weg'
         - 'config:search_api.index.bestand'
         - 'search_api_list:bestand'
@@ -1519,7 +1514,7 @@ display:
         - 'config:field.storage.node.field_jira_ticket_bei_europeana'
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_ueber_welchen_weg'
         - 'config:search_api.index.bestand'
         - 'search_api_list:bestand'

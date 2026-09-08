@@ -27,7 +27,7 @@ dependencies:
     - field.field.node.kwe.field_plz
     - field.field.node.kwe.field_sparte
     - field.field.node.kwe.field_stadt
-    - field.field.node.kwe.field_status
+    - field.field.node.kwe.field_record_status
     - field.field.node.kwe.field_strasse
     - field.field.node.kwe.field_telefonnummer
     - field.field.node.kwe.field_untersparte
@@ -38,7 +38,7 @@ dependencies:
     - field.field.node.kwe.field_zustimmungsformular
     - node.type.kwe
   module:
-    - color_field
+    - options
     - conditional_fields
     - datetime
     - field_group
@@ -164,7 +164,7 @@ third_party_settings:
         required_fields: true
     group_s:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
       label: Status
       region: content
@@ -216,17 +216,17 @@ content:
         09457cba-a3e2-47d1-bdb2-abf4defb1c96:
           entity_type: node
           bundle: kwe
-          dependee: field_status
+          dependee: field_record_status
           settings:
             state: '!disabled'
             condition: value
             grouping: AND
-            values_set: 4
-            value: ''
-            values: '#D2222D'
+            values_set: 1
+            value: rejected
+            values: {  }
             value_form:
               -
-                color: ''
+                value: rejected
             effect: show
             effect_options: {  }
             selector: ''
@@ -555,12 +555,11 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
-  field_status:
-    type: color_field_widget_box
+  field_record_status:
+    type: options_select
     weight: 1
     region: content
-    settings:
-      default_colors: '#D2222D,#FFBF00,#238823'
+    settings: {  }
     third_party_settings: {  }
   field_strasse:
     type: string_textfield
@@ -690,6 +689,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
+  field_status: true
   created: true
   langcode: true
   path: true

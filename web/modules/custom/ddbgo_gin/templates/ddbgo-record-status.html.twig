@@ -1,0 +1,6 @@
+{# CSS visually hides the label in tables only; it stays in the reading order. #}
+{# Static information: no alert/live region or additional keyboard stop needed. #}
+<span class="ddbgo-record-status ddbgo-record-status--{{ status|clean_class }}" title="{{ 'Status: @status'|t({'@status': label}) }}">
+  <span class="ddbgo-record-status__color" aria-hidden="true"></span>
+  <span class="ddbgo-record-status__label">{{ label }}</span>
+</span>

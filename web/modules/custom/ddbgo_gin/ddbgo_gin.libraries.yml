@@ -1,4 +1,9 @@
 # Attach components at their entry points; Drupal resolves shared dependencies.
+record_status:
+  css:
+    component:
+      css/ddbgo_gin.record-status.css: {}
+
 icons:
   css:
     theme:

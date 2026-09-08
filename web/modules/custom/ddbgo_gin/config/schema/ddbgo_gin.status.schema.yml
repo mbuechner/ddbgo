@@ -1,0 +1,4 @@
+field.formatter.settings.ddbgo_record_status:
+  type: mapping
+  label: 'DDBgo status formatter settings'
+  mapping: {}

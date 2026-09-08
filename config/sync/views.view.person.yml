@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_aggregator
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.paragraph.field_rolle
     - node.type.aggregator
     - node.type.bestand
@@ -13,7 +13,7 @@ dependencies:
     - user.role.authenticated
     - user.role.ddb_team
   module:
-    - color_field
+    - ddbgo_gin
     - node
     - paragraphs
     - user
@@ -695,8 +695,8 @@ display:
           field_api_classes: false
         field_status:
           id: field_status
-          table: node__field_status
-          field: field_status
+          table: node__field_record_status
+          field: field_record_status
           relationship: none
           group_type: group
           admin_label: ''
@@ -742,13 +742,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -900,7 +896,7 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags:
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.paragraph.field_rolle'
   person_bestand:
     id: person_bestand
@@ -1043,8 +1039,8 @@ display:
           field_api_classes: false
         field_status:
           id: field_status
-          table: node__field_status
-          field: field_status
+          table: node__field_record_status
+          field: field_record_status
           relationship: none
           group_type: group
           admin_label: ''
@@ -1090,13 +1086,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '14'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1240,8 +1232,8 @@ display:
           field_api_classes: false
         field_status_1:
           id: field_status_1
-          table: node__field_status
-          field: field_status
+          table: node__field_record_status
+          field: field_record_status
           relationship: field_kwe
           group_type: group
           admin_label: ''
@@ -1287,13 +1279,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1539,7 +1527,7 @@ display:
         - user.roles
       tags:
         - 'config:field.storage.node.field_aggregator'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.paragraph.field_rolle'
   person_kwe:
     id: person_kwe
@@ -1682,8 +1670,8 @@ display:
           field_api_classes: false
         field_status:
           id: field_status
-          table: node__field_status
-          field: field_status
+          table: node__field_record_status
+          field: field_record_status
           relationship: none
           group_type: group
           admin_label: ''
@@ -1729,13 +1717,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1839,5 +1823,5 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags:
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.paragraph.field_rolle'

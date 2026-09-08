@@ -24,3 +24,11 @@ function ddbgo_gin_requirements(string $phase): array {
     ],
   ];
 }
+
+/**
+ * Copy legacy status colors to semantic values, including all saved revisions.
+ */
+function ddbgo_gin_update_11002(array &$sandbox): string {
+  \Drupal\ddbgo_gin\Status\StatusMigration::create()->migrate($sandbox);
+  return 'Status values copied and verified. Import configuration, reindex and run ddbgo:status-finish before resuming writes.';
+}

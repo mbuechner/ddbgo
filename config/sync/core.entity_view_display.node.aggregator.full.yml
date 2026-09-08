@@ -24,7 +24,7 @@ dependencies:
     - field.field.node.aggregator.field_region_ort
     - field.field.node.aggregator.field_sichtbarkeit
     - field.field.node.aggregator.field_sparten
-    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_record_status
     - field.field.node.aggregator.field_status_fragebogen
     - field.field.node.aggregator.field_url
     - field.field.node.aggregator.field_vertrag
@@ -47,6 +47,7 @@ content:
     weight: 100
     region: content
 hidden:
+  field_status: true
   field_ablehnungsgrund: true
   field_bemerkung: true
   field_bemerkungen: true
@@ -67,7 +68,7 @@ hidden:
   field_region_ort: true
   field_sichtbarkeit: true
   field_sparten: true
-  field_status: true
+  field_record_status: true
   field_status_fragebogen: true
   field_url: true
   field_vertrag: true

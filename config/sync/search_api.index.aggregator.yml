@@ -10,7 +10,7 @@ dependencies:
     - field.storage.node.field_region_ort
     - field.storage.node.field_sichtbarkeit
     - field.storage.node.field_sparten
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_vertragskonstrukt
     - field.storage.node.field_vertragsstatus
     - search_api.server.default_server
@@ -42,11 +42,11 @@ field_settings:
   field_status:
     label: Status
     datasource_id: 'entity:node'
-    property_path: field_status
+    property_path: field_record_status
     type: string
     dependencies:
       config:
-        - field.storage.node.field_status
+        - field.storage.node.field_record_status
   name:
     label: 'Datenformat » Taxonomie-Begriff » Name'
     datasource_id: 'entity:node'

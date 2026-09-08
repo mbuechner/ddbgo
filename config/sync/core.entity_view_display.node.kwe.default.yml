@@ -30,7 +30,7 @@ dependencies:
     - field.field.node.kwe.field_plz
     - field.field.node.kwe.field_sparte
     - field.field.node.kwe.field_stadt
-    - field.field.node.kwe.field_status
+    - field.field.node.kwe.field_record_status
     - field.field.node.kwe.field_strasse
     - field.field.node.kwe.field_telefonnummer
     - field.field.node.kwe.field_untersparte
@@ -41,7 +41,7 @@ dependencies:
     - field.field.node.kwe.field_zustimmungsformular
     - node.type.kwe
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - datetime
     - empty_fields
@@ -154,7 +154,7 @@ third_party_settings:
         speed: fast
     group_status:
       children:
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
       label: Status
       parent_name: group_kwe
@@ -515,20 +515,11 @@ content:
           empty_text: –
     weight: 10
     region: content
-  field_status:
-    type: color_field_formatter_swatch
-    label: hidden
-    settings:
-      shape: square
-      width: '150'
-      height: '80'
-      opacity: true
-      data_attribute: true
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
   field_strasse:
@@ -634,6 +625,7 @@ content:
     weight: 26
     region: content
 hidden:
+  field_status: true
   flag_bookmark: true
   langcode: true
   links: true
