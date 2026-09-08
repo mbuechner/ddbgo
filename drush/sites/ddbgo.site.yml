@@ -1,0 +1,7 @@
+# Local Windows entry point. drush.cmd sets the absolute project path.
+# Explicit drush-script also applies to nested update/index batch processes.
+windows:
+  root: '${env.DDBGO_DRUSH_PROJECT}web'
+  uri: 'http://localhost:8888'
+  paths:
+    drush-script: '${env.DDBGO_DRUSH_PROJECT}drush.cmd'
