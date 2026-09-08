@@ -11,7 +11,7 @@ field_name: field_region_ort
 entity_type: node
 bundle: aggregator
 label: 'Geografische Ausrichtung'
-description: 'Geografische Ausrichtung, z.B. Region oder Ort.'
+description: 'Die Auswahl beschreibt die geografische Ausrichtung des Aggregators, zum Beispiel nach Region oder Ort. Fehlende Einträge können durch Eingabe und Auswahl ergänzt werden. Neue Einträge werden beim Speichern des Formulars angelegt.'
 required: false
 translatable: false
 default_value: {  }

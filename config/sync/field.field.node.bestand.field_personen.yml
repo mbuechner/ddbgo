@@ -13,7 +13,7 @@ field_name: field_personen
 entity_type: node
 bundle: bestand
 label: Personen
-description: ''
+description: 'Die Einträge verknüpfen Personen und ihre jeweiligen Rollen mit dem Bestand.'
 required: false
 translatable: true
 default_value: {  }

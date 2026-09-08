@@ -11,7 +11,7 @@ field_name: field_bundesland
 entity_type: node
 bundle: kwe
 label: Bundesland
-description: ''
+description: 'Erfasst wird das Bundesland, in dem die Kultur- oder Wissenseinrichtung liegt.'
 required: false
 translatable: false
 default_value: {  }

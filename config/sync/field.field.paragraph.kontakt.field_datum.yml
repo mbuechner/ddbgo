@@ -12,7 +12,7 @@ field_name: field_datum
 entity_type: paragraph
 bundle: kontakt
 label: Datum
-description: ''
+description: 'Das Datum dokumentiert den Zeitpunkt des Kontakts.'
 required: true
 translatable: false
 default_value: {  }

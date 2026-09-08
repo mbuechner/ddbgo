@@ -10,7 +10,7 @@ field_name: field_email
 entity_type: node
 bundle: person
 label: E-Mail
-description: 'Persönliche E-Mail-Adresse der Person.'
+description: 'Hier wird die persönliche E-Mail-Adresse der Person erfasst.'
 required: false
 translatable: false
 default_value: {  }

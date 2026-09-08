@@ -10,7 +10,7 @@ field_name: field_anzahl_der_objekte
 entity_type: paragraph
 bundle: ddb_objekte
 label: 'Anzahl der Objekte'
-description: ''
+description: 'Die Objektzahl gibt die Anzahl der Objekte des ausgewählten Medientyps an.'
 required: true
 translatable: false
 default_value: {  }

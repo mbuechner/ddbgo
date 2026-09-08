@@ -39,6 +39,122 @@ und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
 ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
 bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
 
+## Leere verknüpfte Einträge
+
+Das Inline-Paragraphs-Widget (`entity_reference_paragraphs`) zeigt bei leeren
+Feldern keinen generischen Hinweis „Noch kein Seitenabschnitt hinzugefügt.“
+mehr. Feldüberschrift, Pflichtfeldmarkierung, Hilfetext und Hinzufügen-Aktionen
+bleiben erhalten. Ein gezielter Widget-Alter-Hook entfernt nur das Textelement
+aus dem Render-Array, auch bei AJAX-Neuaufbau und künftig ergänzten Feldern
+dieses Widget-Typs. Das Contrib-Widget erzeugt den Hinweis direkt in PHP und
+bietet dafür weder eine eigene Vorlage noch eine Einstellung zum Ausblenden.
+
+## Abstände in Detailansichten und Formularen
+
+`ddbgo_gin.section-spacing.css` verwendet für vollständige Node-Anzeigen,
+Node-Anlage-/Bearbeitungsformulare und aufklappbare Verknüpfungsblöcke gemeinsame
+Innenabstände: 24 Pixel ab 48em,
+darunter 16 Pixel (über Gins rem-basierte Abstandsvariablen). Tab-Inhalte
+beginnen mit diesem Abstand unter der Trennlinie; Gins überlappende Tab-Abstände
+werden dafür in Anzeige und Formular zurückgesetzt. Native aufklappbare Abschnitte
+behalten einen seitlichen Innenabstand, während Tabs die Einrückung ihrer
+äußeren Karte verwenden. Auf kleinen Bildschirmen ist diese äußere Karte
+kompakter, damit sich die Einrückungen nicht unnötig addieren.
+
+Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand, Personen- und
+Kontaktkarten 16 Pixel Abstand zueinander. Mehrfachwerte stehen mit 8 Pixel
+Abstand untereinander. Die Anpassungen verändern weder die Tab-Steuerung noch
+die Reihenfolge der Inhalte. Diese Feldzeilen-/Kartenregeln bleiben auf die
+Anzeige begrenzt; die bestehenden Abstände zwischen Formulareingaben bleiben
+erhalten. Am Anfang und Ende eines Formularabschnitts werden zusätzliche
+Feldränder ausgeglichen. Paragraph-Unterformulare erhalten 16 Pixel Abstand
+unter ihrer Überschrift, ohne zusätzliche seitliche Einrückung. Das Personenformular
+erhält den normalen Kartenabstand auch ohne einzelne Tab-Unterbereiche.
+Lange Texte sowie die Zeile mit Paragraph-Überschrift und Aktionen dürfen
+auf schmalen Bildschirmen umbrechen. Das Template
+`input--ddbgo-gin-paragraph-add.html.twig` gibt Hinzufügen-Aktionen als native
+Submit-Buttons mit umbrechender Beschriftung aus; Name, Wert, ID und
+AJAX-Attribute bleiben erhalten.
+
+Die Library `section_spacing` wird über `theme_components` in Gin und Gin
+Frontend geladen. Die CSS-Selektoren erfassen auch AJAX-neuaufgebaute
+Node-Formulare. Suchfilter behalten ihre unabhängigen Abstände und Raster.
+
+## Einheitliche Formularfelder
+
+`ddbgo_gin.form-controls.css` wird über `theme_components` auf Gin und Gin
+Frontend geladen. Native Texteingaben, Auswahlfelder, Textareas, Select2 und
+Tagify nutzen die Breite ihrer vorhandenen Formular- oder Suchfilterspalte.
+Die Höhe und Farben folgen Gins Variablen. Mehrfachauswahlen und lange
+Select2-Werte dürfen umbrechen und wachsen; Textareas behalten ihre Zeilenanzahl.
+Datum/Uhrzeit, Checkboxen, Radios, Dateiuploads, Sortiergewichte und kompakte
+Editor-Auswahlen behalten ihre eigenen Maße.
+
+Select2 erhält für Einfach- und Mehrfachauswahl denselben dekorativen Pfeil,
+Gin-Farben auch im ausgelagerten Ergebnisfenster sowie sichtbare Fokus-, Fehler-
+und deaktivierte Zustände. Der Pfeil fängt keine Zeigerereignisse ab. Die
+Originalfelder, Labels, ARIA-Attribute, Tastatursteuerung, AJAX-Suche,
+Auswahlreihenfolge und Löschfunktionen bleiben beim jeweiligen Widget.
+Die Breitenregel überschreibt ausschließlich die inline gesetzte Breite des
+Select2-Auswahlcontainers, nicht die Positionierung seines Ergebnisfensters.
+Dadurch passen auch in geschlossenen Tabs initialisierte Widgets später in ihre
+Spalte. Neue Felder mit denselben Widget-Klassen werden automatisch erfasst.
+
+Die gemeinsamen Select2-Regeln erfassen sowohl den Default-Skin von Gin Frontend
+als auch den Gin-Skin des Select2-Moduls. Zusätzliche Innenabstände um dessen
+Suchbereich und Auswahlwerte werden ausgeglichen. Leere und einzeilig befüllte
+Mehrfachauswahlen haben damit dieselbe Mindesthöhe wie Texteingaben; bei Umbruch
+wachsen sie weiter. Formularabschnitte verwenden diese Regeln ebenfalls, ohne
+eigene Select2-Größenregeln in `ddbgo_gin.frontend-layout.css`.
+Die interne Auswahlliste erhält außerdem keinen Listenabstand: Drupals
+allgemeine Listeneinrückung würde selbst bei leerer Auswahl den Suchbereich
+mit dem Platzhalter in eine zusätzliche Zeile verschieben.
+
+### Auswahl des Widgets
+
+Kleine, feste Listen mit Einfachauswahl verwenden in `core.entity_form_display.*`
+das Core-Widget `options_select`. Als Richtwert wurden bis zu 20 vorhandene
+Begriffe zugrunde gelegt, etwa Ja/Nein, Status, Sparte, Bundesland, Medientyp und
+Europeana-Tiers.
+
+Mehrfachauswahllisten verwenden unabhängig von ihrer Größe Select2. Das
+Dropdown bleibt dadurch kompakt; ausgewählte Werte erscheinen als einzeln
+entfernbare Einträge. Dies gilt auch für Datenformat, Lieferweg, Coding da Vinci-
+Events, die Ausrichtung nach Sparte und Sichtbarkeit. Die Feldkardinalität,
+vorhandene Werte, Auswahlmöglichkeiten und bedingte Feldabhängigkeiten werden
+beim Widget-Wechsel nicht geändert. Die Bestandstags behalten ausdrücklich
+Tagify mit Such-Dropdown, Mehrfachauswahl und Begriffs-IDs.
+
+Select2 bleibt bei umfangreichen oder erweiterbaren Listen: Bestandsart,
+geografische Ausrichtung, Länder, Personenrollen sowie Verweise auf Aggregatoren,
+KWEs und Personen. „Titel“ bleibt trotz der kleinen Liste ebenfalls Select2,
+weil neue Titel ausdrücklich direkt im Personenformular anlegbar bleiben sollen.
+Die Entscheidung steht in der Konfiguration und wird nicht beim Seitenaufruf
+anhand einer Datenbankzählung getroffen. Bei stark wachsenden Listen die
+Widget-Auswahl erneut prüfen.
+
+Alle sieben konfigurierten Neuanlagen sind in `field.field.*.description`
+erklärt: Bestandsart und geografische Ausrichtung bei Aggregatoren, akademischer
+Titel bei Personen, Rollen in den drei Personen-Paragraphen und die Person im
+Bestands-Personen-Paragraphen. Der Hilfetext erklärt Eingabe, Auswahl und Anlage
+beim Speichern; er nutzt die bestehenden Hilfe-Templates. Bestehende
+Beschreibungen bleiben enthalten. Neue KWE-Personenrollen verwenden wie die
+Auswahlliste das Vokabular `personenrolle`.
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/form-controls.test.cjs
+```
+
+Die erzeugte lokale HTML-Datei verwendet die installierten Gin-, Select2- und
+Tagify-Dateien und benötigt keine Anmeldung. Sie prüft Feldmaße, Umbrüche,
+Suchfunktion, Tastaturauswahl, Escape, Fokus, Löschen, deaktivierte/fehlerhafte
+Felder und die Initialisierung in einem versteckten Bereich. Mit schmalem
+Fenster wiederholen. Die URL-Parameter `?mode=frontend` und `?mode=gin` prüfen
+zusätzlich Formularabschnitte in Gin Frontend bzw. den Gin-Skin von Select2.
+Die Höhenprüfung umfasst auch eine bereits ausgewählte Option.
+Ergänzend die echten Formulare und Suchfilter sowie
+Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
+
 ## Verbleibendes JavaScript
 
 - `ddbgo_gin.unique-field-submit.js`: Verhindert fehlende Feldwerte beim Speichern

@@ -11,7 +11,7 @@ field_name: field_vertragsstatus
 entity_type: node
 bundle: aggregator
 label: Vertragsstatus
-description: 'Status des Vertrags'
+description: 'Die Angabe beschreibt den Status des Vertrags.'
 required: false
 translatable: true
 default_value: {  }

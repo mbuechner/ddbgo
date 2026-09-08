@@ -10,7 +10,7 @@ field_name: field_vorname
 entity_type: node
 bundle: person
 label: Vorname
-description: ''
+description: 'Dieses Feld enthält den Vornamen der Person.'
 required: true
 translatable: false
 default_value: {  }

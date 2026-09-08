@@ -8,21 +8,16 @@ dependencies:
     - paragraphs.paragraphs_type.europeana_objekte_content_tier
   module:
     - paragraphs
-    - select2
 id: paragraph.europeana_objekte_content_tier.default
 targetEntityType: paragraph
 bundle: europeana_objekte_content_tier
 mode: default
 content:
   field_content_tier:
-    type: select2_entity_reference
+    type: options_select
     weight: 0
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_objekte:
     type: entity_reference_paragraphs

@@ -446,14 +446,10 @@ content:
       default_colors: '#D2222D,#FFBF00,#238823'
     third_party_settings: {  }
   field_status_fragebogen:
-    type: select2_entity_reference
+    type: options_select
     weight: 52
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_url:
     type: link_default
@@ -471,24 +467,16 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
   field_vertragskonstrukt:
-    type: select2_entity_reference
+    type: options_select
     weight: 43
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_vertragsstatus:
-    type: select2_entity_reference
+    type: options_select
     weight: 42
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_workflow:
     type: file_generic
@@ -498,14 +486,10 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
   field_zustimmungsformular:
-    type: select2_entity_reference
+    type: options_select
     weight: 45
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_zwischenaggregatoren:
     type: select2_entity_reference

@@ -326,24 +326,16 @@ content:
     third_party_settings:
       conditional_fields: {  }
   field_aggregiert:
-    type: select2_entity_reference
+    type: options_select
     weight: 12
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_archivportal_lieferung:
-    type: select2_entity_reference
+    type: options_select
     weight: 18
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_bemerkung:
     type: string_textarea
@@ -399,14 +391,10 @@ content:
       match_limit: 10
     third_party_settings: {  }
   field_coding_da_vinci_teilnahme:
-    type: select2_entity_reference
+    type: options_select
     weight: 9
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_datenformat:
     type: select2_entity_reference
@@ -443,24 +431,16 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_europeana_lieferung:
-    type: select2_entity_reference
+    type: options_select
     weight: 10
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_europeana_lieferung_enum:
-    type: select2_entity_reference
+    type: options_select
     weight: 8
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_europeana_objekte_content_:
     type: entity_reference_paragraphs
@@ -487,14 +467,10 @@ content:
       default_paragraph_type: _none
     third_party_settings: {  }
   field_europeanastatus:
-    type: select2_entity_reference
+    type: options_select
     weight: 13
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_fragebogen:
     type: file_generic
@@ -505,14 +481,10 @@ content:
     third_party_settings:
       conditional_fields: {  }
   field_ingestart:
-    type: select2_entity_reference
+    type: options_select
     weight: 14
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_jira_europeana:
     type: string_textfield
@@ -616,14 +588,10 @@ content:
       default_colors: '#D2222D,#FFBF00,#238823'
     third_party_settings: {  }
   field_status_fragebogen:
-    type: select2_entity_reference
+    type: options_select
     weight: 16
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_ueber_welchen_weg:
     type: string_textfield
@@ -643,14 +611,10 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
   field_volltextformat:
-    type: select2_entity_reference
+    type: options_select
     weight: 3
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_zwischenaggregatoren:
     type: select2_entity_reference

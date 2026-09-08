@@ -8,6 +8,22 @@ theme_components:
   css:
     theme:
       css/ddbgo_gin.theme-components.css: {}
+  dependencies:
+    - ddbgo_gin/form_controls
+    - ddbgo_gin/section_spacing
+
+# Shared tab/details spacing for node views and add/edit forms in both themes.
+section_spacing:
+  css:
+    theme:
+      css/ddbgo_gin.section-spacing.css: {}
+
+# CSS only: native fields and Select2 share Gin's dimensions and state colors.
+# Reached by Gin/Gin Frontend pages, including forms loaded through AJAX.
+form_controls:
+  css:
+    theme:
+      css/ddbgo_gin.form-controls.css: {}
 
 # Attached only for toolbar users on Gin-based themes.
 toolbar_icons:

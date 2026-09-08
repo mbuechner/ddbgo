@@ -11,7 +11,7 @@ field_name: field_favorienkarussell
 entity_type: node
 bundle: kwe
 label: Favoritenkarussell
-description: 'Ist ein Favoritenkarussell auf der Organisationenseite der Kultur- oder Wissenseinrichtung vorhanden?'
+description: 'Die Angabe beschreibt, ob auf der Organisationenseite der Kultur- oder Wissenseinrichtung ein Favoritenkarussell vorhanden ist.'
 required: false
 translatable: false
 default_value: {  }

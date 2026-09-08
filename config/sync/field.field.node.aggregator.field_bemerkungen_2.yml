@@ -10,7 +10,7 @@ field_name: field_bemerkungen_2
 entity_type: node
 bundle: aggregator
 label: Bemerkungen
-description: ''
+description: 'Dieses Feld enthält ergänzende Angaben zur Ausrichtung des Aggregators.'
 required: false
 translatable: false
 default_value: {  }

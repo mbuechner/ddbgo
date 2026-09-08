@@ -10,7 +10,7 @@ field_name: field_bemerkung
 entity_type: node
 bundle: bestand
 label: Bemerkung
-description: ''
+description: 'Dieses Feld enthält ergänzende Angaben zum Bestand.'
 required: false
 translatable: true
 default_value: {  }

@@ -9,7 +9,7 @@ field_name: title
 entity_type: node
 bundle: bestand
 label: 'Name des Bestandes'
-description: ''
+description: 'Dieses Feld enthält den Namen des Bestands.'
 required: true
 translatable: true
 default_value: {  }

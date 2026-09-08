@@ -12,7 +12,7 @@ field_name: field_erstingest
 entity_type: node
 bundle: bestand
 label: 'Erster Ingest in die DDB'
-description: ''
+description: 'Das Datum dokumentiert den ersten Ingest des Bestands in die DDB.'
 required: false
 translatable: true
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_jira_ticket_bei_europeana
 entity_type: node
 bundle: bestand
 label: 'JIRA-Ticket bei Europeana'
-description: 'Bitte das JIRA-Tickets des Bestands bei Europeana angeben, z.B. AGG-929'
+description: 'Hier wird das JIRA-Ticket des Bestands bei Europeana angegeben, zum Beispiel AGG-929.'
 required: false
 translatable: false
 default_value: {  }

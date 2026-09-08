@@ -11,7 +11,7 @@ field_name: field_rolle
 entity_type: paragraph
 bundle: person_bestand
 label: Rolle
-description: ''
+description: 'Erfasst wird die Rolle der Person in Bezug auf den Bestand. Neue Rollen können durch Eingabe und Auswahl eines neuen Eintrags ergänzt werden. Neue Rollen werden beim Speichern des Formulars angelegt.'
 required: true
 translatable: true
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_volltextformat
 entity_type: node
 bundle: bestand
 label: Volltextformat
-description: 'Welches Volltextformat wird geliefert?'
+description: 'Die Angabe beschreibt das gelieferte Volltextformat.'
 required: false
 translatable: false
 default_value: {  }

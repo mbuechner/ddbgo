@@ -10,7 +10,7 @@ field_name: field_coding_da_vinci_bemerkung
 entity_type: node
 bundle: bestand
 label: Bemerkung
-description: ''
+description: 'Dieses Feld enthält ergänzende Angaben zum Bestand im Zusammenhang mit Coding da Vinci.'
 required: false
 translatable: false
 default_value: {  }

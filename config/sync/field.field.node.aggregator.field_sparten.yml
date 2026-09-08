@@ -11,7 +11,7 @@ field_name: field_sparten
 entity_type: node
 bundle: aggregator
 label: 'Ausrichtung nach Sparte'
-description: ''
+description: 'Die Auswahl beschreibt die Sparten, auf die der Aggregator ausgerichtet ist. Eine Mehrfachauswahl ist möglich.'
 required: false
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_europeana_lieferung_enum
 entity_type: node
 bundle: bestand
 label: 'Werden bereits Daten an Europeana geliefert?'
-description: 'Wird der Bestand bereits, z.B. über ein Europeana-Projekt wie Europeana Fashion, an Europeana geliefert?'
+description: 'Die Angabe beschreibt, ob der Bestand bereits an Europeana geliefert wird, zum Beispiel über ein Europeana-Projekt wie Europeana Fashion.'
 required: false
 translatable: false
 default_value: {  }

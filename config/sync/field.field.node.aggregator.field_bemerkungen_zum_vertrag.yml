@@ -10,7 +10,7 @@ field_name: field_bemerkungen_zum_vertrag
 entity_type: node
 bundle: aggregator
 label: 'Bemerkungen zum Vertrag'
-description: 'Bitte Bemerkungen zu den Verträgen eingeben.'
+description: 'Hier werden ergänzende Bemerkungen zu den Verträgen des Aggregators erfasst.'
 required: false
 translatable: false
 default_value: {  }

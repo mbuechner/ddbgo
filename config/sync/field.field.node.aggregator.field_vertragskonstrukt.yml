@@ -11,7 +11,7 @@ field_name: field_vertragskonstrukt
 entity_type: node
 bundle: aggregator
 label: Vertragskonstrukt
-description: 'Haben wir mit diesem Aggregator einen Kooperationsvertrag oder einen Aggregatorenvertrag abgeschlossen?'
+description: 'Erfasst wird, ob mit dem Aggregator ein Kooperationsvertrag oder ein Aggregatorenvertrag abgeschlossen wurde.'
 required: false
 translatable: false
 default_value: {  }

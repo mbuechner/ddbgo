@@ -109,6 +109,10 @@ function ddbgo_gin_theme(): array {
     'variables' => ['tasks' => [], 'bookmark' => []],
     'template' => 'ddbgo-page-actions',
   ];
+  $hooks['input__ddbgo_gin_paragraph_add'] = [
+    'base hook' => 'input',
+    'template' => 'input--ddbgo-gin-paragraph-add',
+  ];
   return $hooks;
 }
 
@@ -121,6 +125,12 @@ function ddbgo_gin_theme(): array {
 function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables, string $hook): void {
   if (!ddbgo_gin_is_theme('gin')) {
     return;
+  }
+  // A native button lets long Paragraphs add-action labels wrap on mobile.
+  // Keep the render element and its submit/AJAX attributes unchanged.
+  if ($hook === 'input' && ($variables['element']['#type'] ?? '') === 'submit'
+    && in_array('field-add-more-submit', $variables['element']['#attributes']['class'] ?? [], TRUE)) {
+    $suggestions[] = 'input__ddbgo_gin_paragraph_add';
   }
   if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper'], TRUE)
     || ($hook === 'menu' && ($variables['theme_hook_original'] ?? '') === 'menu__ddbgo_gin')
@@ -183,6 +193,19 @@ function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
   if (ddbgo_gin_is_theme('gin')) {
     $suggestions[] = 'pager__ddbgo_gin';
   }
+}
+
+/**
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ *
+ * Inline Paragraphs calls empty entries "Seitenabschnitte", even for person
+ * links or object counts. Omit its generic empty-state text while retaining
+ * the field label, description, required marker and add actions. Altering the
+ * widget also covers AJAX rebuilds and future fields using this widget type.
+ * The contrib widget builds this text directly, without a dedicated template.
+ */
+function ddbgo_gin_field_widget_complete_entity_reference_paragraphs_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+  unset($field_widget_complete_form['widget']['text']);
 }
 
 /**

@@ -11,7 +11,7 @@ field_name: field_sparte
 entity_type: node
 bundle: kwe
 label: Sparte
-description: 'Die DDB-Sparte für die KWE (wie in der Registrierung).'
+description: 'Die Angabe bezeichnet die DDB-Sparte der Kultur- oder Wissenseinrichtung entsprechend ihrer Registrierung.'
 required: false
 translatable: false
 default_value: {  }

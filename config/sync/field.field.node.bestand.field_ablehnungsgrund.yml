@@ -10,7 +10,7 @@ field_name: field_ablehnungsgrund
 entity_type: node
 bundle: bestand
 label: Ablehnungsgrund
-description: ''
+description: 'Hier wird der Grund für die Ablehnung des Bestands dokumentiert.'
 required: false
 translatable: true
 default_value: {  }

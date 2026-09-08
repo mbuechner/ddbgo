@@ -12,7 +12,7 @@ field_name: field_erstingest_archivportal
 entity_type: node
 bundle: kwe
 label: 'Erster Ingest in das Archivportal Europa'
-description: 'Wann erfolgte der erste Ingest der KWE in das Archivportal Europa?'
+description: 'Das Datum dokumentiert den ersten Ingest der Kultur- oder Wissenseinrichtung in das Archivportal Europa.'
 required: false
 translatable: false
 default_value: {  }

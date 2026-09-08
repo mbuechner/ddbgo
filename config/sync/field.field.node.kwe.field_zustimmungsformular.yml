@@ -11,7 +11,7 @@ field_name: field_zustimmungsformular
 entity_type: node
 bundle: kwe
 label: Zustimmungsformular
-description: 'Zustimmung der KWE zur Umstellung auf die neuen Rechtehinweise. Zustimmung eingeholt ab 2023.'
+description: 'Erfasst wird die ab 2023 eingeholte Zustimmung der Kultur- oder Wissenseinrichtung zur Umstellung auf die neuen Rechtehinweise.'
 required: false
 translatable: false
 default_value: {  }

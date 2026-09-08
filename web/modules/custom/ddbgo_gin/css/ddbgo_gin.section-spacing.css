@@ -1,0 +1,120 @@
+/* Shared spacing for full node output and node add/edit forms in both themes.
+ * CSS also reaches paragraph widgets after AJAX rebuilds. Search forms retain
+ * their independent filter grid.
+ * Below Field Group's tab breakpoint, native details retain the same inset.
+ * Use padding rather than child margins, which collapse or disappear for cards. */
+:is(.gin-frontend, .node-form) {
+  --ddbgo-section-space: var(--gin-spacing-m);
+  --ddbgo-display-row-space: var(--gin-spacing-s);
+}
+
+@media (min-width: 48em) {
+  :is(.gin-frontend, .node-form) {
+    --ddbgo-section-space: var(--gin-spacing-l);
+    --ddbgo-display-row-space: var(--gin-spacing-m);
+  }
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) .field-group-tabs-wrapper {
+  min-width: 0;
+  padding: var(--gin-spacing-m) var(--ddbgo-section-space);
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper {
+  min-width: 0;
+  margin: 0;
+  padding: var(--ddbgo-section-space);
+}
+
+/* Enhanced tabs already have their side inset from the surrounding card.
+ * Reset the pane margins so they do not add a second bottom spacing layer. */
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs .horizontal-tabs-pane {
+  margin: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details.horizontal-tabs-pane > .claro-details__wrapper {
+  padding-inline: 0;
+}
+
+/* Gin overlaps the tab strip and pane using a negative bottom margin.
+ * Let the pane padding determine the actual distance from the underline. */
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list {
+  margin-block-end: 0;
+  padding-block-end: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list::after {
+  inset-block-end: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper > :first-child,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper > :first-child {
+  margin-block-start: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper > :last-child,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper > :last-child {
+  margin-block-end: 0;
+}
+
+/* Field widgets add their own .form-item margin one level below the wrapper.
+ * Let the section inset own its edges, retaining spacing between form fields. */
+.node-form .claro-details__wrapper > .form-wrapper:first-of-type > .form-item:first-child,
+.node-form .paragraphs-subform > .form-wrapper:first-of-type > .form-item:first-child,
+.node-form [data-horizontal-tabs-panes] > .form-wrapper:first-of-type > .form-item:first-child {
+  margin-block-start: 0;
+}
+
+.node-form .claro-details__wrapper > .form-wrapper:last-child > .form-item:last-child,
+.node-form .paragraphs-subform > .form-wrapper:last-child > .form-item:last-child {
+  margin-block-end: 0;
+}
+
+/* Paragraphs already sit inside padded table cells. Add breathing room below
+ * their heading/actions without another horizontal inset around the inputs. */
+.node-form .paragraphs-subform {
+  min-width: 0;
+  padding-block-start: var(--gin-spacing-m);
+  overflow-wrap: anywhere;
+}
+
+/* Long paragraph titles and action controls must share or wrap their row
+ * instead of imposing a minimum table width on small screens. */
+.node-form .paragraph-type-top {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+.node-form .paragraph-type-top > .paragraph-type-title {
+  flex: 1 1 8rem;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* These submit buttons use a Twig button element so long action labels can
+ * wrap instead of overflowing nested sections. Submission attributes remain. */
+.node-form button.field-add-more-submit {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* The person form uses a tab-group wrapper without individual tab panes.
+ * It needs the normal card inset even on mobile, since no inner details exist. */
+.node-form .field-group-tabs-wrapper:has(> .horizontal-tabs):not(:has(details)) {
+  padding: var(--ddbgo-section-space);
+}
+
+.node-form .field-group-tabs-wrapper > .horizontal-tabs {
+  margin-block-start: 0;
+}
+
+/* Native sections need their own border inset on mobile; avoid stacking a
+ * full card inset around that again when tabs become an accordion. */
+@media (max-width: 40em) {
+  :is(.gin-frontend .node--view-mode-full, .node-form) .field-group-tabs-wrapper {
+    padding: var(--gin-spacing-xs);
+  }
+}

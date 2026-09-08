@@ -12,7 +12,7 @@ field_name: field_url
 entity_type: node
 bundle: aggregator
 label: Webseite
-description: 'Webseite des Aggregators'
+description: 'Der Link verweist auf die Webseite des Aggregators.'
 required: false
 translatable: true
 default_value: {  }

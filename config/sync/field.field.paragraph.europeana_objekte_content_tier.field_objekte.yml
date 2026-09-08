@@ -13,7 +13,7 @@ field_name: field_objekte
 entity_type: paragraph
 bundle: europeana_objekte_content_tier
 label: Objekte
-description: ''
+description: 'Die Objektzahlen für das ausgewählte Content-Tier werden getrennt nach Medientyp erfasst.'
 required: false
 translatable: true
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_bemerkung
 entity_type: paragraph
 bundle: kontakt
 label: Bemerkung
-description: ''
+description: 'Dieses Feld enthält ergänzende Angaben zu diesem Kontakt.'
 required: true
 translatable: false
 default_value: {  }

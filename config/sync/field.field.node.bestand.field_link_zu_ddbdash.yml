@@ -12,7 +12,7 @@ field_name: field_link_zu_ddbdash
 entity_type: node
 bundle: bestand
 label: 'Link zu DDBdash'
-description: ''
+description: 'Dieses Feld enthält den zugehörigen Link zu DDBdash.'
 required: false
 translatable: true
 default_value: {  }

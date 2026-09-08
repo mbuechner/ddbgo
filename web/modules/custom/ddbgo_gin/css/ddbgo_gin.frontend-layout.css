@@ -290,6 +290,29 @@
   width: 14rem;
 }
 
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field {
+  padding-block: var(--ddbgo-display-row-space);
+}
+
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field > .field__items {
+  gap: var(--gin-spacing-xs);
+}
+
+/* Long download names must shrink inside multi-value grids on narrow screens.
+ * Keep the file icon's padding inside the available column width as well. */
+.gin-frontend .node--view-mode-full .field__items > .field__item {
+  min-width: 0;
+}
+
+.gin-frontend .node--view-mode-full .file {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gin-frontend .node--view-mode-full .file a {
+  overflow-wrap: anywhere;
+}
+
 /*
  * Present read-only field output inside details as scannable label/value rows.
  * The DOM order and native details/summary interaction remain unchanged.
@@ -385,7 +408,7 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  margin-block: var(--gin-spacing-m);
+  margin-block: var(--ddbgo-section-space);
 }
 
 .gin-frontend .ddbgo-linked-content-view > .claro-details__summary {
@@ -416,7 +439,7 @@
 ).field__items {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: var(--gin-spacing-s);
+  gap: var(--gin-spacing-m);
   padding-block: 0;
   border-block-end: 0;
 }
@@ -540,10 +563,6 @@
 }
 
 /* Full-width, consistently sized form controls inside details. */
-.gin-frontend details.claro-details {
-  --ddbgo-details-control-height: calc(var(--input-padding-vertical) * 2 + var(--input-line-height));
-}
-
 .gin-frontend details.claro-details > .claro-details__wrapper .form-item,
 .gin-frontend details.claro-details > .claro-details__wrapper .form-wrapper {
   min-width: 0;
@@ -558,67 +577,6 @@
   box-sizing: border-box;
   width: 100% !important;
   max-width: 100%;
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single,
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--multiple {
-  color: var(--gin-color-text);
-  background-color: var(--gin-bg-input);
-  border: 1px solid var(--gin-border-color-form-element);
-  border-radius: var(--gin-border-m);
-  transition: var(--gin-transition);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container:not(.select2-container--disabled) .select2-selection:hover {
-  border-color: var(--gin-color-text);
-  box-shadow: inset 0 0 0 1px var(--gin-color-text);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--focus .select2-selection,
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--open .select2-selection,
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection:focus {
-  border-color: var(--gin-color-focus-border);
-  outline: none;
-  box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container.select2-container--disabled .select2-selection {
-  color: var(--gin-color-disabled);
-  background-color: var(--gin-color-disabled-bg) !important;
-  border-color: var(--gin-color-disabled-border);
-  box-shadow: none;
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single {
-  box-sizing: border-box;
-  height: var(--ddbgo-details-control-height);
-  min-height: var(--ddbgo-details-control-height);
-  padding-block: calc(var(--input-padding-vertical) - 1px);
-  padding-inline: var(--input-padding-horizontal);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single .select2-selection__rendered {
-  color: inherit;
-  padding-inline: 0 2rem;
-  line-height: var(--input-line-height);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--single .select2-selection__arrow {
-  inset-block-start: 0;
-  height: 100%;
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-selection--multiple {
-  box-sizing: border-box;
-  min-height: var(--ddbgo-details-control-height);
-  padding-block: calc(var(--input-padding-vertical) - 1px);
-  padding-inline: var(--input-padding-horizontal);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container .select2-search--inline .select2-search__field {
-  height: var(--input-line-height);
-  margin: 0;
-  line-height: var(--input-line-height);
 }
 
 /* Keep local node tasks and the bookmark action in one responsive row. */

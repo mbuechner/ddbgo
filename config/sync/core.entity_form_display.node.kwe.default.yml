@@ -231,14 +231,10 @@ content:
             effect_options: {  }
             selector: ''
   field_api_blacklisting:
-    type: select2_entity_reference
+    type: options_select
     weight: 40
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_api_blacklisting_jira_tick:
     type: string_textfield
@@ -250,14 +246,10 @@ content:
     third_party_settings:
       conditional_fields: {  }
   field_archivportal_lieferung:
-    type: select2_entity_reference
+    type: options_select
     weight: 31
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_bemerkung:
     type: string_textarea
@@ -292,14 +284,10 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_bundesland:
-    type: select2_entity_reference
+    type: options_select
     weight: 22
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings:
       conditional_fields:
         57bce020-847d-4635-bca0-b6225b42984f:
@@ -388,24 +376,16 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_europeana_lieferung:
-    type: select2_entity_reference
+    type: options_select
     weight: 28
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_favorienkarussell:
-    type: select2_entity_reference
+    type: options_select
     weight: 39
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_isil:
     type: string_textfield
@@ -530,14 +510,10 @@ content:
             effect_options: {  }
             selector: ''
   field_sparte:
-    type: select2_entity_reference
+    type: options_select
     weight: 24
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings:
       conditional_fields:
         e8d6a2c0-e1ce-48e0-82dc-567ec78d5888:
@@ -635,14 +611,10 @@ content:
             effect_options: {  }
             selector: ''
   field_untersparte:
-    type: select2_entity_reference
+    type: options_select
     weight: 25
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings:
       conditional_fields:
         0b5d6e0b-a67e-4bcf-9154-59fce774a732:
@@ -692,34 +664,22 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
   field_vertragskonstrukt:
-    type: select2_entity_reference
+    type: options_select
     weight: 36
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_vertragsstatus:
-    type: select2_entity_reference
+    type: options_select
     weight: 35
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   field_zustimmungsformular:
-    type: select2_entity_reference
+    type: options_select
     weight: 37
     region: content
-    settings:
-      width: 100%
-      autocomplete: false
-      match_operator: CONTAINS
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
   title:
     type: string_textfield

@@ -13,7 +13,7 @@ field_name: field_kontakt
 entity_type: node
 bundle: bestand
 label: Kontakt
-description: 'Datum des (Erst-) Kontaktes zu dem Bestand und Name des DDB-Teammitgliedes sowie weitere Bemerkungen.'
+description: 'Die Kontakte zum Bestand werden mit dem Datum des (Erst-)Kontakts, dem Namen des DDB-Teammitglieds und weiteren Bemerkungen dokumentiert.'
 required: false
 translatable: true
 default_value: {  }

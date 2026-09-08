@@ -13,7 +13,7 @@ field_name: field_personen
 entity_type: node
 bundle: kwe
 label: Personen
-description: ''
+description: 'Die Einträge verknüpfen Personen und ihre jeweiligen Rollen mit der Kultur- oder Wissenseinrichtung.'
 required: false
 translatable: false
 default_value: {  }

@@ -12,7 +12,7 @@ field_name: field_link_fragebogen
 entity_type: node
 bundle: bestand
 label: 'Link zum Fragebogen'
-description: 'Link zum Lime-Survey-Fragebogen.'
+description: 'Der Link verweist auf den LimeSurvey-Fragebogen.'
 required: false
 translatable: false
 default_value: {  }

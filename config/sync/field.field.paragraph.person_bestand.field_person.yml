@@ -11,7 +11,7 @@ field_name: field_person
 entity_type: paragraph
 bundle: person_bestand
 label: Person
-description: ''
+description: 'Dieses Feld verknüpft den Bestand mit einer Person. Vorhandene Personen sind über die Suche auswählbar. Neue Personen können durch Eingabe eines Namens und Auswahl des neuen Eintrags ergänzt werden. Neue Personen werden beim Speichern des Formulars angelegt.'
 required: true
 translatable: true
 default_value: {  }

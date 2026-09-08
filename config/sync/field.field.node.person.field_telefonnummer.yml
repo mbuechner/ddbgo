@@ -10,7 +10,7 @@ field_name: field_telefonnummer
 entity_type: node
 bundle: person
 label: Telefonnummer
-description: 'Persönliche Telefonnummer der Person in der Form „+49 69 1525-1774“.'
+description: 'Die persönliche Telefonnummer der Person wird in der Form „+49 69 1525-1774“ erfasst.'
 required: false
 translatable: false
 default_value: {  }

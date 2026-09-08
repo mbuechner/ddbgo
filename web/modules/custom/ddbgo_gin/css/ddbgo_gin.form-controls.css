@@ -1,0 +1,239 @@
+/**
+ * Common control dimensions for Gin and Gin Frontend.
+ *
+ * Fill the existing form/grid column instead of using HTML size attributes.
+ * Keep compact date/time, table weights, checkboxes, radios and widget-internal
+ * search fields independent. No input, label or keyboard behavior is replaced.
+ * Cover both Select2's default skin (Gin Frontend) and its contrib Gin skin.
+ * Details wrappers must use these same dimensions instead of local overrides.
+ */
+form :is(input.form-element, select.form-element, textarea.form-element, .tagify.form-element):not(
+  [type="hidden"], [type="checkbox"], [type="radio"], [type="file"],
+  [type="date"], [type="time"], [type="datetime-local"],
+  .form-element--extrasmall, .form-element--editor-format,
+  .select2-hidden-accessible, [name$="][_weight]"]
+) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Select2 writes an inline width, sometimes measured inside a closed tab.
+ * Only resize the selection container, never its separately positioned popup. */
+form .select2-container:has(> .selection) {
+  width: 100% !important;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Match Gin's native .form-element. A minimum height lets long selections and
+ * multiple values wrap, including at browser zoom and on narrow screens. */
+:is(.select2-container--default, .select2-container--gin) .select2-selection {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  min-height: calc(2 * var(--input-padding-vertical) + var(--input-line-height));
+  padding-block: calc(var(--input-padding-vertical) - 1px);
+  padding-inline: var(--input-padding-horizontal) 2.75rem;
+  border: 1px solid var(--gin-border-color-form-element);
+  border-radius: var(--gin-border-m);
+  background: var(--gin-bg-input);
+  color: var(--gin-color-text);
+  font-size: var(--gin-font-size);
+  line-height: var(--input-line-height);
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection--single .select2-selection__rendered {
+  padding: 0;
+  color: inherit;
+  line-height: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection--single .select2-selection__placeholder {
+  color: var(--gin-color-text-light);
+}
+
+/* Chips have their own border/padding. Reserve their extra height inside the
+ * common 40px minimum instead of adding it to the outside of the control. */
+:is(.select2-container--default, .select2-container--gin) .select2-selection--multiple {
+  padding-block: calc(var(--input-padding-vertical) / 2 - 1px);
+}
+
+/* Drupal's general list styles indent this inline UL even when it is empty.
+ * Select2 gives the placeholder's typing area the full available width; the
+ * indent then forces it onto a second line. Keep spacing on the chips only. */
+:is(.select2-container--default, .select2-container--gin) .select2-selection--multiple .select2-selection__rendered {
+  margin: 0;
+}
+
+/* Gin's Select2 skin adds another vertical padding layer around the typing
+ * cursor. It would increase even an empty multi-select beyond the input height. */
+:is(.select2-container--default, .select2-container--gin) .select2-selection--multiple .select2-search--inline {
+  display: inline;
+  padding: 0;
+  line-height: inherit;
+}
+
+/* Tagify's contrib stylesheet owns the outer padding. Its typing area has
+ * separate margins/padding that otherwise make even an empty control taller. */
+form .tagify.form-element .tagify__input {
+  min-width: min(4rem, 100%);
+  margin-block: calc(var(--input-padding-vertical) / 2 - 1px);
+  padding-block: calc(var(--input-padding-vertical) / 2);
+}
+
+/* One decorative chevron for both single and multiple selection. Borders also
+ * remain visible in forced-colors mode. Pointer events reach the real control. */
+:is(.select2-container--default, .select2-container--gin) .select2-selection__arrow {
+  display: none;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 1rem;
+  inset-block-start: calc(var(--input-padding-vertical) + .35rem);
+  width: .5rem;
+  height: .5rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+:is(.select2-container--default, .select2-container--gin).select2-container--open .select2-selection::after {
+  transform: translateY(.25rem) rotate(225deg);
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection.select2-selection--clearable {
+  padding-inline-end: 4.75rem;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection .select2-selection__clear {
+  position: absolute;
+  inset: auto;
+  inset-block-start: calc(var(--input-padding-vertical) - 1px);
+  inset-inline-end: 2.5rem;
+  float: none;
+  width: 1.5rem;
+  height: var(--input-line-height);
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  line-height: inherit;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection--multiple .select2-selection__choice {
+  margin: 0 .25rem .25rem 0;
+  padding-block: 0;
+  padding-inline: 1.5rem .25rem;
+  line-height: inherit;
+  border-color: var(--gin-border-color-form-element);
+  background: var(--gin-color-primary-light);
+  color: var(--gin-color-text);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-selection--multiple .select2-selection__choice__remove {
+  width: 1.5rem;
+  min-height: var(--input-line-height);
+  color: inherit;
+  border-color: var(--gin-border-color-form-element);
+}
+
+/* This textarea/input is Select2's typing cursor, not another full-size field. */
+:is(.select2-container--default, .select2-container--gin) .select2-search--inline .select2-search__field {
+  height: var(--input-line-height);
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  vertical-align: middle;
+}
+
+:is(.select2-container--default, .select2-container--gin):not(.select2-container--disabled) .select2-selection:hover {
+  border-color: var(--gin-color-text);
+  box-shadow: inset 0 0 0 1px var(--gin-color-text);
+}
+
+/* Select2 disables some native outlines. Restore visible keyboard focus,
+ * including on remove/clear buttons and the dropdown's search input. */
+:is(.select2-container--default, .select2-container--gin):focus-within .select2-selection,
+:is(.select2-container--default, .select2-container--gin).select2-container--open .select2-selection,
+:is(.select2-container--default, .select2-container--gin) :is(.select2-selection__clear, .select2-selection__choice__remove):focus-visible,
+:is(.select2-container--default, .select2-container--gin) .select2-search--dropdown .select2-search__field:focus-visible {
+  outline: 2px solid var(--gin-color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--gin-color-focus);
+}
+
+/* Drupal puts validation/disabled state on the original select. Preserve its
+ * semantics and mirror the visual error on the adjacent replacement widget. */
+select:is(.error, [aria-invalid="true"]) + :is(.select2-container--default, .select2-container--gin) .select2-selection {
+  border-color: var(--gin-color-danger);
+  box-shadow: inset 0 0 0 1px var(--gin-color-danger);
+}
+
+:is(.select2-container--default, .select2-container--gin).select2-container--disabled .select2-selection {
+  color: var(--gin-color-disabled);
+  background: var(--gin-color-disabled-bg);
+  border-color: var(--gin-color-disabled-border);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* The results popup is appended to body by Select2; do not scope it to form. */
+:is(.select2-container--default, .select2-container--gin) .select2-dropdown {
+  color: var(--gin-color-text);
+  background: var(--gin-bg-input);
+  border-color: var(--gin-border-color-form-element);
+  border-radius: var(--gin-border-m);
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-search--dropdown .select2-search__field {
+  min-height: calc(2 * var(--input-padding-vertical) + var(--input-line-height));
+  padding: calc(var(--input-padding-vertical) - 1px) var(--input-padding-horizontal);
+  color: var(--gin-color-text);
+  background: var(--gin-bg-input);
+  border: 1px solid var(--gin-border-color-form-element);
+  border-radius: var(--gin-border-s);
+  font: inherit;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-results__option {
+  padding: var(--gin-spacing-xs) var(--gin-spacing-s);
+  overflow-wrap: anywhere;
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-results__option--selected {
+  background: var(--gin-color-primary-light);
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-results__option--highlighted.select2-results__option--selectable {
+  color: var(--gin-color-button-text);
+  background: var(--gin-color-primary);
+}
+
+:is(.select2-container--default, .select2-container--gin) .select2-results__option--disabled {
+  color: var(--gin-color-disabled);
+}
+
+@media (forced-colors: active) {
+  :is(.select2-container--default, .select2-container--gin) .select2-selection {
+    border-color: ButtonText;
+  }
+
+  :is(.select2-container--default, .select2-container--gin).select2-container--disabled .select2-selection {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  :is(.select2-container--default, .select2-container--gin) .select2-results__option--highlighted.select2-results__option--selectable {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

@@ -10,7 +10,7 @@ field_name: field_kurzname
 entity_type: node
 bundle: kwe
 label: Kurzname
-description: 'Offizielle Abkürzung für den KWE-Namen, falls vorhanden (z.B. „DNB“ für Deutsche Nationalbibliothek).'
+description: 'Hier wird die offizielle Abkürzung des Namens der Kultur- oder Wissenseinrichtung erfasst, sofern vorhanden, zum Beispiel „DNB“ für Deutsche Nationalbibliothek.'
 required: false
 translatable: false
 default_value: {  }

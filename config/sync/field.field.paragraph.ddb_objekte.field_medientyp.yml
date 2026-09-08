@@ -11,7 +11,7 @@ field_name: field_medientyp
 entity_type: paragraph
 bundle: ddb_objekte
 label: Medientyp
-description: ''
+description: 'Die Auswahl legt den Medientyp fest, auf den sich die Objektzahl bezieht.'
 required: true
 translatable: false
 default_value: {  }

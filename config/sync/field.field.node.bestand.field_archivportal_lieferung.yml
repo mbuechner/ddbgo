@@ -11,7 +11,7 @@ field_name: field_archivportal_lieferung
 entity_type: node
 bundle: bestand
 label: 'Archivportal Europa-Lieferung'
-description: 'Sollen Archivdaten (in Zukunft) über die DDB an das Archivportal Europa geliefert werden?'
+description: 'Die Angabe beschreibt, ob Archivdaten künftig über die DDB an das Archivportal Europa geliefert werden sollen.'
 required: false
 translatable: false
 default_value: {  }

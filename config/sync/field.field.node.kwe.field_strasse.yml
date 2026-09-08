@@ -10,7 +10,7 @@ field_name: field_strasse
 entity_type: node
 bundle: kwe
 label: Straße/Hausnummer
-description: ''
+description: 'Hier werden Straße und Hausnummer der Kultur- oder Wissenseinrichtung erfasst.'
 required: false
 translatable: false
 default_value: {  }

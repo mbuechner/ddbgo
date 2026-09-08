@@ -12,7 +12,7 @@ field_name: field_vertrag
 entity_type: node
 bundle: kwe
 label: Vertrag
-description: 'Vertrag und ggf. Zusatzvereinbarung als PDF-Datei'
+description: 'Hier werden der Vertrag und gegebenenfalls die Zusatzvereinbarung als PDF-Datei hinterlegt.'
 required: false
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_status_fragebogen
 entity_type: node
 bundle: bestand
 label: 'Status des Fragebogens'
-description: 'Altbestand sind Bestände, die vor 09/2013 bearbeitet wurden.'
+description: 'Die Angabe beschreibt den Status des Fragebogens. „Altbestand“ bezeichnet Bestände, die vor 09/2013 bearbeitet wurden.'
 required: false
 translatable: false
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_isil
 entity_type: node
 bundle: kwe
 label: ISIL
-description: 'Der von der ISIL-Stelle vergebene eindeutige URI (z.B. „http://ld.zdb-services.de/resource/organisations/DE-101“)'
+description: 'Erfasst wird die von der ISIL-Stelle vergebene eindeutige URI, zum Beispiel „http://ld.zdb-services.de/resource/organisations/DE-101“.'
 required: false
 translatable: false
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_stadt
 entity_type: node
 bundle: kwe
 label: Stadt
-description: ''
+description: 'Hier wird die Stadt der Kultur- oder Wissenseinrichtung erfasst.'
 required: false
 translatable: false
 default_value: {  }
