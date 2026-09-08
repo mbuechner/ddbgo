@@ -46,6 +46,7 @@ dependencies:
     - field.field.node.bestand.field_volltextformat
     - field.field.node.bestand.field_zwischenaggregatoren
     - node.type.bestand
+    - views.view.suche_bestand
   module:
     - ddbgo_gin
     - custom_formatters
@@ -434,10 +435,9 @@ content:
     weight: 20
     region: content
   field_bestandstags:
-    type: 'custom_formatters:komma_getrennte_aufzaehlung'
-    label: above
-    settings:
-      formatter_setting_uuid: ''
+    type: ddbgo_bestand_tags
+    label: inline
+    settings: {  }
     third_party_settings:
       empty_fields:
         handler: text

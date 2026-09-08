@@ -329,6 +329,23 @@ anwenden, die URL ohne Parameter aufrufen, zurücksetzen und dieselbe URL erneut
 laden. Die Felder müssen nach Reset auch bei gefülltem Cache leer beziehungsweise
 auf ihrer konfigurierten Standardauswahl stehen.
 
+## Bestandstags in der Anzeige
+
+`ddbgo_bestand_tags` stellt Begriffe als native Links mit Tag-Darstellung dar.
+Ein Klick öffnet die Bestandssuche mit genau dieser Begriffs-ID und leerem
+Suchtext, auch bei zuvor gespeicherten Filtern. Begriffs- und Suchzugriff sowie
+Cache-Abhängigkeiten werden berücksichtigt. Die Feldbeschriftung verwendet
+Drupals `inline`-Darstellung mit Doppelpunkt; die Bedienung benötigt kein JavaScript.
+Tag-Links verwenden denselben Hover-Schatten und dieselbe leichte Anhebung wie
+Tabs, ohne Unterstreichung. Tastaturfokus und reduzierte Bewegung werden berücksichtigt.
+Die Tags stehen nebeneinander und brechen bei Platzmangel in die nächste Zeile um.
+
+Prüfung mit zwei vorhandenen Bestandstags, ohne Inhaltsänderungen:
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/bestand-tags.test.php
+```
+
 ## Migration des Statusfelds
 
 Der gemeinsame Status-Formatter zeigt außerhalb von Tabellen eine farbig

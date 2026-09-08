@@ -1,4 +1,11 @@
 # Attach components at their entry points; Drupal resolves shared dependencies.
+bestand_tags:
+  css:
+    theme:
+      css/ddbgo_gin.bestand-tags.css: {}
+  dependencies:
+    - ddbgo_gin/section_spacing
+
 record_status:
   css:
     component:
