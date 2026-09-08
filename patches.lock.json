@@ -1,6 +1,18 @@
 {
-    "_hash": "3a865f2b76aaf19f1ce2b907004087c8f02774c7036a2600348b268e1ef5964b",
+    "_hash": "494d4bcc5075e3f990756bc62e68f4962bc31e6e445f13635e0b66d719df3f25",
     "patches": {
+        "consolidation/site-process": [
+            {
+                "package": "consolidation/site-process",
+                "description": "Preserve valid JSON before legacy Windows shell unescaping",
+                "url": "patches/site-process-preserve-valid-json.patch",
+                "sha256": "def125948a8d34bd013cd245e4ef32d2555f84266acb5acf515d184918d8ae3e",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
         "drupal/select2": [
             {
                 "package": "drupal/select2",

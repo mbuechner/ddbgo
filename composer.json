@@ -207,6 +207,9 @@
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patches": {
+            "consolidation/site-process": {
+                "Preserve valid JSON before legacy Windows shell unescaping": "patches/site-process-preserve-valid-json.patch"
+            },
             "drupal/select2": {
                 "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
             },
