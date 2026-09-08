@@ -48,6 +48,40 @@
   inset-block-end: 0;
 }
 
+/* Shared hover effects for section tabs, primary node actions.
+ * Target the tasks block itself: the bookmark wrapper exists only on view pages.
+ * Keep the selected tab's underline stationary and retain Gin's focus shadow.
+ * An inset outline stays visible inside the tab strip's clipped overflow. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle:focus-visible,
+:is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:focus-visible,
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a:focus-visible {
+  outline: 2px solid var(--gin-color-focus-border, #005fcc);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle:hover:not(:focus-visible),
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:hover:not(:focus-visible),
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a:hover:not(:focus-visible) {
+    box-shadow: 0 2px 8px rgba(20, 20, 30, .12);
+  }
+}
+
+/* Reduced-motion and touch users keep the static Gin tab interaction. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle,
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link,
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a {
+    transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark.action-flag > a.ddbgo-bookmark-toggle:hover:not(:focus-visible),
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:not(.is-active):hover:not(:focus-visible),
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button:not(.selected) > a:hover:not(:focus-visible) {
+    transform: translateY(-1px);
+  }
+}
+
 :is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper > :first-child,
 .gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper > :first-child {
   margin-block-start: 0;

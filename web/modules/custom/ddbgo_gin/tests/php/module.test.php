@@ -96,4 +96,44 @@ foreach (['before', 'after', 'invisible', 'none'] as $placement) {
   }
 }
 
+// Flag supplies #title as a render array, including when BigPipe/AJAX replaces
+// a bookmark. Keep strings supported, but test the real render-array shape too.
+$flag = new class {
+  public function id(): string { return 'bookmark'; }
+};
+$flaggable = new class {
+  public function id(): int { return 123; }
+};
+foreach (['flag' => 'Lesezeichen setzen', 'unflag' => 'Lesezeichen entfernen'] as $action => $label) {
+  foreach ([$label, ['#markup' => '<strong>' . $label . '</strong>', '#cache' => ['tags' => ['ddbgo_test:bookmark']]]] as $title) {
+    foreach (['ddbgo_page_actions', 'default'] as $view_mode) {
+      $context = new RenderContext();
+      $variables = [
+        'flag' => $flag,
+        'flaggable' => $flaggable,
+        'action' => $action,
+        'title' => $title,
+        'view_mode' => $view_mode,
+        'ddbgo_bookmark_in_header' => FALSE,
+        'attributes' => new Attribute(['class' => ['use-ajax'], 'href' => '/flag/test', 'data-test-preserved' => 'yes']),
+      ];
+      $html = $renderer->executeInRenderContext($context, static fn () => Drupal::service('twig')->render('@ddbgo_gin/flag--ddbgo-gin.html.twig', $variables));
+      $dom = new DOMDocument();
+      @$dom->loadHTML($html);
+      $xpath = new DOMXPath($dom);
+      $link = $xpath->query('//a')->item(0);
+      $check($link !== NULL && trim($link->textContent) === $label, 'Bookmark action name retained for both input types and states');
+      $check(str_contains($link->getAttribute('class'), 'use-ajax') && $link->getAttribute('href') === '/flag/test' && $link->getAttribute('data-test-preserved') === 'yes', 'Bookmark AJAX/link attributes retained');
+      $hidden = $xpath->query('//a/span[@class="visually-hidden"]')->length;
+      $check($hidden === 0, 'Bookmark action name stays visible in header and lists');
+      if ($view_mode === 'ddbgo_page_actions') {
+        $check($link->getAttribute('title') === $label && str_contains($link->getAttribute('class'), 'ddbgo-bookmark-toggle'), 'Header tooltip contains rendered plain text');
+      }
+      if (is_array($title)) {
+        $check(!$context->isEmpty() && in_array('ddbgo_test:bookmark', $context->pop()->getCacheTags(), TRUE), 'Bookmark title cache metadata bubbles to its parent');
+      }
+    }
+  }
+}
+
 echo "PASS: $count PHP/Twig integration checks. No content changed.\n";

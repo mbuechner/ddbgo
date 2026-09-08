@@ -429,35 +429,45 @@
 }
 
 /*
- * Display shared multi-value people and contact fields as responsive cards.
- * Aggregator, KWE and Bestand use the same field structures, so this remains
- * independent of a specific content type.
+ * Read-only paragraph references (people, contacts and object counts) share a
+ * content-sized card flow. Handle both hidden labels (field__items on the field)
+ * and visible labels (a nested field__items wrapper). No flex growth: multiple
+ * cards must stay as compact as a single card, in their original reading order.
  */
-.gin-frontend details.claro-details > .claro-details__wrapper > .field:is(
-  .field--name-field-personen,
-  .field--name-field-kontakt
-).field__items {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+.gin-frontend .field--type-entity-reference-revisions.field__items,
+.gin-frontend .field--type-entity-reference-revisions > .field__items,
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field--type-entity-reference-revisions > .field__items,
+.gin-frontend details.claro-details > .claro-details__wrapper > .field--type-entity-reference-revisions.field__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: var(--gin-spacing-m);
+  min-inline-size: 0;
   padding-block: 0;
   border-block-end: 0;
 }
 
 .gin-frontend :is(
-  .field--name-field-personen,
-  .field--name-field-kontakt
-).field__items > .field__item {
-  min-width: 0;
+  .field--type-entity-reference-revisions.field__items,
+  .field--type-entity-reference-revisions > .field__items
+) > .field__item {
+  flex: 0 1 auto;
+  inline-size: max-content;
+  min-inline-size: 0;
+  /* Keep long notes readable; the viewport remains the limit on small screens. */
+  max-inline-size: min(100%, 36rem);
+  overflow-wrap: anywhere;
 }
 
 .gin-frontend :is(
-  .field--name-field-personen,
-  .field--name-field-kontakt
-).field__items > .field__item > .paragraph {
+  .field--type-entity-reference-revisions.field__items,
+  .field--type-entity-reference-revisions > .field__items
+) > .field__item > .paragraph {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   box-sizing: border-box;
-  height: 100%;
+  min-inline-size: 0;
   gap: var(--gin-spacing-xs);
   align-content: start;
   padding: var(--gin-spacing-m);
@@ -475,9 +485,9 @@
 
 @media (hover: hover) and (pointer: fine) {
   .gin-frontend :is(
-    .field--name-field-personen,
-    .field--name-field-kontakt
-  ).field__items > .field__item > .paragraph:hover {
+    .field--type-entity-reference-revisions.field__items,
+    .field--type-entity-reference-revisions > .field__items
+  ) > .field__item > .paragraph:hover {
     border-color: color-mix(in srgb, var(--gin-color-primary) 35%, var(--gin-border-color-layer));
     box-shadow:
       0 2px 4px rgba(20, 20, 30, .06),
@@ -487,27 +497,11 @@
 }
 
 .gin-frontend :is(
-  .field--name-field-personen,
-  .field--name-field-kontakt
-).field__items > .field__item > .paragraph:focus-within {
+  .field--type-entity-reference-revisions.field__items,
+  .field--type-entity-reference-revisions > .field__items
+) > .field__item > .paragraph:focus-within {
   border-color: var(--gin-color-focus-border);
   box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
-}
-
-.gin-frontend details.claro-details > .claro-details__wrapper > .field.field--name-field-kontakt.field__items {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
-}
-
-@media (min-width: 48em) {
-  .gin-frontend .field--name-field-personen.field__items > .field__item:only-child {
-    width: 100%;
-    max-width: 20rem;
-  }
-
-  .gin-frontend .field--name-field-kontakt.field__items > .field__item:only-child {
-    width: 100%;
-    max-width: 26rem;
-  }
 }
 
 .gin-frontend .field--name-field-personen .paragraph > .field--name-field-rolle {
@@ -727,6 +721,39 @@
   margin: 0;
 }
 
+/* Same rounded silhouette and height as Gin's primary actions, with the
+ * original light color and normal font weight for the visible action name. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle {
+  justify-content: center;
+  gap: var(--gin-spacing-xs);
+  box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+  min-height: 2rem;
+  padding: var(--gin-spacing-xxs) var(--gin-spacing-s);
+  border-radius: 2rem;
+  color: var(--gin-color-text-light);
+}
+
+.gin-frontend .ddbgo-bookmark-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Retain the small, thin outline icon; only a saved bookmark uses the fill. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle::before {
+  flex: 0 0 .875rem;
+  width: .875rem;
+  height: .875rem;
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark.action-unflag a.ddbgo-bookmark-toggle,
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:hover,
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:focus-visible {
+  background: var(--gin-color-primary-light);
+  color: var(--gin-color-primary-active);
+}
+
 .gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
   position: absolute;
   inset-block-start: calc(100% + var(--gin-spacing-xs));
@@ -746,41 +773,13 @@
   }
 
   .gin-frontend .ddbgo-page-actions .flag-bookmark {
-    position: absolute;
-    inset-block-start: .875rem;
-    inset-inline-end: 3.25rem;
-    z-index: 2;
-    transform: none;
-  }
-
-  .gin-frontend .ddbgo-page-actions .flag-bookmark a {
-    justify-content: center;
-    gap: 0;
-    box-sizing: border-box;
-    width: 2rem;
-    min-height: 2rem;
-    padding: 0;
-    border: 0;
-    border-radius: var(--gin-border-s);
-    background: transparent;
-    box-shadow: none;
-    font-size: 0;
-    line-height: 0;
-  }
-
-  .gin-frontend .ddbgo-page-actions .flag-bookmark a::before {
-    flex: 0 0 auto;
-    width: .875rem;
-    height: .875rem;
-  }
-
-  .gin-frontend .ddbgo-page-actions .flag-bookmark.action-unflag a {
-    background: var(--gin-color-primary-light);
-    color: var(--gin-color-primary-active);
+    /* Keep the full label clear of Gin's collapsed mobile tab controls. */
+    margin-block-start: var(--gin-spacing-xs);
+    margin-inline-start: auto;
   }
 
   .gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
-    inset-inline-end: -3.25rem;
+    inset-inline-end: 0;
     width: min(20rem, calc(100vw - var(--gin-spacing-m) - var(--gin-spacing-m)));
     max-width: none;
   }
@@ -816,9 +815,9 @@
   }
 
   .gin-frontend :is(
-    .field--name-field-personen,
-    .field--name-field-kontakt
-  ).field__items > .field__item > .paragraph,
+    .field--type-entity-reference-revisions.field__items,
+    .field--type-entity-reference-revisions > .field__items
+  ) > .field__item > .paragraph,
   .gin-frontend :is(
     .node--view-mode-full .flag-bookmark,
     .ddbgo-page-actions .flag-bookmark
@@ -827,9 +826,9 @@
   }
 
   .gin-frontend :is(
-    .field--name-field-personen,
-    .field--name-field-kontakt
-  ).field__items > .field__item > .paragraph:hover,
+    .field--type-entity-reference-revisions.field__items,
+    .field--type-entity-reference-revisions > .field__items
+  ) > .field__item > .paragraph:hover,
   .gin-frontend :is(
     .node--view-mode-full .flag-bookmark,
     .ddbgo-page-actions .flag-bookmark
@@ -843,6 +842,17 @@
   ) .js-flag-message {
     animation-name: ddbgo-flag-message-reduced-motion;
   }
+}
+
+/* Node forms already contain their own tab/section cards. Gin also decorates
+ * the outer form, adding a second white frame and 12/24px of padding per side.
+ * Remove only that outer layer, for both add and edit forms at every viewport. */
+.gin-frontend .block-system-main-block > form.node-form {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 /*

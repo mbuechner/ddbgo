@@ -1,4 +1,14 @@
 {# Keep Flag's markup and AJAX behavior. Full-page bookmarks appear by the tabs. #}
 {% if not ddbgo_bookmark_in_header %}
-  {% include '@flag/flag.html.twig' %}
+  {% if view_mode == 'ddbgo_page_actions' and title %}
+    {# Keep Flag's link attributes, AJAX wrapper and visible action name after updates. #}
+    {# Flag supplies a render array. Render once before applying text filters;
+       Drupal also bubbles its cache metadata and attachments here. #}
+    {% set rendered_title = title|render %}
+    {% set attributes = attributes.addClass('ddbgo-bookmark-toggle').setAttribute('title', rendered_title|striptags|trim) %}
+    {% set bookmark_title %}<span class="ddbgo-bookmark-label">{{ rendered_title }}</span>{% endset %}
+    {% include '@flag/flag.html.twig' with {title: bookmark_title} %}
+  {% else %}
+    {% include '@flag/flag.html.twig' %}
+  {% endif %}
 {% endif %}

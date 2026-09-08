@@ -24,7 +24,7 @@ button.ddbgo-help-toggle {
   margin-inline: .2rem;
   vertical-align: middle;
   color: var(--gin-color-text-light, #555);
-  cursor: default;
+  cursor: help;
 }
 
 .ddbgo-help-toggle > span {

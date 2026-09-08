@@ -51,6 +51,10 @@ bietet dafür weder eine eigene Vorlage noch eine Einstellung zum Ausblenden.
 
 ## Abstände in Detailansichten und Formularen
 
+Der äußere Node-Formularcontainer in Gin Frontend hat keinen eigenen Hintergrund,
+Rahmen, Schatten oder Innenabstand. Die Tab-/Abschnittsflächen übernehmen die
+Gliederung; so entfällt die doppelte Einrückung beim Anlegen und Bearbeiten.
+
 `ddbgo_gin.section-spacing.css` verwendet für vollständige Node-Anzeigen,
 Node-Anlage-/Bearbeitungsformulare und aufklappbare Verknüpfungsblöcke gemeinsame
 Innenabstände: 24 Pixel ab 48em,
@@ -61,8 +65,24 @@ behalten einen seitlichen Innenabstand, während Tabs die Einrückung ihrer
 äußeren Karte verwenden. Auf kleinen Bildschirmen ist diese äußere Karte
 kompakter, damit sich die Einrückungen nicht unnötig addieren.
 
-Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand, Personen- und
-Kontaktkarten 16 Pixel Abstand zueinander. Mehrfachwerte stehen mit 8 Pixel
+Tab-Reiter erhalten bei Mausbedienung einen dezenten Hover-Schatten; inaktive
+Reiter heben sich um 1 Pixel an. Die aktive Unterstreichung bleibt an ihrem Platz.
+Der Tastaturfokus ist separat umrandet; bei reduzierter Bewegung entfällt die
+Anhebung samt Übergang. Diese Regeln gelten in Detailansichten und Formularen.
+Die primären Seitenaktionen „Ansicht“, „Bearbeiten“, „Löschen“ und „Revisionen“
+verwenden dieselben Effekt- und Fokusregeln; ihre aktive Gin-Markierung bleibt bestehen.
+Die Regeln greifen am Aktionsblock selbst, auch beim Bearbeiten ohne Lesezeichen-Container.
+Das Lesezeichen daneben verwendet eine gleich hohe, abgerundete Schaltfläche mit
+Icon und sichtbarem Text in dezenter Schrift. Auf kleinen Bildschirmen steht es
+unter den Reitern. Gesetzte Lesezeichen sind gefüllt und farbig hinterlegt; der
+Aktionsname und Mouseover-Hinweis bleiben auch nach Flag-AJAX erhalten.
+
+Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand. Paragraph-Karten
+(Personen, Kontakt, DDB-/Europeana-Objektangaben) stehen linksbündig mit 16 Pixel
+Abstand nebeneinander und brechen bei Platzmangel in die nächste Zeile um.
+Ihre Breite richtet sich nach dem Inhalt, höchstens 36rem bzw. der verfügbaren
+Breite. Einzelne und mehrere Karten verwenden dieselben Regeln, auch mit
+sichtbarer Feldüberschrift. Andere Mehrfachwerte stehen mit 8 Pixel
 Abstand untereinander. Die Anpassungen verändern weder die Tab-Steuerung noch
 die Reihenfolge der Inhalte. Diese Feldzeilen-/Kartenregeln bleiben auf die
 Anzeige begrenzt; die bestehenden Abstände zwischen Formulareingaben bleiben
