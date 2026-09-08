@@ -15,6 +15,7 @@ dependencies:
     - field.storage.node.field_zustimmungsformular
     - search_api.server.default_server
   module:
+    - ddbgo_search
     - node
     - taxonomy
 id: suche_kwe
@@ -24,14 +25,8 @@ read_only: false
 field_settings:
   aggregated_sparte:
     label: Sparte
-    property_path: aggregated_field
+    property_path: ddbgo_kwe_sector_label
     type: text
-    configuration:
-      type: concat
-      separator: ', '
-      fields:
-        - 'entity:node/field_sparte:entity:name'
-        - 'entity:node/field_untersparte:entity:name'
   field_bemerkung:
     label: Bemerkung
     datasource_id: 'entity:node'
@@ -180,6 +175,7 @@ processor_settings:
   add_url: {  }
   aggregated_field: {  }
   custom_value: {  }
+  ddbgo_kwe_sector_label: {  }
   entity_type: {  }
   highlight:
     weights:
