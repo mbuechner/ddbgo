@@ -828,12 +828,8 @@ content:
           empty_text: –
     weight: 14
     region: content
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
+  flag_bookmark: true
   langcode: true
   links: true
   search_api_excerpt: true

@@ -115,12 +115,8 @@ content:
           empty_text: –
     weight: 3
     region: content
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
+  flag_bookmark: true
   langcode: true
   layout_builder__layout: true
   links: true

@@ -41,11 +41,6 @@ targetEntityType: node
 bundle: aggregator
 mode: full
 content:
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -81,5 +76,6 @@ hidden:
   field_workflow: true
   field_zustimmungsformular: true
   field_zwischenaggregatoren: true
+  flag_bookmark: true
   langcode: true
   search_api_excerpt: true

@@ -34,16 +34,12 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
 hidden:
   field_bemerkung: true
   field_email: true
   field_telefonnummer: true
   field_titel: true
+  flag_bookmark: true
   langcode: true
   links: true
   search_api_excerpt: true

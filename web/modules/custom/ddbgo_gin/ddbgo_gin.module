@@ -570,7 +570,10 @@ function ddbgo_gin_preprocess_page(array &$variables): void {
  * immediately omits the affected row.
  */
 function ddbgo_gin_preprocess_flag(array &$variables): void {
-  if (($variables['flag'] ?? NULL)?->id() === 'bookmark' && ($variables['view_mode'] ?? NULL) === 'full'
+  // Flag's entity-field lazy builder omits the view mode and uses "default".
+  // Both that field and the full-view link are replaced by the header action.
+  // Keep the distinct "ddbgo_page_actions" mode visible, including AJAX updates.
+  if (($variables['flag'] ?? NULL)?->id() === 'bookmark' && in_array($variables['view_mode'] ?? NULL, ['full', 'default'], TRUE)
     && in_array('full', $variables['flag']->get('flagTypeConfig')['show_in_links'] ?? [], TRUE)) {
     $cache = CacheableMetadata::createFromRenderArray($variables);
     $variables['ddbgo_bookmark_in_header'] = ddbgo_gin_bookmark_header_block($cache) !== NULL
