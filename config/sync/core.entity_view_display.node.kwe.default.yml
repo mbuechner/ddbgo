@@ -490,6 +490,13 @@ content:
           empty_text: –
     weight: 9
     region: content
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_sparte:
     type: entity_reference_label
     label: inline
@@ -514,13 +521,6 @@ content:
         settings:
           empty_text: –
     weight: 10
-    region: content
-  field_record_status:
-    type: ddbgo_record_status
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
   field_strasse:
     type: string

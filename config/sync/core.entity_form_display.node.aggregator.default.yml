@@ -372,6 +372,12 @@ content:
       form_display_mode: default
       default_paragraph_type: _none
     third_party_settings: {  }
+  field_record_status:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_region_ort:
     type: select2_entity_reference
     weight: 46
@@ -438,12 +444,6 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
-  field_record_status:
-    type: options_select
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_status_fragebogen:
     type: options_select
     weight: 52
@@ -509,8 +509,8 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_status: true
   created: true
+  field_status: true
   langcode: true
   path: true
   promote: true

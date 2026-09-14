@@ -438,6 +438,13 @@ content:
           empty_text: 'keine Personen'
     weight: 7
     region: content
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
   field_region_ort:
     type: 'custom_formatters:komma_getrennte_aufzaehlung'
     label: inline
@@ -473,13 +480,6 @@ content:
         settings:
           empty_text: –
     weight: 14
-    region: content
-  field_record_status:
-    type: ddbgo_record_status
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
     region: content
   field_status_fragebogen:
     type: entity_reference_label

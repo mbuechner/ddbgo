@@ -509,6 +509,12 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
+  field_record_status:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_sparte:
     type: options_select
     weight: 24
@@ -555,12 +561,6 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
-  field_record_status:
-    type: options_select
-    weight: 1
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_strasse:
     type: string_textfield
     weight: 19
@@ -689,8 +689,8 @@ content:
       placeholder: ''
     third_party_settings: {  }
 hidden:
-  field_status: true
   created: true
+  field_status: true
   langcode: true
   path: true
   promote: true

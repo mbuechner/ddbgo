@@ -193,7 +193,7 @@ third_party_settings:
       label: 'Coding da Vinci'
       parent_name: group_bestand
       region: content
-      weight: 6
+      weight: 8
       format_type: tab
       format_settings:
         classes: fieldgroup_cdv
@@ -339,8 +339,8 @@ third_party_settings:
         - group_personen
         - group_kontakt
         - group_informationen
-        - group_coding_da_vinci
         - group_europenana_archivportal
+        - group_coding_da_vinci
       label: Bestand
       parent_name: ''
       region: content
