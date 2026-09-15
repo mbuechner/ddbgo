@@ -79,6 +79,19 @@ frontend_layout:
     # Retain Gin's wrapper/checkbox CSS and support for remaining native controls.
     - gin/gin_description_toggle
 
+# Keep the current section when following this node's view/edit links.
+# Attached by hook_page_attachments() together with ddbgoNodeTabs.links.
+node_tabs:
+  js:
+    js/ddbgo_gin.node-tabs.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery
+    - core/once
+    # Provides the horizontalTab data/API used to activate the matching pane.
+    - field_group/element.horizontal_tabs
+
 # Injected into unique_field_ajax/unique_event by hook_library_info_alter().
 # This guard intentionally also runs outside Gin.
 unique_field_submit:

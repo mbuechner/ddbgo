@@ -187,6 +187,14 @@ Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
 
 ## Verbleibendes JavaScript
 
+- `ddbgo_gin.node-tabs.js`: Überträgt den ausgewählten Inhaltsreiter über einen
+  URL-Anker zwischen Ansicht und Bearbeiten desselben Datensatzes (KWE, Bestand,
+  Aggregator). Auch Kontextlinks und Öffnen in einem neuen Browser-Tab verwenden
+  diesen Anker. Bestehende URL-Parameter und andere Sprungziele bleiben erhalten.
+  Abweichende Gruppennamen in Anzeige und Formular werden zugeordnet; verschachtelte
+  Reiter öffnen auch ihre übergeordneten Bereiche. Auf kleinen Bildschirmen wird
+  der entsprechende Details-Abschnitt geöffnet. Validierungsfehler haben Vorrang,
+  und AJAX-Aktualisierungen setzen den Reiter nicht auf den anfänglichen Wert zurück.
 - `ddbgo_gin.unique-field-submit.js`: Verhindert fehlende Feldwerte beim Speichern
   während einer Dublettenprüfung. Das Script wird über die Library von
   `unique_field_ajax` geladen, unabhängig vom Theme. Es wartet auf laufende
@@ -231,6 +239,18 @@ Zur Prüfung Anlegeformulare aller vier Inhaltstypen, alle sieben Suchseiten,
 Inhaltsseiten mit Lesezeichen und die mobile Navigation öffnen. Hilfenamen
 bereits im Seitenquelltext kontrollieren; Klick, Tastatur, AJAX und einen
 zweiten Seitenaufruf mit gefülltem Cache ebenfalls prüfen.
+
+## Regressionstest für den Reiterwechsel zwischen Ansicht und Bearbeiten
+
+```sh
+node --test web/modules/custom/ddbgo_gin/tests/js/node-tabs.test.cjs
+```
+
+Die Tests prüfen die Navigationslogik mit einem kleinen DOM-/Field-Group-Adapter,
+ohne Datenbank: Reiterübernahme, URL-Parameter, fremde Links, Gruppenzuordnung,
+verschachtelte Reiter, mobile Details, Tastaturbedienung, AJAX und Fehlervorrang.
+Die Darstellung und das Zusammenspiel mit dem echten Formular zusätzlich im
+Browser prüfen.
 
 ## Regressionstest für das Speichern bei laufender Dublettenprüfung
 

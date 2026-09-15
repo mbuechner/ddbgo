@@ -52,6 +52,31 @@ function ddbgo_gin_page_attachments(array &$attachments): void {
 
   $attachments['#attached']['library'][] = 'ddbgo_gin/theme_components';
 
+  // Carry a section between this record's view/edit pages in either Gin theme.
+  // The server supplies URL destinations; the browser adds the selected tab
+  // fragment. No per-user tab state enters Drupal's render cache.
+  $route = \Drupal::routeMatch();
+  $node = $route->getParameter('node');
+  $cache = CacheableMetadata::createFromRenderArray($attachments);
+  // Vary even when no library is attached: applicability depends on the route
+  // and theme, and cached settings must not point to another record's URLs.
+  $cache->addCacheContexts(['route', 'theme']);
+  if ($node instanceof NodeInterface
+    && in_array($node->bundle(), ['kwe', 'bestand', 'aggregator'], TRUE)
+    && in_array($route->getRouteName(), ['entity.node.canonical', 'entity.node.edit_form'], TRUE)) {
+    $attachments['#attached']['library'][] = 'ddbgo_gin/node_tabs';
+    foreach (['canonical', 'edit-form'] as $relation) {
+      // Resolve aliases/language prefixes through Drupal and bubble the URL's
+      // cache metadata. JS only updates matching links that already exist;
+      // the settings neither render an edit link nor grant editing access.
+      $url = $node->toUrl($relation)->toString(TRUE);
+      $attachments['#attached']['drupalSettings']['ddbgoNodeTabs']['links'][] = $url->getGeneratedUrl();
+      $cache->addCacheableDependency($url);
+    }
+    $cache->addCacheableDependency($node);
+  }
+  $cache->applyTo($attachments);
+
   if (!\Drupal::currentUser()->hasPermission('access toolbar')) {
     return;
   }
