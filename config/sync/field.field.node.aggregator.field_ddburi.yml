@@ -5,6 +5,17 @@ dependencies:
   config:
     - field.storage.node.field_ddburi
     - node.type.aggregator
+  module:
+    - unique_field_ajax
+third_party_settings:
+  unique_field_ajax:
+    unique: 1
+    per_lang: 0
+    case_sensitive: 0
+    use_ajax: 1
+    no_enforce: 1
+    message: 'Dieser URI von der Deutschen Digitalen Bibliothek ist bereits in DDBgo bei einem Aggregator vorhanden (siehe %link)!'
+    message_warning: 'Dieser URI von der Deutschen Digitalen Bibliothek ist bereits in DDBgo bei einem Aggregator vorhanden (siehe %link)!'
 id: node.aggregator.field_ddburi
 field_name: field_ddburi
 entity_type: node
