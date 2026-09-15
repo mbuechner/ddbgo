@@ -78,11 +78,21 @@ unter den Reitern. Gesetzte Lesezeichen sind gefüllt und farbig hinterlegt; der
 Aktionsname und Mouseover-Hinweis bleiben auch nach Flag-AJAX erhalten.
 
 Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand. Paragraph-Karten
-(Personen, Kontakt, DDB-/Europeana-Objektangaben) stehen linksbündig mit 16 Pixel
+(Personen, DDB-/Europeana-Objektangaben) stehen linksbündig mit 16 Pixel
 Abstand nebeneinander und brechen bei Platzmangel in die nächste Zeile um.
 Ihre Breite richtet sich nach dem Inhalt, höchstens 36rem bzw. der verfügbaren
 Breite. Einzelne und mehrere Karten verwenden dieselben Regeln, auch mit
-sichtbarer Feldüberschrift. Andere Mehrfachwerte stehen mit 8 Pixel
+sichtbarer Feldüberschrift. Kontakte stehen bei Aggregator, Bestand und KWE
+als vertikale Folge in der beim Bearbeiten manuell festgelegten Reihenfolge
+untereinander. Das Kontaktdatum ist optional und bestimmt nicht die Sortierung.
+Eine Linie verbindet die Punkte neben den Karten und endet am letzten Eintrag,
+auch bei Kontakten ohne Datum. Ein eigener seitlicher Abstand hält die Karten
+von der Linie fern; Linie und Punkte liegen über den weiterhin aktiven
+Hover-Schatten. Der Abstand überschreibt gezielt den Padding-Reset für Feldwerte
+innerhalb von Details-Abschnitten.
+Die Kontaktkarten wachsen mit ihrem Inhalt bis zur verfügbaren Breite und
+brechen lange Texte und URLs um. Kurze Einträge bleiben kompakt.
+Andere Mehrfachwerte stehen mit 8 Pixel
 Abstand untereinander. Die Anpassungen verändern weder die Tab-Steuerung noch
 die Reihenfolge der Inhalte. Diese Feldzeilen-/Kartenregeln bleiben auf die
 Anzeige begrenzt; die bestehenden Abstände zwischen Formulareingaben bleiben

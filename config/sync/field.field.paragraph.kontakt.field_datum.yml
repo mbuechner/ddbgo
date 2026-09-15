@@ -12,8 +12,8 @@ field_name: field_datum
 entity_type: paragraph
 bundle: kontakt
 label: Datum
-description: 'Das Datum dokumentiert den Zeitpunkt des Kontakts.'
-required: true
+description: 'Das optionale Datum dokumentiert den Zeitpunkt des Kontakts. Die Reihenfolge der Kontakte wird beim Bearbeiten durch Verschieben der Einträge festgelegt, unabhängig vom Datum.'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

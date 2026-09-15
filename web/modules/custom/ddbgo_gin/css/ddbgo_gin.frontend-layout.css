@@ -534,6 +534,67 @@
   mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
 }
 
+/* Contacts follow the manually arranged field order, independent of dates.
+ * Reserve space for the rail inside each item so long cards fit the container.
+ * Support both hidden and visible field labels, as with the shared card flow. */
+.gin-frontend .field--name-field-kontakt.field__items,
+.gin-frontend .field--name-field-kontakt > .field__items {
+  flex-direction: column;
+  isolation: isolate;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field--name-field-kontakt.field__items > .field__item,
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item {
+  --ddbgo-contact-marker-top: calc(var(--gin-spacing-m) + .55rem);
+  position: relative;
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  /* Override the details field-item padding reset to keep cards off the rail. */
+  padding-inline-start: var(--gin-spacing-l);
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::before {
+  content: "";
+  position: absolute;
+  /* Hover transforms create stacking contexts; keep the rail above shadows. */
+  z-index: 1;
+  inset-inline-start: .3125rem;
+  inset-block-start: var(--ddbgo-contact-marker-top);
+  inset-block-end: calc(-1 * (var(--gin-spacing-m) + var(--ddbgo-contact-marker-top)));
+  border-inline-start: 2px solid var(--gin-border-color);
+  pointer-events: none;
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item:last-child::before {
+  display: none;
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-inline-start: 0;
+  inset-block-start: var(--ddbgo-contact-marker-top);
+  inline-size: .75rem;
+  block-size: .75rem;
+  border-radius: 50%;
+  background: var(--gin-color-primary);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
 .gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum {
   display: flex;
   gap: var(--gin-spacing-xs);
