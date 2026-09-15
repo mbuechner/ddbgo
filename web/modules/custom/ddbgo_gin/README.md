@@ -82,7 +82,9 @@ Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand. Paragraph-Karten
 Abstand nebeneinander und brechen bei Platzmangel in die nächste Zeile um.
 Ihre Breite richtet sich nach dem Inhalt, höchstens 36rem bzw. der verfügbaren
 Breite. Einzelne und mehrere Karten verwenden dieselben Regeln, auch mit
-sichtbarer Feldüberschrift. Kontakte stehen bei Aggregator, Bestand und KWE
+sichtbarer Feldüberschrift. Personenboxen übernehmen innerhalb jeder Zeile die
+Höhe der höchsten Box; nach einem Umbruch wird die Höhe für die nächste Zeile
+separat bestimmt. Kontakte stehen bei Aggregator, Bestand und KWE
 als vertikale Folge in der beim Bearbeiten manuell festgelegten Reihenfolge
 untereinander. Das Kontaktdatum ist optional und bestimmt nicht die Sortierung.
 Eine Linie verbindet die Punkte neben den Karten und endet am letzten Eintrag,

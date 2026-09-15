@@ -54,10 +54,12 @@
   line-height: 1.35;
 }
 
-.gin-frontend .views-exposed-form .form-element,
-.gin-frontend .views-exposed-form .form-textarea-wrapper,
-.gin-frontend .views-exposed-form .form-datetime-wrapper,
-.gin-frontend .views-exposed-form .tagify {
+.gin-frontend .views-exposed-form :is(
+  .form-element,
+  .form-textarea-wrapper,
+  .form-datetime-wrapper,
+  .tagify
+) {
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
@@ -156,12 +158,14 @@
   --gin-frontend-max-width: none;
 }
 
-.gin-frontend .gin-frontend__header-inner,
-.gin-frontend .gin-frontend__breadcrumb,
-.gin-frontend .gin-frontend__page-header,
-.gin-frontend .gin-frontend__main,
-.gin-frontend .gin-frontend__pre-footer,
-.gin-frontend .gin-frontend__footer-inner {
+.gin-frontend :is(
+  .gin-frontend__header-inner,
+  .gin-frontend__breadcrumb,
+  .gin-frontend__page-header,
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) {
   box-sizing: border-box;
   width: 100%;
   max-width: none;
@@ -271,10 +275,7 @@
   table-layout: fixed;
 }
 
-.gin-frontend .view-flag-bookmark :is(
-  th,
-  td
-).views-field-flagging-bulk-form {
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-flagging-bulk-form {
   width: 3.25rem;
 }
 
@@ -378,9 +379,11 @@
   display: none;
 }
 
-.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__label,
-.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__item,
-.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > :is(
+  .field__label,
+  .field__item,
+  .field__items
+) {
   float: none;
   min-width: 0;
   margin: 0;
@@ -392,8 +395,7 @@
   font-weight: var(--gin-font-weight-semibold, 600);
 }
 
-.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__item,
-.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > :is(.field__item, .field__items) {
   color: var(--gin-color-text);
   overflow-wrap: anywhere;
 }
@@ -504,6 +506,19 @@
   box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
 }
 
+/* Stretch person cards to the tallest item in their own flex line. Applying
+ * align-self to the item also works inside details with more specific parent
+ * alignment rules. The grid stretches the inner card to fill that item without
+ * a fixed height; wrapped lines calculate their heights independently. */
+.gin-frontend :is(
+  .field--name-field-personen.field__items,
+  .field--name-field-personen > .field__items
+) > .field__item {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .gin-frontend .field--name-field-personen .paragraph > .field--name-field-rolle {
   color: var(--gin-color-text-light);
   font-size: var(--gin-font-size-xs);
@@ -559,16 +574,26 @@
 .gin-frontend :is(
   .field--name-field-kontakt.field__items,
   .field--name-field-kontakt > .field__items
-) > .field__item::before {
+) > .field__item::before,
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::after {
   content: "";
   position: absolute;
   /* Hover transforms create stacking contexts; keep the rail above shadows. */
   z-index: 1;
-  inset-inline-start: .3125rem;
   inset-block-start: var(--ddbgo-contact-marker-top);
+  pointer-events: none;
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::before {
+  inset-inline-start: .3125rem;
   inset-block-end: calc(-1 * (var(--gin-spacing-m) + var(--ddbgo-contact-marker-top)));
   border-inline-start: 2px solid var(--gin-border-color);
-  pointer-events: none;
 }
 
 .gin-frontend :is(
@@ -582,17 +607,12 @@
   .field--name-field-kontakt.field__items,
   .field--name-field-kontakt > .field__items
 ) > .field__item::after {
-  content: "";
-  position: absolute;
-  z-index: 1;
   inset-inline-start: 0;
-  inset-block-start: var(--ddbgo-contact-marker-top);
   inline-size: .75rem;
   block-size: .75rem;
   border-radius: 50%;
   background: var(--gin-color-primary);
   transform: translateY(-50%);
-  pointer-events: none;
 }
 
 .gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum {
@@ -618,8 +638,7 @@
 }
 
 /* Full-width, consistently sized form controls inside details. */
-.gin-frontend details.claro-details > .claro-details__wrapper .form-item,
-.gin-frontend details.claro-details > .claro-details__wrapper .form-wrapper {
+.gin-frontend details.claro-details > .claro-details__wrapper :is(.form-item, .form-wrapper) {
   min-width: 0;
   max-width: none;
 }
@@ -661,10 +680,7 @@
 }
 
 /* Compact, state-aware bookmark action on full node pages. */
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark {
   display: grid;
   justify-items: end;
   gap: var(--gin-spacing-xxs);
@@ -674,10 +690,7 @@
   margin-inline-start: auto;
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) a {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a {
   display: inline-flex;
   align-items: center;
   gap: var(--gin-spacing-xxs);
@@ -696,17 +709,11 @@
     transform 120ms ease;
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) a:active {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:active {
   transform: scale(.97);
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) a::before {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a::before {
   content: "";
   flex: 0 0 .75rem;
   width: .75rem;
@@ -716,32 +723,19 @@
   mask: var(--ddbgo-icon-bookmark) center / contain no-repeat;
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-).action-unflag a::before {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark.action-unflag a::before {
   -webkit-mask-image: var(--ddbgo-icon-bookmark-filled);
   mask-image: var(--ddbgo-icon-bookmark-filled);
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) a:hover,
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) a:focus-visible {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:is(:hover, :focus-visible) {
   background: var(--gin-color-primary-light);
   color: var(--gin-color-primary-active);
   text-decoration: none;
 }
 
 /* Flag AJAX feedback appears below the action and is announced by Flag. */
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) .js-flag-message {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark .js-flag-message {
   display: inline-flex;
   align-items: flex-start;
   gap: var(--gin-spacing-xs);
@@ -762,10 +756,7 @@
   animation: ddbgo-flag-message 4s ease both;
 }
 
-.gin-frontend :is(
-  .node--view-mode-full .flag-bookmark,
-  .ddbgo-page-actions .flag-bookmark
-) .js-flag-message::before {
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark .js-flag-message::before {
   content: "";
   flex: 0 0 1rem;
   width: 1rem;
@@ -809,8 +800,7 @@
 }
 
 .gin-frontend .ddbgo-page-actions .flag-bookmark.action-unflag a.ddbgo-bookmark-toggle,
-.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:hover,
-.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:focus-visible {
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:is(:hover, :focus-visible) {
   background: var(--gin-color-primary-light);
   color: var(--gin-color-primary-active);
 }
@@ -867,22 +857,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gin-frontend details.claro-details > .claro-details__summary {
-    transition: none;
-  }
-
   .gin-frontend details.claro-details[open] > .claro-details__wrapper {
     animation: none;
   }
 
+  .gin-frontend details.claro-details > .claro-details__summary,
   .gin-frontend :is(
     .field--type-entity-reference-revisions.field__items,
     .field--type-entity-reference-revisions > .field__items
   ) > .field__item > .paragraph,
-  .gin-frontend :is(
-    .node--view-mode-full .flag-bookmark,
-    .ddbgo-page-actions .flag-bookmark
-  ) a {
+  .gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a {
     transition: none;
   }
 
@@ -890,17 +874,11 @@
     .field--type-entity-reference-revisions.field__items,
     .field--type-entity-reference-revisions > .field__items
   ) > .field__item > .paragraph:hover,
-  .gin-frontend :is(
-    .node--view-mode-full .flag-bookmark,
-    .ddbgo-page-actions .flag-bookmark
-  ) a:active {
+  .gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:active {
     transform: none;
   }
 
-  .gin-frontend :is(
-    .node--view-mode-full .flag-bookmark,
-    .ddbgo-page-actions .flag-bookmark
-  ) .js-flag-message {
+  .gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark .js-flag-message {
     animation-name: ddbgo-flag-message-reduced-motion;
   }
 }
@@ -934,9 +912,11 @@ body.gin--edit-form .gin-frontend .layout-node-form {
   align-items: start;
 }
 
-body.gin--edit-form .gin-frontend .layout-region-node-main,
-body.gin--edit-form .gin-frontend .layout-region-node-footer,
-body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+body.gin--edit-form .gin-frontend :is(
+  .layout-region-node-main,
+  .layout-region-node-footer,
+  .layout-region-node-secondary
+) {
   box-sizing: border-box;
   float: none;
   width: 100%;
@@ -972,8 +952,7 @@ body.gin--edit-form .gin-frontend .meta-sidebar__close {
       );
   }
 
-  body.gin--edit-form .gin-frontend .layout-region-node-main,
-  body.gin--edit-form .gin-frontend .layout-region-node-footer {
+  body.gin--edit-form .gin-frontend :is(.layout-region-node-main, .layout-region-node-footer) {
     grid-column: 1;
   }
 
