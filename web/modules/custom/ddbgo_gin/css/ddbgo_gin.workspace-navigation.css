@@ -244,16 +244,9 @@
   padding: 0.5rem;
   border: 1px solid var(--gin-border-color);
   border-radius: 0 0 var(--gin-border-l) var(--gin-border-l);
+  /* Opaque in both color modes so underlying headings cannot show through. */
   background: var(--gin-bg-layer);
   box-shadow: 0 0.75rem 1.75rem rgba(20, 20, 30, 0.18);
-}
-
-@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  .ddbgo-workspace-navigation__dropdown {
-    background: color-mix(in srgb, var(--gin-bg-layer) 90%, transparent);
-    -webkit-backdrop-filter: saturate(145%) blur(18px);
-    backdrop-filter: saturate(145%) blur(18px);
-  }
 }
 
 /* Hidden panels must also leave the tab order and accessibility tree. */

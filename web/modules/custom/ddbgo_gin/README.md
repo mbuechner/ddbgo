@@ -382,7 +382,7 @@ drush php:script web/modules/custom/ddbgo_gin/tests/php/bestand-tags.test.php
 
 Der gemeinsame Status-Formatter zeigt außerhalb von Tabellen eine farbig
 hinterlegte Statusfläche in Inhaltsbreite mit Text. In Tabellen erscheint nur das Farbsymbol
-mit Mouseover-Hinweis; der Statusname bleibt für Screenreader lesbar. Beim
+ohne Mouseover-Hinweis oder speziellen Cursor; der Statusname bleibt für Screenreader lesbar. Beim
 Drucken und im erzwungenen Farbmodus bleibt der Text auch dort sichtbar.
 Die Darstellung wird ausschließlich über Twig und CSS gesteuert.
 

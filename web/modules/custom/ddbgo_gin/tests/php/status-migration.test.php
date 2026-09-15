@@ -213,7 +213,7 @@ try {
   foreach (RecordStatus::LABELS as $key => $label) {
     $html = Drupal::service('renderer')->executeInRenderContext(new RenderContext(), static fn () => Drupal::service('twig')->render('@ddbgo_gin/ddbgo-record-status.html.twig', ['status' => $key, 'label' => $label]));
     $check(str_contains($html, $label) && str_contains($html, 'aria-hidden="true"'), 'Status text visible, color decoration hidden from screen readers');
-    $check(str_contains($html, 'title="Status: ' . $label . '"'), 'Native hover hint names the status');
+    $check(!str_contains($html, 'title='), 'Status has no native hover hint');
   }
   foreach (RecordStatus::BUNDLES as $bundle) {
     $config = \Symfony\Component\Yaml\Yaml::parseFile(DRUPAL_ROOT . '/../config/sync/core.entity_form_display.node.' . $bundle . '.default.yml');
