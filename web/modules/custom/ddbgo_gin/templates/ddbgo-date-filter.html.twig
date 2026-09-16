@@ -1,0 +1,21 @@
+{# Render the existing widgets inside Drupal's unchanged fieldset wrapper.
+   Only presentation labels change; names, values, states and widget assets stay
+   on their original render arrays. Render additional children as well. #}
+{% set labels = {'value': 'Datum'|t, 'min': 'Von'|t, 'max': 'Bis'|t} %}
+<div class="ddbgo-date-filter__controls">
+  {% for key, child in element|filter((child, key) => key|first != '#') %}
+    {% if key == element['#ddbgo_date_operator'] %}
+      {{ child|merge({'#title': element['#title'], '#title_display': 'before'}) }}
+    {% elseif key == element['#ddbgo_date_value'] %}
+      {% set dates = child %}
+      {% for part, label in labels %}
+        {% if dates[part] is defined %}
+          {% set dates = dates|merge({(part): dates[part]|merge({'#title': label, '#title_display': 'before'})}) %}
+        {% endif %}
+      {% endfor %}
+      {{ dates }}
+    {% else %}
+      {{ child }}
+    {% endif %}
+  {% endfor %}
+</div>

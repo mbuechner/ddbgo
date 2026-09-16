@@ -101,6 +101,59 @@
   margin: 0;
 }
 
+/* A date filter shares the row with the other filters instead of spanning
+ * the entire grid. Keep useful field widths and wrap when space runs out. */
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > .views-exposed-form__item {
+  flex: 0 1 14rem;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > .ddbgo-date-filter {
+  flex: 0 1 30rem;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > .views-exposed-form__item--actions {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+.gin-frontend .ddbgo-date-filter__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+  align-items: end;
+  min-width: 0;
+}
+
+.gin-frontend .views-exposed-form .ddbgo-date-filter__controls > .form-item {
+  flex: 1 1 9rem;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 47.99em) {
+  .gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > :is(.views-exposed-form__item, .ddbgo-date-filter) {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .gin-frontend .views-exposed-form .ddbgo-date-filter__controls > .form-item {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
+
 /* Tag filters always form the final, full-width row above the results. */
 .gin-frontend .views-exposed-form > .ddbgo-exposed-filter--tags {
   box-sizing: border-box;

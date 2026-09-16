@@ -34,6 +34,10 @@
   background: var(--ddbgo-status-color, white);
 }
 
+.ddbgo-record-status__cursor {
+  cursor: help;
+}
+
 .ddbgo-record-status--rejected { --ddbgo-status-color: #c62828; }
 .ddbgo-record-status--in-progress { --ddbgo-status-color: #f4b400; }
 .ddbgo-record-status--ingested { --ddbgo-status-color: #2e7d32; }

@@ -111,6 +111,10 @@ function ddbgo_gin_theme(): array {
       'base hook' => 'pager',
       'template' => 'pager--ddbgo-gin',
     ],
+    'ddbgo_date_filter' => [
+      'render element' => 'element',
+      'template' => 'ddbgo-date-filter',
+    ],
     'ddbgo_workspace_navigation' => [
       'variables' => [
         'items' => [],
@@ -134,10 +138,12 @@ function ddbgo_gin_theme(): array {
     'variables' => ['tasks' => [], 'bookmark' => []],
     'template' => 'ddbgo-page-actions',
   ];
-  $hooks['ddbgo_record_status'] = [
-    'variables' => ['status' => 'unknown', 'label' => 'Keine Angabe'],
-    'template' => 'ddbgo-record-status',
-  ];
+  foreach (['ddbgo_record_status', 'ddbgo_record_status_plain'] as $hook) {
+    $hooks[$hook] = [
+      'variables' => ['status' => 'unknown', 'label' => 'Keine Angabe'],
+      'template' => str_replace('_', '-', $hook),
+    ];
+  }
   $hooks['input__ddbgo_gin_paragraph_add'] = [
     'base hook' => 'input',
     'template' => 'input--ddbgo-gin-paragraph-add',
@@ -314,6 +320,8 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
     return $form;
   }
 
+  ddbgo_gin_prepare_exposed_date_filters($form, $form_state);
+
   // Views normally applies exposed labels during theme preprocessing. Since
   // the elements are nested below, apply the same metadata before moving them.
   foreach ($form['#info'] ?? [] as $info) {
@@ -413,6 +421,56 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   }
 
   return $form;
+}
+
+/**
+ * Selects the shared Twig component and initial date filter visibility.
+ *
+ * Keep the built widgets, names and #states intact, including BEF date pickers.
+ */
+function ddbgo_gin_prepare_exposed_date_filters(array &$form, FormStateInterface $form_state): void {
+  $view = $form_state->get('view');
+  if (!$view instanceof \Drupal\views\ViewExecutable) {
+    return;
+  }
+
+  foreach ($view->filter as $filter) {
+    if (!$filter instanceof \Drupal\views\Plugin\views\filter\Date || !$filter->isExposed() || $filter->isAGroup()) {
+      continue;
+    }
+    $info = $filter->exposedInfo();
+    $value_key = $info['value'];
+    $wrapper_key = $value_key . '_wrapper';
+    if (($form[$wrapper_key]['#type'] ?? NULL) !== 'fieldset') {
+      continue;
+    }
+
+    $wrapper = &$form[$wrapper_key];
+    $wrapper['#attributes']['class'][] = 'ddbgo-date-filter';
+    // The operator carries the visible group title on the shared input row.
+    // Keep the fieldset legend available to assistive technology.
+    if (isset($wrapper[$info['operator'] ?? ''])) {
+      $wrapper['#title_display'] = 'invisible';
+    }
+    $wrapper['#theme'] = 'ddbgo_date_filter';
+    $wrapper['#ddbgo_date_value'] = $value_key;
+    $wrapper['#ddbgo_date_operator'] = $info['operator'] ?? '';
+    // Core #states only hides inactive inputs after JavaScript attaches. Match
+    // that state in the initial HTML to avoid a fourth control wrapping the row.
+    // Use the built operator value, including remembered and submitted input.
+    $operator = $wrapper[$info['operator'] ?? '']['#value'] ?? $filter->operator;
+    $value_count = $filter->operators()[$operator]['values'] ?? NULL;
+    foreach (['value' => 1, 'min' => 2, 'max' => 2] as $part => $count) {
+      if ($value_count !== NULL && $value_count !== $count && isset($wrapper[$value_key][$part]['#states']['visible'])) {
+        // Inline display is intentional: core's state:visible handler toggles
+        // this same wrapper. A hidden attribute or CSS class would stay hidden.
+        $attributes = &$wrapper[$value_key][$part]['#wrapper_attributes'];
+        $attributes['style'] = ($attributes['style'] ?? '') . ';display: none;';
+        unset($attributes);
+      }
+    }
+    unset($wrapper);
+  }
 }
 
 /**

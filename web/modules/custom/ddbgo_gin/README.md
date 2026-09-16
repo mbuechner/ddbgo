@@ -331,6 +331,28 @@ fehlender Beschriftungen. Er speichert weder Inhalte noch Konfiguration. Für di
 Browsertests weiterhin die oben beschriebenen HTML-Testseiten verwenden.
 ## Suchfilter zurücksetzen und Cache
 
+Zusammengesetzte Datumsfilter stehen im Gin Frontend ohne zusätzliche Umrandung
+neben den anderen Filtern. Die Vergleichsauswahl trägt den Filtertitel, die
+Datumsfelder heißen „Datum“ beziehungsweise „Von“ und „Bis“. Die gesamte Gruppe
+ist auf 30rem angelegt, einfache Filter auf 14rem. Bei Platzmangel bricht die
+Zeile um; auf mobilen Bildschirmen stehen die Felder in voller Breite untereinander.
+Die Erkennung basiert auf dem Views-Datumsfilter (einschließlich Search API),
+nicht auf einer bestimmten View oder einem Feldnamen. Vorhandene Datumsauswahl,
+Operatoren, Sichtbarkeitsregeln und URL-Parameter bleiben erhalten.
+PHP wählt dafür lediglich die Komponente anhand der Filter-Metadaten aus.
+`templates/ddbgo-date-filter.html.twig` übernimmt Beschriftungen und Anordnung
+der vorhandenen Widgets; der gemeinsame Fieldset-Wrapper bleibt erhalten.
+Die anfängliche Sichtbarkeit der Datumsfelder wird anhand des aktuellen Operators
+bereits serverseitig gesetzt. So erscheint vor dem Start von Drupals `#states`
+kein zusätzliches Feld, das die Zeile kurzzeitig umbrechen lässt. Bei einem
+Operatorwechsel übernimmt weiterhin Drupals vorhandene Sichtbarkeitssteuerung.
+
+Prüfung der gerenderten Formulare und wiederverwendbaren Erkennung:
+
+```sh
+vendor/bin/drush php:script web/modules/custom/ddbgo_gin/tests/php/date-filters.test.php
+```
+
 Views kann die letzte Filterauswahl in der Sitzung speichern. Damit kann eine
 Suchseite ohne URL-Parameter trotzdem einen Suchbegriff und Dropdown-Auswahlen
 enthalten. Ein ausschließlich nach URL variierender Render-Cache liefert nach
@@ -380,11 +402,18 @@ drush php:script web/modules/custom/ddbgo_gin/tests/php/bestand-tags.test.php
 
 ## Migration des Statusfelds
 
-Der gemeinsame Status-Formatter zeigt außerhalb von Tabellen eine farbig
-hinterlegte Statusfläche in Inhaltsbreite mit Text. In Tabellen erscheint nur das Farbsymbol
-ohne Mouseover-Hinweis oder speziellen Cursor; der Statusname bleibt für Screenreader lesbar. Beim
-Drucken und im erzwungenen Farbmodus bleibt der Text auch dort sichtbar.
-Die Darstellung wird ausschließlich über Twig und CSS gesteuert.
+Der Status-Formatter nutzt `ddbgo-record-status-plain.html.twig` für benannte
+Entity-Anzeigemodi wie `default`, `full` und `teaser`: eine farbig hinterlegte
+Statusfläche in Inhaltsbreite mit Text, ohne Mouseover-Hinweis.
+Die Feldspalten der nativen Views- und Search-API-Tabellen verwenden Drupals
+Anzeigemodus `_custom` und erhalten `ddbgo-record-status.html.twig` mit
+Mouseover-Hinweis und Hilfe-Cursor. Der Statusname bleibt für Screenreader lesbar;
+beim Drucken und im erzwungenen Farbmodus bleibt der Text auch dort sichtbar.
+Beide Templates teilen sich `ddbgo_gin.record-status.css`.
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/record-status-display.test.php
+```
 
 Die Umstellung von Farbwerten auf eine Drupal-Liste erfordert Update 11002 vor
 dem Konfigurationsimport. Ablauf, Prüfbefehle und Rückweg stehen in
