@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -261,6 +262,71 @@ function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
  */
 function ddbgo_gin_field_widget_complete_entity_reference_paragraphs_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
   unset($field_widget_complete_form['widget']['text']);
+
+  $entity = $context['items']->getEntity();
+  $labels = ddbgo_gin_object_field_labels();
+  $field = $context['items']->getName();
+  if (!$entity instanceof NodeInterface || $entity->bundle() !== 'bestand'
+    || !isset($labels[$field]) || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  // Mark only the owning node widget, including its AJAX rebuilds. Nested
+  // object inputs inherit this scope; unrelated Paragraphs widgets do not.
+  $field_widget_complete_form['#attributes']['class'][] = 'ddbgo-object-widget';
+  $field_widget_complete_form['#attached']['library'][] = 'ddbgo_gin/object_paragraphs';
+  $field_widget_complete_form['widget']['#title'] = $labels[$field];
+  if (isset($field_widget_complete_form['widget']['title'])) {
+    $field_widget_complete_form['widget']['title']['#value'] = $labels[$field];
+  }
+}
+
+/**
+ * Local titles for the three Bestand object components, not field definitions.
+ */
+function ddbgo_gin_object_field_labels(): array {
+  return [
+    'field_ddb_objekte' => new TranslatableMarkup('DDB-Objekte'),
+    'field_europeana_objekte_content_' => new TranslatableMarkup('Europeanas Content-Tier'),
+    'field_europeana_objekte_metadata' => new TranslatableMarkup('Europeanas Metadata-Tier'),
+  ];
+}
+
+/**
+ * Implements hook_entity_view_display_alter().
+ */
+function ddbgo_gin_entity_view_display_alter(EntityViewDisplayInterface &$display, array $context): void {
+  if ($context['entity_type'] !== 'node' || $context['bundle'] !== 'bestand'
+    || $context['view_mode'] !== 'full' || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  // The default display can also serve other view modes in this request.
+  // Never mutate that shared config entity. A separate paragraph view mode
+  // also keeps nested render caches independent of lists and form previews.
+  $display = clone $display;
+  foreach (ddbgo_gin_object_field_labels() as $field => $label) {
+    if ($component = $display->getComponent($field)) {
+      $component['settings']['view_mode'] = 'ddbgo_object_details';
+      $display->setComponent($field, $component);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view_alter().
+ */
+function ddbgo_gin_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display): void {
+  $build['#cache']['contexts'][] = 'theme';
+  if ($node->bundle() !== 'bestand' || ($build['#view_mode'] ?? '') !== 'full'
+    || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  foreach (ddbgo_gin_object_field_labels() as $field => $label) {
+    if (isset($build[$field])) {
+      $build[$field]['#attributes']['class'][] = 'ddbgo-object-list';
+      $build[$field]['#title'] = $label;
+      $build[$field]['#attached']['library'][] = 'ddbgo_gin/object_paragraphs';
+    }
+  }
 }
 
 /**

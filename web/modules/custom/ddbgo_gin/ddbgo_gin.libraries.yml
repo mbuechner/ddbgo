@@ -6,6 +6,13 @@ bestand_tags:
   dependencies:
     - ddbgo_gin/section_spacing
 
+object_paragraphs:
+  css:
+    theme:
+      css/ddbgo_gin.object-paragraphs.css: {}
+  dependencies:
+    - ddbgo_gin/frontend_layout
+
 record_status:
   css:
     component:

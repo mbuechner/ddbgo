@@ -77,26 +77,46 @@ Icon und sichtbarem Text in dezenter Schrift. Auf kleinen Bildschirmen steht es
 unter den Reitern. Gesetzte Lesezeichen sind gefüllt und farbig hinterlegt; der
 Aktionsname und Mouseover-Hinweis bleiben auch nach Flag-AJAX erhalten.
 
-Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand. Paragraph-Karten
-(Personen, DDB-/Europeana-Objektangaben) stehen linksbündig mit 16 Pixel
-Abstand nebeneinander und brechen bei Platzmangel in die nächste Zeile um.
-Ihre Breite richtet sich nach dem Inhalt, höchstens 36rem bzw. der verfügbaren
-Breite. Einzelne und mehrere Karten verwenden dieselben Regeln, auch mit
-sichtbarer Feldüberschrift. Personenboxen übernehmen innerhalb jeder Zeile die
-Höhe der höchsten Box; nach einem Umbruch wird die Höhe für die nächste Zeile
-separat bestimmt. Kontakte stehen bei Aggregator, Bestand und KWE
-als vertikale Folge in der beim Bearbeiten manuell festgelegten Reihenfolge
-untereinander. Das Kontaktdatum ist optional und bestimmt nicht die Sortierung.
-Eine Linie verbindet die Punkte neben den Karten und endet am letzten Eintrag,
-auch bei Kontakten ohne Datum. Ein eigener seitlicher Abstand hält die Karten
-von der Linie fern; Linie und Punkte liegen über den weiterhin aktiven
-Hover-Schatten. Der Abstand überschreibt gezielt den Padding-Reset für Feldwerte
-innerhalb von Details-Abschnitten.
-Die Kontaktkarten wachsen mit ihrem Inhalt bis zur verfügbaren Breite und
-brechen lange Texte und URLs um. Kurze Einträge bleiben kompakt.
+Feldzeilen erhalten 16 bzw. 12 Pixel vertikalen Innenabstand. Ausschlie?lich
+in der vollst?ndigen Bestandsanzeige erhalten die drei Objektfelder die Klasse
+`ddbgo-object-list` und den Paragraph-Anzeigemodus `ddbgo_object_details`.
+Die verschachtelten Objektangaben verwenden denselben eigenen Anzeigemodus;
+Tabellen, andere Inhaltstypen, Themes und Formularvorschauen bleiben unabh?ngig.
+Die geteilte Standard-Anzeigekonfiguration wird zur Laufzeit nur geklont.
+
+Objektangaben stehen vollst?ndig untereinander, getrennt durch dezente Linien.
+Medientyp und Objektzahl stehen in getrennten Zeilen. Innere Labels verwenden
+normale Schriftst?rke und eine dezente Textfarbe, ?u?ere Labels bleiben fett.
+Verschachtelte Objektangaben behalten ihre Beschriftung und eine seitliche Linie.
+Personen behalten ihre Karten mit Rolle ?ber dem verlinkten Namen; Kontakte
+ihre Karten mit Datum, Bemerkung und Verbindungslinie.
+
+DDB-Objekte, Europeanas Content-Tier und Europeanas Metadata-Tier stehen direkt
+im Anzeigeabschnitt Europeana/Archivportal. Kurze Titel werden nur dort und in
+den drei Bestand-Formularwidgets gesetzt; die globalen Feldlabels bleiben erhalten.
+Nur diese Widgets erhalten `ddbgo-object-widget`. Medientyp und Objektzahl
+stehen bei gen?gend Platz nebeneinander, auf schmalen Fl?chen untereinander.
+Verschachtelte Objektgruppen stehen auf einer eigenen Zeile mit seitlicher Linie.
+Eingaben, Hilfetexte, Fehlermeldungen, Sortierung und Paragraphs-Aktionen bleiben
+verf?gbar. Die Markierung wird auch beim AJAX-Neuaufbau gesetzt.
+Beide Gestaltungen liegen in `ddbgo_gin.object-paragraphs.css`.
+
+Die Anzeigemodus-Konfigurationen liegen in `config/sync` und werden mit dem
+regulären Konfigurationsimport übernommen. Anschließend kann die Darstellung
+mit dem bestehenden Rendering-Test geprüft werden:
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/paragraph-display.test.php
+```
+
+Der Test rendert verschachtelte Beispiele ohne Speichern, pr?ft vollst?ndige
+Werte einschlie?lich Tier 0, Reihenfolge, die Trennung der Anzeigemodi und echte
+Formular-Widgets einschlie?lich der Abgrenzung zu Personen und Kontakten.
+Eine visuelle Pr?fung in Desktop- und Mobilbrowser erg?nzt diese Strukturtests.
+
 Andere Mehrfachwerte stehen mit 8 Pixel
 Abstand untereinander. Die Anpassungen verändern weder die Tab-Steuerung noch
-die Reihenfolge der Inhalte. Diese Feldzeilen-/Kartenregeln bleiben auf die
+die Reihenfolge der Inhalte. Diese Feldzeilen-/Listenregeln bleiben auf die
 Anzeige begrenzt; die bestehenden Abstände zwischen Formulareingaben bleiben
 erhalten. Am Anfang und Ende eines Formularabschnitts werden zusätzliche
 Feldränder ausgeglichen. Paragraph-Unterformulare erhalten 16 Pixel Abstand

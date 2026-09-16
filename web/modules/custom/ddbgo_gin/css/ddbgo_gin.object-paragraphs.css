@@ -1,0 +1,133 @@
+/*
+ * Only full Bestand object fields opt into this list layout.
+ * Keep all rendered fields and their order; separate entries with rules rather
+ * than stacking cards. People and contacts retain their dedicated card layouts.
+ * Handle both visible and hidden parent field labels.
+ */
+.gin-frontend :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions).field__items,
+.gin-frontend :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions) > .field__items,
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions) > .field__items,
+.gin-frontend details.claro-details > .claro-details__wrapper > :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions).field__items {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gin-spacing-s);
+  min-inline-size: 0;
+  padding-block: 0;
+  border-block-end: 0;
+}
+
+.gin-frontend :is(
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions).field__items,
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions) > .field__items
+) > .field__item {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend :is(
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions).field__items,
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions) > .field__items
+) > .field__item + .field__item {
+  padding-block-start: var(--gin-spacing-s);
+  border-block-start: 1px solid var(--gin-border-color);
+}
+
+.gin-frontend :is(
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions).field__items,
+  :is(.ddbgo-object-list, .ddbgo-object-list .field--type-entity-reference-revisions) > .field__items
+) > .field__item > .paragraph {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  gap: var(--gin-spacing-xs) var(--gin-spacing-l);
+  align-items: start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin-frontend .ddbgo-object-list .paragraph--view-mode--ddbgo-object-details > .field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 .35em;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  margin: 0;
+}
+
+.gin-frontend .ddbgo-object-list .paragraph--view-mode--ddbgo-object-details > .field > :is(.field__label, .field__item, .field__items) {
+  float: none;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Object counts remain easy to scan, including inside Europeana tiers. */
+.gin-frontend .ddbgo-object-list .paragraph--type--ddb-objekte.paragraph--view-mode--ddbgo-object-details > .field {
+  flex-basis: 100%;
+}
+
+/* Only labels inside paragraphs are subtle; outer field labels stay bold. */
+.gin-frontend .ddbgo-object-list .paragraph--view-mode--ddbgo-object-details > .field > .field__label {
+  font-weight: 400;
+  color: var(--gin-color-text-light);
+}
+
+/* Nested records stay associated with their parent, without another card.
+ * An explicit full-width row also keeps long text and further levels readable. */
+.gin-frontend .ddbgo-object-list .paragraph--view-mode--ddbgo-object-details > .field--type-entity-reference-revisions {
+  flex: 1 1 100%;
+  display: block;
+  box-sizing: border-box;
+  padding-inline-start: var(--gin-spacing-s);
+  border-inline-start: 2px solid var(--gin-border-color);
+}
+
+.gin-frontend .ddbgo-object-list .paragraph--view-mode--ddbgo-object-details > .field--type-entity-reference-revisions > .field__label {
+  margin-block-end: var(--gin-spacing-xxs);
+}
+
+/* Only the three marked Bestand widgets participate. Drupal retains the
+ * controls, descriptions, validation messages and drag/reorder behavior. */
+.gin-frontend .node-form .ddbgo-object-widget {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--gin-spacing-s) var(--gin-spacing-m);
+  min-inline-size: 0;
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform > .field {
+  min-inline-size: 0;
+  margin-block: 0;
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform > .field--name-field-objekte {
+  grid-column: 1 / -1;
+  padding-inline-start: var(--gin-spacing-s);
+  border-inline-start: 2px solid var(--gin-border-color);
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform :is(input:not([type="submit"]), select, .select2-container) {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform .form-item {
+  margin-block: var(--gin-spacing-xs);
+}
+
+.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform .form-item__label {
+  font-weight: 400;
+  color: var(--gin-color-text-light);
+}

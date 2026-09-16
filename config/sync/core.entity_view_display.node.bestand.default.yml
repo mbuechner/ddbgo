@@ -214,14 +214,14 @@ third_party_settings:
         - field_europeana_lieferung_enum
         - field_ueber_welchen_weg
         - field_europeana_lieferung
-        - group_ddb_objekte
+        - field_ddb_objekte
         - field_jira_europeana
         - field_jira_ticket_bei_europeana
         - field_europeanastatus
         - field_ingestart
         - field_datum_des_status_der_europ
-        - group_europeana_objekte_content_
-        - group_europeana_objekte_metadata
+        - field_europeana_objekte_content_
+        - field_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
       label: 'Europeana/ Archivportal'
@@ -231,72 +231,6 @@ third_party_settings:
       format_type: tab
       format_settings:
         classes: fieldgroup_europeana
-        show_empty_fields: true
-        id: ''
-        label_as_html: false
-        formatter: closed
-        description: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-    group_ddb_objekte:
-      children:
-        - field_ddb_objekte
-      label: DDB-Objekte
-      parent_name: group_europenana_archivportal
-      region: content
-      weight: 10
-      format_type: tab
-      format_settings:
-        classes: fieldgroup_ddbobjekte
-        show_empty_fields: true
-        id: ''
-        label_as_html: false
-        formatter: closed
-        description: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-    group_europeana_objekte_content_:
-      children:
-        - field_europeana_objekte_content_
-      label: 'Europeana-Objekte: Content-Tier'
-      parent_name: group_europenana_archivportal
-      region: content
-      weight: 16
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: true
-        id: ''
-        label_as_html: false
-        formatter: closed
-        description: ''
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-    group_europeana_objekte_metadata:
-      children:
-        - field_europeana_objekte_metadata
-      label: 'Europeana-Objekte: Metadata-Tier'
-      parent_name: group_europenana_archivportal
-      region: content
-      weight: 17
-      format_type: tab
-      format_settings:
-        classes: ''
         show_empty_fields: true
         id: ''
         label_as_html: false
@@ -507,7 +441,7 @@ content:
     region: content
   field_ddb_objekte:
     type: entity_reference_revisions_entity_view
-    label: hidden
+    label: inline
     settings:
       view_mode: default
       link: ''
@@ -557,7 +491,7 @@ content:
     region: content
   field_europeana_objekte_content_:
     type: entity_reference_revisions_entity_view
-    label: hidden
+    label: inline
     settings:
       view_mode: default
       link: ''
@@ -570,7 +504,7 @@ content:
     region: content
   field_europeana_objekte_metadata:
     type: entity_reference_revisions_entity_view
-    label: hidden
+    label: inline
     settings:
       view_mode: default
       link: ''

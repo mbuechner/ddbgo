@@ -1,0 +1,11 @@
+uuid: 652c50eb-5231-4144-b0f7-c999dba31f6c
+langcode: de
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.ddbgo_object_details
+label: DDBgo-Objektangaben
+description: 'Objektangaben in der vollst?ndigen Bestandsanzeige'
+targetEntityType: paragraph
+cache: true
