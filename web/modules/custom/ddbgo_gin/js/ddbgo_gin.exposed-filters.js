@@ -18,6 +18,7 @@
           Array.from(tagFilter.selectedOptions, (option) => option.value)
             .sort()
             .join('\u0000');
+        let submittedSelection = selectedValues();
 
         tagFilter.addEventListener('change', () => {
           pendingSelection = selectedValues();
@@ -33,7 +34,14 @@
           window.queueMicrotask(() => {
             isSubmitQueued = false;
 
-            if (selectedValues() !== pendingSelection) {
+            const selection = selectedValues();
+            // Tagify's change event can precede its animated remove event.
+            // Until remove updates the select, it still contains the old tag.
+            // Ignore that unchanged state and duplicate events after submit.
+            if (
+              selection !== pendingSelection ||
+              selection === submittedSelection
+            ) {
               return;
             }
 
@@ -46,6 +54,7 @@
               '[data-ddbgo-tag-auto-submit-click]',
             );
             if (submit && !submit.disabled) {
+              submittedSelection = selection;
               submit.click();
             }
           });

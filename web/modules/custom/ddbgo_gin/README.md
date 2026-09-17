@@ -244,7 +244,15 @@ Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
   zurück; ihre ID und Screenreader-Zuordnung ändern sich nicht. Ohne JavaScript
   bleibt der Text im Formular über die CSS-Abfrage `scripting: none` lesbar.
   Gin verwendet für diese Buttons einen anderen Selektor und überschreibt ihre Attribute daher nicht.
-- `ddbgo_gin.exposed-filters.js`: Automatisches Absenden nach Tagify-Änderungen.
+- `ddbgo_gin.exposed-filters.js`: Automatisches Absenden bei geänderter Auswahl
+  im zugrunde liegenden Select. Tagify kann während der Löschanimation bereits
+  ein `change` auslösen, bevor `remove` die Option abwählt. Unveränderte Werte
+  und doppelte Ereignisse werden deshalb nicht abgeschickt. Der Browsertest
+  `node web/modules/custom/ddbgo_gin/tests/js/exposed-filters.test.cjs` prüft mit
+  den installierten Widgets das Entfernen aus einer bis drei Auswahlen bei
+  verschiedenen Animationszeiten sowie Initialisierung, Hinzufügen und erneutes
+  Auswählen. Die ausgegebene HTML-Datei lokal im Browser öffnen; sie sendet keine
+  Anfragen an DDBgo.
 - `ddbgo_gin.toolbar-navigation.js`: Kompatibilitätskorrektur für Gins
   Verwaltungsnavigation. Ein Klick auf einen Verwaltungslink bzw. dessen
   Beschriftung folgt dem Ziel; der Aufklapp-Auslöser bleibt bedienbar. Das greift
