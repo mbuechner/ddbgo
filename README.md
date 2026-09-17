@@ -84,6 +84,20 @@ The following environment variables are used by DDBgo and can be set via `.env`.
 | `HTPASSWD_PWD` | No | not set | Password for Nginx HTTP Basic Auth; has no effect without `HTPASSWD_USER`. |
 
 ### Composer project maintenance
+
+Font Awesome is supplied exclusively by `npm-asset/fortawesome--fontawesome-free`
+at `web/libraries/fontawesome`. The legacy `fontawesome/fontawesome` package is
+explicitly conflicting because it uses the same directory: removing it during
+a Composer merge update also deletes the current package's icons. Do not add it
+back to `composer.lock` or a module's `composer.libraries.json`.
+
+Generated Composer assets are excluded from the Docker context so local files
+cannot mask a broken clean installation.
+
+If an existing local installation has already lost its icons, run
+`composer reinstall npm-asset/fortawesome--fontawesome-free` after installing
+the corrected lockfile. Deploy a newly built image to repair a running cluster.
+
 1. Find updateable packages:
    `composer outdated --direct`
 2. Show available package versions for a package: 

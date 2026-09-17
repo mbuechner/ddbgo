@@ -105,7 +105,8 @@
         "wikimedia/composer-merge-plugin": "^2.1"
     },
     "conflict": {
-        "drupal/drupal": "*"
+        "drupal/drupal": "*",
+        "fontawesome/fontawesome": "*"
     },
     "minimum-stability": "beta",
     "prefer-stable": true,
