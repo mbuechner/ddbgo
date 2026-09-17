@@ -22,8 +22,10 @@ dependencies:
     - better_exposed_filters
     - ddbgo_gin
     - custom_formatters
+    - facets_exposed_filters
     - link
     - search_api
+    - tagify
     - user
 id: suche_bestand
 label: 'Suche: Bestand'
@@ -747,7 +749,7 @@ display:
                   hide_label: false
                   field_classes: ''
               field_bestandstags:
-                plugin_id: bef_tagify_select
+                plugin_id: ddbgo_bestand_tags
                 advanced:
                   sort_options: true
                   sort_options_method: alphabetical_asc
@@ -854,12 +856,12 @@ display:
         field_bestandstags:
           id: field_bestandstags
           table: search_api_index_bestand
-          field: field_bestandstags
+          field: facets_field_bestandstags
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: search_api_term
-          operator: and
+          plugin_id: facets_filter
+          operator: '='
           value: {  }
           group: 1
           exposed: true
@@ -891,12 +893,23 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
-          vid: bestandstags
-          type: select
           hierarchy: false
-          limit: true
-          error_message: true
+          label_display: visible
+          facet:
+            query_operator: and
+            hard_limit: 0
+            min_count: 1
+            missing: false
+            missing_label: others
+            show_numbers: false
+            show_only_one_result: false
+            processor_configs:
+              translate_entity:
+                processor_id: translate_entity
+                weights:
+                  build: 5
+                settings:
+                  skip_access_check: false
       filter_groups:
         operator: AND
         groups:

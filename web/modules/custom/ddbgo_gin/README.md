@@ -411,6 +411,54 @@ anwenden, die URL ohne Parameter aufrufen, zurücksetzen und dieselbe URL erneut
 laden. Die Felder müssen nach Reset auch bei gefülltem Cache leer beziehungsweise
 auf ihrer konfigurierten Standardauswahl stehen.
 
+## Verfügbare Bestandstags in der Suche
+
+Die Bestandsliste verwendet für `field_bestandstags` einen nativen Filter von
+`facets_exposed_filters`: UND-Verknüpfung, Mindesttrefferzahl 1 und Auflösung
+der Begriffs-IDs in Namen. Facets ermittelt die angebotenen Tags aus der gesamten
+Treffermenge unter Berücksichtigung der Volltextsuche, unabhängig von der
+aktuellen Ergebnisseite. Die bisherigen URLs und Tagify-Mehrfachauswahl bleiben erhalten.
+
+Das kleine BEF-Widget `ddbgo_bestand_tags` ergänzt das vorhandene Tagify-Widget.
+Es hält ausgewählte Tags vor der Suchausführung und bei null Treffern im
+Formular, damit Views sie weiterhin merken kann und sie einzeln entfernbar
+bleiben. Außerdem bewahrt es Facets' Verarbeitung dynamischer Auswahlwerte.
+Die Berechnung verfügbarer Tags und die Suchabfrage bleiben vollständig bei
+Facets/Search API. Das Widget ist nur für diesen Filter vorgesehen; zusätzliche
+JavaScript-Anpassungen oder Composer-Patches sind nicht erforderlich.
+
+Die Aktivierung des mitgelieferten Untermoduls und die View werden über den
+regulären Konfigurationsimport übernommen. Danach Drupal-Caches neu aufbauen,
+damit Views den neuen Facettenfilter erkennt; eine veraltete Filterdefinition
+kann das Tag-Feld verschwinden lassen. Eine Neuindexierung ist nicht nötig,
+da die Begriffs-IDs bereits indexiert sind:
+
+```sh
+drush config:import
+drush cache:rebuild
+```
+
+Wenn der laufende Webserver das Feld trotzdem nicht ausgibt, unter
+`/admin/config/development/performance` **Alle Caches leeren** ausführen.
+Lokal wurde beobachtet, dass die Datenbank und Drush das neue Untermodul bereits
+kannten, während der Webserver noch eine alte Modulliste verwendete. Ein
+erfolgreicher CLI-Test allein bestätigt deshalb nicht die ausgelieferte Seite;
+die Bestandsliste zusätzlich als angemeldeter Benutzer per HTTP prüfen.
+
+Regressionstest nach Aktivierung und Konfigurationsimport:
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/bestand-facets.test.php
+```
+
+Der Test benötigt einen indexierten Bestand mit mindestens zwei Tags. Er
+vergleicht die Ergebnisse mit dem bisherigen Taxonomie-Filter und prüft
+verfügbare Tags, Mehrfachauswahl, Entfernen, Volltext, leere Trefferlisten,
+gespeicherte Auswahl, Zurücksetzen, bestehende Links und Seitennavigation.
+Zusätzlich rendert er die vollständige Bestandsliste mit aktiver Konfiguration
+zweimal und prüft Tag-Feld, Position außerhalb der Filterklappe und Tagify-Library.
+Er speichert keine Inhalte oder Konfiguration; Sitzungen sind nur im Speicher.
+
 ## Bestandstags in der Anzeige
 
 `ddbgo_bestand_tags` stellt Begriffe als native Links mit Tag-Darstellung dar.
