@@ -154,6 +154,11 @@
   }
 }
 
+/* Tagify needs this generated value input; hide it from assistive technology. */
+.gin-frontend .view-suche-bestand .tagify + input.tagify-select-widget {
+  display: none;
+}
+
 /* Tag filters always form the final, full-width row above the results. */
 .gin-frontend .views-exposed-form > .ddbgo-exposed-filter--tags {
   box-sizing: border-box;
