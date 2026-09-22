@@ -824,6 +824,9 @@ function ddbgo_gin_set_reset_button_labels(array &$element): void {
  * Replaces the redundant one-option bulk-action select with a direct button.
  */
 function ddbgo_gin_alter_bookmark_bulk_form(array &$form): void {
+  // Claro adds its selection counter after module form alters have run.
+  $form['#after_build'][] = 'ddbgo_gin_remove_bookmark_selection_summary';
+
   $bulk_form_id = 'flagging_bulk_form';
 
   if (!isset($form['header'][$bulk_form_id]['action'])) {
@@ -842,6 +845,21 @@ function ddbgo_gin_alter_bookmark_bulk_form(array &$form): void {
   if (isset($form['actions']['submit'])) {
     $form['actions']['submit']['#value'] = $button_label;
   }
+}
+
+/**
+ * Removes Claro's counter, which assumes one select-all checkbox per form.
+ */
+function ddbgo_gin_remove_bookmark_selection_summary(array $form, FormStateInterface $form_state): array {
+  // Also detach the counter behavior: it requires the status element and would
+  // otherwise announce incorrect counts for the separately grouped tables.
+  // Core's table selection and the submitted bulk-action values are independent.
+  unset(
+    $form['bulk_actions_container']['status'],
+    $form['bulk_actions_container']['#attributes']['data-drupal-views-bulk-actions'],
+  );
+
+  return $form;
 }
 
 /**
