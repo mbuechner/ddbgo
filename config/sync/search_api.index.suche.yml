@@ -68,8 +68,8 @@ processor_settings:
   highlight:
     weights:
       postprocess_query: 0
-    prefix: '<mark>'
-    suffix: '</mark>'
+    prefix: '<mark><strong>'
+    suffix: '</strong></mark>'
     excerpt: true
     excerpt_always: false
     excerpt_length: 512
