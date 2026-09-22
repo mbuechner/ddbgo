@@ -4,8 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.kwe.field_ablehnungsgrund
-    - field.field.node.kwe.field_api_blacklisting
-    - field.field.node.kwe.field_api_blacklisting_jira_tick
     - field.field.node.kwe.field_archivportal_lieferung
     - field.field.node.kwe.field_bemerkung
     - field.field.node.kwe.field_bemerkung_archivportal
@@ -107,8 +105,6 @@ third_party_settings:
         - field_zustimmungsformular
         - field_vertrag
         - field_favorienkarussell
-        - field_api_blacklisting
-        - field_api_blacklisting_jira_tick
         - field_bemerkungen
       label: Informationen
       region: content
@@ -230,21 +226,6 @@ content:
             effect: show
             effect_options: {  }
             selector: ''
-  field_api_blacklisting:
-    type: options_select
-    weight: 40
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_api_blacklisting_jira_tick:
-    type: string_textfield
-    weight: 41
-    region: content
-    settings:
-      size: 80
-      placeholder: ''
-    third_party_settings:
-      conditional_fields: {  }
   field_archivportal_lieferung:
     type: options_select
     weight: 31
@@ -690,6 +671,8 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_api_blacklisting: true
+  field_api_blacklisting_jira_tick: true
   field_status: true
   langcode: true
   path: true

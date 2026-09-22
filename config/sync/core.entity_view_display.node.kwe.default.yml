@@ -4,11 +4,8 @@ status: true
 dependencies:
   config:
     - custom_formatters.formatter.isil_link
-    - custom_formatters.formatter.jira_link
     - custom_formatters.formatter.label_als_link
     - field.field.node.kwe.field_ablehnungsgrund
-    - field.field.node.kwe.field_api_blacklisting
-    - field.field.node.kwe.field_api_blacklisting_jira_tick
     - field.field.node.kwe.field_archivportal_lieferung
     - field.field.node.kwe.field_bemerkung
     - field.field.node.kwe.field_bemerkung_archivportal
@@ -103,8 +100,6 @@ third_party_settings:
         - field_zustimmungsformular
         - field_vertrag
         - field_favorienkarussell
-        - field_api_blacklisting
-        - field_api_blacklisting_jira_tick
         - field_bemerkungen
       label: Informationen
       parent_name: group_kwe
@@ -235,30 +230,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
-    region: content
-  field_api_blacklisting:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: false
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 29
-    region: content
-  field_api_blacklisting_jira_tick:
-    type: 'custom_formatters:jira_link'
-    label: inline
-    settings:
-      formatter_setting_uuid: ''
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 30
     region: content
   field_archivportal_lieferung:
     type: entity_reference_label
@@ -625,6 +596,8 @@ content:
     weight: 26
     region: content
 hidden:
+  field_api_blacklisting: true
+  field_api_blacklisting_jira_tick: true
   field_status: true
   flag_bookmark: true
   langcode: true

@@ -7,16 +7,6 @@ label: 'node kwe validation'
 entity_type: node
 bundle: kwe
 field_validation_rules:
-  4ebe81be-211e-4f18-831d-53a2c6c22b39:
-    id: regex_field_validation_rule
-    title: API-Blacklisting-Jira-Ticket
-    data:
-      setting: '/[A-Z]+\-[0-9]+/'
-    weight: -10
-    uuid: 4ebe81be-211e-4f18-831d-53a2c6c22b39
-    field_name: field_api_blacklisting_jira_tick
-    column: value
-    error_message: 'Das Format des JIRA-Tickets ist nicht korrekt.'
   009f6d15-952f-4241-b546-09684f149e75:
     id: regex_field_validation_rule
     title: DDB-URI
