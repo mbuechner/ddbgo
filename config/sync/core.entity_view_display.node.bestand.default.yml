@@ -35,6 +35,7 @@ dependencies:
     - field.field.node.bestand.field_kontakt
     - field.field.node.bestand.field_kwe
     - field.field.node.bestand.field_lieferweg
+    - field.field.node.bestand.field_lieferweg_angaben
     - field.field.node.bestand.field_link_fragebogen
     - field.field.node.bestand.field_link_zu_coding_da_vinci
     - field.field.node.bestand.field_link_zu_ddbdash
@@ -89,6 +90,7 @@ third_party_settings:
         - field_datenformat
         - field_volltextformat
         - field_lieferweg
+        - field_lieferweg_angaben
         - field_beschreibung
         - field_bemerkung
       label: Allgemeines
@@ -344,7 +346,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 21
+    weight: 22
     region: content
   field_bemerkung_europeana_liefer:
     type: basic_string
@@ -366,7 +368,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 20
+    weight: 21
     region: content
   field_bestandstags:
     type: ddbgo_bestand_tags
@@ -623,6 +625,17 @@ content:
         settings:
           empty_text: –
     weight: 19
+    region: content
+  field_lieferweg_angaben:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 20
     region: content
   field_link_fragebogen:
     type: link
