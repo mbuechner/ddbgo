@@ -659,7 +659,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Suche nach ID, Namen, E-Mail, Telefonnummer oder zugeordneten Einrichtungen, Beständen und Aggregatoren. Angaben außerhalb der Tabelle werden nicht durchsucht. Durchsuchbar, aber ohne Hervorhebung: ID, E-Mail und Telefonnummer.'
+            description: 'Es werden alle angezeigten Spalten durchsucht. Nicht hervorgehoben werden ID, E-Mail und Telefonnummer.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false

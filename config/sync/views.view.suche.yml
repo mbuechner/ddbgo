@@ -384,7 +384,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Die Volltextsuche durchsucht auch Inhalte außerhalb der angezeigten Spalten. Hervorgehoben werden Treffer nur in der Spalte „Suchtreffer“.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
