@@ -39,6 +39,31 @@ und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
 ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
 bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
 
+## Kategorien unter „Meine Lesezeichen“
+
+Die Kategorien auf `/bookmarks` werden als Überschriften der Ebene `h2`
+ausgegeben. Dafür schreibt die View `flag_bookmark` das Standardfeld `type`
+mit `<h2>{{ type }}</h2>` um. Das Feld bleibt mit `exclude: true` als eigene
+Tabellenspalte ausgeblendet. Die Gruppierung übernimmt den gerenderten Inhalt
+(`rendered: true`) einschließlich HTML (`rendered_strip: false`).
+
+Gin setzt diesen Gruppentitel in `caption`. Damit bleibt der Tabellenname
+erhalten und die Kategorien sind zusätzlich über die Überschriftennavigation
+erreichbar. Der Block besitzt eigene Felddefinitionen und übernimmt diese
+Umschreibung nicht. Dafür sind weder eine Templatekopie noch JavaScript nötig.
+
+Die Überschriften bleiben semantisch `h2`, verwenden optisch aber Gins
+`h3`-Schriftgröße. Eine auf diese View-Seite begrenzte Regel in
+`ddbgo_gin.frontend-layout.css` setzt dafür `--gin-font-size-h3` ein.
+Abstände, Zeilenhöhe und Schriftschnitt sind bei Gin für `h2` und `h3`
+bereits gleich und werden unverändert übernommen.
+
+Nach dem Deployment `drush config:import` und `drush cr` ausführen. Anschließend
+`/bookmarks` mit mehreren Kategorien manuell prüfen: HeadingsMap soll jede
+Kategorie als `h2` unter der Seitenüberschrift aufführen; die Tabellen sollen
+weiterhin den jeweiligen Kategorienamen tragen. Darstellung und Abstände
+sowie die unveränderte Ausgabe des Lesezeichen-Blocks ebenfalls prüfen.
+
 ## Leere verknüpfte Einträge
 
 Das Inline-Paragraphs-Widget (`entity_reference_paragraphs`) zeigt bei leeren
