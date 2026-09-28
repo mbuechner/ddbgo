@@ -20,6 +20,10 @@ und die unten beschriebenen Gin-Korrekturen begrenzt.
   Schaltflächen und Linklisten ohne zusätzliche Gin-Toolbar-Elemente.
   Der Block ermittelt den aktiven Bereich und den aktuellen Link serverseitig.
   Seine Cache-Kontexte berücksichtigen Route, URL-Pfad und Benutzerrechte.
+  Sind nach der Zugriffsprüfung alle Links eines Menüs ausgeblendet, entfällt
+  auch dessen Schaltfläche. Die Cache-Metadaten des leeren Menübaums bleiben
+  erhalten. Das verhindert einen PHP-Fehler bei eingeschränkten Rollen, etwa
+  ohne Zugriff auf die Personenliste und das Anlegeformular.
 - `ddbgo-page-actions.html.twig` platziert Reiter und Lesezeichen nebeneinander.
   Page-Preprocessing verwendet den vorhandenen Flag-Link-Builder. Das
   `flag--ddbgo-gin.html.twig` blendet die ursprüngliche Full-View-Ausgabe nur auf
@@ -44,8 +48,10 @@ bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
 Der Footer enthält in dieser Reihenfolge **Seitenübersicht** (Sitemap),
 **Kontakt**, **Barrierefreiheit**, **Nutzungsbedingungen** und **Impressum**.
 Alle fünf Einträge sind statische Menüdefinitionen in
-`ddbgo_gin.links.menu.yml` mit `route_name: '<front>'` (vorläufig Startseite).
-Es werden keine Zielseiten angelegt und kein Sitemap-Modul aktiviert.
+`ddbgo_gin.links.menu.yml`. „Seitenübersicht“ verwendet `route_name: sitemap.page`;
+die übrigen vier Einträge zeigen weiterhin vorläufig mit `route_name: '<front>'`
+auf die Startseite. Für diese vier Einträge werden noch keine Zielseiten angelegt.
+Der Sitemap-Link ist über die Zugriffsprüfung seiner Route für Gäste ausgeblendet.
 
 Titel und Ziele werden in dieser YAML-Datei gepflegt. Sobald ein Ziel feststeht,
 `route_name` und gegebenenfalls `route_parameters` setzen oder stattdessen `url`
@@ -106,15 +112,82 @@ Updateklasse noch zusätzlichen JavaScript-Code.
 Die zuvor lokal angelegten fünf Inhalts-Menüeinträge wurden durch die statischen
 Definitionen ersetzt, damit der Footer keine doppelten Einträge enthält.
 
-Geprüft wurden Drupal-HTML-Antworten für `/search`, `/node/add/person`,
-`/admin/structure`, `/user/login` sowie 403-/404-Seiten: jeweils ein Footer mit
-benannter Navigation und eingebundener Footer-Library. Die fünf Einträge
-verweisen vorläufig auf die Startseite.
+Zur Prüfung `/search`, `/node/add/person`, `/admin/structure`, `/user/login`
+sowie 403-/404-Seiten aufrufen: jeweils ein Footer mit benannter Navigation
+und eingebundener Footer-Library. Angemeldete Benutzer sehen fünf Einträge;
+Gäste sehen die vier Einträge ohne Seitenübersicht.
 
 Die visuelle Browserprüfung steht noch aus: kurze/lange Seiten einschließlich
 Login, schmale Ansicht/Zoom, Gin Hell/Dunkel, Tastaturfokus und Windows-Kontrastdesign
 prüfen. Sobald Ziele eingetragen werden, zusätzlich deren Erreichbarkeit als
 angemeldeter und anonymer Benutzer prüfen.
+
+## Seitenübersicht
+
+Drupal Sitemap `8.x-2.6` stellt unter `/sitemap` eine HTML-Seite mit
+dem Titel „Seitenübersicht“ bereit. Die Einstellungen sind unter
+`/admin/config/search/sitemap` erreichbar und in
+`config/sync/sitemap.settings.yml` exportiert. Aktiv sind ausschließlich die
+Menü-Plugins `menu:start`, `menu:kwe`, `menu:aggregator`, `menu:person`,
+`menu:bestand`, `menu:einstellungen`, `menu:account` und `menu:footer` mit den
+Abschnittstiteln „Allgemein“, „KWE“, „Aggregatoren“, „Personen“, „Bestände“,
+„Einstellungen“, „Benutzermenü“ und „Informationen“.
+`show_disabled: false` lässt deaktivierte Einträge
+weg; `menu_depth: 9` übernimmt auch untergeordnete Menüebenen. Taxonomie-,
+Book- und RSS-Ausgaben sind nicht aktiviert; eine XML-Sitemap wird nicht erzeugt.
+Die kurze Einleitung wird über „Sitemap message“ (`message.value`, Format
+`plain_text`) gepflegt: „Hier finden Sie die zentralen Bereiche und Funktionen
+von DDBgo auf einen Blick.“
+
+Die Abschnittsüberschriften bleiben semantisch `h2`, verwenden über die
+bestehende Library `frontend_layout` aber Gins `--gin-font-size-h3`.
+Abstände, Zeilenhöhe und Schriftschnitt entsprechen bereits beiden Gin-Ebenen.
+Die CSS-Regel gilt nur für die Abschnittsüberschriften der Seitenübersicht;
+ein zusätzliches Template oder JavaScript ist nicht nötig.
+
+Die Berechtigung `access sitemap` wird ausschließlich der Rolle
+`authenticated` zugewiesen. Die Seitenübersicht ist damit nur nach Anmeldung
+erreichbar; die einzelnen Menüziele behalten ihre eigenen Zugriffsprüfungen.
+Das gilt auch für die Links im Menü „Einstellungen“: Die Aufnahme dieses
+Menüs gewährt keine zusätzlichen Verwaltungsrechte. Das Core-Benutzermenü
+`account` ergänzt „Mein Konto“ und „Abmelden“; der Kontolink führt zum jeweils
+angemeldeten Benutzer und listet keine anderen Benutzerkonten auf.
+
+Die vorhandenen Arbeitsmenüs und das Footer-Menü werden wiederverwendet.
+Sie enthalten die generischen Anlege-, Such- und Listenansichten, die
+Startseite sowie die Informationsseiten. Die vier Footer-Platzhalter führen
+weiterhin zu `<front>`; spätere Änderungen ihrer Ziele werden automatisch
+in der Seitenübersicht übernommen. Die vorhandene allgemeine Inhaltsseite
+`page` mit der ID 1 ist bereits über die
+Startseite abgedeckt. Künftige allgemeine Seiten einem der ausgewählten Menüs
+hinzufügen. Keine Links auf einzelne Bestands-, Aggregator-, KWE- oder
+Personendatensätze aufnehmen; die Seitenübersicht listet die Menüziele und
+liest nicht die einzelnen Ergebniszeilen der verlinkten Views aus.
+
+Die vorhandenen Inhalts-Menülinks, etwa zu Startseite und Anlegeformularen,
+sind Datenbankinhalte und gehören nicht zum Konfigurationsexport. Auf dem
+Zielsystem müssen diese Arbeitsmenüs entsprechend gepflegt sein; die
+Sitemap-Konfiguration erzeugt ihre Inhalts-Menülinks nicht neu.
+
+Deployment: `composer install`, anschließend `drush cim` und `drush cr`
+ausführen. Der Konfigurationsimport aktiviert das Modul und übernimmt seine
+Einstellungen sowie die Berechtigung. Danach angemeldeten und anonymen Zugriff,
+Footer-Link, sichtbare Menüziele und den Ausschluss einzelner Datensätze manuell
+prüfen.
+
+Lokal wurden vollständige HTML-Antworten über Drupals HTTP-Kernel geprüft:
+Administrator und reine Rolle `authenticated` erhalten HTTP 200 mit dem
+korrekten Seitentitel und Footer-Link; Gäste erhalten HTTP 403 ohne diesen
+Link und ohne Sitemap-Inhalt. Alle ausgegebenen Ziele entsprechen den
+generischen Menüeinträgen, einschließlich des Abschnitts „Informationen“.
+Nach Ergänzung von „Einstellungen“ und „Benutzermenü“ wurden Einleitung,
+acht semantische H2-Abschnitte und eingebundene Frontend-CSS erneut geprüft:
+Administratoren sehen vier Einstellungslinks, die reine Rolle `authenticated`
+keinen davon; beide erhalten die zwei eigenen Kontoaktionen. Gäste erhalten
+weiterhin HTTP 403.
+Die Prüfung wurde nach einem Rollenwechsel wiederholt. Zusätzlich geprüft:
+Leere zugriffsbeschränkte Arbeitsmenüs erzeugen keinen Schalter und behalten
+ihre Cache-Metadaten. Die visuelle Browserprüfung steht noch aus.
 
 ## Kategorien unter „Meine Lesezeichen“
 

@@ -94,6 +94,7 @@ module:
   select2_publish: 0
   semanticviews: 0
   serialization: 0
+  sitemap: 0
   smtp: 0
   system: 0
   tagify: 0

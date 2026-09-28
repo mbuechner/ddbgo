@@ -1,0 +1,90 @@
+_core:
+  default_config_hash: GUKBlXIBQ2d0H8Q7M_Rqn1Q93tRxLPfs9cG-VeQC9NI
+langcode: de
+page_title: Seitenübersicht
+path: sitemap
+message:
+  value: 'Hier finden Sie die zentralen Bereiche und Funktionen von DDBgo auf einen Blick.'
+  format: plain_text
+plugins:
+  'menu:start':
+    base_plugin: menu
+    enabled: true
+    weight: 0
+    settings:
+      title: Allgemein
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:start'
+    provider: sitemap
+  'menu:kwe':
+    base_plugin: menu
+    enabled: true
+    weight: 1
+    settings:
+      title: KWE
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:kwe'
+    provider: sitemap
+  'menu:aggregator':
+    base_plugin: menu
+    enabled: true
+    weight: 2
+    settings:
+      title: Aggregatoren
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:aggregator'
+    provider: sitemap
+  'menu:person':
+    base_plugin: menu
+    enabled: true
+    weight: 3
+    settings:
+      title: Personen
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:person'
+    provider: sitemap
+  'menu:bestand':
+    base_plugin: menu
+    enabled: true
+    weight: 4
+    settings:
+      title: Bestände
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:bestand'
+    provider: sitemap
+  'menu:einstellungen':
+    base_plugin: menu
+    enabled: true
+    weight: 5
+    settings:
+      title: Einstellungen
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:einstellungen'
+    provider: sitemap
+  'menu:account':
+    base_plugin: menu
+    enabled: true
+    weight: 6
+    settings:
+      title: Benutzermenü
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:account'
+    provider: sitemap
+  'menu:footer':
+    base_plugin: menu
+    enabled: true
+    weight: 7
+    settings:
+      title: Informationen
+      show_disabled: false
+      menu_depth: 9
+    id: 'menu:footer'
+    provider: sitemap
+include_css: true

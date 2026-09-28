@@ -82,6 +82,7 @@
         "drupal/search_api": "^1.41",
         "drupal/select2": "^2.0",
         "drupal/semanticviews": "^3.1",
+        "drupal/sitemap": "^2.6",
         "drupal/smtp": "^1.4",
         "drupal/tagify": "^2.0",
         "drupal/taxonomy_unique": "^2.6",

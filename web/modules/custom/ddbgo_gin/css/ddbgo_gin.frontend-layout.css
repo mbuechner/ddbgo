@@ -329,7 +329,8 @@
 }
 
 /* Keep h2 semantics with Gin's h3 size; both levels share the same spacing. */
-.gin-frontend .view-flag-bookmark.view-display-id-page table.views-table > caption > h2 {
+.gin-frontend .view-flag-bookmark.view-display-id-page table.views-table > caption > h2,
+.gin-frontend .sitemap > .sitemap-item > h2 {
   font-size: var(--gin-font-size-h3);
 }
 

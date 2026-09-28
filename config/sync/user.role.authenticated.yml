@@ -12,6 +12,7 @@ dependencies:
     - file
     - key_auth
     - node_view_permissions
+    - sitemap
     - system
     - toolbar_menu
     - userprotect
@@ -23,6 +24,7 @@ weight: -9
 is_admin: false
 permissions:
   - 'access content'
+  - 'access sitemap'
   - 'delete own files'
   - 'use key authentication'
   - userprotect.account.edit

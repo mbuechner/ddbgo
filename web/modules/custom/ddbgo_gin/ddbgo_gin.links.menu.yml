@@ -1,8 +1,8 @@
 # Footer links are maintained here; Drupal's menu UI can change order/visibility.
-# Replace <front> with the actual destinations once the pages exist.
+# Remaining <front> placeholders can be replaced once their pages exist.
 ddbgo_gin.footer_sitemap:
   title: Seitenübersicht
-  route_name: '<front>'
+  route_name: sitemap.page
   menu_name: footer
   weight: 0
 
