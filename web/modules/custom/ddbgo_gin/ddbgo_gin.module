@@ -108,6 +108,10 @@ function ddbgo_gin_theme(): array {
       'base hook' => 'block',
       'template' => 'block--ddbgo-linked-content-view',
     ],
+    'block__ddbgo_gin_site_branding' => [
+      'base hook' => 'block',
+      'template' => 'block--ddbgo-gin-site-branding',
+    ],
     'pager__ddbgo_gin' => [
       'base hook' => 'pager',
       'template' => 'pager--ddbgo-gin',
@@ -200,6 +204,9 @@ function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables
  */
 function ddbgo_gin_theme_suggestions_block_alter(array &$suggestions, array $variables): void {
   $plugin_id = $variables['elements']['#plugin_id'] ?? NULL;
+  if ($plugin_id === 'system_branding_block' && ddbgo_gin_is_theme('gin_frontend')) {
+    $suggestions[] = 'block__ddbgo_gin_site_branding';
+  }
   $linked_content_views = [
     'views_block:aggregator-block_1',
     'views_block:kwe-block',
