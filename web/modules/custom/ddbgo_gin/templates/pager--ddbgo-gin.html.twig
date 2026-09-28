@@ -16,7 +16,7 @@
           </a>
         </li>
       {% endif %}
-      {% if ellipses.previous %}<li class="pager__item pager__item--ellipsis" role="presentation">&hellip;</li>{% endif %}
+      {% if ellipses.previous %}<li class="pager__item pager__item--ellipsis">&hellip;</li>{% endif %}
       {% for key, item in items.pages %}
         <li class="pager__item{{ current == key ? ' ddbgo-pager__item--current' : '' }}">
           {% if current == key %}
@@ -26,7 +26,7 @@
           {% endif %}
         </li>
       {% endfor %}
-      {% if ellipses.next %}<li class="pager__item pager__item--ellipsis" role="presentation">&hellip;</li>{% endif %}
+      {% if ellipses.next %}<li class="pager__item pager__item--ellipsis">&hellip;</li>{% endif %}
       {% if items.next %}
         <li class="pager__item pager__item--next">
           <a class="pager__link" href="{{ items.next.href }}" title="{{ 'Go to next page'|t }}" rel="next"{{ items.next.attributes|without('href', 'title', 'rel', 'class') }}>
