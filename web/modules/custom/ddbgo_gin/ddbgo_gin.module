@@ -261,6 +261,40 @@ function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
 /**
  * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
  *
+ * Mark the person email widget on every build, including AJAX add/remove.
+ * The owning entity distinguishes it from KWE's shared field_email field;
+ * route checks would not reliably cover embedded forms or AJAX requests.
+ */
+function ddbgo_gin_field_widget_complete_email_default_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+  $items = $context['items'];
+  $entity = $items->getEntity();
+  if ($entity instanceof NodeInterface && $entity->bundle() === 'person'
+    && $items->getName() === 'field_email' && empty($context['default'])) {
+    $field_widget_complete_form['widget']['#ddbgo_person_email_label'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_field_multiple_value_form().
+ *
+ * Core builds multiple-value table labels as h4 in FieldPreprocess. Here the
+ * email label names a field group, not a document section below the page h1.
+ * Change only its tag; keep the table header, label classes, required marker
+ * and individual input labels. Claro/Gin can still apply their preprocessing.
+ */
+function ddbgo_gin_preprocess_field_multiple_value_form(array &$variables): void {
+  // Check the theme at render time, independently of the cached widget build.
+  if (empty($variables['element']['#ddbgo_person_email_label']) || !ddbgo_gin_is_theme('gin')) {
+    return;
+  }
+  if (($variables['table']['#header'][0]['data']['#tag'] ?? NULL) === 'h4') {
+    $variables['table']['#header'][0]['data']['#tag'] = 'span';
+  }
+}
+
+/**
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ *
  * Inline Paragraphs calls empty entries "Seitenabschnitte", even for person
  * links or object counts. Omit its generic empty-state text while retaining
  * the field label, description, required marker and add actions. Altering the

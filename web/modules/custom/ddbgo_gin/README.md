@@ -49,6 +49,35 @@ aus dem Render-Array, auch bei AJAX-Neuaufbau und künftig ergänzten Feldern
 dieses Widget-Typs. Das Contrib-Widget erzeugt den Hinweis direkt in PHP und
 bietet dafür weder eine eigene Vorlage noch eine Einstellung zum Ausblenden.
 
+## E-Mail-Beschriftung im Personenformular
+
+Die Beschriftung „E-Mail“ des Mehrfachfelds `node.person.field_email` wird in Gin
+und davon abgeleiteten Themes als `span` ausgegeben. Sie bezeichnet eine
+Formularfeldgruppe und keinen eigenen Dokumentabschnitt. Dadurch entfällt der
+Sprung von der Seitenüberschrift `h1` zu einem `h4` für dieses Feld.
+
+Drupal Core erzeugt das `h4` fest in
+`web/core/lib/Drupal/Core/Field/FieldPreprocess.php`; das E-Mail-Widget bietet
+keine Einstellung für dessen Tag. Deshalb markiert
+`hook_field_widget_complete_email_default_form_alter()` nur das E-Mail-Widget
+für Personen. `hook_preprocess_field_multiple_value_form()` ersetzt anschließend nur
+den noch vorhandenen Core-Tag `h4` dieses markierten Tabellenlabels durch `span`.
+Die Markierung erfolgt beim Widgetaufbau statt anhand der Route und gilt daher
+beim Anlegen, Bearbeiten und erneuten Aufbau durch AJAX. Erst beim Rendern wird
+geprüft, ob Gin oder ein abgeleitetes Theme aktiv ist. Die Konfiguration von
+Feldstandardwerten und KWE-E-Mail-Felder bleiben unverändert.
+
+Die vorhandenen Klassen, die Tabellenkopfzelle `th`, die einzelnen Input-Labels
+und die Hinzufügen-/Entfernen-Aktionen bleiben erhalten. Die Darstellung folgt
+weiterhin den bestehenden Claro-/Gin-Klassen. Eine Templatekopie oder zusätzliches
+JavaScript ist dafür nicht erforderlich.
+
+Nach dem Deployment `drush cr` ausführen. Zur manuellen Prüfung eine Person
+anlegen und bearbeiten sowie E-Mail-Zeilen per AJAX hinzufügen und entfernen:
+Beschriftung und Layout müssen erhalten bleiben; HeadingsMap darf „E-Mail“
+nicht mehr als Überschrift aufführen. Ein KWE-Formular dient als Gegenprüfung
+für die Begrenzung auf Personen.
+
 ## Abstände in Detailansichten und Formularen
 
 Der äußere Node-Formularcontainer in Gin Frontend hat keinen eigenen Hintergrund,
