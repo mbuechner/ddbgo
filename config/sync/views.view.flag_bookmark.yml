@@ -266,7 +266,7 @@ display:
           entity_type: flagging
           entity_field: created
           plugin_id: field
-          label: Gespeichert
+          label: 'Gespeichert am'
           exclude: false
           alter:
             alter_text: false
@@ -341,7 +341,7 @@ display:
           admin_label: ''
           entity_type: flagging
           plugin_id: flag_link
-          label: 'Lesezeichen entfernen'
+          label: Aktion
           exclude: false
           alter:
             alter_text: false
