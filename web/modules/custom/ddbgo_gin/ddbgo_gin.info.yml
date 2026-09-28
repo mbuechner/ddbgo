@@ -5,5 +5,6 @@ package: ddbgo
 core_version_requirement: ^11 || ^12
 dependencies:
   - drupal:block
+  - flag:flag
   - sitemap:sitemap
   - toolbar_menu:toolbar_menu

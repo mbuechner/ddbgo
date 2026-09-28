@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
 use Drupal\node\Form\NodeForm;
 use Drupal\node\NodeInterface;
 use Symfony\Component\String\AbstractUnicodeString;
@@ -825,9 +826,8 @@ function ddbgo_gin_preprocess_page(array &$variables): void {
 /**
  * Implements hook_preprocess_HOOK() for flag links.
  *
- * A bookmark removed from the bookmark View no longer belongs in its result
- * set. Use Flag's non-JavaScript fallback on that page so the refreshed View
- * immediately omits the affected row.
+ * Confirm removal from the bookmark list. Flag links on record pages retain
+ * their existing immediate AJAX behavior for both adding and removing.
  */
 function ddbgo_gin_preprocess_flag(array &$variables): void {
   // Flag's entity-field lazy builder omits the view mode and uses "default".
@@ -849,7 +849,18 @@ function ddbgo_gin_preprocess_flag(array &$variables): void {
     return;
   }
 
+  $flagging = \Drupal::service('flag')->getFlagging($variables['flag'], $variables['flaggable']);
+  $url = Url::fromRoute('ddbgo_gin.bookmark_remove_confirm', [
+    'flagging' => $flagging?->id() ?? 0,
+  ], ['query' => \Drupal::destination()->getAsArray()])->toString(TRUE);
+  $url->applyTo($variables);
+  CacheableMetadata::createFromRenderArray($variables)
+    ->addCacheableDependency($flagging)
+    ->addCacheContexts(['user', 'url'])
+    ->applyTo($variables);
+
   $attributes = ddbgo_gin_attribute_from_value($variables['attributes'] ?? []);
+  $attributes->setAttribute('href', $url->getGeneratedUrl());
   $attributes->removeClass('use-ajax');
   $variables['attributes'] = $attributes;
 }
@@ -864,6 +875,9 @@ function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, stri
 
   if ($form_id === 'views_form_flag_bookmark_page') {
     ddbgo_gin_alter_bookmark_bulk_form($form);
+    // The intermediate confirmation takes precedence over a destination on
+    // the list page. Views preserves that destination in the confirmation URL.
+    $form['#submit'][] = 'ddbgo_gin_bookmark_confirmation_redirect';
   }
 
   $form_object = $form_state->getFormObject();
@@ -922,7 +936,7 @@ function ddbgo_gin_alter_bookmark_bulk_form(array &$form): void {
 
   $form['header'][$bulk_form_id]['action'] = [
     '#type' => 'hidden',
-    '#value' => 'flag_delete_flagging',
+    '#value' => 'ddbgo_bookmark_remove',
   ];
 
   $button_label = new TranslatableMarkup('Ausgewählte Lesezeichen entfernen');
@@ -931,6 +945,17 @@ function ddbgo_gin_alter_bookmark_bulk_form(array &$form): void {
   }
   if (isset($form['actions']['submit'])) {
     $form['actions']['submit']['#value'] = $button_label;
+  }
+}
+
+/**
+ * Preserves the confirmation step when the list has a destination parameter.
+ */
+function ddbgo_gin_bookmark_confirmation_redirect(array &$form, FormStateInterface $form_state): void {
+  $redirect = $form_state->getRedirect();
+  if ($redirect instanceof Url && $redirect->isRouted()
+    && $redirect->getRouteName() === 'ddbgo_gin.bookmark_remove_confirm') {
+    $form_state->setIgnoreDestination();
   }
 }
 

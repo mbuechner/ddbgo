@@ -1,0 +1,12 @@
+uuid: 433bf076-3109-4afc-b178-aa8380bb1fb6
+langcode: de
+status: true
+dependencies:
+  module:
+    - ddbgo_gin
+    - flag
+id: ddbgo_bookmark_remove
+label: 'Lesezeichen entfernen'
+type: flagging
+plugin: ddbgo_bookmark_remove
+configuration: {  }

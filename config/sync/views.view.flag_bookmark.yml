@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - flag.flag.bookmark
+    - system.action.ddbgo_bookmark_remove
     - system.menu.start
   module:
     - flag
@@ -80,7 +81,7 @@ display:
           action_title: Aktion
           include_exclude: include
           selected_actions:
-            flag_delete_flagging: flag_delete_flagging
+            ddbgo_bookmark_remove: ddbgo_bookmark_remove
         counter:
           id: counter
           table: views

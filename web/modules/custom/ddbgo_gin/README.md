@@ -214,6 +214,53 @@ Kategorie als `h2` unter der Seitenüberschrift aufführen; die Tabellen sollen
 weiterhin den jeweiligen Kategorienamen tragen. Darstellung und Abstände
 sowie die unveränderte Ausgabe des Lesezeichen-Blocks ebenfalls prüfen.
 
+## Lesezeichen vor dem Entfernen bestätigen
+
+Einzelne Lesezeichen und die Sammelaktion unter `/bookmarks` führen auf eine
+gemeinsame Drupal-Bestätigungsseite. Sie nennt
+die betroffenen Titel und bietet „Lesezeichen entfernen“ sowie „Abbrechen“.
+Der Hinweis stellt klar, dass die zugehörigen Inhalte erhalten bleiben.
+Nach Bestätigung oder Abbruch geht es zurück zur Ausgangsseite einschließlich
+ihrer Such-/Seitenparameter. Auf den Detailseiten von Person, KWE, Bestand und
+Aggregator bleiben Setzen und Entfernen unmittelbar möglich. Zusätzliches
+JavaScript oder eigene Templates sind nicht erforderlich.
+
+Flag kann seine eingebaute Bestätigungsseite nur für Setzen **und** Entfernen
+gemeinsam aktivieren. Deshalb ersetzt `hook_preprocess_flag()` gezielt die
+Entfernen-Links ausschließlich auf `view.flag_bookmark.page` durch
+`/bookmarks/remove/{flagging}`. Die View verwendet für ihre Sammelaktion
+die Action `ddbgo_bookmark_remove`: Die geerbte Core-Implementierung merkt die
+Auswahl nur im privaten TempStore vor; sie löscht noch nichts.
+
+`BookmarkRemoveConfirmForm` hält die angezeigten IDs in einem signierten,
+an Benutzer und Sitzung gebundenen Formularwert fest (sechs Stunden gültig).
+Erst nach einem gültigen Formular-POST mit Drupals zusätzlichem CSRF-Schutz werden
+die entsprechenden Flagging-Entitäten entfernt. Besitz, persönliches Lesezeichen,
+Flag-Berechtigung und Zugriff auf den Inhalt werden erneut geprüft. Ein
+inzwischen entferntes und neu gesetztes Lesezeichen bleibt bei Bestätigung
+des alten Formulars erhalten. Bereits geöffnete Bestätigungsformulare behalten
+ihre jeweilige Auswahl; eine spätere Auswahl eines anderen Tabs wird nicht
+mitgelöscht. Bei abgelaufenem Formular muss die Auswahl erneut erfolgen.
+Die vorhandenen direkten Flag-Modulrouten und APIs werden nicht gesperrt.
+
+Deployment: `drush config:import` und `drush cr`. Der Import legt die neue
+Action an und stellt die Lesezeichen-View darauf um. Der Integrationstest
+verwendet ausschließlich eigene temporäre Datensätze mit Transaktions-Rollback:
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/bookmark-removal.test.php
+```
+
+Lokal bestanden 47 Aktions-/Formularprüfungen sowie 21 ergänzende Prüfungen
+gerenderter HTTP-Kernel-Antworten: Einzel-/Sammelbestätigung, CSRF-Schutz,
+Abbrechen-Link, Weiterleitungen und unveränderte direkte AJAX-Aktionen auf
+einer Personen-Detailseite. Sämtliche temporären Testdatensätze wurden
+zurückgerollt. Die bestehenden 98 PHP-/Twig-Prüfungen bestanden ebenfalls.
+
+Im Browser zusätzlich Einzel-/Sammelauswahl, Abbrechen, Rückkehr zu einer
+gefilterten Liste, Tastaturfokus und Screenreader-Ausgabe prüfen; diese
+visuelle Prüfung steht noch aus.
+
 ## Leere verknüpfte Einträge
 
 Das Inline-Paragraphs-Widget (`entity_reference_paragraphs`) zeigt bei leeren
