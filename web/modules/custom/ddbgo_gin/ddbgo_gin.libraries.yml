@@ -1,4 +1,9 @@
 # Attach components at their entry points; Drupal resolves shared dependencies.
+footer:
+  css:
+    theme:
+      css/ddbgo_gin.footer.css: {}
+
 bestand_tags:
   css:
     theme:

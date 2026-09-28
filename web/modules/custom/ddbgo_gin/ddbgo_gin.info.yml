@@ -4,4 +4,5 @@ description: Integrates DDBgo navigation, layout, and shared form behavior with 
 package: ddbgo
 core_version_requirement: ^11 || ^12
 dependencies:
+  - drupal:block
   - toolbar_menu:toolbar_menu

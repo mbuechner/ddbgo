@@ -39,6 +39,83 @@ und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
 ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
 bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
 
+## Footer und Menü „Fußzeile“
+
+Der Footer enthält in dieser Reihenfolge **Seitenübersicht** (Sitemap),
+**Kontakt**, **Barrierefreiheit**, **Nutzungsbedingungen** und **Impressum**.
+Alle fünf Einträge sind statische Menüdefinitionen in
+`ddbgo_gin.links.menu.yml` mit `route_name: '<front>'` (vorläufig Startseite).
+Es werden keine Zielseiten angelegt und kein Sitemap-Modul aktiviert.
+
+Titel und Ziele werden in dieser YAML-Datei gepflegt. Sobald ein Ziel feststeht,
+`route_name` und gegebenenfalls `route_parameters` setzen oder stattdessen `url`
+angeben. Die stabilen IDs `ddbgo_gin.footer_impressum`,
+`ddbgo_gin.footer_contact`, `ddbgo_gin.footer_terms`,
+`ddbgo_gin.footer_accessibility` und `ddbgo_gin.footer_sitemap` beibehalten.
+Reihenfolge und Aktivierung können weiterhin unter **Struktur → Menüs →
+Fußzeile** (`/admin/structure/menu/manage/footer`) geändert werden; beim
+Konfigurationsexport landen diese Anpassungen in
+`core.menu.static_menu_link_overrides.yml`. Dort ist auch
+der bisherige statische Core-Kontaktlink deaktiviert, damit bei aktiviertem
+Kontaktmodul kein zweiter Kontaktlink erscheint.
+
+Die Ausgabe verwendet den Core-Block `system_menu_block:footer`:
+
+- **Gin Frontend:** `block.block.gin_frontend_footer.yml` platziert ihn in der
+  vorhandenen Region `footer`. Das Theme liefert selbst das Footer-Landmark,
+  die Hintergrundfarbe und die Abstände.
+- **Gin und Gin Login:** Diese haben keine Footer-Region. `hook_page_bottom()`
+  rendert denselben konfigurierten Block in `ddbgo-footer.html.twig` nach dem
+  Seiteninhalt. Das gilt auch für die Loginseite. Block-Sichtbarkeit, deaktivierter
+  Block, Menü-Zugriffsprüfung und Cache-Abhängigkeiten werden berücksichtigt.
+  Gin Frontend erhält diese zusätzliche Ausgabe nicht.
+- Der Core-Menüblock liefert die benannte Navigation „Website-Informationen“
+  mit einer visuell ausgeblendeten Überschrift. `ddbgo_gin.footer.css` richtet
+  die Einträge rechtsbündig aus und lässt sie auf schmalen Ansichten umbrechen.
+  Eine deckende Gin-Fläche mit feiner Trennlinie und zurückhaltendem Schatten
+  umrahmt schlichte Textlinks. Wie die übrigen Textlinks sind sie normalerweise
+  punktiert unterstrichen; bei Hover und Tastaturfokus entfällt die Unterstreichung.
+  Die Farben für Normalzustand, Hover und Klick entsprechen Gins Linkfarben.
+  Schriftgröße und Abstände folgen ebenfalls Gin.
+  `list-style: none` wird auch direkt am `li` gesetzt, da Claro dort
+  standardmäßig Aufzählungspunkte festlegt. Tastaturfokus erhält Gins Fokusring,
+  Windows-Kontrastdesigns zusätzlich eine Kontur. Eigene Hover-Animationen sind
+  nicht vorgesehen.
+
+Auf mobilen Geräten bleiben alle Links direkt sichtbar. Flex-Wrapping,
+umbrechbare Beschriftungen und kleinere Seitenabstände verhindern, dass eine
+starre Menüzeile über den Bildschirm hinausragt. Die Klickflächen sind
+mindestens `2.75rem` (bei Standardschriftgröße 44 Pixel) hoch. Mehrere Zeilen
+vergrößern den Footer im Dokumentfluss, ohne Inhalte zu überdecken.
+
+Kurze Seiten füllen per CSS-Flexlayout mindestens den sichtbaren Bildschirm
+(`100dvh`, mit `100vh` als Fallback). Der Footer sitzt dadurch am unteren Rand;
+bei langen Seiten folgt er dem Inhalt im normalen Dokumentfluss. Seine Höhe
+bleibt auch bei Zeilenumbrüchen flexibel. Das Layout wird nur bei vorhandenem
+Footer aktiviert. Gins Toolbar-Abstände zählen durch `box-sizing: border-box`
+zur Gesamthöhe. Auf Gin Login wird die bisherige Mindesthöhe des Formularbereichs
+zurückgesetzt, damit auch dort der Footer in die verfügbare Höhe passt.
+
+Die Blockplatzierung und Menü-Overrides werden mit `drush config:import`
+übernommen. Anschließend `drush cache:rebuild` ausführen, damit Drupal auch die
+statischen Menüdefinitionen aus dem Modul neu einliest. Die fünf Einträge werden
+auf anderen Instanzen damit automatisch verfügbar; eine manuelle Anlage als
+Inhaltsentitäten ist nicht erforderlich. Dafür gibt es weder eine Helper- oder
+Updateklasse noch zusätzlichen JavaScript-Code.
+
+Die zuvor lokal angelegten fünf Inhalts-Menüeinträge wurden durch die statischen
+Definitionen ersetzt, damit der Footer keine doppelten Einträge enthält.
+
+Geprüft wurden Drupal-HTML-Antworten für `/search`, `/node/add/person`,
+`/admin/structure`, `/user/login` sowie 403-/404-Seiten: jeweils ein Footer mit
+benannter Navigation und eingebundener Footer-Library. Die fünf Einträge
+verweisen vorläufig auf die Startseite.
+
+Die visuelle Browserprüfung steht noch aus: kurze/lange Seiten einschließlich
+Login, schmale Ansicht/Zoom, Gin Hell/Dunkel, Tastaturfokus und Windows-Kontrastdesign
+prüfen. Sobald Ziele eingetragen werden, zusätzlich deren Erreichbarkeit als
+angemeldeter und anonymer Benutzer prüfen.
+
 ## Kategorien unter „Meine Lesezeichen“
 
 Die Kategorien auf `/bookmarks` werden als Überschriften der Ebene `h2`

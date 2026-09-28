@@ -86,6 +86,48 @@ function ddbgo_gin_page_attachments(array &$attachments): void {
 }
 
 /**
+ * Implements hook_page_bottom().
+ *
+ * Gin Frontend renders the configured footer block in its native footer region.
+ * Gin (including Gin Login) has no such region. Render that same block after
+ * the page there, retaining its visibility, menu access checks and cache tags.
+ */
+function ddbgo_gin_page_bottom(array &$page_bottom): void {
+  if (!ddbgo_gin_is_theme('gin') || ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+
+  $block_id = 'gin_frontend_footer';
+  $page_bottom['ddbgo_footer'] = [
+    '#cache' => [
+      'contexts' => ['theme'],
+      'tags' => ['config:block.block.' . $block_id],
+    ],
+  ];
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $block = $entity_type_manager->getStorage('block')->load($block_id);
+  if ($block) {
+    $page_bottom['ddbgo_footer'] += [
+      '#theme' => 'ddbgo_footer',
+      '#content' => $entity_type_manager->getViewBuilder('block')->view($block),
+      '#access' => $block->access('view', NULL, TRUE),
+      '#attached' => ['library' => ['ddbgo_gin/footer']],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function ddbgo_gin_preprocess_block(array &$variables): void {
+  if (ddbgo_gin_is_theme('gin')
+    && ($variables['elements']['#plugin_id'] ?? '') === 'system_menu_block:footer') {
+    $variables['attributes']['class'][] = 'ddbgo-footer-menu';
+    $variables['#attached']['library'][] = 'ddbgo_gin/footer';
+  }
+}
+
+/**
  * Implements hook_toolbar_alter().
  *
  * The configured workspace menus are rendered in Gin Frontend's header. Keep
@@ -119,6 +161,10 @@ function ddbgo_gin_theme(): array {
     'ddbgo_date_filter' => [
       'render element' => 'element',
       'template' => 'ddbgo-date-filter',
+    ],
+    'ddbgo_footer' => [
+      'variables' => ['content' => []],
+      'template' => 'ddbgo-footer',
     ],
     'ddbgo_workspace_navigation' => [
       'variables' => [

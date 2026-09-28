@@ -1,0 +1,31 @@
+# Footer links are maintained here; Drupal's menu UI can change order/visibility.
+# Replace <front> with the actual destinations once the pages exist.
+ddbgo_gin.footer_sitemap:
+  title: Seitenübersicht
+  route_name: '<front>'
+  menu_name: footer
+  weight: 0
+
+ddbgo_gin.footer_contact:
+  title: Kontakt
+  route_name: '<front>'
+  menu_name: footer
+  weight: 1
+
+ddbgo_gin.footer_accessibility:
+  title: Barrierefreiheit
+  route_name: '<front>'
+  menu_name: footer
+  weight: 2
+
+ddbgo_gin.footer_terms:
+  title: Nutzungsbedingungen
+  route_name: '<front>'
+  menu_name: footer
+  weight: 3
+
+ddbgo_gin.footer_impressum:
+  title: Impressum
+  route_name: '<front>'
+  menu_name: footer
+  weight: 4
