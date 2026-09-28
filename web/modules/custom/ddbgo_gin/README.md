@@ -69,7 +69,7 @@ Die Ausgabe verwendet den Core-Block `system_menu_block:footer`:
 
 - **Gin Frontend:** `block.block.gin_frontend_footer.yml` platziert ihn in der
   vorhandenen Region `footer`. Das Theme liefert selbst das Footer-Landmark,
-  die Hintergrundfarbe und die Abstände.
+  das Custom-Modul passt dessen Darstellung an.
 - **Gin und Gin Login:** Diese haben keine Footer-Region. `hook_page_bottom()`
   rendert denselben konfigurierten Block in `ddbgo-footer.html.twig` nach dem
   Seiteninhalt. Das gilt auch für die Loginseite. Block-Sichtbarkeit, deaktivierter
@@ -77,9 +77,12 @@ Die Ausgabe verwendet den Core-Block `system_menu_block:footer`:
   Gin Frontend erhält diese zusätzliche Ausgabe nicht.
 - Der Core-Menüblock liefert die benannte Navigation „Website-Informationen“
   mit einer visuell ausgeblendeten Überschrift. `ddbgo_gin.footer.css` richtet
-  die Einträge rechtsbündig aus und lässt sie auf schmalen Ansichten umbrechen.
-  Eine deckende Gin-Fläche mit feiner Trennlinie und zurückhaltendem Schatten
-  umrahmt schlichte Textlinks. Wie die übrigen Textlinks sind sie normalerweise
+  die Einträge auf großen Bildschirmen rechtsbündig aus. Bis `48em` werden sie
+  zentriert und dürfen natürlich umbrechen. Der Footer übernimmt den
+  Seitenhintergrund; eine am Inhalt ausgerichtete, eingerückte Trennlinie ersetzt
+  die bisherige kontrastierende Fläche mit Schatten. Kleinere Innenabstände und
+  der entfallene Zeilenabstand machen ihn kompakter, ohne die Links zu verkleinern.
+  Wie die übrigen Textlinks sind sie normalerweise
   punktiert unterstrichen; bei Hover und Tastaturfokus entfällt die Unterstreichung.
   Die Farben für Normalzustand, Hover und Klick entsprechen Gins Linkfarben.
   Schriftgröße und Abstände folgen ebenfalls Gin.
@@ -93,6 +96,14 @@ umbrechbare Beschriftungen und kleinere Seitenabstände verhindern, dass eine
 starre Menüzeile über den Bildschirm hinausragt. Die Klickflächen sind
 mindestens `2.75rem` (bei Standardschriftgröße 44 Pixel) hoch. Mehrere Zeilen
 vergrößern den Footer im Dokumentfluss, ohne Inhalte zu überdecken.
+
+Gin und Gin Frontend verwenden `enable_darkmode: auto`. Helle und dunkle
+Darstellung folgen daher der Farbschema-Präferenz von Betriebssystem/Browser.
+Der Footer nutzt in beiden Modi dieselben Gin-Variablen. Eine unterschiedliche
+Scrollposition, Bildschirmhöhe oder Geräteschriftgröße kann zusätzlich die
+sichtbaren Abstände verändern. Der Seitenkopf wird mobil nicht ausgeblendet,
+sondern scrollt mit dem Inhalt. Diese Anpassung ändert weder den Darkmode noch
+die vom Gerät gewählte Schriftgröße.
 
 Kurze Seiten füllen per CSS-Flexlayout mindestens den sichtbaren Bildschirm
 (`100dvh`, mit `100vh` als Fallback). Der Footer sitzt dadurch am unteren Rand;
