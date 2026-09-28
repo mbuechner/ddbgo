@@ -216,6 +216,29 @@ Die interne Auswahlliste erhält außerdem keinen Listenabstand: Drupals
 allgemeine Listeneinrückung würde selbst bei leerer Auswahl den Suchbereich
 mit dem Platzhalter in eine zusätzliche Zeile verschieben.
 
+### Tagify-Hilfsinput und offener Beschriftungsbefund
+
+Die Korrektur aus DDBGO-51 gilt in `ddbgo_gin.form-controls.css` zentral für
+Gin und davon abgeleitete Themes. `.tagify + input.tagify-select-widget`
+blendet mit `display: none` nur das zusätzliche, unbeschriftete Hilfsinput
+eines initialisierten Tagify-Select-Widgets aus. Die bisherige Begrenzung auf
+die Bestandssuche entfällt; die Regel greift auch beim Anlegen, Bearbeiten und
+nach AJAX-Neuaufbau. Das ursprüngliche `select` für Werteübermittlung und
+Validierung sowie das sichtbare Tagify-Widget bleiben erhalten. Zusätzlicher
+JavaScript-Code ist dafür nicht erforderlich.
+
+**Offen, nur dokumentiert:** Die sichtbare Eingabe `.tagify__input` trägt
+derzeit das generische `aria-label="Tags input field"` statt eines Bezugs zur
+konkreten Feldbeschriftung. Die CSS-Korrektur löst diesen eigenen Befund
+ausdrücklich nicht. Dafür müsste die bestehende Tagify-Integration den
+Labelbezug übernehmen.
+
+Nach dem Deployment `drush cr` ausführen. Suche sowie Anlege- und
+Bearbeitungsformulare manuell prüfen: Das zusätzliche Hilfsinput darf nicht
+mehr als unbeschriftetes Eingabefeld erscheinen. Tags hinzufügen und entfernen,
+einschließlich nach AJAX-Neuaufbau, und die übermittelten beziehungsweise
+gespeicherten Werte kontrollieren.
+
 ### Auswahl des Widgets
 
 Kleine, feste Listen mit Einfachauswahl verwenden in `core.entity_form_display.*`

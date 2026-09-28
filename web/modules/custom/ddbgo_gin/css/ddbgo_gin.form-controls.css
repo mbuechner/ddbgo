@@ -76,6 +76,13 @@ form .select2-container:has(> .selection) {
   line-height: inherit;
 }
 
+/* Tagify Select creates an unlabelled helper input before the original select.
+ * Hide only that helper after initialization, across forms and search filters.
+ * Keep the visible widget and the select used for submission untouched. */
+.tagify + input.tagify-select-widget {
+  display: none;
+}
+
 /* Tagify's contrib stylesheet owns the outer padding. Its typing area has
  * separate margins/padding that otherwise make even an empty control taller. */
 form .tagify.form-element .tagify__input {
