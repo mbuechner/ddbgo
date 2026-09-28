@@ -529,3 +529,16 @@
     max-height: 2rem;
   }
 }
+
+/* Forced colors remove box shadows. Use the user's highlight color for a
+ * real outline, overriding the outline suppression in the regular states. */
+@media (forced-colors: active) {
+  .gin-frontend__primary-menu .ddbgo-workspace-navigation :is(button, a):is(:hover, :focus-visible) {
+    outline: 2px solid Highlight !important;
+    outline-offset: -3px;
+  }
+
+  .gin-frontend__primary-menu .ddbgo-workspace-navigation :is(button, a):focus-visible {
+    outline-style: dashed !important;
+  }
+}
