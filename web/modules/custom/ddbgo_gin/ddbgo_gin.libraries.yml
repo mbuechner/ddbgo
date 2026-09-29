@@ -91,6 +91,14 @@ frontend_layout:
     # Retain Gin's wrapper/checkbox CSS and support for remaining native controls.
     - gin/gin_description_toggle
 
+# Loaded with Tagify in every theme, including AJAX-created select widgets.
+tagify_keyboard:
+  js:
+    js/ddbgo_gin.tagify-keyboard.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
 # Keep the current section when following this node's view/edit links.
 # Attached by hook_page_attachments() together with ddbgoNodeTabs.links.
 node_tabs:

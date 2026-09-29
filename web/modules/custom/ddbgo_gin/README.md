@@ -492,6 +492,46 @@ Die Höhenprüfung umfasst auch eine bereits ausgewählte Option.
 Ergänzend die echten Formulare und Suchfilter sowie
 Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
 
+## Tastaturbedienung der Bestandstags
+
+Tab und Shift+Tab dienen in Tagify-Select-Feldern nur der Fokusnavigation.
+Die Vorschlagsliste wird geschlossen, ohne eine Option zu übernehmen. Auch
+ein eingegebener Suchtext wird beim Verlassen nicht automatisch als Tag
+ausgewählt. Enter, Pfeiltasten, Mausklicks und die Entfernen-Schaltflächen
+behalten ihre vorhandene Funktion.
+
+Die installierte Tagify-Bibliothek behandelt Tab sowohl im Eingabefeld als auch
+im Dropdown als Vervollständigungs-/Auswahltaste. Nur `addTagOn` umzustellen
+reicht deshalb nicht aus. Drupal Tagify stellt dafür keine Widget-Einstellung
+bereit; eine Twig- oder reine Konfigurationsänderung löst das Verhalten nicht.
+`ddbgo_gin.tagify-keyboard.js` fängt Tab am Widget vor diesen Handlern ab und
+deaktiviert die automatische Übernahme bei Tab/Blur. Zusätzlich wird
+`focusInputOnRemove` abgeschaltet, damit der Fokus auf den Entfernen-Schaltern
+bleiben kann, statt beim Rückwärtstabben sofort ins Eingabefeld zurückzuspringen.
+Das Script verwendet weder
+`preventDefault()` noch eigene Fokuswechsel: Der Browser bestimmt weiterhin
+das vorherige/nächste Fokusziel, einschließlich vorhandener Entfernen-Schalter.
+
+Die Einbindung erfolgt zentral über die Library `tagify/default`, unabhängig
+vom Theme. Betroffen sind Tagify-Select-Felder, einschließlich Bestandstags
+in Anlege-/Bearbeitungsformularen und Suchfiltern. Autocomplete- und Select2-
+Widgets werden nicht verändert. Die Initialisierung wartet auf die vorhandenen
+Drupal-Behaviors; `once` verhindert doppelte Handler, auch bei AJAX-Neuaufbau.
+Nach dem Deployment `drush cr` ausführen; ein Konfigurationsimport ist nicht nötig.
+
+Die Testseite verwendet die installierte Tagify-Bibliothek und den Drupal-Wrapper
+mit lokalen Optionen und abgefangenen Formularübermittlungen:
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/tagify-keyboard.test.cjs
+```
+
+Die ausgegebene HTML-Datei im Browser öffnen. Synthetische Tastaturereignisse
+können Auswahländerungen und blockierte Events prüfen, aber keine native
+Tab-Fokusbewegung. Diese zusätzlich mit echten Tab-/Shift+Tab-Tastendrücken
+zwischen den Testfeldern sowie in `/node/add/bestand`, beim Bearbeiten und
+unter `/search/bestand` prüfen. Der Browserdurchlauf steht lokal noch aus.
+
 ## Verbleibendes JavaScript
 
 - `ddbgo_gin.node-tabs.js`: Überträgt den ausgewählten Inhaltsreiter über einen
@@ -529,6 +569,8 @@ Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
   zurück; ihre ID und Screenreader-Zuordnung ändern sich nicht. Ohne JavaScript
   bleibt der Text im Formular über die CSS-Abfrage `scripting: none` lesbar.
   Gin verwendet für diese Buttons einen anderen Selektor und überschreibt ihre Attribute daher nicht.
+- `ddbgo_gin.tagify-keyboard.js`: Stellt die normale Tab-/Shift+Tab-Navigation
+  in Tagify-Select-Feldern sicher; siehe „Tastaturbedienung der Bestandstags“.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden bei geänderter Auswahl
   im zugrunde liegenden Select. Tagify kann während der Löschanimation bereits
   ein `change` auslösen, bevor `remove` die Option abwählt. Unveränderte Werte
