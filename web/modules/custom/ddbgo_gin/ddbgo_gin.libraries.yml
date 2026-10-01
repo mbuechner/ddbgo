@@ -108,6 +108,15 @@ select2_accessibility:
     - core/jquery
     - core/once
 
+# Loaded with Core TableDrag, including Gin's override and AJAX-created tables.
+tabledrag_focus:
+  js:
+    js/ddbgo_gin.tabledrag-focus.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
 # Keep the current section when following this node's view/edit links.
 # Attached by hook_page_attachments() together with ddbgoNodeTabs.links.
 node_tabs:

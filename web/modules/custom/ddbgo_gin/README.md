@@ -556,6 +556,66 @@ Accessibility-Tree bestätigt Feldnamen, Werte und Beschreibungen für Einzel-
 und Mehrfachauswahl, die Dropdown-Suche, explizite ARIA-Namen und das nachgeladene
 Feld. Der manuelle Screenreadertest auf den tatsächlichen Formularen steht aus.
 
+## Fokus beim Anzeigen der Zeilenreihenfolge
+
+Core TableDrag und Gins Variante blenden mit „Zeilenreihenfolge anzeigen“ die
+Reihenfolgefelder ein, lassen den Fokus jedoch am Schalter. Bei mehrwertigen
+Feldern liegen weitere Eingaben vor dem ersten Reihenfolgefeld in der Tabfolge.
+Die zentrale Ergänzung `ddbgo_gin.tabledrag-focus.js` setzt nach bewusster
+Betätigung des Schalters den Fokus direkt auf das erste sichtbare, bedienbare
+Reihenfolgefeld der zugehörigen Tabelle. Auswahl- und Zahlenfelder werden
+unterstützt; deaktivierte, unsichtbare und schreibgeschützte Felder werden
+übersprungen. Beim Ausblenden, in leeren Tabellen und ohne bedienbares Ziel
+erhält der betätigte Schalter den Fokus.
+
+Die Zuordnung erfolgt über die TableDrag-Instanz und deren `action: order`-
+Einstellungen. Nur mit `hidden: true` konfigurierte Ziele werden berücksichtigt;
+dauerhaft sichtbare Reihenfolgefelder und Eltern-/ID-Spalten sind keine Ziele.
+Verschachtelte Tabellen werden ausgeschlossen. Die Zuordnung hängt nicht davon
+ab, ob Gin einen Scroll-Wrapper zwischen Schalter und Tabelle einfügt.
+
+Der zusätzliche Klick-Handler läuft nach dem vorhandenen Core-/Gin-Handler.
+Er reagiert damit auch auf die native Aktivierung per Enter oder Leertaste.
+Der tatsächliche Sichtbarkeitszustand entscheidet über das Fokusziel, nicht der
+übersetzte Schaltertext. Das allgemeine Ereignis `columnschange` wird bewusst
+nicht verwendet: Drupal löst es auch beim Laden, nach AJAX, beim Synchronisieren
+gespeicherter Einstellungen und für mehrere Tabellen gleichzeitig aus. Diese
+automatischen Vorgänge sollen keinen zusätzlichen Fokuswechsel auslösen.
+
+Die Library ist eine Abhängigkeit von `core/drupal.tabledrag`, auch wenn Gin
+dessen JavaScript ersetzt. Eine Mikrotask wartet auf die Initialisierung;
+`once` am erzeugten Schalter verhindert doppelte Handler und berücksichtigt
+neue Schalter nach AJAX-Austausch. Die Sortierfunktion, Formularwerte, Ziehgriffe
+und die normale Tabfolge werden nicht verändert. Der zuvor festgestellte
+Semantik-Befund der Ziehgriffe bleibt separat offen. Ein Modul, Composer-Patch
+oder Konfigurationsimport ist nicht erforderlich; nach dem Deployment `drush cr`.
+
+Dies ist eine Bedienungsverbesserung. [WCAG 2.4.3](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)
+fordert eine sinnvolle Fokusreihenfolge, keine pauschale Fokusverlagerung oder
+Ein-Tab-Regel für jeden eingeblendeten Inhalt.
+
+Regressionstest mit den installierten TableDrag-Implementierungen und Claro:
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/tabledrag-focus.test.cjs gin
+node web/modules/custom/ddbgo_gin/tests/js/tabledrag-focus.test.cjs core
+```
+
+Die ausgegebenen HTML-Dateien im Browser öffnen, zusätzlich mit `?saved=1` für
+eine anfangs eingeblendete Reihenfolge. Die Fixture prüft Anzeigen/Ausblenden,
+mehrere und verschachtelte Tabellen, deaktivierte Fieldsets, schreibgeschützte
+und unsichtbare Felder, leere Tabellen, wiederholtes Attach, AJAX-Austausch,
+gespeicherte Einstellungen und unveränderte Formularwerte. Es werden keine
+Serveranfragen oder Formularübermittlungen ausgeführt. Die programmgesteuerten
+Klicks ersetzen keine Prüfung der nativen Tastenaktivierung: zusätzlich Enter,
+Leertaste und Tab im Browser sowie NVDA/VoiceOver auf den Personen-/Kontakt-
+Paragraphen und im E-Mail-Mehrfachfeld des Personenformulars prüfen.
+
+Lokal bestanden Core und Gin im isolierten Edge jeweils mit und ohne gespeicherte
+Einstellung die Fixture sowie echte Enter-, Leertasten- und Mausaktivierung.
+Fokusziel, zugänglicher Name und unveränderte Formularwerte wurden geprüft.
+Der manuelle Screenreadertest auf den tatsächlichen Formularen steht aus.
+
 ## Tastaturbedienung der Bestandstags
 
 Tab und Shift+Tab dienen in Tagify-Select-Feldern nur der Fokusnavigation.
@@ -637,6 +697,8 @@ unter `/search/bestand` prüfen. Der Browserdurchlauf steht lokal noch aus.
   in Tagify-Select-Feldern sicher; siehe „Tastaturbedienung der Bestandstags“.
 - `ddbgo_gin.select2-accessibility.js`: Überträgt Feldnamen und Hilfetext-Verweise
   auf Select2s Fokusziele; siehe „Zugängliche Namen und Beschreibungen für Select2“.
+- `ddbgo_gin.tabledrag-focus.js`: Fokussiert das erste bedienbare Reihenfolgefeld
+  nach Betätigung des TableDrag-Schalters; siehe „Fokus beim Anzeigen der Zeilenreihenfolge“.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden bei geänderter Auswahl
   im zugrunde liegenden Select. Tagify kann während der Löschanimation bereits
   ein `change` auslösen, bevor `remove` die Option abwählt. Unveränderte Werte
