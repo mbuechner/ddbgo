@@ -736,7 +736,7 @@ Die Höhenprüfung umfasst auch eine bereits ausgewählte Option.
 Ergänzend die echten Formulare und Suchfilter sowie
 Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
 
-## Zugängliche Namen, Beschreibungen und Suchfeld-Semantik für Select2
+## Zugängliche Namen, Beschreibungen, Pflichtstatus und Suchfeld-Semantik für Select2
 
 Select2 versteckt das ursprüngliche `<select>` und erzeugt eigene Fokusziele.
 In der installierten Bibliothek 4.1.0 ist die Einzelauswahl nur mit dem aktuell
@@ -760,6 +760,28 @@ die Auswahl, das Suchfeld im Dropdown und das Suchfeld der Mehrfachauswahl:
   Verweis auf die ausgewählten Einträge erhalten. Gin-Hilfetexte sind über ihre
   bestehenden IDs auch als zunächst versteckte Tooltips verfügbar, ohne die
   Hilfeschaltfläche vorher zu öffnen.
+- Der Pflichtstatus des Originalfelds (`required` oder `aria-required="true"`)
+  wird als `aria-required="true"` an dieselben Fokusziele übertragen. Wird das
+  Feld optional, wird das Attribut dort entfernt. Die Suchfelder erhalten kein
+  natives `required`: Sonst würde zusätzlich zum gewählten Wert eine Suchanfrage
+  verlangt. Auswahl, Validierung und sichtbare Sternchen bleiben unverändert.
+
+Das behebt den fehlenden Pflichtstatus der Select2-Ersatzfelder bei „Person“ und
+„Rolle“ in den Personen-Paragraphs von KWE, Aggregator und Bestand sowie bei
+„Kultur- oder Wissenseinrichtung“ im Bestandsformular. Die Korrektur gilt zentral
+auch für weitere erforderliche Select2-Felder und nachgeladene Paragraphs.
+Optionale Felder werden nicht anhand von CSS-Klassen oder Sternchen zu
+Pflichtfeldern erklärt.
+
+Die nativen Auswahlfelder „Content-Tier“, „Metadata-Tier“ und „Medientyp“
+(einschließlich der verschachtelten Objektgruppen) benötigen keine Ergänzung:
+Ein read-only Render der tatsächlichen Bestands-Anlegeform mit ungespeicherten
+Paragraphs bestätigt jeweils natives `required` und korrekt verknüpfte Labels.
+Das Label darf neben dem Steuerelement stehen; eine Eltern-Kind-Beziehung zum
+Sternchen ist nicht erforderlich. Entscheidend ist die programmatische
+Zuordnung zum Feld. Siehe
+[W3C: Pflichtfelder mit ARIA kennzeichnen](https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA2)
+und [W3C: Formularvalidierung](https://www.w3.org/WAI/tutorials/forms/validation/).
 
 Select2 4.1.0 erzeugt für die Inline-Suche der Mehrfachauswahl ein `textarea`
 mit `role="searchbox"` und `type="search"`. Die Rolle löst den axe-Befund
@@ -787,10 +809,17 @@ liegt vor der Initialisierung; `select2:open` wäre für das Benennen des Suchfe
 zu spät, weil Select2 zuvor den Fokus setzt. Die Suchfelder werden deshalb
 bereits im geschlossenen Zustand vorbereitet. `once` markiert die erzeugte
 Auswahl statt des Originalfelds, damit auch AJAX-Neuaufbau und erneute
-Initialisierung erfasst werden. Zusätzliche Listener oder DOM-Beobachter sind
-nicht nötig.
+Initialisierung erfasst werden. Der Pflichtstatus wird bei jedem Attach erneut
+abgeglichen. Ein begrenzter `MutationObserver` beobachtet pro Originalselect
+ausschließlich `required` und `aria-required`, damit spätere Änderungen durch
+Drupal `#states` und Conditional Fields übernommen werden. Er liest jeweils die
+aktuelle Select2-Instanz und arbeitet daher auch nach erneuter Initialisierung.
+Bei Drupal-Detach mit `unload` wird er getrennt; ein späteres Attach richtet ihn
+erneut ein. Es gibt keine Beobachtung des gesamten Formulars und keine Änderung
+von Werten, Fokus oder Validierungsereignissen.
 
-Der Fix korrigiert Textzuordnungen und das ungültige Inline-Textarea-Markup.
+Der Fix korrigiert Textzuordnungen, Pflichtstatus und das ungültige
+Inline-Textarea-Markup.
 Tastaturverhalten, Auswahl und Neuanlage
 bleiben bei Select2. Der separate Befund zu Popup-Rollen und `aria-controls`
 wird damit nicht behoben. Fehlt schon am Originalfeld ein Name, bleibt die
@@ -810,7 +839,13 @@ ersten Fokus, bestehende IDs, wiederholtes Attach, erneute Initialisierung,
 AJAX-Austausch sowie Suche, Enter und Escape. Die zusätzlichen Strukturprüfungen
 kontrollieren die native Textarea-Semantik und den Erhalt der Suchfeld-Bezüge
 auch nach erneuter Initialisierung und AJAX-Austausch; echte Such-Inputs
-behalten ihre Attribute. Es werden keine Serveranfragen
+behalten ihre Attribute. Pflichtstatus-Prüfungen umfassen Einzel- und
+Mehrfachauswahl, optionale Felder, dynamische Attributänderungen ohne `change`
+oder erneutes Attach, erneute Initialisierung, AJAX-Austausch sowie
+Detach mit `unload` und anschließendes Attach.
+Originalfelder behalten ihre Pflichtattribute; Suchfelder bekommen kein natives
+`required`. Die Synchronisierung löst keine zusätzlichen `change`-Ereignisse aus.
+Es werden keine Serveranfragen
 oder Formularübermittlungen ausgeführt. Attributprüfungen allein belegen noch
 keine korrekte Screenreader-Ansage: Im Accessibility-Tree zusätzlich Namen,
 Wert und Beschreibung prüfen, anschließend mit NVDA oder VoiceOver auf den
@@ -821,11 +856,17 @@ Die Fixture wurde lokal im isolierten Edge erfolgreich ausgeführt. Dessen
 Accessibility-Tree bestätigt Feldnamen, Werte und Beschreibungen für Einzel-
 und Mehrfachauswahl, die Dropdown-Suche, explizite ARIA-Namen und das nachgeladene
 Feld. Der manuelle Screenreadertest auf den tatsächlichen Formularen steht aus.
-Für die neue Textarea-Korrektur wurde die Fixture erweitert und ihre Syntax
-geprüft. Die zusätzlichen Browserprüfungen, der erneute axe-Test und die
+Für die neue Textarea-Korrektur und die Pflichtstatus-Übertragung wurde die
+Fixture erweitert und ihre Syntax geprüft. Die zusätzlichen Browserprüfungen, der erneute axe-Test und die
 Screenreader-Prüfung stehen aus, da die Browsersteuerung in dieser Sitzung
 nicht verfügbar ist. Die frühere erfolgreiche Browserprüfung deckt diese
 Erweiterung noch nicht ab.
+Die Pflichtstatus-Logik und der Observer-Lebenszyklus wurden zusätzlich mit
+einem temporären Node-VM-Adapter gegen das echte Produktionsskript geprüft:
+97 erfolgreiche Prüfungen, einschließlich optionaler Zustände, aktueller
+Fokusziele nach erneuter Initialisierung und Aufräumen bei `unload`.
+Diese isolierte Vertragsprüfung ersetzt weder echtes Select2 im Browser noch
+den Screenreadertest.
 
 ## Fokus beim Anzeigen der Zeilenreihenfolge
 
@@ -966,8 +1007,9 @@ unter `/search/bestand` prüfen. Der Browserdurchlauf steht lokal noch aus.
   Gin verwendet für diese Buttons einen anderen Selektor und überschreibt ihre Attribute daher nicht.
 - `ddbgo_gin.tagify-keyboard.js`: Stellt die normale Tab-/Shift+Tab-Navigation
   in Tagify-Select-Feldern sicher; siehe „Tastaturbedienung der Bestandstags“.
-- `ddbgo_gin.select2-accessibility.js`: Überträgt Feldnamen und Hilfetext-Verweise
-  auf Select2s Fokusziele; siehe „Zugängliche Namen und Beschreibungen für Select2“.
+- `ddbgo_gin.select2-accessibility.js`: Überträgt Feldnamen, Hilfetext-Verweise
+  und Pflichtstatus auf Select2s Fokusziele und korrigiert die Inline-Textarea-
+  Semantik; siehe den Select2-Abschnitt oben.
 - `ddbgo_gin.tabledrag-focus.js`: Fokussiert das erste bedienbare Reihenfolgefeld
   nach Betätigung des TableDrag-Schalters; siehe „Fokus beim Anzeigen der Zeilenreihenfolge“.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden bei geänderter Auswahl

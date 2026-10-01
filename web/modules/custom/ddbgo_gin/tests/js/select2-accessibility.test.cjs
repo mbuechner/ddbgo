@@ -63,6 +63,9 @@ ${script('modules/contrib/select2/js/select2.js')}
     Drupal.attachBehaviors(context, drupalSettings);
     await new Promise(resolve => queueMicrotask(resolve));
   }
+  // Let native MutationObservers deliver attribute changes without reattaching
+  // behaviors or dispatching an artificial change event.
+  const settleAttributes = () => new Promise(resolve => setTimeout(resolve, 0));
   function labelled(select, expected) {
     const widget = selection(select);
     check(name(widget) === expected, select.id+': replacement has original field name');
@@ -82,21 +85,33 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(refs(inline, 'aria-describedby').includes(select.id+'-help'), select.id+': inline help retained');
     return inline;
   }
+  function requiredState(select, expected, nativeRequired) {
+    const widget = instance(select);
+    const targets = [widget.$selection[0], widget.dropdown?.$search?.[0], widget.selection?.$search?.[0]].filter(Boolean);
+    targets.forEach(target => {
+      check((target.getAttribute('aria-required') === 'true') === expected, select.id+': required state reaches '+target.tagName+' focus target');
+      check(!target.hasAttribute('required'), select.id+': generated focus targets do not add native required validation');
+    });
+    check(select.required === nativeRequired, select.id+': original native required state is retained');
+  }
   try {
-    const title = field('title', 'Titel');
-    const people = field('people', 'Personen', true);
+    const title = field('title', 'Titel', false, 'required');
+    const people = field('people', 'Personen', true, 'required');
     people.querySelector('[value="dr"]').selected = true;
     const labelledby = field('explicit', 'Sichtbares Label', false, 'aria-labelledby="explicit-name"');
     const explicitLabel = document.createElement('span');
     explicitLabel.id = 'explicit-name'; explicitLabel.textContent = 'Expliziter Feldname';
     labelledby.parentElement.append(explicitLabel);
-    const ariaLabel = field('aria-label', 'Sichtbares Label', false, 'aria-label="Alternativer Feldname"');
+    const ariaLabel = field('aria-label', 'Sichtbares Label', false, 'aria-label="Alternativer Feldname" aria-required="true"');
     const noHelp = field('no-help', 'Ohne Hilfetext');
     noHelp.removeAttribute('aria-describedby');
     const unnamed = field('unnamed', 'Entferntes Label');
     unnamed.labels[0].remove();
     const native = document.createElement('select');
+    native.required = true;
     native.id = 'native'; form.append(native);
+    let requiredChanges = 0;
+    jQuery([title, people]).on('change.required-fixture', () => { requiredChanges++; });
 
     await attach(document);
     let widget = labelled(title, 'Titel');
@@ -114,6 +129,32 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(!selection(noHelp).hasAttribute('aria-describedby'), 'No description is invented');
     check(selection(unnamed).getAttribute('aria-labelledby').endsWith('-container'), 'Missing original name retains Select2 fallback');
     check(!instance(native), 'Native selects are not enhanced');
+    check(native.required, 'Unenhanced native select keeps its required state');
+    requiredState(title, true, true);
+    requiredState(people, true, true);
+    requiredState(ariaLabel, true, false);
+    requiredState(noHelp, false, false);
+    check(ariaLabel.getAttribute('aria-required') === 'true', 'Original explicit required ARIA is retained');
+
+    for (const select of [title, people]) {
+      select.required = false;
+      await settleAttributes();
+      requiredState(select, false, false);
+      select.setAttribute('aria-required', 'true');
+      await settleAttributes();
+      requiredState(select, true, false);
+      select.setAttribute('aria-required', 'false');
+      await settleAttributes();
+      requiredState(select, false, false);
+      select.required = true;
+      await settleAttributes();
+      requiredState(select, true, true);
+      select.removeAttribute('aria-required');
+      await settleAttributes();
+      requiredState(select, true, true);
+    }
+    check(requiredChanges === 0, 'Required synchronization emits no change events');
+    jQuery([title, people]).off('.required-fixture');
 
     const multi = labelled(people, 'Personen');
     const inline = inlineTextbox(people, 'Personen');
@@ -163,6 +204,7 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(widget !== oldWidget, 'Reinitialized instance receives the fix');
     check(refs(widget, 'aria-describedby').join(' ') === 'extra-help title-help', 'Existing description references merged without duplicates');
     check(title.labels[0].id === labelId, 'Label ID retained after reinitialization');
+    requiredState(title, true, true);
     jQuery(title).val('dr').trigger('change');
 
     jQuery(people).select2('destroy');
@@ -173,27 +215,59 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(selection(people) !== multi && newInline !== inline, 'Reinitialization creates new multi search and selection targets');
     inlineTextbox(people, 'Personen');
     check(refs(newInline, 'aria-describedby').includes('extra-help'), 'Reinitialized inline search preserves adapter description');
+    requiredState(people, true, true);
+    people.required = false;
+    await settleAttributes();
+    requiredState(people, false, false);
+    people.required = true;
+    await settleAttributes();
+    requiredState(people, true, true);
 
-    const late = field('ajax-person', 'Nachgeladene Person');
+    // Drupal unload disconnects observation even before removal. Reattaching
+    // the same still-connected widget must synchronize and observe it again.
+    const connectedMulti = selection(people);
+    Drupal.detachBehaviors(people.parentElement, drupalSettings, 'unload');
+    people.required = false;
+    await settleAttributes();
+    requiredState(people, true, false);
+    await attach(people.parentElement);
+    check(selection(people) === connectedMulti, 'Detach/reattach retains the existing connected Select2 instance');
+    requiredState(people, false, false);
+    people.required = true;
+    await settleAttributes();
+    requiredState(people, true, true);
+
+    const late = field('ajax-person', 'Nachgeladene Person', false, 'required');
     late.labels[0].id = 'server-label-id';
     await attach(late.parentElement);
     labelled(late, 'Nachgeladene Person');
+    requiredState(late, true, true);
     check(late.labels[0].id === 'server-label-id', 'Existing server-generated label ID retained');
+    Drupal.detachBehaviors(late.parentElement, drupalSettings, 'unload');
     jQuery(late).select2('destroy');
     late.parentElement.remove();
     const replacement = field('ajax-person', 'Nachgeladene Person');
     await attach(replacement.parentElement);
     labelled(replacement, 'Nachgeladene Person');
-    const lateMulti = field('ajax-people', 'Nachgeladene Personen', true);
+    requiredState(replacement, false, false);
+    const lateMulti = field('ajax-people', 'Nachgeladene Personen', true, 'required');
     await attach(lateMulti.parentElement);
     labelled(lateMulti, 'Nachgeladene Personen');
     inlineTextbox(lateMulti, 'Nachgeladene Personen');
+    requiredState(lateMulti, true, true);
+    Drupal.detachBehaviors(lateMulti.parentElement, drupalSettings, 'unload');
     jQuery(lateMulti).select2('destroy');
     lateMulti.parentElement.remove();
     const replacementMulti = field('ajax-people', 'Nachgeladene Personen', true);
     await attach(replacementMulti.parentElement);
     labelled(replacementMulti, 'Nachgeladene Personen');
     inlineTextbox(replacementMulti, 'Nachgeladene Personen');
+    requiredState(replacementMulti, false, false);
+    // An old field with the same HTML ID must not update its AJAX replacement.
+    lateMulti.required = false;
+    lateMulti.setAttribute('aria-required', 'true');
+    await settleAttributes();
+    requiredState(replacementMulti, false, false);
     const labelIds = Array.from(form.querySelectorAll('label[id]'), label => label.id);
     check(new Set(labelIds).size === labelIds.length, 'AJAX label IDs remain unique');
     check(submissions === 0, 'No initialization or correction submits the form');

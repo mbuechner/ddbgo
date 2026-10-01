@@ -1,16 +1,51 @@
 /**
  * @file
- * Give Select2's focus targets the original field's name and description,
- * and retain valid native semantics for its inline textarea.
+ * Give Select2's focus targets the original field's name, description and
+ * required state, and retain valid native semantics for its inline textarea.
  *
  * Select2 hides the native select. Its replacement therefore needs its own
  * label/help references; a label's `for` still points only to the hidden select.
- * This correction changes text associations and invalid textarea markup,
- * not keyboard handling, selection, popup roles or aria-controls.
+ * This correction changes accessibility attributes and invalid textarea
+ * markup, not validation, keyboard handling, selection or popup associations.
  */
 
 (function ($, Drupal, once) {
   let labelSequence = 0;
+  const requiredObservers = new WeakMap();
+
+  /** Include the select itself when Drupal supplies it as the AJAX context. */
+  function selectsIn(context) {
+    const selects = Array.from(context.querySelectorAll('select.select2-widget'));
+    if (context.matches?.('select.select2-widget')) {
+      selects.unshift(context);
+    }
+    return selects;
+  }
+
+  /** Search adapters exist even while their dropdown is detached. */
+  function focusTargets(instance) {
+    return [instance?.$selection?.[0], instance?.dropdown?.$search?.[0],
+      instance?.selection?.$search?.[0]].filter(Boolean);
+  }
+
+  /**
+   * Read the actual field state, never infer it from the visual asterisk.
+   *
+   * Native validation remains on the original select. In particular, adding
+   * HTML required to a search input would wrongly require a search query.
+   * Look up the current instance so reinitialization cannot leave stale targets.
+   */
+  function syncRequired(select) {
+    const required = select.required || select.getAttribute('aria-required') === 'true';
+    focusTargets($(select).data('select2')).forEach((target) => {
+      if (required) {
+        target.setAttribute('aria-required', 'true');
+      }
+      else {
+        target.removeAttribute('aria-required');
+      }
+    });
+  }
 
   /**
    * Reuse the native field's naming precedence without copying label text.
@@ -58,13 +93,7 @@
       // synchronous behaviors finish, including Select2 initialization. Its
       // select2-init event fires BEFORE the replacement elements exist.
       window.queueMicrotask(() => {
-        const selects = Array.from(context.querySelectorAll('select.select2-widget'));
-        // Drupal AJAX may supply the field itself as the attachment context.
-        if (context.matches?.('select.select2-widget')) {
-          selects.unshift(context);
-        }
-
-        selects.forEach((select) => {
+        selectsIn(context).forEach((select) => {
           const instance = $(select).data('select2');
           const selection = instance?.$selection?.[0];
           if (!selection) {
@@ -77,7 +106,6 @@
             const name = fieldName(select);
             const description = select.getAttribute('aria-describedby');
             const inlineSearch = instance.selection?.$search?.[0];
-            const targets = [selection, instance.dropdown?.$search?.[0], inlineSearch];
 
             // Select2 4.1 gives its inline textarea a searchbox role and input
             // type. Neither is allowed here; retain its native textbox role.
@@ -93,7 +121,7 @@
             // Both search adapters exist at initialization, even while the
             // dropdown is detached. Name them before Select2 first focuses
             // them; select2:open would run after that focus announcement.
-            targets.filter(Boolean).forEach((target) => {
+            focusTargets(instance).forEach((target) => {
               if (name) {
                 target.removeAttribute('aria-labelledby');
                 target.removeAttribute('aria-label');
@@ -102,8 +130,30 @@
               describe(target, target.getAttribute('aria-describedby'), description);
             });
           });
+
+          // Required state can change after initialization (Drupal #states,
+          // Conditional Fields). Observe only these two original attributes,
+          // once per select; our updates to generated targets cannot recurse.
+          syncRequired(select);
+          if (!requiredObservers.has(select)) {
+            const observer = new MutationObserver(() => syncRequired(select));
+            observer.observe(select, {
+              attributes: true,
+              attributeFilter: ['required', 'aria-required'],
+            });
+            requiredObservers.set(select, observer);
+          }
         });
       });
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger === 'unload') {
+        selectsIn(context).forEach((select) => {
+          requiredObservers.get(select)?.disconnect();
+          requiredObservers.delete(select);
+        });
+      }
     },
   };
 })(jQuery, Drupal, once);
