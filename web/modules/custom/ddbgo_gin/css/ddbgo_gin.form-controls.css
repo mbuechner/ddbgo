@@ -91,6 +91,54 @@ form .tagify.form-element .tagify__input {
   padding-block: calc(var(--input-padding-vertical) / 2);
 }
 
+/* Contrib fixes chips at 32px and truncates their text on small screens.
+ * Keep that minimum, but let complete labels wrap beside the remove control.
+ * Account for contrib's 8px chip margin when limiting the available width. */
+.node-form .tagify.form-element .tagify__tag {
+  height: auto;
+  min-height: 2rem;
+  max-width: calc(100% - 8px);
+}
+
+.node-form .tagify.form-element .tagify__tag > div {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.node-form .tagify.form-element .tagify__tag__removeBtn {
+  flex-shrink: 0;
+}
+
+.node-form .tagify.form-element .tagify__tag :is(.tagify__tag-text, .tagify__tag-text-with-entity-id, .tagify__tag-info-label, .tagify__tag__info-label-wrap) {
+  min-width: 0;
+  max-width: 100%;
+  /* Override contrib's mobile nowrap !important, including the info label. */
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* Tagify appends its popup directly to body. Limit these rules to pages with
+ * node-form widgets; a form descendant selector would miss the popup. Remove
+ * only the per-option 60px cap, keeping the result list's scrolling intact. */
+body:has(.node-form .tagify.form-element) > .tagify__dropdown .tagify__dropdown__item {
+  max-height: none;
+  flex-wrap: wrap;
+}
+
+body:has(.node-form .tagify.form-element) > .tagify__dropdown :is(.tagify__dropdown__item-highlighted, .tagify__tag-info-label, .tagify__tag__info-label-wrap, .dropdown_group) {
+  min-width: 0;
+  max-width: 100%;
+  /* The mobile Gin/contrib skin otherwise forces these labels onto one line. */
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  text-overflow: clip;
+  -webkit-line-clamp: unset;
+}
+
 /* One decorative chevron for both single and multiple selection. Borders also
  * remain visible in forced-colors mode. Pointer events reach the real control. */
 :is(.select2-container--default, .select2-container--gin) .select2-selection__arrow {
@@ -160,6 +208,22 @@ form .tagify.form-element .tagify__input {
   color: inherit;
   font: inherit;
   vertical-align: middle;
+}
+
+/* Select2 sizes this textarea's width, but keeps it one line high. Allow the
+ * complete, unchanged placeholder to wrap and determine its height in browsers
+ * supporting content sizing. Only the empty node-form control is affected:
+ * typing and selected values retain Select2's existing cursor/key behavior.
+ * Older browsers retain the original layout; do not shorten their field text. */
+@supports (field-sizing: content) {
+  .node-form :is(.select2-container--default, .select2-container--gin) .select2-selection--multiple .select2-search--inline > textarea.select2-search__field[placeholder]:not([placeholder=""]):placeholder-shown {
+    field-sizing: content;
+    height: auto;
+    min-height: var(--input-line-height);
+    white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
 }
 
 :is(.select2-container--default, .select2-container--gin):not(.select2-container--disabled) .select2-selection:hover {

@@ -508,6 +508,57 @@ Die interne Auswahlliste erhält außerdem keinen Listenabstand: Drupals
 allgemeine Listeneinrückung würde selbst bei leerer Auswahl den Suchbereich
 mit dem Platzhalter in eine zusätzliche Zeile verschieben.
 
+### Reflow ohne gekürzte Texte
+
+Die Anpassungen für kleine Bildschirme und Zoom verwenden ausschließlich CSS.
+Beschriftungen, Optionen, Platzhalter und Schriftgrößen bleiben unverändert;
+die Felder gewinnen bei Bedarf Höhe. Bestehende Widget-Funktionen und die
+Formular-Konfiguration werden nicht ersetzt.
+
+- `ddbgo_gin.form-controls.css` lässt Tagify-Chips in Nodeformularen mit langen
+  Beschriftungen wachsen. Der Text darf umbrechen; das Entfernen-Steuerelement
+  behält seinen Platz. Einzelne Vorschläge dürfen ebenfalls wachsen, während
+  die gesamte Vorschlagsliste weiterhin ihre Scrollbegrenzung behält. Tagify
+  hängt diese Liste an `body`; der CSS-Scope erfasst deshalb die Popups auf
+  Seiten mit einem Tagify-Nodeformular. Reine Suchseiten bleiben unverändert.
+- Select2-Mehrfachfelder zeigen ihren Platzhalter in einer internen Textarea.
+  Deren feste Einzeilenhöhe wird nur im leeren Nodeformular-Feld und nur bei
+  Unterstützung von `field-sizing: content` aufgehoben. Dadurch kann der
+  vollständige Platzhalter umbrechen und die Höhe bestimmen. Nach Auswahl oder
+  beim Tippen gilt wieder das bisherige Suchfeld-Layout. Ältere Browser behalten
+  ihr bisheriges Verhalten. Die Unterstützung wird durch `@supports` geprüft;
+  es gibt keine JavaScript-Nachrüstung. Siehe
+  [MDN: field-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/field-sizing).
+- `ddbgo_gin.section-spacing.css` lässt Upload- und Paragraphs-Aktionszeilen
+  umbrechen und deren Inhalte schrumpfen. Bei Mehrfachfeldern wird der Inhalt
+  der TableDrag-Zellen auf die verfügbare Breite begrenzt. Tabellenstruktur,
+  Sortiergewichte, Tastaturbedienung und DOM-Reihenfolge bleiben erhalten.
+- Die ältere Breitenregel für Details in `ddbgo_gin.frontend-layout.css` nimmt
+  Datei-, Datums-/Zeitfelder, Sortiergewichte und kompakte Controls wie die
+  gemeinsamen Formularregeln aus. Sie erzwingt für diese Elemente keine volle
+  Zeilenbreite mehr.
+
+**Grenzen:** Traditionelle native Dropdowns bleiben browsergesteuert.
+CSS kann dort einen mehrzeiligen ausgewählten Text oder Umbruch in der
+geöffneten Liste nicht browserübergreifend gewährleisten; siehe
+[MDN: select](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/select).
+Die langen Vertragsoptionen und Leertexte werden deshalb vollständig erhalten,
+und die entsprechenden Befunde gelten durch diese CSS-Änderung nicht als
+abschließend behoben. Auch enge E-Mail-/Paragraphs-Tabellen mit eingeblendeten
+Sortiergewichten müssen visuell geprüft werden; sie erhalten weder eine
+globale feste Spaltenverteilung noch ein pauschales Stapellayout.
+
+Deployment: `drush cr`; ein Konfigurationsimport ist nicht nötig.
+Manuell in KWE-, Aggregator- und Bestandsformularen bei 200 % und 400 % Zoom
+sowie bei 320 CSS-Pixeln Breite prüfen: lange Bestandstags auswählen und die
+Vorschlagsliste öffnen, leere Select2-Mehrfachfelder anzeigen, Datei-Uploads
+mit und ohne vorhandene Datei sowie E-Mail-/Paragraphs-Zeilen mit sichtbarer
+Zeilenreihenfolge prüfen. Texte müssen vollständig zugänglich bleiben,
+Steuerelemente erreichbar sein und gewöhnliche Formularbereiche ohne
+horizontalen Seitenüberlauf auskommen. Zusätzlich Hinzufügen/Entfernen per
+AJAX und Tastaturfokus kontrollieren. Die visuelle Prüfung steht aus, da die
+Browsersteuerung in dieser Sitzung nicht verfügbar ist.
+
 ### Zuordnung von Inline-Fehlermeldungen
 
 `FormErrorAccessibility` verknüpft vorhandene Inline-Fehler in Gin und Gin

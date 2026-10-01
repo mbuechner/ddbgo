@@ -676,11 +676,18 @@
   max-width: none;
 }
 
-.gin-frontend details.claro-details > .claro-details__wrapper input.form-element:not(.form-boolean):not([type="button"]):not([type="color"]):not([type="hidden"]):not([type="image"]):not([type="reset"]):not([type="submit"]),
-.gin-frontend details.claro-details > .claro-details__wrapper select.form-element:not(.select2-hidden-accessible),
-.gin-frontend details.claro-details > .claro-details__wrapper textarea.form-element,
+/* Match the common control exclusions: uploads, dates and row weights need
+ * their native/compact widths rather than a full-width input plus a button. */
+.gin-frontend details.claro-details > .claro-details__wrapper :is(input.form-element, select.form-element, textarea.form-element):not(
+  .form-boolean, [type="button"], [type="color"], [type="hidden"],
+  [type="image"], [type="reset"], [type="submit"], [type="checkbox"],
+  [type="radio"], [type="file"], [type="date"], [type="time"],
+  [type="datetime-local"], .form-element--extrasmall,
+  .form-element--editor-format, .select2-hidden-accessible,
+  [name$="][_weight]"]
+),
 .gin-frontend details.claro-details > .claro-details__wrapper .form-textarea-wrapper,
-.gin-frontend details.claro-details > .claro-details__wrapper .select2-container {
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container:has(> .selection) {
   box-sizing: border-box;
   width: 100% !important;
   max-width: 100%;

@@ -163,6 +163,56 @@
   overflow-wrap: anywhere;
 }
 
+/* Action containers may move below the title at narrow viewport widths or
+ * browser zoom. Keep the contrib dropdown itself and its open state intact. */
+.node-form .paragraph-type-top > :not(.paragraph-type-title),
+.node-form :is(.paragraphs-actions, .paragraphs-dropbutton-wrapper, .field-actions, .tabledrag-toggle-weight-wrapper) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .paragraphs-actions {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+/* The weight toggle is a native button, so its existing text can wrap without
+ * changing the label or TableDrag's keyboard/reordering behavior. */
+.node-form .tabledrag-toggle-weight-wrapper > button {
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Field-widget tables are form layout, distinct from View result tables. Let
+ * their flex content shrink; preserve table cells, columns and weight fields. */
+.node-form .field-multiple-table :is(.tabledrag-cell-content, .tabledrag-cell-content__item) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .field-multiple-table .tabledrag-cell-content__item {
+  flex: 1 1 auto;
+}
+
+/* Claro places the native file input/name and upload/remove button in one
+ * inline flex row. Wrap the controls as a group instead of forcing that row
+ * wider than its section. Native file selection and filenames stay intact. */
+.node-form :is(.form-managed-file, .form-managed-file__main, .form-managed-file__meta-items) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .form-managed-file__main {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+.node-form .form-managed-file__main :is(input[type="file"], .file) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
 /* These submit buttons use a Twig button element so long action labels can
  * wrap instead of overflowing nested sections. Submission attributes remain. */
 .node-form button.field-add-more-submit {
