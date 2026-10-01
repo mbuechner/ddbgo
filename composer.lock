@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f861630330aacde827a2c73e31fdeb1",
+    "content-hash": "356d0b090ca9c77de29f54f195606ecc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4201,6 +4201,54 @@
                 "source": "https://git.drupalcode.org/project/metatag",
                 "issues": "https://www.drupal.org/project/issues/metatag",
                 "docs": "https://www.drupal.org/docs/8/modules/metatag"
+            }
+        },
+        {
+            "name": "drupal/node_delete_redirect",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/node_delete_redirect.git",
+                "reference": "4.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/node_delete_redirect-4.0.0.zip",
+                "reference": "4.0.0",
+                "shasum": "de99921954b698571127d3a361221d5c1327c410"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "4.0.0",
+                    "datestamp": "1773415665",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "devasghar",
+                    "homepage": "https://www.drupal.org/user/3279549"
+                },
+                {
+                    "name": "seanr",
+                    "homepage": "https://www.drupal.org/user/7074"
+                }
+            ],
+            "description": "Enables user of the right permission to define redirection path on node deletion.",
+            "homepage": "https://www.drupal.org/project/node_delete_redirect",
+            "support": {
+                "source": "https://git.drupalcode.org/project/node_delete_redirect"
             }
         },
         {

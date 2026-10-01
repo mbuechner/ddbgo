@@ -74,6 +74,7 @@
         "drupal/libraries": "^4.1",
         "drupal/menu_block": "^1.14",
         "drupal/metatag": "^2.2",
+        "drupal/node_delete_redirect": "^4.0",
         "drupal/node_view_permissions": "^2.0",
         "drupal/noreqnewpass": "^1.6",
         "drupal/paragraphs": "^1.23",
