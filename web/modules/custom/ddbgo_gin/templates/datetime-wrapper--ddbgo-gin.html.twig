@@ -38,7 +38,9 @@
     <div class="help-icon ddbgo-form-help">
   {% endif %}
   {% if title %}
-    <h4{{ title_attributes.addClass(title_classes) }}>{{ title }}</h4>
+    {# This title labels a date/time field group, not a document section.
+       Keep Gin's classes/attributes and the individual date/time input labels. #}
+    <span{{ title_attributes.addClass(title_classes) }}>{{ title }}</span>
   {% endif %}
   {% if show_description_toggle %}
     {% include '@ddbgo_gin/ddbgo-help.html.twig' with {

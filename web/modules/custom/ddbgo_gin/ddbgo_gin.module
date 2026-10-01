@@ -315,32 +315,48 @@ function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
 }
 
 /**
- * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ * Implements hook_field_widget_complete_form_alter().
  *
- * Mark the person email widget on every build, including AJAX add/remove.
- * The owning entity distinguishes it from KWE's shared field_email field;
- * route checks would not reliably cover embedded forms or AJAX requests.
+ * Mark the affected field-group labels on every build, including AJAX.
+ * Scope by owning entity and field instead of route: contact/object Paragraphs
+ * are embedded in node forms, and add/remove requests rebuild their widgets.
+ * Other fields and the field configuration's default-value form stay intact.
  */
-function ddbgo_gin_field_widget_complete_email_default_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+function ddbgo_gin_field_widget_complete_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+  if (!empty($context['default'])) {
+    return;
+  }
   $items = $context['items'];
   $entity = $items->getEntity();
-  if ($entity instanceof NodeInterface && $entity->bundle() === 'person'
-    && $items->getName() === 'field_email' && empty($context['default'])) {
-    $field_widget_complete_form['widget']['#ddbgo_person_email_label'] = TRUE;
+  $fields = [
+    'node' => [
+      'person' => ['field_email'],
+      'kwe' => ['field_email', 'field_personen', 'field_kontakt'],
+      'aggregator' => ['field_personen', 'field_kontakt'],
+      'bestand' => array_merge(['field_personen', 'field_kontakt'], array_keys(ddbgo_gin_object_field_labels())),
+    ],
+    'paragraph' => [
+      'europeana_objekte_content_tier' => ['field_objekte'],
+      'europeana_objekte_metadata_tier' => ['field_objekte'],
+    ],
+  ];
+  if (in_array($items->getName(), $fields[$entity->getEntityTypeId()][$entity->bundle()] ?? [], TRUE)) {
+    $field_widget_complete_form['widget']['#ddbgo_field_group_label'] = TRUE;
   }
 }
 
 /**
  * Implements hook_preprocess_field_multiple_value_form().
  *
- * Core builds multiple-value table labels as h4 in FieldPreprocess. Here the
- * email label names a field group, not a document section below the page h1.
- * Change only its tag; keep the table header, label classes, required marker
- * and individual input labels. Claro/Gin can still apply their preprocessing.
+ * Core builds multiple-value table labels as h4 in FieldPreprocess. The marked
+ * labels name field groups, not document sections below the page h1. Change
+ * only the tag; preserve table headers, label classes, required markers and
+ * individual input labels. Claro/Gin can still apply their preprocessing.
+ * Empty Paragraphs widgets already use strong, so they need no tag change.
  */
 function ddbgo_gin_preprocess_field_multiple_value_form(array &$variables): void {
   // Check the theme at render time, independently of the cached widget build.
-  if (empty($variables['element']['#ddbgo_person_email_label']) || !ddbgo_gin_is_theme('gin')) {
+  if (empty($variables['element']['#ddbgo_field_group_label']) || !ddbgo_gin_is_theme('gin')) {
     return;
   }
   if (($variables['table']['#header'][0]['data']['#tag'] ?? NULL) === 'h4') {

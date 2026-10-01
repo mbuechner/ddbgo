@@ -282,34 +282,61 @@ aus dem Render-Array, auch bei AJAX-Neuaufbau und künftig ergänzten Feldern
 dieses Widget-Typs. Das Contrib-Widget erzeugt den Hinweis direkt in PHP und
 bietet dafür weder eine eigene Vorlage noch eine Einstellung zum Ausblenden.
 
-## E-Mail-Beschriftung im Personenformular
+## Formularbeschriftungen ohne künstliche Überschriften
 
-Die Beschriftung „E-Mail“ des Mehrfachfelds `node.person.field_email` wird in Gin
-und davon abgeleiteten Themes als `span` ausgegeben. Sie bezeichnet eine
-Formularfeldgruppe und keinen eigenen Dokumentabschnitt. Dadurch entfällt der
-Sprung von der Seitenüberschrift `h1` zu einem `h4` für dieses Feld.
+Die Korrektur aus DDBGO-71 für Personen-E-Mail gilt in Gin und davon abgeleiteten
+Themes auch für die folgenden Feldgruppen. Ihre Beschriftungen werden als
+`span` statt `h4` ausgegeben: Sie benennen Eingaben, keinen Dokumentabschnitt.
+Dadurch erzeugen sie keinen Sprung von der Seitenüberschrift `h1` zu `h4`.
 
-Drupal Core erzeugt das `h4` fest in
-`web/core/lib/Drupal/Core/Field/FieldPreprocess.php`; das E-Mail-Widget bietet
-keine Einstellung für dessen Tag. Deshalb markiert
-`hook_field_widget_complete_email_default_form_alter()` nur das E-Mail-Widget
-für Personen. `hook_preprocess_field_multiple_value_form()` ersetzt anschließend nur
-den noch vorhandenen Core-Tag `h4` dieses markierten Tabellenlabels durch `span`.
-Die Markierung erfolgt beim Widgetaufbau statt anhand der Route und gilt daher
-beim Anlegen, Bearbeiten und erneuten Aufbau durch AJAX. Erst beim Rendern wird
-geprüft, ob Gin oder ein abgeleitetes Theme aktiv ist. Die Konfiguration von
-Feldstandardwerten und KWE-E-Mail-Felder bleiben unverändert.
+| Bereich | Beschriftungen / Felder |
+| --- | --- |
+| Person und KWE | E-Mail (`field_email`) |
+| Aggregator, KWE und Bestand | Personen und Kontakt (`field_personen`, `field_kontakt`) |
+| Bestand | DDB-Objekte und Europeana-Objekte (`field_ddb_objekte`, `field_europeana_objekte_content_`, `field_europeana_objekte_metadata`) |
+| Europeana-Objektgruppen | Verschachtelte Objekte (`field_objekte` in den Paragraph-Typen `europeana_objekte_content_tier` und `europeana_objekte_metadata_tier`) |
+| Bestand | Erster Ingest in die DDB (`field_erstingest`), Datum des Europeana-Lieferstatus (`field_datum_des_status_der_europ`) |
+| KWE | Erster Ingest in Archivportal Europa bzw. Europeana (`field_erstingest_archivportal`, `field_erstingest_europeana`) |
+| Kontakt-Einträge | Datum (`paragraph.kontakt.field_datum`) |
 
-Die vorhandenen Klassen, die Tabellenkopfzelle `th`, die einzelnen Input-Labels
-und die Hinzufügen-/Entfernen-Aktionen bleiben erhalten. Die Darstellung folgt
-weiterhin den bestehenden Claro-/Gin-Klassen. Eine Templatekopie oder zusätzliches
-JavaScript ist dafür nicht erforderlich.
+Für Mehrfachfelder erzeugt Drupal Core das `h4` fest in
+`web/core/lib/Drupal/Core/Field/FieldPreprocess.php`; eine Widget-Einstellung
+für den Tag existiert nicht. `hook_field_widget_complete_form_alter()` markiert
+deshalb gezielt die oben genannten Mehrfachfelder anhand von Entitätstyp,
+Bundle und Feldname. `hook_preprocess_field_multiple_value_form()` ersetzt
+anschließend nur den noch vorhandenen Core-Tag `h4` dieser markierten
+Tabellenlabels durch `span`. Die Markierung gilt auch beim Bearbeiten,
+in eingebetteten Paragraphs und beim Neuaufbau durch AJAX. Erst beim Rendern
+wird das Theme geprüft. Andere Mehrfachfelder, andere Themes und die
+Konfiguration von Feldstandardwerten behalten ihr bisheriges Verhalten.
+Leere Paragraphs-Felder verwenden bereits `strong` und bleiben unverändert.
 
-Nach dem Deployment `drush cr` ausführen. Zur manuellen Prüfung eine Person
-anlegen und bearbeiten sowie E-Mail-Zeilen per AJAX hinzufügen und entfernen:
-Beschriftung und Layout müssen erhalten bleiben; HeadingsMap darf „E-Mail“
-nicht mehr als Überschrift aufführen. Ein KWE-Formular dient als Gegenprüfung
-für die Begrenzung auf Personen.
+Datumsbeschriftungen entstehen über einen anderen Renderweg. Der vorhandene
+Gin-Override `datetime-wrapper--ddbgo-gin.html.twig` gibt seine Feldgruppentitel
+ebenfalls als `span` aus. Das gilt einheitlich für Datums-/Zeitfeldgruppen in
+Gin, einschließlich der oben genannten fünf Datumsfelder. Die tatsächlichen
+Eingaben und deren separate Core-Labels werden nicht verändert oder neu benannt.
+
+Die vorhandenen Klassen, Pflichtfeldmarkierungen, Hilfetexte, Tabellenkopfzellen
+`th` und Hinzufügen-/Entfernen-Aktionen bleiben erhalten. Tabs und echte
+Abschnittsüberschriften behalten ihre Semantik. Gin/Claro formatieren die
+Label-Klassen unabhängig vom HTML-Tag; die lokale Hilfebutton-CSS-Regel
+berücksichtigt diese Klasse ebenfalls. Es ist kein zusätzliches JavaScript,
+Modul, Core-Patch oder Konfigurationsimport erforderlich.
+
+Nach dem Deployment `drush cr` ausführen. Automatische Renderprüfung ohne
+Speichern von Inhalten oder Absenden von Formularen:
+
+```bash
+drush php:script web/modules/custom/ddbgo_gin/tests/php/form-labels.test.php
+```
+
+Zur manuellen Prüfung die genannten Formulare anlegen und bearbeiten sowie
+E-Mail-, Personen-, Kontakt- und Objektzeilen per AJAX hinzufügen/entfernen.
+Beschriftungen, Hilfetexte und Layout müssen erhalten bleiben; HeadingsMap
+darf diese Feldbeschriftungen nicht mehr als Überschriften aufführen. Dabei
+auch die verschachtelten Objektgruppen und lange Datumslabels auf schmalen
+Bildschirmen prüfen.
 
 ## Abstände in Detailansichten und Formularen
 

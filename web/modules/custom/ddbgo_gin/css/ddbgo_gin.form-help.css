@@ -7,7 +7,7 @@
 }
 
 /* Gin legends may occupy the full row. Reserve a column for the help icon. */
-.ddbgo-form-help > :is(label, legend, h4) {
+.ddbgo-form-help > :is(label, legend, .form-item__label) {
   width: auto;
   min-width: 0;
   max-width: 100%;

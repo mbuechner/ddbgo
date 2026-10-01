@@ -38,7 +38,7 @@ $node = Node::create([
   ])]],
 ]);
 $fields = [
-  'field_ddb_objekte' => ['DDB-Objekte', 'Medientyp', 'Bild', 'Anzahl der Objekte', '3.792'],
+  'field_ddb_objekte' => ['DDB-Objekte', 'Medientyp', 'Bild', 'Anzahl', '3.792'],
   'field_europeana_objekte_content_' => ['Europeanas Content-Tier', 'Content-Tier', 'Objekte', '454', '3.338', 'Bild'],
   'field_europeana_objekte_metadata' => ['Europeanas Metadata-Tier', 'Metadata-Tier', 'Objekte', 'A', '3.792', 'Bild'],
 ];
