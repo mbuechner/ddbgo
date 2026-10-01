@@ -106,7 +106,7 @@
         <span class="fieldset__suffix">{{ suffix }}</span>
       {% endif %}
       {% if errors %}
-        <div class="fieldset__error-message">
+        <div class="fieldset__error-message"{% if element['#ddbgo_inline_error_id'] %} id="{{ element['#ddbgo_inline_error_id'] }}"{% endif %}>
           {{ errors }}
         </div>
       {% endif %}

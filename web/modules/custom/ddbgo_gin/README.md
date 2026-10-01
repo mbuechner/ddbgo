@@ -508,6 +508,74 @@ Die interne Auswahlliste erhält außerdem keinen Listenabstand: Drupals
 allgemeine Listeneinrückung würde selbst bei leerer Auswahl den Suchbereich
 mit dem Platzhalter in eine zusätzliche Zeile verschieben.
 
+### Zuordnung von Inline-Fehlermeldungen
+
+`FormErrorAccessibility` verknüpft vorhandene Inline-Fehler in Gin und Gin
+Frontend über `aria-describedby` mit dem jeweiligen Formularfeld. Die vier
+bestehenden Form-Templates geben dafür eine vom eindeutigen Form-API-Element-ID
+abgeleitete Fehler-ID aus. Hilfereferenzen bleiben erhalten; bei Datum/Uhrzeit
+erhalten die einzelnen Eingaben den gemeinsamen Fehlerbezug, bei `details`
+auch der fokussierbare `summary`. Der Fieldset-Preprocessor bewahrt zusätzliche
+Referenzen, wenn Core seine Gruppenbeschreibung einsetzt.
+
+Die Zuordnung erfolgt erst unmittelbar vor dem Rendern, weil Form API die
+Fehler nach dem Formularaufbau zuweist. Der Callback ist unabhängig vom Theme
+registriert und prüft Gin erst beim Rendern. Unterdrückte Fehler, fehlerfreie
+Felder, andere Themes und ein deaktiviertes Core-Modul `inline_form_errors`
+erhalten keine neuen Referenzen. Die Korrektur ändert
+weder Validierungsregeln noch Browser-Validierungspopups und setzt keine
+pauschalen Alert-Rollen auf Fehler einer vollständig neu geladenen Seite.
+
+```sh
+drush cr
+drush php:script web/modules/custom/ddbgo_gin/tests/php/form-errors.test.php
+```
+
+Der Test rendert echte Node- und Paragraphs-Formulare mit ausschließlich im
+Speicher eingefügten Fehlern sowie Gruppen und unterdrückte Meldungen. Er prüft
+Ziel-IDs, Feldbezüge, erhaltene Hilfen und die Theme-Grenze, ohne Formulare
+abzusenden oder Inhalte zu speichern. Die Ansage mit Screenreader manuell
+prüfen, insbesondere nach AJAX-Neuaufbau.
+
+### AJAX-Wartezustände und Dublettenhinweise
+
+Die Library `form_status` wird nur an Anlege-/Bearbeitungsformulare von KWE,
+Aggregator, Person und Bestand in Gin und Gin Frontend angehängt. Der Marker
+`data-ddbgo-form-status` begrenzt die Beobachtung auf diese Formulare. Die
+Komponente dekoriert einzelne Drupal-AJAX-Instanzen, keine Core-Prototypen,
+und verwendet die vorhandene, zunächst leere Live-Region von `Drupal.announce()`.
+Ansagen sind höflich (`polite`); weder der Fokus noch die Validierung ändern sich.
+
+Bei länger als 500 Millisekunden dauernden Ladekreisen wird die auslösende
+Feld-/Aktionsbeschriftung mit „Bitte warten“ angekündigt. Nach Verarbeitung der
+AJAX-Kommandos und Drupals Fokusbehandlung folgt der angezeigte Dublettenhinweis
+oder „Ladevorgang beendet“. Das behauptet weder eine erfolgreiche Speicherung
+noch die Gültigkeit einer Eingabe. Eigene Meldungs-/Ansagekommandos der Antwort
+ersetzen den allgemeinen Abschlusshinweis. Netzwerk-/Verifikationsfehler bleiben
+bei Drupals vorhandener Fehlermeldung; Abbrüche räumen lediglich den Wartetimer auf.
+Parallele Anfragen haben getrennte Zustände; entfernte Formulare und überholte
+Antworten werden nicht angesagt.
+
+`unique_field_ajax` erzeugt seinen Dublettenhinweis unmittelbar im Feld-Suffix.
+Die Komponente gibt diesem Hinweis eine eindeutige ID und ergänzt sie in
+`aria-describedby`, ohne vorhandene Hilfetexte zu entfernen. Entfällt die Warnung,
+entfällt auch der von uns angelegte Bezug. Initiales Rendern und wiederholtes
+Behavior-Attach verknüpfen nur die Texte und bleiben still. Hinweis und Feldname
+werden für die Ansage escaped, da `Drupal.announce()` intern HTML einsetzt.
+Die bestehende Submit-Guard `unique_field_submit` arbeitet unverändert weiter.
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/form-status.test.cjs
+```
+
+Die ausführbaren Node-Checks prüfen Request-Timing, Wiederanbindung, Ersatzfelder,
+parallele Anfragen, Fehler-/Abbruchpfade, erhaltene Hilfereferenzen und sichere
+Meldungstexte. Mit NVDA oder VoiceOver zusätzlich Namens-/DDB-URI-Prüfung sowie
+E-Mail-, Personen- und Kontakt-Hinzufügen prüfen: kurze Anfragen ohne unnötige
+Warteansage, langsame Anfragen mit Beginn/Ende, Dublettenhinweise einmal pro
+Antwort und weiterhin nutzbare Tab-Navigation. Native Browserpopups bleiben
+unverändert und gehören in diesen manuellen Test.
+
 ### Tagify-Hilfsinput und offener Beschriftungsbefund
 
 Die Korrektur aus DDBGO-51 gilt in `ddbgo_gin.form-controls.css` zentral für

@@ -55,7 +55,7 @@
   {% endif %}
   {{ content }}
   {% if errors %}
-    <div class="form-item__error-message">
+    <div class="form-item__error-message"{% if element['#ddbgo_inline_error_id'] %} id="{{ element['#ddbgo_inline_error_id'] }}"{% endif %}>
       {{ errors }}
     </div>
   {% endif %}

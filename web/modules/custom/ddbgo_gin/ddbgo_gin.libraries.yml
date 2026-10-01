@@ -141,6 +141,14 @@ unique_field_submit:
     - core/once
     - core/drupal.announce
 
+# Attached only to the four Gin node forms, including AJAX-created fields.
+form_status:
+  js:
+    js/ddbgo_gin.form-status.js: {}
+  dependencies:
+    - core/drupal.ajax
+    - core/drupal.announce
+
 # Attached by the shared help-button template, including AJAX responses.
 form_help:
   css:
