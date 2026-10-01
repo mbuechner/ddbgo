@@ -71,6 +71,17 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(widget.getAttribute('role') === 'combobox', select.id+': role unchanged');
     return widget;
   }
+  function inlineTextbox(select, expected) {
+    const inline = instance(select).selection.$search[0];
+    check(inline instanceof HTMLTextAreaElement, select.id+': inline search keeps its native textarea');
+    check(!inline.hasAttribute('role'), select.id+': native textbox has no invalid role override');
+    check(!inline.hasAttribute('type'), select.id+': textarea has no invalid input type attribute');
+    check(inline.getAttribute('aria-autocomplete') === 'list', select.id+': autocomplete semantics retained');
+    check(name(inline) === expected, select.id+': inline focus target has field name');
+    check(refs(inline, 'aria-describedby').includes(selection(select).querySelector('.select2-selection__rendered').id), select.id+': selected-item description retained');
+    check(refs(inline, 'aria-describedby').includes(select.id+'-help'), select.id+': inline help retained');
+    return inline;
+  }
   try {
     const title = field('title', 'Titel');
     const people = field('people', 'Personen', true);
@@ -93,6 +104,9 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(Boolean(labelId), 'Missing native label ID assigned');
     check(name(instance(title).dropdown.$search[0]) === 'Titel', 'Detached popup search named before focus');
     check(refs(instance(title).dropdown.$search[0], 'aria-describedby').includes('title-help'), 'Detached popup search has help');
+    const popupSearch = instance(title).dropdown.$search[0];
+    check(popupSearch instanceof HTMLInputElement && popupSearch.getAttribute('type') === 'search', 'Single dropdown keeps its native search input');
+    check(popupSearch.getAttribute('role') === 'searchbox', 'Single dropdown keeps its allowed searchbox role');
     labelled(labelledby, 'Expliziter Feldname');
     check(!labelledby.labels[0].id, 'Explicit ARIA name does not need new visible-label ID');
     labelled(ariaLabel, 'Alternativer Feldname');
@@ -102,11 +116,12 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(!instance(native), 'Native selects are not enhanced');
 
     const multi = labelled(people, 'Personen');
-    const inline = instance(people).selection.$search[0];
-    check(name(inline) === 'Personen', 'Multi inline focus target has field name');
-    check(refs(inline, 'aria-describedby').includes(multi.querySelector('.select2-selection__rendered').id), 'Selected-item description retained');
-    check(refs(inline, 'aria-describedby').includes('people-help'), 'Multi inline help appended');
+    const inline = inlineTextbox(people, 'Personen');
     check(!inline.hasAttribute('aria-label'), 'Generic search label removed when field name is available');
+    jQuery(people).select2('open');
+    check(inline.getAttribute('aria-controls') === instance(people).id+'-results', 'Multi search retains dynamic popup association');
+    jQuery(people).select2('close');
+    check(!inline.hasAttribute('aria-controls'), 'Closing still removes the dynamic popup association');
 
     const before = widget.outerHTML;
     await attach(document); await attach(title.parentElement);
@@ -150,6 +165,15 @@ ${script('modules/contrib/select2/js/select2.js')}
     check(title.labels[0].id === labelId, 'Label ID retained after reinitialization');
     jQuery(title).val('dr').trigger('change');
 
+    jQuery(people).select2('destroy');
+    jQuery(people).select2(jQuery(people).data('select2-config'));
+    const newInline = instance(people).selection.$search[0];
+    newInline.setAttribute('aria-describedby', newInline.getAttribute('aria-describedby')+' extra-help');
+    await attach(people);
+    check(selection(people) !== multi && newInline !== inline, 'Reinitialization creates new multi search and selection targets');
+    inlineTextbox(people, 'Personen');
+    check(refs(newInline, 'aria-describedby').includes('extra-help'), 'Reinitialized inline search preserves adapter description');
+
     const late = field('ajax-person', 'Nachgeladene Person');
     late.labels[0].id = 'server-label-id';
     await attach(late.parentElement);
@@ -160,6 +184,16 @@ ${script('modules/contrib/select2/js/select2.js')}
     const replacement = field('ajax-person', 'Nachgeladene Person');
     await attach(replacement.parentElement);
     labelled(replacement, 'Nachgeladene Person');
+    const lateMulti = field('ajax-people', 'Nachgeladene Personen', true);
+    await attach(lateMulti.parentElement);
+    labelled(lateMulti, 'Nachgeladene Personen');
+    inlineTextbox(lateMulti, 'Nachgeladene Personen');
+    jQuery(lateMulti).select2('destroy');
+    lateMulti.parentElement.remove();
+    const replacementMulti = field('ajax-people', 'Nachgeladene Personen', true);
+    await attach(replacementMulti.parentElement);
+    labelled(replacementMulti, 'Nachgeladene Personen');
+    inlineTextbox(replacementMulti, 'Nachgeladene Personen');
     const labelIds = Array.from(form.querySelectorAll('label[id]'), label => label.id);
     check(new Set(labelIds).size === labelIds.length, 'AJAX label IDs remain unique');
     check(submissions === 0, 'No initialization or correction submits the form');

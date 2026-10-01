@@ -736,7 +736,7 @@ Die Höhenprüfung umfasst auch eine bereits ausgewählte Option.
 Ergänzend die echten Formulare und Suchfilter sowie
 Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
 
-## Zugängliche Namen und Beschreibungen für Select2
+## Zugängliche Namen, Beschreibungen und Suchfeld-Semantik für Select2
 
 Select2 versteckt das ursprüngliche `<select>` und erzeugt eigene Fokusziele.
 In der installierten Bibliothek 4.1.0 ist die Einzelauswahl nur mit dem aktuell
@@ -761,6 +761,24 @@ die Auswahl, das Suchfeld im Dropdown und das Suchfeld der Mehrfachauswahl:
   bestehenden IDs auch als zunächst versteckte Tooltips verfügbar, ohne die
   Hilfeschaltfläche vorher zu öffnen.
 
+Select2 4.1.0 erzeugt für die Inline-Suche der Mehrfachauswahl ein `textarea`
+mit `role="searchbox"` und `type="search"`. Die Rolle löst den axe-Befund
+`aria-allowed-role` aus; das `type`-Attribut ist für Textareas ebenfalls
+ungültig. Ein Textarea besitzt bereits die native `textbox`-Semantik. Der bestehende Fix
+entfernt beide Attribute ausschließlich beim bekannten Inline-Textarea mit
+der Rolle `searchbox`. Die echte Dropdown-Suche der Einfachauswahl verwendet
+ein `input type="search"` und bleibt unverändert. Anders deklarierte Adapter
+werden nicht überschrieben. Siehe
+[MDN: textarea](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/textarea).
+
+Die Textarea bleibt als Element erhalten, einschließlich ihrer CSS-Regeln für
+lange Platzhalter. Labels, Beschreibungen, `aria-autocomplete` und die von
+Select2 beim Öffnen/Schließen gepflegten Attribute `aria-controls` und
+`aria-activedescendant` bleiben erhalten. Eine künstliche Ersatzrolle oder
+Änderung von `aria-multiline` wird nicht eingeführt. Die Korrektur gilt zentral
+für die von der Drupal-Integration erzeugten Mehrfachauswahlen, also auch in
+nachgeladenen Paragraphs und Suchfiltern.
+
 Die Library wird in `hook_library_info_alter()` als Abhängigkeit von
 `select2/select2` eingebunden und gilt damit für alle mit der Drupal-Integration
 erzeugten Select2-Felder, unabhängig von Feldnamen und Theme. Eine Mikrotask
@@ -772,7 +790,8 @@ Auswahl statt des Originalfelds, damit auch AJAX-Neuaufbau und erneute
 Initialisierung erfasst werden. Zusätzliche Listener oder DOM-Beobachter sind
 nicht nötig.
 
-Der Fix ändert nur die Textzuordnungen. Tastaturverhalten, Auswahl und Neuanlage
+Der Fix korrigiert Textzuordnungen und das ungültige Inline-Textarea-Markup.
+Tastaturverhalten, Auswahl und Neuanlage
 bleiben bei Select2. Der separate Befund zu Popup-Rollen und `aria-controls`
 wird damit nicht behoben. Fehlt schon am Originalfeld ein Name, bleibt die
 Select2-Beschriftung als Rückfall erhalten; der Fix erfindet keine Feldtexte.
@@ -788,7 +807,10 @@ node web/modules/custom/ddbgo_gin/tests/js/select2-accessibility.test.cjs
 Die ausgegebene HTML-Datei im Browser öffnen. Geprüft werden Einzelauswahl,
 Mehrfachauswahl, versteckte Beschreibungen, explizite ARIA-Namen, Suchfeld beim
 ersten Fokus, bestehende IDs, wiederholtes Attach, erneute Initialisierung,
-AJAX-Austausch sowie Suche, Enter und Escape. Es werden keine Serveranfragen
+AJAX-Austausch sowie Suche, Enter und Escape. Die zusätzlichen Strukturprüfungen
+kontrollieren die native Textarea-Semantik und den Erhalt der Suchfeld-Bezüge
+auch nach erneuter Initialisierung und AJAX-Austausch; echte Such-Inputs
+behalten ihre Attribute. Es werden keine Serveranfragen
 oder Formularübermittlungen ausgeführt. Attributprüfungen allein belegen noch
 keine korrekte Screenreader-Ansage: Im Accessibility-Tree zusätzlich Namen,
 Wert und Beschreibung prüfen, anschließend mit NVDA oder VoiceOver auf den
@@ -799,6 +821,11 @@ Die Fixture wurde lokal im isolierten Edge erfolgreich ausgeführt. Dessen
 Accessibility-Tree bestätigt Feldnamen, Werte und Beschreibungen für Einzel-
 und Mehrfachauswahl, die Dropdown-Suche, explizite ARIA-Namen und das nachgeladene
 Feld. Der manuelle Screenreadertest auf den tatsächlichen Formularen steht aus.
+Für die neue Textarea-Korrektur wurde die Fixture erweitert und ihre Syntax
+geprüft. Die zusätzlichen Browserprüfungen, der erneute axe-Test und die
+Screenreader-Prüfung stehen aus, da die Browsersteuerung in dieser Sitzung
+nicht verfügbar ist. Die frühere erfolgreiche Browserprüfung deckt diese
+Erweiterung noch nicht ab.
 
 ## Fokus beim Anzeigen der Zeilenreihenfolge
 

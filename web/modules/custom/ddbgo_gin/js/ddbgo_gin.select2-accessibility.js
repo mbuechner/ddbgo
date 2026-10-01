@@ -1,11 +1,12 @@
 /**
  * @file
- * Give Select2's focus targets the original field's name and description.
+ * Give Select2's focus targets the original field's name and description,
+ * and retain valid native semantics for its inline textarea.
  *
  * Select2 hides the native select. Its replacement therefore needs its own
  * label/help references; a label's `for` still points only to the hidden select.
- * This correction changes ARIA text associations, not keyboard handling,
- * selection, popup roles or aria-controls.
+ * This correction changes text associations and invalid textarea markup,
+ * not keyboard handling, selection, popup roles or aria-controls.
  */
 
 (function ($, Drupal, once) {
@@ -75,7 +76,19 @@
           once('ddbgo-select2-accessibility', selection).forEach(() => {
             const name = fieldName(select);
             const description = select.getAttribute('aria-describedby');
-            const targets = [selection, instance.dropdown?.$search?.[0], instance.selection?.$search?.[0]];
+            const inlineSearch = instance.selection?.$search?.[0];
+            const targets = [selection, instance.dropdown?.$search?.[0], inlineSearch];
+
+            // Select2 4.1 gives its inline textarea a searchbox role and input
+            // type. Neither is allowed here; retain its native textbox role.
+            // Only correct this known markup, leaving actual search inputs
+            // and any different role supplied by a future adapter untouched.
+            if (inlineSearch?.tagName === 'TEXTAREA' && inlineSearch.getAttribute('role') === 'searchbox') {
+              inlineSearch.removeAttribute('role');
+              if (inlineSearch.getAttribute('type') === 'search') {
+                inlineSearch.removeAttribute('type');
+              }
+            }
 
             // Both search adapters exist at initialization, even while the
             // dropdown is detached. Name them before Select2 first focuses
