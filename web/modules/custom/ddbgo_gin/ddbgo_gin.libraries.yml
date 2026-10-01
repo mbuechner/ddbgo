@@ -99,6 +99,15 @@ tagify_keyboard:
     - core/drupal
     - core/once
 
+# Loaded with Select2's Drupal integration, including AJAX-created widgets.
+select2_accessibility:
+  js:
+    js/ddbgo_gin.select2-accessibility.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
 # Keep the current section when following this node's view/edit links.
 # Attached by hook_page_attachments() together with ddbgoNodeTabs.links.
 node_tabs:

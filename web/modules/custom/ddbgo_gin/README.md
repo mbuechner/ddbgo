@@ -492,6 +492,70 @@ Die Höhenprüfung umfasst auch eine bereits ausgewählte Option.
 Ergänzend die echten Formulare und Suchfilter sowie
 Dunkelmodus und hohen Kontrast prüfen; dies ersetzt keinen Screenreader-Test.
 
+## Zugängliche Namen und Beschreibungen für Select2
+
+Select2 versteckt das ursprüngliche `<select>` und erzeugt eigene Fokusziele.
+In der installierten Bibliothek 4.1.0 ist die Einzelauswahl nur mit dem aktuell
+gewählten Text beziehungsweise Platzhalter beschriftet; Suchfelder heißen nur
+„Suchen“. Das native Feldlabel und `aria-describedby` werden nicht übernommen.
+Deshalb fehlt beim Tabben der Kontext, etwa „Titel“ oder „Person“.
+
+`ddbgo_gin.select2-accessibility.js` überträgt die vorhandenen Zuordnungen auf
+die Auswahl, das Suchfeld im Dropdown und das Suchfeld der Mehrfachauswahl:
+
+- Ein vorhandenes `aria-labelledby` oder `aria-label` des Originalfelds hat
+  Vorrang. Sonst verweist `aria-labelledby` auf die echten `<label>`-Elemente
+  des Felds. Bestehende Label-IDs bleiben erhalten; fehlende werden eindeutig
+  ergänzt. Beschriftungstexte und Übersetzungen werden nicht dupliziert.
+- Der Feldname bleibt bei einer anderen Auswahl gleich. Die bisherige Wert-ID
+  wird nicht zusätzlich als Name oder Beschreibung verwendet: Im geprüften
+  Chromium-Accessibility-Tree liefert die Einzelauswahl ihren Wert bereits
+  getrennt vom Namen. Ein zweiter Verweis würde eine Doppelansage begünstigen.
+- `aria-describedby` des Originalfelds wird mit vorhandenen Verweisen am
+  Fokusziel zusammengeführt. Insbesondere bleibt bei Mehrfachauswahl der
+  Verweis auf die ausgewählten Einträge erhalten. Gin-Hilfetexte sind über ihre
+  bestehenden IDs auch als zunächst versteckte Tooltips verfügbar, ohne die
+  Hilfeschaltfläche vorher zu öffnen.
+
+Die Library wird in `hook_library_info_alter()` als Abhängigkeit von
+`select2/select2` eingebunden und gilt damit für alle mit der Drupal-Integration
+erzeugten Select2-Felder, unabhängig von Feldnamen und Theme. Eine Mikrotask
+wartet auf die synchronen Drupal-Behaviors. Das Contrib-Ereignis `select2-init`
+liegt vor der Initialisierung; `select2:open` wäre für das Benennen des Suchfelds
+zu spät, weil Select2 zuvor den Fokus setzt. Die Suchfelder werden deshalb
+bereits im geschlossenen Zustand vorbereitet. `once` markiert die erzeugte
+Auswahl statt des Originalfelds, damit auch AJAX-Neuaufbau und erneute
+Initialisierung erfasst werden. Zusätzliche Listener oder DOM-Beobachter sind
+nicht nötig.
+
+Der Fix ändert nur die Textzuordnungen. Tastaturverhalten, Auswahl und Neuanlage
+bleiben bei Select2. Der separate Befund zu Popup-Rollen und `aria-controls`
+wird damit nicht behoben. Fehlt schon am Originalfeld ein Name, bleibt die
+Select2-Beschriftung als Rückfall erhalten; der Fix erfindet keine Feldtexte.
+Ein neues Modul, Composer-Patch oder Konfigurationsimport ist nicht nötig.
+Nach dem Deployment `drush cr` ausführen.
+
+Lokaler Regressionstest mit der installierten Bibliothek und Drupal-Integration:
+
+```sh
+node web/modules/custom/ddbgo_gin/tests/js/select2-accessibility.test.cjs
+```
+
+Die ausgegebene HTML-Datei im Browser öffnen. Geprüft werden Einzelauswahl,
+Mehrfachauswahl, versteckte Beschreibungen, explizite ARIA-Namen, Suchfeld beim
+ersten Fokus, bestehende IDs, wiederholtes Attach, erneute Initialisierung,
+AJAX-Austausch sowie Suche, Enter und Escape. Es werden keine Serveranfragen
+oder Formularübermittlungen ausgeführt. Attributprüfungen allein belegen noch
+keine korrekte Screenreader-Ansage: Im Accessibility-Tree zusätzlich Namen,
+Wert und Beschreibung prüfen, anschließend mit NVDA oder VoiceOver auf den
+Anlege-/Bearbeitungsformularen testen, einschließlich neu hinzugefügter
+Personen-Paragraphen und Felder ohne Hilfetext.
+
+Die Fixture wurde lokal im isolierten Edge erfolgreich ausgeführt. Dessen
+Accessibility-Tree bestätigt Feldnamen, Werte und Beschreibungen für Einzel-
+und Mehrfachauswahl, die Dropdown-Suche, explizite ARIA-Namen und das nachgeladene
+Feld. Der manuelle Screenreadertest auf den tatsächlichen Formularen steht aus.
+
 ## Tastaturbedienung der Bestandstags
 
 Tab und Shift+Tab dienen in Tagify-Select-Feldern nur der Fokusnavigation.
@@ -571,6 +635,8 @@ unter `/search/bestand` prüfen. Der Browserdurchlauf steht lokal noch aus.
   Gin verwendet für diese Buttons einen anderen Selektor und überschreibt ihre Attribute daher nicht.
 - `ddbgo_gin.tagify-keyboard.js`: Stellt die normale Tab-/Shift+Tab-Navigation
   in Tagify-Select-Feldern sicher; siehe „Tastaturbedienung der Bestandstags“.
+- `ddbgo_gin.select2-accessibility.js`: Überträgt Feldnamen und Hilfetext-Verweise
+  auf Select2s Fokusziele; siehe „Zugängliche Namen und Beschreibungen für Select2“.
 - `ddbgo_gin.exposed-filters.js`: Automatisches Absenden bei geänderter Auswahl
   im zugrunde liegenden Select. Tagify kann während der Löschanimation bereits
   ein `change` auslösen, bevor `remove` die Option abwählt. Unveränderte Werte

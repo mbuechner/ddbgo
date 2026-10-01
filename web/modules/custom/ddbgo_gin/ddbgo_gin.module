@@ -30,6 +30,9 @@ function ddbgo_gin_library_info_alter(array &$libraries, string $extension): voi
   if ($extension === 'tagify' && isset($libraries['default'])) {
     $libraries['default']['dependencies'][] = 'ddbgo_gin/tagify_keyboard';
   }
+  if ($extension === 'select2' && isset($libraries['select2'])) {
+    $libraries['select2']['dependencies'][] = 'ddbgo_gin/select2_accessibility';
+  }
 }
 
 /**
