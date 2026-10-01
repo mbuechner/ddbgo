@@ -26,7 +26,17 @@
 
   @todo Remove prefix after https://www.drupal.org/node/2981732 has been solved.
 #}
-{% set show_description_toggle = description_toggle and description %}
+{# Core renders multi-file fields as details using file_widget_multiple.
+   Its summary is already an interactive control: a help button inside it
+   would nest two controls. Show the unchanged help in the opened content.
+   Gin saves the original display mode before hiding tooltip descriptions;
+   restore it here so normal help is visible and intentionally invisible
+   descriptions remain invisible. Other details retain their help behavior. #}
+{% set is_multiple_file_widget = element['#theme'] == 'file_widget_multiple' %}
+{% set show_description_toggle = description_toggle and description and not is_multiple_file_widget %}
+{% set description_display = is_multiple_file_widget and description_toggle
+  ? description_display_toggle|default('after')
+  : description_display %}
 {% set tooltip_id = 'ddbgo-help'|clean_unique_id %}
 {%
   set classes = [

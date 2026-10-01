@@ -14,6 +14,8 @@ und die unten beschriebenen Gin-Korrekturen begrenzt.
   Namen und die Zuordnung zur Beschreibung über `aria-describedby`. Die Beschreibung
   erhält `role="tooltip"` und folgt unmittelbar dem Button (bei Details
   direkt nach dem Summary). Bestehende Beschreibungs-IDs bleiben erhalten.
+  Mehrfach-Dateifelder zeigen ihre Gruppenbeschreibung stattdessen direkt im
+  aufgeklappten Inhalt; ihre Summary-Zeile enthält keinen Hilfebutton.
   Die Namen stehen damit auch vor dem Start von JavaScript und in AJAX-Antworten
   im HTML. Suchhilfen bleiben in der Views-Konfiguration, Feldhilfen in ihrer bisherigen Konfiguration.
 - `ddbgo-workspace-navigation.html.twig` und `menu--ddbgo-gin.html.twig` rendern
@@ -42,6 +44,45 @@ und `--gin-shadow-l2`, mit einem kleinen Richtungspfeil. Gins installierte
 `gin/tooltip`-Library erzeugt das Markup per JavaScript und bietet selbst keine
 ARIA-Zuordnung, Escape-Behandlung oder Hover-Persistenz auf dem Hilfetext. Deshalb
 bleiben das Twig-Markup und die gezielte Interaktions-Library hier erforderlich.
+
+## Hilfe in Mehrfach-Dateifeldern
+
+Das Gin-Details-Template platziert normalerweise einen Hilfebutton in `summary`.
+Da `summary` selbst ein Bedienelement ist, entsteht damit eine Verschachtelung
+interaktiver Elemente. Der axe-Befund `nested-interactive` wurde bei diesen
+Dateigruppen bestätigt:
+
+- Bestand: Fragebogen (`field_fragebogen`).
+- Aggregator und KWE: Vertrag (`field_vertrag`).
+
+`details--ddbgo-gin.html.twig` erkennt zentral den von Drupal Core gelieferten
+Widget-Theme-Hook `file_widget_multiple`. Für solche Mehrfach-Dateifelder entfällt
+der Hilfebutton in der Überschrift; die vollständige Gruppenbeschreibung wird
+normal im aufgeklappten Inhalt ausgegeben. Gin merkt sich unter
+`description_display_toggle` die ursprüngliche Darstellungsart, bevor es die
+Beschreibung für den Tooltip versteckt. Das Template stellt diese Art wieder
+her: reguläre Hilfe ist sichtbar, ausdrücklich unsichtbare Beschreibungen
+behalten ihre Einstellung. Beim Einklappen wird die Beschreibung zusammen mit
+den Eingaben verborgen und ist nach dem Öffnen wieder erreichbar.
+
+Die Regel gilt in Gin und Gin Frontend auch beim Bearbeiten und bei
+AJAX-Neuaufbau. Andere Details und die Hilfen der einzelnen Upload-Eingaben
+behalten ihre bisherige Darstellung. Texte, Upload-Funktionen, Beschriftungen,
+Fehlerzuordnungen und Aufklapp-Attribute werden nicht verändert. Die Korrektur
+benötigt weder zusätzliche PHP-/JavaScript-Logik noch CSS, Modul, Patch oder
+Konfigurationsimport. Nach dem Deployment `drush cr` ausführen.
+
+Read-only Renderprüfung mit ungespeicherten Formularen:
+
+```sh
+drush php:script web/modules/custom/ddbgo_gin/tests/php/details-help.test.php
+```
+
+Die Prüfung berücksichtigt den tatsächlichen `node.add`-Routenkontext, damit
+Gins Formularhilfe wie im Browser aktiviert wird. Im Browser zusätzlich die
+drei Dateigruppen auf- und zuklappen, den Hilfetext und die Upload-Steuerung
+mit der Tastatur prüfen sowie den axe-Test wiederholen. Diese interaktive
+Prüfung steht aus; die Browsersteuerung ist in dieser Sitzung nicht verfügbar.
 
 ## Footer und Menü „Fußzeile“
 
