@@ -37,6 +37,39 @@
   padding-inline: 0;
 }
 
+/* Subordinate groups inside a form tab should read as compact controls, not
+ * another large section. Use the server-rendered tab-pane attribute so this
+ * also works before JS, on mobile and after AJAX rebuilds. Outer tabs retain
+ * their Gin styling. These selectors include all three Bestand object groups. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details {
+  margin-block: var(--gin-spacing-s);
+  box-shadow: none;
+}
+
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__summary {
+  /* Regular Gin text needs a little breathing room: 44px including the outer
+   * borders at standard density. Keep a minimum so mobile/zoom can wrap. */
+  min-block-size: calc(2 * var(--input-padding-vertical) + var(--input-line-height) + 2px);
+  padding-block: calc(var(--input-padding-vertical) + 1px);
+  padding-inline: calc(var(--gin-spacing-s) + 1rem + var(--gin-spacing-xs)) var(--gin-spacing-s);
+  font-size: var(--gin-font-size);
+  line-height: var(--input-line-height);
+  overflow-wrap: anywhere;
+}
+
+/* Gin enlarges multiple-value table labels to 18px. Inside a subordinate
+ * group, match the summary's regular text size, including nested object rows.
+ * Ordinary input labels retain their own Gin typography. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__wrapper .form-item__label--multiple-value-form {
+  font-size: var(--gin-font-size);
+}
+
+/* Keep Gin's native chevron, hover/focus colors and focus outline; only move
+ * the chevron to suit the smaller inline padding. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__summary::before {
+  inset-inline-start: var(--gin-spacing-s);
+}
+
 /* Gin overlaps the tab strip and pane using a negative bottom margin.
  * Let the pane padding determine the actual distance from the underline. */
 :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list {
@@ -136,12 +169,6 @@
   max-width: 100%;
   white-space: normal;
   overflow-wrap: anywhere;
-}
-
-/* The person form uses a tab-group wrapper without individual tab panes.
- * It needs the normal card inset even on mobile, since no inner details exist. */
-.node-form .field-group-tabs-wrapper:has(> .horizontal-tabs):not(:has(details)) {
-  padding: var(--ddbgo-section-space);
 }
 
 .node-form .field-group-tabs-wrapper > .horizontal-tabs {

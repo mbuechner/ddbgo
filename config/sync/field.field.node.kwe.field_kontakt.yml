@@ -12,7 +12,7 @@ id: node.kwe.field_kontakt
 field_name: field_kontakt
 entity_type: node
 bundle: kwe
-label: Kontakt
+label: Kontaktverlauf
 description: 'Die Kontakte mit der Kultur- oder Wissenseinrichtung werden mit dem Datum des (Erst-)Kontakts, dem Namen des DDB-Teammitglieds und weiteren Bemerkungen dokumentiert.'
 required: false
 translatable: false

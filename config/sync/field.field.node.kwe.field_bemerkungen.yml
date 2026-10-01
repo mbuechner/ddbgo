@@ -10,7 +10,7 @@ field_name: field_bemerkungen
 entity_type: node
 bundle: kwe
 label: Bemerkungen
-description: 'Dieses Feld enthält ergänzende Hinweise zu den Angaben im Abschnitt „Informationen“.'
+description: 'Dieses Feld enthält ergänzende Hinweise zu den Angaben im Abschnitt „Verwaltung“.'
 required: false
 translatable: false
 default_value: {  }

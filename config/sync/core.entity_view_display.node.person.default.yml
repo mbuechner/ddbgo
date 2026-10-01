@@ -27,17 +27,33 @@ third_party_settings:
         - field_telefonnummer
         - field_bemerkung
       label: Person
+      parent_name: group_person_tabs
+      region: content
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_personen
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        required_fields: false
+    group_person_tabs:
+      children:
+        - group_person
+      label: Person
       parent_name: ''
       region: content
       weight: 1
-      format_type: details
+      format_type: tabs
       format_settings:
         classes: ''
         show_empty_fields: true
         id: ''
         label_as_html: false
-        open: true
-        description: ''
+        direction: horizontal
+        width_breakpoint: 640
 id: node.person.default
 targetEntityType: node
 bundle: person

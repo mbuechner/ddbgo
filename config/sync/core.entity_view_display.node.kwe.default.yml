@@ -52,7 +52,7 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
-      label: Kontakt
+      label: Kontaktverlauf
       parent_name: group_kwe
       region: content
       weight: 4
@@ -101,7 +101,7 @@ third_party_settings:
         - field_vertrag
         - field_favorienkarussell
         - field_bemerkungen
-      label: Informationen
+      label: Verwaltung
       parent_name: group_kwe
       region: content
       weight: 5
@@ -128,7 +128,7 @@ third_party_settings:
         - field_archivportal_lieferung
         - field_erstingest_archivportal
         - field_bemerkung_archivportal
-      label: 'Europeana/ Archivportal'
+      label: 'Europeana / Archivportal'
       parent_name: group_kwe
       region: content
       weight: 6

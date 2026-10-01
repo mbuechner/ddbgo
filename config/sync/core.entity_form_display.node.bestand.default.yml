@@ -76,11 +76,11 @@ third_party_settings:
     group_allgemeines:
       children:
         - title
+        - field_url
         - field_datenformat
         - field_volltextformat
         - field_lieferweg
         - field_lieferweg_angaben
-        - field_url
         - field_beschreibung
         - field_bemerkung
       label: Allgemeines
@@ -102,7 +102,7 @@ third_party_settings:
         - field_aggregiert
         - field_aggregator
         - field_zwischenaggregatoren
-      label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
+      label: 'KWE / Aggregator'
       region: content
       parent_name: group_bestand
       weight: 3
@@ -135,11 +135,11 @@ third_party_settings:
       children:
         - field_link_zu_ddbdash
         - field_jira_hauptticket
+        - field_erstingest
         - field_status_fragebogen
         - field_link_fragebogen
         - field_fragebogen
-        - field_erstingest
-      label: Informationen
+      label: Verwaltung
       region: content
       parent_name: group_bestand
       weight: 5
@@ -157,17 +157,17 @@ third_party_settings:
         - field_europeana_lieferung_enum
         - field_ueber_welchen_weg
         - field_europeana_lieferung
+        - group_ddb_objekte
         - field_jira_europeana
         - field_jira_ticket_bei_europeana
         - field_europeanastatus
         - field_ingestart
+        - field_datum_des_status_der_europ
         - group_europeana_objekte_content_
         - group_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
-        - field_datum_des_status_der_europ
-        - group_ddb_objekte
-      label: Europeana/Archivportal
+      label: Europeana / Archivportal
       region: content
       parent_name: group_bestand
       weight: 7
@@ -205,7 +205,7 @@ third_party_settings:
       label: 'Europeana-Objekte: Metadata-Tier'
       region: content
       parent_name: group_europeana_archivportal
-      weight: 17
+      weight: 18
       format_type: tab
       format_settings:
         classes: ''
@@ -221,7 +221,7 @@ third_party_settings:
       label: 'Europeana-Objekte: Content-Tier'
       region: content
       parent_name: group_europeana_archivportal
-      weight: 16
+      weight: 17
       format_type: tab
       format_settings:
         classes: ''
@@ -234,7 +234,7 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
-      label: Kontakt
+      label: Kontaktverlauf
       region: content
       parent_name: group_bestand
       weight: 4
@@ -335,7 +335,7 @@ content:
     third_party_settings: {  }
   field_archivportal_lieferung:
     type: options_select
-    weight: 18
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -349,7 +349,7 @@ content:
     third_party_settings: {  }
   field_bemerkung_europeana_liefer:
     type: string_textarea
-    weight: 19
+    weight: 20
     region: content
     settings:
       rows: 5
@@ -400,7 +400,7 @@ content:
     third_party_settings: {  }
   field_datenformat:
     type: select2_entity_reference
-    weight: 2
+    weight: 3
     region: content
     settings:
       width: 100%
@@ -410,7 +410,7 @@ content:
     third_party_settings: {  }
   field_datum_des_status_der_europ:
     type: datetime_default
-    weight: 26
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -428,7 +428,7 @@ content:
     third_party_settings: {  }
   field_erstingest:
     type: datetime_default
-    weight: 27
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -470,7 +470,7 @@ content:
     third_party_settings: {  }
   field_europeanastatus:
     type: options_select
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -484,13 +484,13 @@ content:
       conditional_fields: {  }
   field_ingestart:
     type: options_select
-    weight: 14
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   field_jira_europeana:
     type: string_textfield
-    weight: 11
+    weight: 12
     region: content
     settings:
       size: 80
@@ -507,7 +507,7 @@ content:
     third_party_settings: {  }
   field_jira_ticket_bei_europeana:
     type: string_textfield
-    weight: 12
+    weight: 13
     region: content
     settings:
       size: 80
@@ -537,7 +537,7 @@ content:
     third_party_settings: {  }
   field_lieferweg:
     type: select2_entity_reference
-    weight: 4
+    weight: 5
     region: content
     settings:
       width: 100%
@@ -547,7 +547,7 @@ content:
     third_party_settings: {  }
   field_lieferweg_angaben:
     type: string_textarea
-    weight: 5
+    weight: 6
     region: content
     settings:
       rows: 5
@@ -613,7 +613,7 @@ content:
       conditional_fields: {  }
   field_url:
     type: link_default
-    weight: 6
+    weight: 2
     region: content
     settings:
       placeholder_url: ''
@@ -621,7 +621,7 @@ content:
     third_party_settings: {  }
   field_volltextformat:
     type: options_select
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

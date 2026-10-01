@@ -354,6 +354,24 @@ behalten einen seitlichen Innenabstand, während Tabs die Einrückung ihrer
 äußeren Karte verwenden. Auf kleinen Bildschirmen ist diese äußere Karte
 kompakter, damit sich die Einrückungen nicht unnötig addieren.
 
+Untergeordnete Details innerhalb von Formular-Tabs, etwa DDB-Objekte sowie
+Europeanas Content-/Metadata-Tier im Bestandsformular, verwenden kompaktere
+Summary-Zeilen mit Gins normaler Schriftgröße (16 Pixel) und reduzierten
+Abständen. Eingeklappt liegt ihre Mindesthöhe einschließlich Rahmen bei
+Standarddichte bei 44 Pixeln, ungefähr auf Eingabefeldhöhe mit etwas zusätzlichem
+Raum. Die Höhe wird aus den Input-Variablen abgeleitet; lange Titel können bei
+schmalen Bildschirmen oder Zoom weiterhin umbrechen. Auch die Überschriften
+innerer Mehrfachfelder verwenden hier 16 statt Gins üblicher 18 Pixel, damit
+Beschriftung und aufgeklappter Inhalt ausgewogen wirken. Normale Eingabelabels
+behalten ihre Gin-Schriftgröße.
+Pfeil, Hover-Effekt, Tastaturfokus und native Aufklappfunktion bleiben erhalten.
+Die Regel in `ddbgo_gin.section-spacing.css` greift ausschließlich bei direkt
+verschachtelten Details in einer Formular-Tabfläche. Äußere Tab-/Accordion-Zeilen
+und deren Inhaltsabstände bleiben erhalten. Der Scope nutzt das vom Server
+gerenderte `data-horizontal-tabs-panes`, funktioniert also auch vor der
+JavaScript-Initialisierung und nach AJAX-Neuaufbau. Kein zusätzlicher PHP-/Twig-
+oder JavaScript-Code und kein Konfigurationsimport sind nötig; danach `drush cr`.
+
 Tab-Reiter erhalten bei Mausbedienung einen dezenten Hover-Schatten; inaktive
 Reiter heben sich um 1 Pixel an. Die aktive Unterstreichung bleibt an ihrem Platz.
 Der Tastaturfokus ist separat umrandet; bei reduzierter Bewegung entfällt die
@@ -380,9 +398,10 @@ Verschachtelte Objektangaben behalten ihre Beschriftung und eine seitliche Linie
 Personen behalten ihre Karten mit Rolle ?ber dem verlinkten Namen; Kontakte
 ihre Karten mit Datum, Bemerkung und Verbindungslinie.
 
-DDB-Objekte, Europeanas Content-Tier und Europeanas Metadata-Tier stehen direkt
-im Anzeigeabschnitt Europeana/Archivportal. Kurze Titel werden nur dort und in
-den drei Bestand-Formularwidgets gesetzt; die globalen Feldlabels bleiben erhalten.
+DDB-Objekte, Europeana-Objekte: Content-Tier und Europeana-Objekte: Metadata-Tier
+stehen direkt im Anzeigeabschnitt Europeana / Archivportal. Der lokale
+Label-Helper verwendet dieselben Titel wie die Feld- und Gruppenkonfiguration
+auch in den drei Bestand-Formularwidgets.
 Nur diese Widgets erhalten `ddbgo-object-widget`. Medientyp und Objektzahl
 stehen bei gen?gend Platz nebeneinander, auf schmalen Fl?chen untereinander.
 Verschachtelte Objektgruppen stehen auf einer eigenen Zeile mit seitlicher Linie.
@@ -410,7 +429,7 @@ Anzeige begrenzt; die bestehenden Abstände zwischen Formulareingaben bleiben
 erhalten. Am Anfang und Ende eines Formularabschnitts werden zusätzliche
 Feldränder ausgeglichen. Paragraph-Unterformulare erhalten 16 Pixel Abstand
 unter ihrer Überschrift, ohne zusätzliche seitliche Einrückung. Das Personenformular
-erhält den normalen Kartenabstand auch ohne einzelne Tab-Unterbereiche.
+verwendet dieselben Tab-Abstände wie die anderen Inhaltstypen.
 Lange Texte sowie die Zeile mit Paragraph-Überschrift und Aktionen dürfen
 auf schmalen Bildschirmen umbrechen. Das Template
 `input--ddbgo-gin-paragraph-add.html.twig` gibt Hinzufügen-Aktionen als native
@@ -420,6 +439,44 @@ AJAX-Attribute bleiben erhalten.
 Die Library `section_spacing` wird über `theme_components` in Gin und Gin
 Frontend geladen. Die CSS-Selektoren erfassen auch AJAX-neuaufgebaute
 Node-Formulare. Suchfilter behalten ihre unabhängigen Abstände und Raster.
+
+## Einheitliche Abschnittsnamen und Feldreihenfolge
+
+Formular und Detailansicht verwenden für KWE, Aggregator und Bestand dieselben
+Tab-Beschriftungen: `Verwaltung` statt `Informationen` und `Kontaktverlauf`
+für die dokumentierten Kontakte mit Datum und Bemerkungen. Die zugehörigen
+Kontakt-Feldlabels und die Abschnittsverweise in den Bemerkungs-Hilfetexten
+sind angeglichen. Die Person-Seite zeigt in Formular und Detailansicht einen
+einzelnen Reiter `Person`. Field Group verwendet dafür den horizontalen
+Wrapper `group_person_tabs` mit der bestehenden Inhaltsgruppe `group_person`
+als einzigem Tab. Unter 640 Pixeln erscheint dieser wie bei den anderen
+Inhaltstypen als geöffnetes Accordion; ohne JavaScript ist der Inhalt ebenfalls
+aufgeklappt zugänglich. Die Felder behalten ihre Reihenfolge und ihre Widgets
+bzw. Formatter. Die bisherigen Tab-Abstände greifen ohne Person-Sonderregel.
+`KWE / Aggregator` und `Europeana / Archivportal` werden ebenfalls in beiden
+Ansichten gleich geschrieben.
+
+Die Feldreihenfolge folgt der bisherigen Detailansicht. Bei KWE stehen die
+Europeana- und Archivportal-Lieferangaben jeweils zusammen mit ihrem
+Ingest-Datum und den Bemerkungen. Beim Bestand steht die Webseite am Anfang
+der allgemeinen Angaben; im Formular geht der Titel voraus. In `Verwaltung`
+folgt der erste DDB-Ingest auf Dashboard und Hauptticket, vor dem Fragebogen.
+Im Europeana-/Archivportal-Abschnitt folgen DDB-Objekte auf die Europeana-Lieferung
+über DDB; das Statusdatum steht bei Status/Ingestart, vor den Europeana-Objekten.
+Formular-Details und direkt angezeigte Objektfelder haben dieselbe relative
+Reihenfolge. Field-Group-Children und Rendergewichte bilden diese Ordnung ab.
+
+Die Einstellungen liegen in den Form-/View-Displays und Feldkonfigurationen
+unter `config/sync`. Bestehende Gruppen-IDs werden weiterhin für Tab-Verweise
+und die Wiederherstellung beim Wechsel zwischen Ansicht und Bearbeitung
+verwendet. Der lokale `ddbgo_gin_object_field_labels()`-Helper verwendet
+`Europeana-Objekte: Content-Tier` bzw. `Europeana-Objekte: Metadata-Tier` passend
+zu den Feld-, Details- und Paragraph-Beschriftungen. Auch bei AJAX-Neuaufbau
+werden diese Titel übernommen.
+
+Deployment: `drush config:import` und `drush cr`. Anschließend die bestehenden
+`paragraph-display.test.php`- und `form-labels.test.php`-Renderprüfungen ausführen
+und die Tab-Namen sowie die Feldreihenfolge beim Wechsel zur Bearbeitung prüfen.
 
 ## Einheitliche Formularfelder
 

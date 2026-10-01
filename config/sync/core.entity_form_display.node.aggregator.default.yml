@@ -101,7 +101,7 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
-      label: Kontakt
+      label: Kontaktverlauf
       region: content
       parent_name: group_aggregator
       weight: 4
@@ -149,7 +149,7 @@ third_party_settings:
         - field_link_fragebogen
         - field_fragebogen_aggregator
         - field_bemerkungen
-      label: Informationen
+      label: Verwaltung
       region: content
       parent_name: group_aggregator
       weight: 6

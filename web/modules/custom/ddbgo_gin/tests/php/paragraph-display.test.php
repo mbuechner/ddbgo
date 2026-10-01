@@ -39,8 +39,8 @@ $node = Node::create([
 ]);
 $fields = [
   'field_ddb_objekte' => ['DDB-Objekte', 'Medientyp', 'Bild', 'Anzahl', '3.792'],
-  'field_europeana_objekte_content_' => ['Europeanas Content-Tier', 'Content-Tier', 'Objekte', '454', '3.338', 'Bild'],
-  'field_europeana_objekte_metadata' => ['Europeanas Metadata-Tier', 'Metadata-Tier', 'Objekte', 'A', '3.792', 'Bild'],
+  'field_europeana_objekte_content_' => ['Europeana-Objekte: Content-Tier', 'Content-Tier', 'Objekte', '454', '3.338', 'Bild'],
+  'field_europeana_objekte_metadata' => ['Europeana-Objekte: Metadata-Tier', 'Metadata-Tier', 'Objekte', 'A', '3.792', 'Bild'],
 ];
 $display = EntityViewDisplay::load('node.bestand.default');
 $source = Yaml::parseFile(DRUPAL_ROOT . '/../config/sync/core.entity_view_display.node.bestand.default.yml');

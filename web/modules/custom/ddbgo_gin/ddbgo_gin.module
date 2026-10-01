@@ -394,13 +394,13 @@ function ddbgo_gin_field_widget_complete_entity_reference_paragraphs_form_alter(
 }
 
 /**
- * Local titles for the three Bestand object components, not field definitions.
+ * Consistent titles for Bestand object components, matching field/group labels.
  */
 function ddbgo_gin_object_field_labels(): array {
   return [
     'field_ddb_objekte' => new TranslatableMarkup('DDB-Objekte'),
-    'field_europeana_objekte_content_' => new TranslatableMarkup('Europeanas Content-Tier'),
-    'field_europeana_objekte_metadata' => new TranslatableMarkup('Europeanas Metadata-Tier'),
+    'field_europeana_objekte_content_' => new TranslatableMarkup('Europeana-Objekte: Content-Tier'),
+    'field_europeana_objekte_metadata' => new TranslatableMarkup('Europeana-Objekte: Metadata-Tier'),
   ];
 }
 

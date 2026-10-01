@@ -24,7 +24,23 @@ third_party_settings:
         - field_email
         - field_telefonnummer
         - field_bemerkung
-      label: Personen
+      label: Person
+      region: content
+      parent_name: group_person_tabs
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: fieldgroup_personen
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
+        required_fields: true
+    group_person_tabs:
+      children:
+        - group_person
+      label: Person
       region: content
       parent_name: ''
       weight: 0

@@ -118,7 +118,7 @@ third_party_settings:
         - field_aggregiert
         - field_aggregator
         - field_zwischenaggregatoren
-      label: 'Kultur- oder Wissenseinrichtung/ Aggregator'
+      label: 'KWE / Aggregator'
       parent_name: group_bestand
       region: content
       weight: 3
@@ -167,7 +167,7 @@ third_party_settings:
         - field_status_fragebogen
         - field_link_fragebogen
         - field_fragebogen
-      label: Informationen
+      label: Verwaltung
       parent_name: group_bestand
       region: content
       weight: 5
@@ -226,7 +226,7 @@ third_party_settings:
         - field_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
-      label: 'Europeana/ Archivportal'
+      label: 'Europeana / Archivportal'
       parent_name: group_bestand
       region: content
       weight: 7
@@ -248,7 +248,7 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
-      label: Kontakt
+      label: Kontaktverlauf
       parent_name: group_bestand
       region: content
       weight: 4
@@ -335,7 +335,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 18
+    weight: 19
     region: content
   field_bemerkung:
     type: basic_string
@@ -357,7 +357,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 19
+    weight: 20
     region: content
   field_beschreibung:
     type: basic_string
@@ -439,7 +439,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 15
+    weight: 16
     region: content
   field_ddb_objekte:
     type: entity_reference_revisions_entity_view
@@ -477,7 +477,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 9
+    weight: 10
     region: content
   field_europeana_lieferung_enum:
     type: entity_reference_label
@@ -489,7 +489,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 7
+    weight: 8
     region: content
   field_europeana_objekte_content_:
     type: entity_reference_revisions_entity_view
@@ -502,7 +502,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 16
+    weight: 17
     region: content
   field_europeana_objekte_metadata:
     type: entity_reference_revisions_entity_view
@@ -515,7 +515,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 17
+    weight: 18
     region: content
   field_europeanastatus:
     type: entity_reference_label
@@ -527,7 +527,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 13
+    weight: 14
     region: content
   field_fragebogen:
     type: file_default
@@ -551,7 +551,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 14
+    weight: 15
     region: content
   field_jira_europeana:
     type: 'custom_formatters:jira_link'
@@ -563,7 +563,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 11
+    weight: 12
     region: content
   field_jira_hauptticket:
     type: 'custom_formatters:jira_link'
@@ -587,7 +587,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 12
+    weight: 13
     region: content
   field_kontakt:
     type: entity_reference_revisions_entity_view
@@ -724,7 +724,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 8
+    weight: 9
     region: content
   field_url:
     type: link
