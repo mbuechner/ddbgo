@@ -244,6 +244,29 @@
   overflow-wrap: anywhere;
 }
 
+/* Gin's first divider separates its admin "Back to site" action. Frontend
+ * breadcrumbs use the same slash between every level of the hierarchy.
+ * Match Gin's admin-style specificity without changing the admin theme. */
+:is(#ddbgo-breadcrumb-specificity, .gin-frontend).gin-frontend .gin-breadcrumb .gin-breadcrumb__item:first-of-type + .gin-breadcrumb__item::before {
+  content: "/";
+  border: 0;
+  width: auto;
+  height: auto;
+  padding: 0 .5em;
+  margin-inline-end: 0;
+}
+
+/* Full titles must wrap rather than disappear on small screens or at zoom. */
+:is(#ddbgo-breadcrumb-specificity, .gin-frontend).gin-frontend .gin-breadcrumb .gin-breadcrumb__list {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.gin-frontend .gin-breadcrumb :is(.gin-breadcrumb__link, .gin-breadcrumb__text) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
 /* Keep floating table headers at the viewport edge after branding scrolls. */
 .gin-frontend table.gin--sticky-table-header {
   top: 0 !important;

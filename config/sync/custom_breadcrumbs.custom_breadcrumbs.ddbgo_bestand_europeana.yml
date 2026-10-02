@@ -1,0 +1,18 @@
+uuid: 568c5d7a-6a8e-4126-b35e-f1e09cf3fe3a
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - views.view.suche_bestand_fuer_europeana
+id: ddbgo_bestand_europeana
+label: 'DDBgo: bestand_europeana'
+description: 'Eigenständige Listenansicht direkt unter Startseite, gleichrangig mit den anderen Listenansichten.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: '<nolink>'
+breadcrumbTitles: '[current-page:title]'
+type: '2'
+pathPattern: /search/bestand/europeana
+extraCacheContexts: ''

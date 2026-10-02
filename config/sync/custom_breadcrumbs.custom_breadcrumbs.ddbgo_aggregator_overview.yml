@@ -1,0 +1,18 @@
+uuid: e10ca279-3151-4698-b78e-fb601fdbb287
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - views.view.suche_aggregator_fuer_claudia
+id: ddbgo_aggregator_overview
+label: 'DDBgo: aggregator_overview'
+description: 'Eigenständige Listenansicht direkt unter Startseite, gleichrangig mit den anderen Listenansichten.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: '<nolink>'
+breadcrumbTitles: '[current-page:title]'
+type: '2'
+pathPattern: /search/aggregator/uebersicht
+extraCacheContexts: ''

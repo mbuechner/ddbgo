@@ -1,0 +1,10 @@
+_core:
+  default_config_hash: 1UhmOSvn6ZsaqBRRQ9VNQ3RrPKNpv3Mv-8S1V3ETTOE
+langcode: de
+home: true
+home_link: Startseite
+current_page: false
+current_page_link: false
+trim_title: 0
+admin_pages_disable: false
+site_wide: false

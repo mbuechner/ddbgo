@@ -1,0 +1,23 @@
+uuid: 6ef085f7-894a-48a7-939b-0111db490e58
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.kwe
+      - views.view.suche_kwe
+id: ddbgo_kwe
+label: 'DDBgo: kwe - Datensatz'
+description: 'Feste Zuordnung aller Datensätze dieses Typs zur Standardliste; aktueller Titel ohne Link.'
+entityType: node
+entityBundle: kwe
+language: und
+breadcrumbPaths: |-
+  /search/kwe
+  <nolink>
+breadcrumbTitles: |-
+  Liste der Kultur- und Wissenseinrichtungen
+  [node:title]
+type: '1'
+pathPattern: ''
+extraCacheContexts: ''

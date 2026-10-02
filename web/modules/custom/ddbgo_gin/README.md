@@ -241,6 +241,110 @@ Die Prüfung wurde nach einem Rollenwechsel wiederholt. Zusätzlich geprüft:
 Leere zugriffsbeschränkte Arbeitsmenüs erzeugen keinen Schalter und behalten
 ihre Cache-Metadaten. Die visuelle Browserprüfung steht noch aus.
 
+## Fachliche Breadcrumbs
+
+[`Custom Breadcrumbs`](https://www.drupal.org/project/custom_breadcrumbs) wird
+über Composer eingebunden und durch `core.extension.yml` aktiviert. Die
+Hierarchie liegt in den 13 exportierten Regeln
+`config/sync/custom_breadcrumbs.custom_breadcrumbs.ddbgo_*.yml`.
+Unter **Struktur → Custom breadcrumbs** (`/admin/structure/custom-breadcrumbs`)
+lassen sich diese Regeln auch über die Oberfläche bearbeiten. Die globalen
+Einstellungen stehen unter `/admin/config/user-interface/custom-breadcrumbs`
+und in `custom_breadcrumbs.settings.yml`.
+
+Jeder fachliche Datensatz hat eine feste Listenansicht als Elternseite:
+
+| Inhaltstyp | Elternseite |
+| --- | --- |
+| KWE | Liste der Kultur- und Wissenseinrichtungen (`/search/kwe`) |
+| Aggregator | Aggregatorenübersicht (`/search/aggregator/uebersicht`) |
+| Bestand | Bestandsliste (`/search/bestand`) |
+| Person | Personenliste (`/search/person`) |
+
+Beispiele:
+
+- `Startseite / Liste der Kultur- und Wissenseinrichtungen / Beispielmuseum`
+- `Startseite / Personenliste / Person hinzufügen`
+- `Startseite / Bestandsliste / Bestandstitel / Bearbeiten`
+- `Startseite / Bestandsliste / Bestandstitel / Löschen`
+- `Startseite / Aggregatorenübersicht / Beispielaggregator`
+- `Startseite / Aggregatorenübersicht / Beispielaggregator / Bearbeiten`
+- `Startseite / Aggregatorenliste`
+- `Startseite / Aggregatorenübersicht`
+- `Startseite / Bestandsliste für Europeanalieferungen`
+- `Startseite / Bestandsliste für Coding da Vinci`
+
+Alle Listenansichten liegen gleichrangig direkt unter Startseite. Das gilt
+auch für Aggregatorenliste und Aggregatorenübersicht sowie für Bestandsliste,
+Europeanalieferungen und Coding da Vinci. Die Volltextsuche, Meine Lesezeichen,
+Seitenübersicht und Informationsseiten des Inhaltstyps `page` liegen ebenfalls
+direkt unter Startseite; auf der Startseite selbst wird keine Breadcrumb
+ausgegeben. Der Klickweg verändert diese Einordnung nicht. Aggregatoren sind
+immer der Aggregatorenübersicht zugeordnet, einschließlich Anlegen, Bearbeiten
+und Löschen. Ein Bestand aus der Europeana-Liste bleibt unter der normalen
+Bestandsliste; Personen werden unabhängig von ihren Verknüpfungen immer der
+Personenliste zugeordnet.
+
+Die aktuelle Seite ist unverlinkter Text. `current_page: false` ist bewusst
+gesetzt: Jede Regel definiert ihren Abschluss ausdrücklich mit `<nolink>` und
+`[node:title]` beziehungsweise `[current-page:title]`. Der zweite Token liefert
+bei Views und Anlegeformularen den tatsächlichen Seitentitel. Es werden keine
+Titel gekürzt (`trim_title: 0`). `site_wide: false` beschränkt das Modul auf die
+konfigurierten Seiten; andere Verwaltungsseiten behalten ihre bisherige
+Breadcrumb-Erzeugung. `admin_pages_disable: false` erlaubt die ausdrücklich
+konfigurierten Anlege-, Bearbeitungs- und Löschrouten, die Drupal intern auch
+bei Verwendung des Frontend-Themes als Verwaltungsrouten kennzeichnet.
+
+Zwei kleine Integrationen im bestehenden Modul sind erforderlich:
+
+- `ddbgo_gin_theme_registry_alter()` entfernt ausschließlich in Gin Frontend
+  die Breadcrumb-Preprocessor von Gin und Gin Frontend. Gin würde sonst auf
+  Datensatzseiten alle fachlichen Vorfahren entfernen. Core-Preprocessing,
+  Gin-Templates und die Darstellung bleiben erhalten. Die Registry des
+  Verwaltungs-Themes Gin wird nicht verändert.
+- `ddbgo_gin_system_breadcrumb_alter()` ergänzt auf Bearbeitungs- und
+  Löschseiten den Link zum Datensatz und die unverlinkte Aktion „Bearbeiten“
+  beziehungsweise „Löschen“. Entity-Regeln des Moduls gelten für alle drei
+  Routen gemeinsam und können diese Unterscheidung nicht selbst konfigurieren.
+  Außerdem werden konfigurierte Links auf Zugriff geprüft; unerlaubte Ziele
+  entfallen. Das neue Breadcrumb-Objekt übernimmt die bisherigen Cache-Metadaten
+  und ergänzt die Zugriffsergebnisse und den Datensatz. Die Zuordnung zu den
+  Listen bleibt vollständig in der Konfiguration.
+
+`ddbgo_gin.frontend-layout.css` vereinheitlicht Gins ersten, sonst senkrechten
+Trennstrich mit den übrigen `/`-Trennzeichen. Lange Texte können auch auf
+kleinen Bildschirmen und bei Zoom vollständig umbrechen. Es gibt dafür weder
+zusätzliches JavaScript noch Änderungen an Core oder Contrib-Dateien.
+
+**Modulgrenze:** Custom Breadcrumbs 1.1.3 fügt bei Pfadregeln derzeit `NULL`
+als Cache-Abhängigkeit hinzu. Drupal setzt dadurch deren `max-age` auf `0`.
+Diese Breadcrumbs verhindern somit das Render-Caching der jeweiligen Seite.
+Die Integration übernimmt diese Metadaten unverändert; sie erhöht die
+Cache-Laufzeit nicht künstlich und benötigt keinen Patch. Bei einem Modulupdate
+diesen Punkt erneut prüfen. Die tatsächlichen Zugriffsrechte werden bei jedem
+Aufruf weiterhin berücksichtigt.
+
+Bereitstellung auf weiteren Umgebungen:
+
+```bash
+composer install
+drush cim -y
+drush cr
+```
+
+Der nur lesende Integrationstest prüft die Listen und Spezialansichten,
+Datensatzseiten, Anlegen/Bearbeiten/Löschen, Informations- und Startseite,
+gerendertes Gin-Markup sowie Zugriff und Cache-Metadaten:
+
+```bash
+drush php:script web/modules/custom/ddbgo_gin/tests/php/breadcrumbs.test.php
+```
+
+Zusätzlich im Browser bei schmaler Ansicht und Zoom prüfen: alle Texte bleiben
+lesbar, Vorfahren sind per Tab erreichbar, die aktuelle Seite erzeugt keinen
+zusätzlichen Tab-Stopp, und alle Trennzeichen sehen gleich aus. Der CLI-Test
+ersetzt diese visuelle und tastaturbezogene Prüfung nicht.
+
 ## Kategorien unter „Meine Lesezeichen“
 
 Die Kategorien auf `/bookmarks` werden als Überschriften der Ebene `h2`

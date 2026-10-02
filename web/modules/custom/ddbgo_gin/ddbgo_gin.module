@@ -5,10 +5,13 @@
  * DDBgo integration and behavior for Gin-based themes.
  */
 
+use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
@@ -319,6 +322,72 @@ function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
       $theme_registry['page__node_add'] = $theme_registry['page'];
     }
   }
+
+  // Keep the configured hierarchy in Gin Frontend. Gin's admin preprocessor
+  // replaces Home, discards node ancestors and appends its own operation label.
+  // The frontend preprocessor then rewrites Home again. Neither is needed here;
+  // Core preprocessing and Gin's template, styling and focus states remain.
+  // Inspect each registry entry: a registry can be built for a non-active theme,
+  // and breadcrumb suggestions have already inherited their preprocessors.
+  foreach ($theme_registry as $hook => &$definition) {
+    if (($hook === 'breadcrumb' || str_starts_with($hook, 'breadcrumb__'))
+      && in_array('gin_frontend_preprocess_breadcrumb', $definition['preprocess functions'] ?? [], TRUE)) {
+      $definition['preprocess functions'] = array_values(array_filter(
+        $definition['preprocess functions'],
+        static fn ($callback): bool => !in_array($callback, ['gin_preprocess_breadcrumb', 'gin_frontend_preprocess_breadcrumb'], TRUE),
+      ));
+    }
+  }
+}
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ *
+ * Custom Breadcrumbs owns the hierarchy and labels through exported config.
+ * Entity rules are shared by view/edit/delete, so replace their last (unlinked)
+ * node title on edit/delete with a view link and an unlinked action. The module
+ * does not check configured parent links for access; do that here and retain
+ * every access result's cache metadata. No navigation history is consulted.
+ */
+function ddbgo_gin_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context): void {
+  if (!($context['builder'] instanceof \Drupal\custom_breadcrumbs\BreadcrumbBuilder)) {
+    return;
+  }
+
+  // Breadcrumb::setLinks() cannot replace an already populated trail. A new
+  // object inherits all cache tags, contexts and max-age from the builder.
+  $result = (new Breadcrumb())->addCacheableDependency($breadcrumb);
+  $result->addCacheTags(\Drupal::entityTypeManager()->getDefinition('custom_breadcrumbs')->getListCacheTags());
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    $breadcrumb = $result;
+    return;
+  }
+
+  $links = $breadcrumb->getLinks();
+  $node = $route_match->getParameter('node');
+  $actions = [
+    'entity.node.edit_form' => t('Edit'),
+    'entity.node.delete_form' => t('Delete'),
+  ];
+  if ($node instanceof NodeInterface && $links && isset($actions[$route_match->getRouteName()])) {
+    $last = end($links)->getUrl();
+    // Only replace the explicit current-page entry, never a configured parent.
+    if ($last->isRouted() && in_array($last->getRouteName(), ['<none>', '<nolink>'], TRUE)) {
+      array_pop($links);
+      $links[] = $node->toLink();
+      $links[] = Link::createFromRoute($actions[$route_match->getRouteName()], '<nolink>');
+      $result->addCacheableDependency($node);
+    }
+  }
+
+  foreach ($links as $link) {
+    $access = $link->getUrl()->access(NULL, TRUE);
+    $result->addCacheableDependency($access);
+    if ($access->isAllowed()) {
+      $result->addLink($link);
+    }
+  }
+  $breadcrumb = $result;
 }
 
 /**

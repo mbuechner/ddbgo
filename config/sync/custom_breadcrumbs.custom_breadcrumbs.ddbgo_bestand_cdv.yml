@@ -1,0 +1,18 @@
+uuid: 2b497468-3380-415a-ab52-507e01588aef
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - views.view.suche_bestand_fuer_coding_da_vinci
+id: ddbgo_bestand_cdv
+label: 'DDBgo: bestand_cdv'
+description: 'Eigenständige Listenansicht direkt unter Startseite, gleichrangig mit den anderen Listenansichten.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: '<nolink>'
+breadcrumbTitles: '[current-page:title]'
+type: '2'
+pathPattern: /search/bestand/cdv
+extraCacheContexts: ''

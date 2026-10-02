@@ -1,0 +1,23 @@
+uuid: fcae6374-e2c9-41fa-9276-04be261fae17
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.aggregator
+      - views.view.suche_aggregator_fuer_claudia
+id: ddbgo_aggregator_add
+label: 'DDBgo: aggregator - Hinzufügen'
+description: 'Anlegen eines Aggregators unter der Aggregatorenübersicht; aktueller Routentitel ohne Link.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: |-
+  /search/aggregator/uebersicht
+  <nolink>
+breadcrumbTitles: |-
+  Aggregatorenübersicht
+  [current-page:title]
+type: '2'
+pathPattern: /node/add/aggregator
+extraCacheContexts: ''

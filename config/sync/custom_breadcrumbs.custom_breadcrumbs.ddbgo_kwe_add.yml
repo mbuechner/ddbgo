@@ -1,0 +1,23 @@
+uuid: 2e039a3e-0d4e-4e18-a6e9-da6a2843ae0d
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.kwe
+      - views.view.suche_kwe
+id: ddbgo_kwe_add
+label: 'DDBgo: kwe - Hinzufügen'
+description: 'Anlegen eines Datensatzes unter seiner Standardliste; aktueller Routentitel ohne Link.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: |-
+  /search/kwe
+  <nolink>
+breadcrumbTitles: |-
+  Liste der Kultur- und Wissenseinrichtungen
+  [current-page:title]
+type: '2'
+pathPattern: /node/add/kwe
+extraCacheContexts: ''

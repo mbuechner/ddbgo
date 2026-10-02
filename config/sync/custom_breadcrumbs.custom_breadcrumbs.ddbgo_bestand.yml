@@ -1,0 +1,23 @@
+uuid: b16f33ff-a428-416d-85cb-513f33843464
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.bestand
+      - views.view.suche_bestand
+id: ddbgo_bestand
+label: 'DDBgo: bestand - Datensatz'
+description: 'Feste Zuordnung aller Datensätze dieses Typs zur Standardliste; aktueller Titel ohne Link.'
+entityType: node
+entityBundle: bestand
+language: und
+breadcrumbPaths: |-
+  /search/bestand
+  <nolink>
+breadcrumbTitles: |-
+  Bestandsliste
+  [node:title]
+type: '1'
+pathPattern: ''
+extraCacheContexts: ''
