@@ -1125,6 +1125,49 @@ Der Test prüft Theme-Wechsel, Bereichszuordnung, Attribute, Suchparameter und d
 Beschriftungspositionen vor/hinter Eingabefeldern einschließlich unsichtbarer und
 fehlender Beschriftungen. Er speichert weder Inhalte noch Konfiguration. Für die
 Browsertests weiterhin die oben beschriebenen HTML-Testseiten verwenden.
+
+## Tab-Reihenfolge bei Custom Formattern
+
+Alle sieben projektbezogenen Custom Formatter haben ihre Kontext-Bearbeitung
+in `config/sync/custom_formatters.formatter.*.yml` deaktiviert:
+`third_party_settings.contextual.mode: '0'`. Die Einstellung ist ausdrücklich
+gesetzt, da ein fehlender Wert die Kontext-Bearbeitung wieder aktiviert.
+
+| Formatter | Beispiele für die Verwendung |
+| --- | --- |
+| `isil_link` | ISIL in KWE-Suche und KWE-Einzelansicht |
+| `jira_link` | JIRA-Hauptticket bei Aggregator und Bestand; Europeana-Lieferung |
+| `jira_link_bei_europeana` | JIRA-Ticket bei Europeana in Bestandsliste und Einzelansicht |
+| `label_als_telefonnummer` | Telefonnummer in Personenliste und Einzelansicht |
+| `label_als_link` | DDB-URI, Coding-da-Vinci-Link und Taxonomie-URIs |
+| `komma_getrennte_aufzaehlung` | Datenformat, Lieferweg und Ausrichtungsangaben |
+| `text_in_klammern` | Medientyp in der Listenansicht von DDB-Objekt-Paragraphs |
+
+Bei aktiviertem Modus steht im HTML hinter der formatierten Ausgabe ein
+zusätzlicher Bearbeitungsplatzhalter für die Formatter-Konfiguration. Drupal
+erzeugt daraus eine mit Tab erreichbare Schaltfläche. In den betroffenen
+Suchtabellen fehlt deren positionierender Feldwrapper; die Schaltfläche erscheint
+oben rechts, obwohl sie in der Tab-Reihenfolge unmittelbar auf den Feldinhalt
+folgt. Bestätigt wurde das bei ISIL-, Telefon- und JIRA-Links. In Einzelansichten
+kann die Positionierung korrekt sein; die Verwaltungsabkürzung entfällt auch dort.
+Bei `text_in_klammern` entfernt die Europeana-View bereits die entsprechenden
+HTML-Tags; die Deaktivierung gilt auch für weitere Ausgaben dieses Formatters.
+
+Die Änderung entfernt ausschließlich die Abkürzungen zu den
+Formatter-Konfigurationen. Diese bleiben unter `/admin/structure/formatters`
+erreichbar. Linktexte, Ziele, Telefonnummern und die bisherigen Formatierungen
+kommen unverändert aus den vorhandenen Formatter-Templates. Die normale
+Datensatz-Bearbeitung und andere Drupal-Kontextmenüs bleiben verfügbar.
+Zusätzliche Hooks, JavaScript oder Patches sind dafür nicht nötig.
+
+Deployment: Konfiguration importieren (`drush cim`), danach Caches neu aufbauen
+(`drush cr`). Zur Kontrolle auf `/search/kwe`, `/search/person`, `/search/bestand`
+und `/search/bestand/europeana` mit Tab über die jeweiligen Links gehen:
+Die zusätzlichen Formatter-Schaltflächen dürfen nicht mehr in der Tabfolge
+erscheinen. Die Linkausgabe und fehlende Formatter-Kontextplatzhalter lassen
+sich per Renderprüfung kontrollieren; die tatsächliche Tab-Reihenfolge
+zusätzlich im Browser prüfen.
+
 ## Suchfilter zurücksetzen und Cache
 
 Zusammengesetzte Datumsfilter stehen im Gin Frontend ohne zusätzliche Umrandung

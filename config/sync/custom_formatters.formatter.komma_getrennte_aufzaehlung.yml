@@ -4,7 +4,7 @@ status: true
 dependencies: {  }
 third_party_settings:
   contextual:
-    mode: '1'
+    mode: '0'
 id: komma_getrennte_aufzaehlung
 label: 'Semikolon-getrennte Aufzählung'
 type: twig

@@ -167,7 +167,7 @@ third_party_settings:
         - group_europeana_objekte_metadata
         - field_archivportal_lieferung
         - field_bemerkung_europeana_liefer
-      label: Europeana / Archivportal
+      label: 'Europeana / Archivportal'
       region: content
       parent_name: group_bestand
       weight: 7
