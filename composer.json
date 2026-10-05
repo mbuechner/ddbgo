@@ -22,6 +22,19 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "scottschiller/snowstorm",
+                "version": "dev-master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/scottschiller/Snowstorm/archive/refs/heads/master.zip",
+                    "type": "zip"
+                },
+                "license": "BSD-3-Clause"
+            }
         }
     ],
     "require": {
@@ -104,6 +117,7 @@
         "mnsami/composer-custom-directory-installer": "^2.2",
         "npm-asset/fortawesome--fontawesome-free": "^7",
         "npm-asset/select2": "^4.1",
+        "scottschiller/snowstorm": "dev-master",
         "vlucas/phpdotenv": "^5.7",
         "wikimedia/composer-merge-plugin": "^2.1"
     },
@@ -136,6 +150,15 @@
         "files": [
             "load.environment.php"
         ]
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@refresh-snowstorm"
+        ],
+        "post-update-cmd": [
+            "@refresh-snowstorm"
+        ],
+        "refresh-snowstorm": "@composer --no-cache --no-scripts reinstall scottschiller/snowstorm --prefer-dist --no-interaction --no-progress --no-autoloader"
     },
     "extra": {
     	"drupal-scaffold": {

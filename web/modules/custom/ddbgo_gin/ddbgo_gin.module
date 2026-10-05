@@ -315,11 +315,16 @@ function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
   if (isset($theme_registry['page'])) {
     $theme_registry['page__gin_frontend'] = $theme_registry['page'];
 
+    if (ddbgo_gin_is_theme('gin_frontend')) {
+      $theme_registry['page__gin_frontend']['template'] = 'page--gin-frontend';
+      $theme_registry['page__gin_frontend']['path'] = \Drupal::service('extension.list.module')->getPath('ddbgo_gin') . '/templates';
+    }
+
     // Gin ships a dedicated page--node-add template which bypasses Gin
     // Frontend's chrome. Point that exact suggestion at the active frontend
     // page implementation as well.
     if (ddbgo_gin_is_theme('gin_frontend') && isset($theme_registry['page__node_add'])) {
-      $theme_registry['page__node_add'] = $theme_registry['page'];
+      $theme_registry['page__node_add'] = $theme_registry['page__gin_frontend'];
     }
   }
 

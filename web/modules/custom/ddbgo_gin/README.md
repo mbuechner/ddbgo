@@ -4,6 +4,28 @@ Statisches HTML wird in Twig ausgegeben. PHP stellt die notwendigen Daten,
 Berechtigungen und Cache-Abhängigkeiten bereit. JavaScript ist auf Interaktionen
 und die unten beschriebenen Gin-Korrekturen begrenzt.
 
+## Weihnachtslichter
+
+Happy New Year entscheidet anhand seiner Konfiguration und des Zeitraums,
+ob die Lichterkette erscheint. `page--gin-frontend.html.twig` übernimmt das
+native Gin-Frontend-Template und ergänzt unmittelbar hinter dem Header einen
+leeren `#garland`-Platzhalter. Das Modul verwendet dieses Element mit seiner
+vorhandenen Bibliothek. Ein relativ positionierter Wrapper verankert die
+Lichter unter dem Menü; sein eigener Stapelkontext hält aufgeklappte Menüs
+über der Dekoration. Ohne aktive Bibliothek bleibt der Platzhalter unsichtbar
+und beansprucht keinen Platz. Die festen Abstands- und Toolbar-Optionen von
+Happy New Year bleiben ausgeschaltet. Zusätzliche JavaScript- oder
+CSS-Dateien sind nicht erforderlich. Bei Gin-Frontend-Updates das kopierte
+Template mit dem Original vergleichen.
+
+Snowstorm wird aus dem aktuellen `master`-Stand von
+`scottschiller/Snowstorm` unter `web/libraries/snowstorm` installiert.
+`composer install` und `composer update` laden das Archiv über
+`refresh-snowstorm` ohne Download-Cache erneut; mit `composer refresh-snowstorm`
+lässt sich nur diese Bibliothek aktualisieren. `--no-scripts` überspringt diese
+Aktualisierung. Happy New Year verwendet die lokale `snowstorm.js`, da die
+minifizierte Upstream-Datei nicht alle aktuellen Änderungen enthält.
+
 ## Templates
 
 - `form-element--ddbgo-gin`, `fieldset--ddbgo-gin`, `details--ddbgo-gin` und

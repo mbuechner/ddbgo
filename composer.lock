@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91bac3eb200d6cacee49c4f07b588d48",
+    "content-hash": "50ae66aa8499aa924c78c7dfc789340b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8915,6 +8915,18 @@
             "time": "2026-05-16T17:55:38+00:00"
         },
         {
+            "name": "scottschiller/snowstorm",
+            "version": "dev-master",
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/scottschiller/Snowstorm/archive/refs/heads/master.zip"
+            },
+            "type": "drupal-library",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        {
             "name": "sebastian/diff",
             "version": "7.0.1",
             "source": {
@@ -12722,7 +12734,8 @@
         "drupal/field_validation": 10,
         "drupal/gin_frontend": 15,
         "drupal/ultimate_cron": 10,
-        "drupal/viewsreference": 10
+        "drupal/viewsreference": 10,
+        "scottschiller/snowstorm": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
