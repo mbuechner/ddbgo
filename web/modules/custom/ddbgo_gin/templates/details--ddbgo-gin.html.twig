@@ -38,6 +38,15 @@
   ? description_display_toggle|default('after')
   : description_display %}
 {% set tooltip_id = 'ddbgo-help'|clean_unique_id %}
+{# Views filters use one native disclosure, not an ARIA accordion. Give its
+   content an explicit relationship to the summary without changing other
+   details widgets. Generate both references together at render time so
+   multiple filter forms and AJAX replacements keep matching, unique IDs. #}
+{% if attributes.hasClass('ddbgo-exposed-filters') %}
+  {% set filter_content_id = 'ddbgo-filter-content'|clean_unique_id %}
+  {% set summary_attributes = summary_attributes.setAttribute('aria-controls', filter_content_id) %}
+  {% set content_attributes = content_attributes.setAttribute('id', filter_content_id) %}
+{% endif %}
 {%
   set classes = [
     'claro-details',

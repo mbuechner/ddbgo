@@ -1294,6 +1294,31 @@ erscheinen. Die Linkausgabe und fehlende Formatter-Kontextplatzhalter lassen
 sich per Renderprüfung kontrollieren; die tatsächliche Tab-Reihenfolge
 zusätzlich im Browser prüfen.
 
+## Barrierefreie Verknüpfung der aufklappbaren Suchfilter
+
+Die Suchfilter verwenden ein natives `<details>` mit `<summary>` als
+Aufklappschaltfläche. Das entspricht dem
+[Disclosure-Muster der W3C](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/):
+Eine zusätzliche Überschrift ist dafür nicht vorgeschrieben, `aria-controls`
+ist optional. DDBgo ergänzt dieses Attribut zur eindeutigen Zuordnung des
+Schalters zum eingeblendeten Inhalt.
+
+`templates/details--ddbgo-gin.html.twig` vergibt ausschließlich bei der Klasse
+`ddbgo-exposed-filters` eine mit `clean_unique_id` erzeugte ID am Inhaltswrapper
+und setzt `aria-controls` am zugehörigen `<summary>` auf genau diese ID.
+Die eindeutige Vergabe berücksichtigt mehrere Filterformulare und AJAX-Ausgaben.
+Andere Details bleiben unverändert. Öffnen, Schließen und Tastaturbedienung
+übernimmt weiterhin das native HTML-Element; die vorhandene Aktualisierung von
+`aria-expanded` bleibt bei Drupal Core. Zusätzliches JavaScript, ein Modul oder
+ein Patch sind nicht erforderlich.
+
+Deployment: Caches neu aufbauen (`drush cr`). Zur Kontrolle im gerenderten HTML
+prüfen, dass jedes Filter-`<summary>` mit `aria-controls` genau einen vorhandenen
+Inhaltswrapper referenziert. Im Browser geöffneten und geschlossenen Zustand,
+Enter- und Leertastenbedienung sowie `aria-expanded` prüfen. Auch bei mehreren
+Filterformularen auf einer Seite und nach AJAX-Filterung müssen die IDs eindeutig
+und die Verknüpfungen gültig bleiben.
+
 ## Suchfilter zurücksetzen und Cache
 
 Zusammengesetzte Datumsfilter stehen im Gin Frontend ohne zusätzliche Umrandung
