@@ -1,4 +1,10 @@
 services:
+  ddbgo_search.reverse_reference_tracker:
+    class: Drupal\ddbgo_search\ReverseReferenceTracker
+    arguments:
+      - '@entity_type.manager'
+      - '@search_api.entity_datasource.tracking_manager'
+
   ddbgo_search.original_search_values:
     class: Drupal\ddbgo_search\EventSubscriber\OriginalSearchValuesSubscriber
     tags:

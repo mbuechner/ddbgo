@@ -7,6 +7,7 @@ use Drupal\Core\Action\Attribute\Action;
 use Drupal\Core\Action\Plugin\Action\DeleteAction;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\ddbgo_gin\BookmarkSelectionLock;
 use Drupal\flag\FlaggingInterface;
 use Drupal\node\NodeInterface;
 
@@ -23,6 +24,13 @@ use Drupal\node\NodeInterface;
   type: 'flagging',
 )]
 class BookmarkRemoveAction extends DeleteAction {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function executeMultiple(array $entities) {
+    BookmarkSelectionLock::withLock($this->currentUser, fn () => parent::executeMultiple($entities));
+  }
 
   /**
    * {@inheritdoc}

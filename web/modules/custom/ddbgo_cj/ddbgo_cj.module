@@ -20,12 +20,19 @@ function ddbgo_cj_kwe_queue_worker(): void {
 }
 
 /**
- * Implements hook_node_postsave().
+ * Implements hook_node_insert().
  */
-function ddbgo_cj_node_postsave(NodeInterface $node, string $operation): void {
+function ddbgo_cj_node_insert(NodeInterface $node): void {
   if ($node->bundle() === 'kwe') {
     _ddbgo_cj_worker()->enqueueNode($node);
   }
+}
+
+/**
+ * Implements hook_node_update().
+ */
+function ddbgo_cj_node_update(NodeInterface $node): void {
+  ddbgo_cj_node_insert($node);
 }
 
 /**

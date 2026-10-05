@@ -1,5 +1,42 @@
 <?php
 
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function ddbgo_search_entity_presave(EntityInterface $entity): void {
+  \Drupal::service('ddbgo_search.reverse_reference_tracker')->rememberOriginal($entity);
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function ddbgo_search_entity_insert(EntityInterface $entity): void {
+  \Drupal::service('ddbgo_search.reverse_reference_tracker')->trackChange($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function ddbgo_search_entity_update(EntityInterface $entity): void {
+  \Drupal::service('ddbgo_search.reverse_reference_tracker')->trackChange($entity);
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function ddbgo_search_entity_delete(EntityInterface $entity): void {
+  \Drupal::service('ddbgo_search.reverse_reference_tracker')->trackChange($entity, TRUE);
+}
+
+/**
+ * Implements hook_entity_predelete().
+ */
+function ddbgo_search_entity_predelete(EntityInterface $entity): void {
+  \Drupal::service('ddbgo_search.reverse_reference_tracker')->rememberDeletion($entity);
+}
+
 /**
  * Disable update checks for this custom module.
  *

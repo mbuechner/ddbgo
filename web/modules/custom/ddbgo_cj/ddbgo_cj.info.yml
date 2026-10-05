@@ -3,7 +3,6 @@ type: module
 description: Keeps cultural and knowledge institution data synchronized with the DDB API.
 dependencies:
   - drupal:ultimate_cron
-  - drupal:hook_post_action
   - drupal:content_lock
 package: ddbgo
 version: '1.1'

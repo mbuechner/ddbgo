@@ -7,6 +7,7 @@ namespace Drupal\ddbgo_cj;
 use Drupal\content_lock\ContentLock\ContentLockInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -42,6 +43,7 @@ final class KweQueueWorker {
     private readonly ClientInterface $httpClient,
     private readonly LoggerInterface $logger,
     private readonly TimeInterface $time,
+    private readonly LockBackendInterface $lock,
   ) {}
 
   /**
@@ -111,7 +113,8 @@ final class KweQueueWorker {
    * Updates one node. Returns FALSE when a lock requires a later retry.
    */
   public function processItem(int $node_id): bool {
-    $node = $this->entityTypeManager->getStorage('node')->load($node_id);
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $node = $node_storage->load($node_id);
     if (!$node instanceof NodeInterface) {
       return TRUE;
     }
@@ -133,8 +136,37 @@ final class KweQueueWorker {
       return TRUE;
     }
 
-    $this->updateNode($node, $organization, $api_url);
-    return TRUE;
+    // Content Lock uses this semaphore when acquiring an editor's lock. Hold
+    // it through the save so a new edit cannot start between check and update.
+    $lock_name = "content_lock:node:$node_id";
+    if (!$this->lock->acquire($lock_name, 600.0)) {
+      return FALSE;
+    }
+
+    try {
+      // The API request may have overlapped a completed editor save. Bypass
+      // entity caches to preserve those changes, including unmapped fields.
+      $node_storage->resetCache([$node_id]);
+      $node = $node_storage->load($node_id);
+      if (!$node instanceof NodeInterface) {
+        return TRUE;
+      }
+      if ($this->contentLock->fetchLock($node)) {
+        $this->logger->warning('Node @id is locked and will be retried later.', ['@id' => $node_id]);
+        return FALSE;
+      }
+      if (!$node->hasField('field_ddburi') || $node->get('field_ddburi')->value !== $ddb_uri) {
+        // Retry with the new URI rather than applying another organization's
+        // data to a node whose URI changed while the HTTP request was running.
+        return FALSE;
+      }
+
+      $this->updateNode($node, $organization, $api_url);
+      return TRUE;
+    }
+    finally {
+      $this->lock->release($lock_name);
+    }
   }
 
   /**
@@ -230,7 +262,7 @@ final class KweQueueWorker {
     foreach ($field_map as $field_name => $value_key) {
       if (isset($values[$value_key]) && $node->hasField($field_name)
         && $node->get($field_name)->value !== $values[$value_key]) {
-        $node->set($field_name, $values[$value_key]);
+        $node->get($field_name)->value = $values[$value_key];
         $changed = TRUE;
       }
     }

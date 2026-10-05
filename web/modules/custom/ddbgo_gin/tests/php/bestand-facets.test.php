@@ -57,6 +57,8 @@ if (empty($extra)) {
     'remove-one' => ['input' => ['query' => '', 'field_bestandstags' => [$tags[1]]], 'remembered' => ['query' => '', 'field_bestandstags' => $tags]],
     'remove-last' => ['input' => ['query' => ''], 'remembered' => ['query' => '', 'field_bestandstags' => $tags]],
     'fulltext' => ['input' => ['query' => 'Archiv', 'field_bestandstags' => [$tags[0]]]],
+    'query-zero' => ['input' => ['query' => '0']],
+    'remembered-query' => ['input' => [], 'remembered' => ['query' => 'Archiv', 'field_bestandstags' => [$tags[0]]]],
     'zero' => ['input' => ['query' => 'zzzzNoDDBgoMatchzzzz', 'field_bestandstags' => $tags]],
     'remembered' => ['input' => [], 'remembered' => ['query' => '', 'field_bestandstags' => $tags]],
     'tag-link' => ['input' => ['query' => '', 'field_bestandstags' => [$tags[0]]], 'remembered' => ['query' => 'zzzzNoDDBgoMatchzzzz', 'field_bestandstags' => [$tags[1]]]],
@@ -77,6 +79,7 @@ if (empty($extra)) {
   $check($results['two']['total'] <= $results['one']['total'], 'AND semantics narrow the results.');
   $check($results['remove-last'] === $results['all'], 'Removing the final tag restores all results and choices.');
   $check($results['remembered'] === $results['two'], 'Remembered filters restore both results and choices.');
+  $check($results['remembered-query'] === $results['fulltext'], 'Remembered full-text input restores the active search.');
   $check($results['tag-link'] === $results['one'], 'Existing ID-based tag links override remembered filters.');
   $check($results['pager'] === $results['one'], 'Options come from all matching results, independent of pagination.');
   $check($results['zero']['total'] === 0 && $results['deleted-tag']['total'] === 0, 'Empty searches stay empty.');
@@ -117,6 +120,8 @@ else {
   $view->execute();
 }
 $form = $view->exposed_widgets;
+$query = $effective_input['query'] ?? '';
+$check($form['ddbgo_exposed_filters']['#open'] === ($query !== '' && $query !== NULL), 'Active full-text searches remain visible after the Facets rebuild, including "0" and remembered input.');
 $check(isset($form['field_bestandstags']), 'Tag filter exists. Rebuild Drupal caches after importing configuration.');
 $tag = $form['field_bestandstags'];
 $check(($tag['#type'] ?? '') === 'select_tagify', 'Tagify remains visible, including empty results.');

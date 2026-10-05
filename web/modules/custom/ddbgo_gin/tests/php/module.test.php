@@ -64,6 +64,20 @@ $check(isset($built['tags'], $built['token']) && !isset($built['query']), 'Keep 
 $check(isset($details['actions']['submit']['#attributes']['data-ddbgo-tag-auto-submit-click']), 'Keep the original Views submit path');
 $check(ddbgo_gin_build_exposed_filter_details($built, $state) === $built, 'After-build remains idempotent');
 
+// Rebuilt Views widgets use active input as their default. It must not hide
+// that input, and PHP's falsey string "0" is still a valid full-text search.
+foreach (['Archiv', '0'] as $query) {
+  $query_state = (new FormState())->setUserInput(['query' => $query]);
+  $query_form = ['query' => ['#type' => 'textfield', '#default_value' => $query]];
+  $check(ddbgo_gin_build_exposed_filter_details($query_form, $query_state)['ddbgo_exposed_filters']['#open'] === TRUE, "Rebuilt search remains visible: $query");
+}
+$check(!ddbgo_gin_exposed_filter_has_selection(['#type' => 'textfield', '#default_value' => 'Archiv'], ''), 'Cleared text ignores the previous widget default');
+$option_filter = ['#type' => 'select', '#options' => ['All' => 'Any', 0 => 'No', 1 => 'Yes'], '#default_value' => 1];
+$check(!ddbgo_gin_exposed_filter_has_selection($option_filter, 'All'), 'Unfiltered choice stays inactive after a rebuild');
+$check(ddbgo_gin_exposed_filter_has_selection($option_filter, '0'), 'Zero-valued option remains an active filter');
+$check(ddbgo_gin_exposed_filter_has_selection($option_filter, '1'), 'Selected option ignores the active widget default');
+$check(!ddbgo_gin_exposed_filter_has_selection(['#type' => 'select', '#options' => [0 => 'Default', 1 => 'Other']], '0'), 'Numeric default matches submitted string values');
+
 // Exercise label placement branches that are not present in every live form.
 $renderer = Drupal::service('renderer');
 foreach (['before', 'after', 'invisible', 'none'] as $placement) {

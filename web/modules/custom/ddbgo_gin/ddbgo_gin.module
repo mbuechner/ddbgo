@@ -804,11 +804,14 @@ function ddbgo_gin_prepare_exposed_date_filters(array &$form, FormStateInterface
 }
 
 /**
- * Determines whether an exposed filter differs from its empty default value.
+ * Determines whether an exposed filter contains a non-empty selection.
  */
 function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): bool {
   $values = is_array($input) ? $input : [$input];
-  $default_value = $element['#default_value'] ?? array_key_first($element['#options'] ?? []);
+  // Views can rebuild widgets with the active input as their #default_value.
+  // Text inputs are empty only without text; option widgets retain their first
+  // (unfiltered/default) choice independently of that mutable widget value.
+  $empty_value = array_key_first($element['#options'] ?? []);
   $multiple = $element['#multiple'] ?? FALSE;
 
   foreach ($values as $value) {
@@ -819,14 +822,13 @@ function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): b
       continue;
     }
 
-    if ($multiple) {
-      if ($value !== '' && $value !== NULL) {
-        return TRUE;
-      }
+    if ($value === '' || $value === NULL || $value === FALSE) {
+      continue;
     }
-    elseif ($value !== $default_value && ($value || $default_value === 0)) {
-      return TRUE;
+    if (!$multiple && $empty_value !== NULL && (string) $value === (string) $empty_value) {
+      continue;
     }
+    return TRUE;
   }
 
   return FALSE;

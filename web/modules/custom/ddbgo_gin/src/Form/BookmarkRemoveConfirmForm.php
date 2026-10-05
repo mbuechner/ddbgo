@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TempStore\PrivateTempStore;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\Url;
+use Drupal\ddbgo_gin\BookmarkSelectionLock;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -162,8 +163,12 @@ class BookmarkRemoveConfirmForm extends ConfirmFormBase {
     }
     // Preserve a newer selection prepared in another browser tab.
     $queued = $form_state->get('bookmark_queue');
-    if ($queued !== NULL && $this->selectionStore->get($this->selectionKey()) === $queued) {
-      $this->selectionStore->delete($this->selectionKey());
+    if ($queued !== NULL) {
+      BookmarkSelectionLock::withLock($this->currentUser(), function () use ($queued): void {
+        if ($this->selectionStore->get($this->selectionKey()) === $queued) {
+          $this->selectionStore->delete($this->selectionKey());
+        }
+      });
     }
     $form_state->setRedirectUrl($this->getCancelUrl());
   }

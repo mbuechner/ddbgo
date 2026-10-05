@@ -41,21 +41,60 @@ ${script('modules/contrib/tagify/js/tagify.js')}
     document.getElementById('fixtures').replaceChildren(form);
     const select = form.querySelector('select');
     const submissions = [];
+    let tagify;
     form.addEventListener('submit', event => {
       event.preventDefault();
       const data = new FormData(form);
       check(data.get('query') === 'Archiv', 'Other filters were lost');
+      check(JSON.stringify(selection(select)) === JSON.stringify(tagify.value.map(item => String(item.value)).sort()), 'Native selection differs from live Tagify state');
       submissions.push(data.getAll('field_bestandstags[]').sort());
     });
     if (attachFirst) Drupal.behaviors.ddbgoTagExposedFilters.attach(form);
     Drupal.behaviors.tagifySelect.attach(form);
-    const tagify = form.querySelector('input.tagify-select-widget').__tagify;
+    tagify = form.querySelector('input.tagify-select-widget').__tagify;
     tagify.CSSVars.tagHideTransition = duration;
     Drupal.behaviors.ddbgoTagExposedFilters.attach(form);
     Drupal.behaviors.ddbgoTagExposedFilters.attach(form);
     await delay(150);
     return { form, select, tagify, submissions };
   }
+  for (const duration of [300, 700]) {
+    await test('Two overlapping removals, animation '+duration+'ms', async () => {
+      const { tagify, select, submissions } = await fixture(['1','2','3'], duration);
+      tagify.removeTags('1');
+      await delay(50);
+      tagify.removeTags('2');
+      await delay(duration + 250);
+      check(JSON.stringify(submissions) === JSON.stringify([['3']]), 'Overlapping removals submitted stale tags: '+JSON.stringify(submissions));
+      check(selection(select).join() === '3', 'Removed tag remains selected');
+    });
+    await test('Add during animated removal, animation '+duration+'ms', async () => {
+      const { tagify, select, submissions } = await fixture(['1','2'], duration);
+      tagify.removeTags('1');
+      await delay(50);
+      tagify.addTags([{ value:'3', text:'Tag 3' }]);
+      await delay(duration + 250);
+      check(JSON.stringify(submissions) === JSON.stringify([['2','3']]), 'Removal/addition submitted stale tags: '+JSON.stringify(submissions));
+      check(selection(select).join() === '2,3', 'Added tag was lost');
+    });
+    await test('Re-add same tag before removal finishes, animation '+duration+'ms', async () => {
+      const { tagify, select, submissions } = await fixture(['1','2'], duration);
+      tagify.removeTags('1');
+      await delay(50);
+      tagify.addTags([{ value:'1', text:'Tag 1' }]);
+      await delay(duration + 250);
+      check(submissions.length === 0, 'Unchanged final selection submitted: '+JSON.stringify(submissions));
+      check(selection(select).join() === '1,2', 'Delayed remove deselected the re-added tag');
+    });
+  }
+  await test('Batch addition submits the stable complete selection once', async () => {
+    const { tagify, select, submissions } = await fixture([], 300);
+    tagify.addTags(['1','2','3'].map(value => ({ value, text:'Tag '+value })));
+    await delay(250);
+    select.dispatchEvent(new Event('change', { bubbles:true }));
+    await delay(50);
+    check(JSON.stringify(submissions) === JSON.stringify([['1','2','3']]), 'Batch selection was incomplete or duplicated: '+JSON.stringify(submissions));
+  });
   async function test(name, callback) {
     try { await callback(); results.push('PASS: '+name); }
     catch (error) { results.push('FAIL: '+name+' — '+error.message); }
