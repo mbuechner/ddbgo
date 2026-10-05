@@ -567,7 +567,7 @@ function ddbgo_gin_entity_view_display_alter(EntityViewDisplayInterface &$displa
   // Never mutate that shared config entity. A separate paragraph view mode
   // also keeps nested render caches independent of lists and form previews.
   $display = clone $display;
-  foreach (ddbgo_gin_object_field_labels() as $field => $label) {
+  foreach (array_keys(ddbgo_gin_object_field_labels()) as $field) {
     if ($component = $display->getComponent($field)) {
       $component['settings']['view_mode'] = 'ddbgo_object_details';
       $display->setComponent($field, $component);
@@ -978,7 +978,7 @@ function ddbgo_gin_preprocess_page(array &$variables): void {
   $cache = CacheableMetadata::createFromRenderArray($variables);
   $block_id = ddbgo_gin_bookmark_header_block($cache);
   $cache->applyTo($variables);
-  if ($block_id === NULL || !isset($variables['page']['header'][$block_id]) || !\Drupal::hasService('flag')) {
+  if ($block_id === NULL || !isset($variables['page']['header'][$block_id])) {
     return;
   }
   $node = \Drupal::routeMatch()->getParameter('node');

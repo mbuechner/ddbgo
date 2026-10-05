@@ -154,7 +154,6 @@ processor_settings:
       - title
   language_with_fallback: {  }
   rendered_item: {  }
-  reverse_entity_references: {  }
   tokenizer:
     weights:
       preprocess_index: -6

@@ -10,7 +10,6 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\search_api\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -40,13 +39,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   protected $entityTypeManager;
 
   /**
-   * The fields helper.
-   *
-   * @var \Drupal\search_api\Utility\FieldsHelperInterface|null
-   */
-  protected $fieldsHelper;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
@@ -55,7 +47,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
     $processor->setEntityTypeManager($container->get('entity_type.manager'));
-    $processor->setFieldsHelper($container->get('search_api.fields_helper'));
 
     return $processor;
   }
@@ -82,31 +73,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   public function setEntityTypeManager(EntityTypeManagerInterface $entity_type_manager)
   {
     $this->entityTypeManager = $entity_type_manager;
-    return $this;
-  }
-
-  /**
-   * Retrieves the fields helper.
-   *
-   * @return \Drupal\search_api\Utility\FieldsHelperInterface
-   *   The fields helper.
-   */
-  public function getFieldsHelper()
-  {
-    return $this->fieldsHelper ?: Drupal::service('search_api.fields_helper');
-  }
-
-  /**
-   * Sets the fields helper.
-   *
-   * @param \Drupal\search_api\Utility\FieldsHelperInterface $fields_helper
-   *   The new fields helper.
-   *
-   * @return $this
-   */
-  public function setFieldsHelper(FieldsHelperInterface $fields_helper)
-  {
-    $this->fieldsHelper = $fields_helper;
     return $this;
   }
 
@@ -217,7 +183,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       ->getStorage('node')
       ->loadMultiple($nids);
 
-    if (!isset($nodes) || count($nodes) < 1) {
+    if (count($nodes) < 1) {
       return;
     }
 

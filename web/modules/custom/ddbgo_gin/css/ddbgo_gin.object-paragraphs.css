@@ -106,11 +106,6 @@
   min-inline-size: 0;
 }
 
-.gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform > .field {
-  min-inline-size: 0;
-  margin-block: 0;
-}
-
 .gin-frontend .node-form .ddbgo-object-widget .paragraphs-subform > .field--name-field-objekte {
   grid-column: 1 / -1;
   padding-inline-start: var(--gin-spacing-s);
