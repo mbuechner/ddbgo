@@ -46,3 +46,36 @@ keine Inhalte oder Konfiguration:
 ```sh
 php web/modules/custom/ddbgo_search/tests/php/reverse-reference-tracker.test.php
 ```
+
+# Gebündelte Personen-Verknüpfungen
+
+Die Prozessoren für Personen-KWE, Personen-Bestände und Personen-Aggregatoren
+bereiten die ursprünglichen Feldwerte einer Views-Suchseite gemeinsam vor der
+Hervorhebung auf. `PersonRelations` fragt die Verknüpfungen einmal pro Inhaltstyp
+ab und lädt die benötigten Nodes, Paragraphen und Rollen gesammelt. Beim Lesen
+der Paragraphen-Referenzen verwenden die Prozessoren die skalaren `target_id`
+Werte, damit dabei keine einzelnen Revisionen nachgeladen werden.
+
+Die bestehende Ausgabe bleibt erhalten: SQL berücksichtigt Verknüpfungen in
+allen Übersetzungen; Links und Rollen verwenden wie bisher die geladenen
+Default-Entitäten und Paragraphen. Bei Titeln, die die Datenbank gleich sortiert,
+übernimmt eine zusätzliche Einzelabfrage die bisherige Reihenfolge. Die vorbereiteten
+Relationen gelten nur während der Feldextraktion; außerhalb einer Views-Suche
+bleibt die bisherige Einzelverarbeitung verfügbar.
+
+Fehlt der neue Service noch in einem zwischengespeicherten Web-Container,
+verwenden die Prozessoren ebenfalls die bisherige Einzelverarbeitung. Die
+Personenliste bleibt damit verfügbar, bis der Container erneuert wurde.
+
+Hervorhebung und Views verwenden anschließend dieselben ursprünglichen
+Feldwerte. Cache-Tags für Nodes, Paragraphen, Rollen und URL-Aliase halten auch
+gespeicherte Suchergebnisse nach Änderungen aktuell. Die Indexfelder und ihre
+Werte ändern sich nicht; eine Neuindexierung ist für diese Optimierung nicht
+nötig. Nach dem Deployment den Cache mit `drush cr` neu aufbauen.
+
+Die isolierten und nativen Regressionstests lassen sich so ausführen:
+
+```sh
+php web/modules/custom/ddbgo_search/tests/php/person-relations.test.php
+php vendor/bin/drush.php php:script web/modules/custom/ddbgo_search/tests/php/person-search-batch.test.php
+```

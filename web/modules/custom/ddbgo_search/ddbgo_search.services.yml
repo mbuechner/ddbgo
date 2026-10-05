@@ -1,4 +1,10 @@
 services:
+  ddbgo_search.person_relations:
+    class: Drupal\ddbgo_search\PersonRelations
+    arguments:
+      - '@entity_type.manager'
+      - '@search_api.fields_helper'
+
   ddbgo_search.reverse_reference_tracker:
     class: Drupal\ddbgo_search\ReverseReferenceTracker
     arguments:

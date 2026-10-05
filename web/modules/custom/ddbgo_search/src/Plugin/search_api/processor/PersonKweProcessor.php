@@ -19,12 +19,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   description = @Translation("DDBgo KWEs which are linked to Persons, used in Person's search"),
  *   stages = {
  *     "add_properties" = 20,
+ *     "postprocess_query" = -100,
  *   },
  *   locked = FALSE,
  *   hidden = FALSE,
  * )
  */
 class PersonKweProcessor extends ProcessorPluginBase {
+
+  use PersonRelationsBatchTrait;
 
   /**
    * The entity type manager.
@@ -89,78 +92,89 @@ class PersonKweProcessor extends ProcessorPluginBase {
       return;
     }
 
-    // Find all published KWE nodes linked to the current person.
-    $nids = Drupal::entityQuery('node')
-      ->accessCheck(FALSE)
-      ->condition('status', 1)
-      ->condition('type', 'kwe')
-      ->condition('field_personen.entity:paragraph.field_person.target_id', $original_entity->id())
-      ->sort('title', 'ASC')
-      ->execute();
+    $prepared = $this->getPersonRelations()?->getPrepared($original_entity->id(), 'kwe');
+    if ($prepared !== NULL) {
+      $nodes = $prepared['nodes'];
+      $node_role_ids = $prepared['node_role_ids'];
+      $roles = $prepared['roles'];
+    }
+    else {
+      // Find all published KWE nodes linked to the current person.
+      $nids = Drupal::entityQuery('node')
+        ->accessCheck(FALSE)
+        ->condition('status', 1)
+        ->condition('type', 'kwe')
+        ->condition('field_personen.entity:paragraph.field_person.target_id', $original_entity->id())
+        ->sort('title', 'ASC')
+        ->execute();
 
-    $nodes = $this->getEntityTypeManager()
-      ->getStorage('node')
-      ->loadMultiple($nids);
+      $nodes = $this->getEntityTypeManager()
+        ->getStorage('node')
+        ->loadMultiple($nids);
 
-    // Use bulk loading to avoid repeated entity loads in later loops.
-    $person_id = (int) $original_entity->id();
-    $node_paragraph_ids = [];
-    $paragraph_ids = [];
+      // Use bulk loading to avoid repeated entity loads in later loops.
+      $person_id = (int) $original_entity->id();
+      $node_paragraph_ids = [];
+      $paragraph_ids = [];
 
-    foreach ($nodes as $node) {
-      if (!($node instanceof Node)) {
-        continue;
+      foreach ($nodes as $node) {
+        if (!($node instanceof Node)) {
+          continue;
+        }
+
+        // Collect all paragraph references per node and globally.
+        $ids = [];
+        foreach ($node->get('field_personen') as $reference) {
+          $ids[] = $reference->target_id;
+        }
+        $ids = array_values(array_filter($ids));
+        $node_paragraph_ids[$node->id()] = $ids;
+        $paragraph_ids = array_merge($paragraph_ids, $ids);
       }
 
-      // Collect all paragraph references per node and globally.
-      $ids = array_column($node->get('field_personen')->getValue(), 'target_id');
-      $ids = array_values(array_filter($ids));
-      $node_paragraph_ids[$node->id()] = $ids;
-      $paragraph_ids = array_merge($paragraph_ids, $ids);
-    }
-
-    // Load all referenced paragraphs once and map them in memory.
-    $paragraph_ids = array_values(array_unique($paragraph_ids));
-    $paragraphs = [];
-    if ($paragraph_ids) {
-      $paragraphs = $this->getEntityTypeManager()
-        ->getStorage('paragraph')
-        ->loadMultiple($paragraph_ids);
-    }
-
-    // Resolve role term IDs for the current person per node.
-    $node_role_ids = [];
-    $role_ids = [];
-    foreach ($node_paragraph_ids as $node_id => $ids) {
-      $node_role_ids[$node_id] = [];
-      foreach ($ids as $id) {
-        $paragraph = $paragraphs[$id] ?? NULL;
-        if (!($paragraph instanceof Paragraph)) {
-          continue;
-        }
-
-        // Keep only paragraph rows that point to the current person.
-        if ((int) $paragraph->get('field_person')->target_id !== $person_id) {
-          continue;
-        }
-
-        $role_id = (int) $paragraph->get('field_rolle')->target_id;
-        if ($role_id <= 0) {
-          continue;
-        }
-
-        $node_role_ids[$node_id][] = $role_id;
-        $role_ids[] = $role_id;
+      // Load all referenced paragraphs once and map them in memory.
+      $paragraph_ids = array_values(array_unique($paragraph_ids));
+      $paragraphs = [];
+      if ($paragraph_ids) {
+        $paragraphs = $this->getEntityTypeManager()
+          ->getStorage('paragraph')
+          ->loadMultiple($paragraph_ids);
       }
-    }
 
-    // Load all role terms once; labels are resolved during output rendering.
-    $role_ids = array_values(array_unique($role_ids));
-    $roles = [];
-    if ($role_ids) {
-      $roles = $this->getEntityTypeManager()
-        ->getStorage('taxonomy_term')
-        ->loadMultiple($role_ids);
+      // Resolve role term IDs for the current person per node.
+      $node_role_ids = [];
+      $role_ids = [];
+      foreach ($node_paragraph_ids as $node_id => $ids) {
+        $node_role_ids[$node_id] = [];
+        foreach ($ids as $id) {
+          $paragraph = $paragraphs[$id] ?? NULL;
+          if (!($paragraph instanceof Paragraph)) {
+            continue;
+          }
+
+          // Keep only paragraph rows that point to the current person.
+          if ((int) $paragraph->get('field_person')->target_id !== $person_id) {
+            continue;
+          }
+
+          $role_id = (int) $paragraph->get('field_rolle')->target_id;
+          if ($role_id <= 0) {
+            continue;
+          }
+
+          $node_role_ids[$node_id][] = $role_id;
+          $role_ids[] = $role_id;
+        }
+      }
+
+      // Load all role terms once; labels are resolved during output rendering.
+      $role_ids = array_values(array_unique($role_ids));
+      $roles = [];
+      if ($role_ids) {
+        $roles = $this->getEntityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadMultiple($role_ids);
+      }
     }
 
     $fields = $this->getFieldsHelper()
