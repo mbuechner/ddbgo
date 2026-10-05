@@ -149,6 +149,15 @@ form_status:
     - core/drupal.ajax
     - core/drupal.announce
 
+# Attached by server-rendered Gin status messages, including cached destinations.
+# Initial page feedback is separate from the widgets' existing AJAX handling.
+page_feedback:
+  js:
+    js/ddbgo_gin.page-feedback.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.announce
+
 # Attached by the shared help-button template, including AJAX responses.
 form_help:
   css:

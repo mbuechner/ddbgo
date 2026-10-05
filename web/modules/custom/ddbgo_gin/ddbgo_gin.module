@@ -78,6 +78,46 @@ function ddbgo_gin_preprocess_fieldset(array &$variables): void {
 }
 
 /**
+ * Implements hook_preprocess_html().
+ *
+ * A failed full-page POST must be recognizable when the document title is
+ * read. Peek at the messenger without consuming the error summary. GET pages
+ * after a redirect can come from Dynamic Page Cache; their individual messages
+ * are instead announced from the session-specific status_messages placeholder.
+ */
+function ddbgo_gin_preprocess_html(array &$variables): void {
+  $request = \Drupal::request();
+  if (!$request->isMethod('POST') || $request->isXmlHttpRequest()
+    || !ddbgo_gin_is_theme('gin') || !\Drupal::messenger()->messagesByType('error')) {
+    return;
+  }
+
+  // Preserve the original page/site title and its escaping. Unsafe-method
+  // responses are not page-cached; also keep this render metadata explicit.
+  $variables['head_title'] = ['feedback' => t('Fehler')] + $variables['head_title'];
+  $variables['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_preprocess_status_messages().
+ *
+ * Mark only server-rendered Gin messages. This hook runs in Core's per-session
+ * lazy placeholder, including cached redirect destinations. Attaching the
+ * behavior here avoids putting flash-message state in the cached page. AJAX
+ * responses retain Core/Gin's existing announcement and focus handling.
+ */
+function ddbgo_gin_preprocess_status_messages(array &$variables): void {
+  if (!ddbgo_gin_is_theme('gin') || \Drupal::request()->isXmlHttpRequest()
+    || !array_filter($variables['message_list'] ?? [])) {
+    return;
+  }
+
+  $variables['attributes']['data-ddbgo-page-messages'] = '';
+  $variables['attributes']['tabindex'] = -1;
+  $variables['#attached']['library'][] = 'ddbgo_gin/page_feedback';
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function ddbgo_gin_page_attachments(array &$attachments): void {
@@ -335,6 +375,18 @@ function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
   // Inspect each registry entry: a registry can be built for a non-active theme,
   // and breadcrumb suggestions have already inherited their preprocessors.
   foreach ($theme_registry as $hook => &$definition) {
+    // Metatag replaces head_title rather than extending it. Run the feedback
+    // prefix after all normal title processing, including HTML suggestions,
+    // so an error on an existing record's edit form keeps its indication.
+    if (($hook === 'html' || str_starts_with($hook, 'html__'))
+      && in_array('ddbgo_gin_preprocess_html', $definition['preprocess functions'] ?? [], TRUE)) {
+      $definition['preprocess functions'] = array_values(array_filter(
+        $definition['preprocess functions'],
+        static fn ($callback): bool => $callback !== 'ddbgo_gin_preprocess_html',
+      ));
+      $definition['preprocess functions'][] = 'ddbgo_gin_preprocess_html';
+    }
+
     if (($hook === 'breadcrumb' || str_starts_with($hook, 'breadcrumb__'))
       && in_array('gin_frontend_preprocess_breadcrumb', $definition['preprocess functions'] ?? [], TRUE)) {
       $definition['preprocess functions'] = array_values(array_filter(

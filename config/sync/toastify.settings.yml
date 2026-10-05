@@ -34,5 +34,5 @@ error:
   offsetX: 0
   offsetY: 0
 enable_for:
-  admin_theme: true
-  frontend_theme: true
+  admin_theme: false
+  frontend_theme: false

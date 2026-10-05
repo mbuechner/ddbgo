@@ -794,6 +794,114 @@ Warteansage, langsame Anfragen mit Beginn/Ende, Dublettenhinweise einmal pro
 Antwort und weiterhin nutzbare Tab-Navigation. Native Browserpopups bleiben
 unverändert und gehören in diesen manuellen Test.
 
+### Fehler und Speicherbestätigung nach einem Seitenreload
+
+`page_feedback` ergänzt die Rückmeldung bei vollständig neu geladenen Seiten
+in Gin und Gin Frontend. Nach einer fehlgeschlagenen Formularübermittlung
+erhält die vorhandene Fehlerübersicht einmal den Fokus. Ihr Inhalt wird über
+`aria-describedby` mit der Übersicht verbunden; die vorhandenen Links zu den
+fehlerhaften Feldern bleiben nutzbar. Bestehende IDs und Beschreibungen werden
+erhalten. Ist bereits ein anderes Element fokussiert, bleibt der Fokus dort
+und der Fehlertext wird stattdessen einmal dringlich (`assertive`) angesagt.
+Fokus und Ansage werden nicht gleichzeitig ausgelöst.
+
+Bei einer Fehlerantwort auf einen vollständigen POST ergänzt der
+HTML-Preprocessor „Fehler“ am Anfang des Dokumenttitels. Der ursprüngliche
+Seiten- und Websitetitel bleibt erhalten. Der Messenger wird dabei nur
+gelesen, damit Core die Fehlerübersicht anschließend weiterhin ausgeben kann.
+Der Preprocessor läuft nach der normalen Titelverarbeitung, auch nach Metatag,
+damit dessen Titelersetzung den Fehlerhinweis nicht entfernt. Er setzt
+ausdrücklich `max-age: 0` für diese Rückgabe.
+
+Erfolgs- und Warnmeldungen werden einmal mit ihrem vorhandenen Inhalt über
+Drupals zunächst leere Live-Region angesagt: Erfolg höflich (`polite`), Warnung
+dringlich (`assertive`). Die Speicherbestätigung stammt weiterhin aus Drupal;
+eine reine AJAX-Aktualisierung wird nicht als erfolgreiche Speicherung
+ausgegeben. Schließen-Schaltfläche und dekorativer Meldungstitel gehören
+nicht zum angesagten Text. Bei gleichzeitig vorhandenen Fehlern hat die
+Fehlerübersicht Vorrang.
+
+Der Status-Messages-Preprocessor markiert nur serverseitige Gin-Meldungen
+mit `data-ddbgo-page-messages` und hängt dort die Library an. Dieser Hook läuft
+in Cores sitzungsabhängigem Lazy-Placeholder auch bei einem Treffer im Dynamic
+Page Cache. Erfolgsseiten nach einer Weiterleitung erhalten deshalb keinen
+sitzungsabhängigen Titel im gecachten Seiten-HTML; ihre tatsächliche Meldung
+wird beim initialen Behavior-Attach zugänglich gemacht. Weitere Attach-Aufrufe
+und AJAX-Antworten erhalten keine zusätzliche Fokussteuerung oder Ansage.
+
+Toastify ist über `toastify.settings: enable_for` für Verwaltungs- und
+Frontend-Theme deaktiviert. Dadurch bleiben auch für Administrator*innen die
+Gin-Meldungen sichtbar, bis sie ausdrücklich geschlossen werden. Die bisherigen
+fünf Sekunden langen Toasts ersetzen die Fehlerübersicht nicht mehr.
+
+Die Ergänzung kopiert keine Gin-Templates, ändert keine Validierungsregeln und
+benötigt keinen neuen Patch oder ein weiteres Modul. Native Chrome-Popups für
+Pflichtfelder, E-Mail- und URL-Prüfungen bleiben ein separater manueller Prüffall.
+Ein bereits gefüllter Live-Container im initialen HTML allein gewährleistet
+keine Ansage nach einem Reload; deshalb werden gezielter Fokus und Drupals
+vorhandene Ansagefunktion verwendet. Grundlage:
+[W3C: User Notifications](https://www.w3.org/WAI/tutorials/forms/notifications/).
+
+```sh
+drush cim -y
+drush cr
+drush php:script web/modules/custom/ddbgo_gin/tests/php/page-feedback.test.php
+node --test web/modules/custom/ddbgo_gin/tests/js/page-feedback.test.cjs
+```
+
+Die PHP-Regression prüft echte Meldungs- und HTML-Renderings, Theme-/AJAX-Grenzen
+und den nicht konsumierenden Messenger-Zugriff. Sie speichert keine Inhalte
+und sendet keine Formulare ab. Die JavaScript-Regression prüft einmalige
+Ansagen, Fehlerpriorität, Fokus, erhaltene Beschreibungen und sicheres Escaping.
+Die tatsächliche Screenreader-Ansage muss manuell geprüft werden: eine
+serverseitig ungültige Eingabe speichern, über die Fehlerübersicht das Feld
+aufrufen, die Eingabe korrigieren und erfolgreich speichern. Dies auch als
+Administrator*in sowie bei einer bereits gecachten Zielseite kontrollieren.
+
+### Nulltreffermeldungen nach AJAX-Filterung
+
+„Keine Ergebnisse gefunden“ ist bei einer Aktualisierung ohne Seitenwechsel eine
+[Statusmitteilung nach WCAG 4.1.3](https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html),
+kein dringender Fehler. `EmptyViewsResultsSubscriber` ergänzt deshalb ein
+höfliches (`polite`) `AnnounceCommand` bei Views-AJAX-Antworten mit tatsächlich
+ausgeführter View und leerem Ergebnis. Die Korrektur gilt unabhängig von
+View-ID, Theme und Display-Typ, also auch für Block-, Standard- und
+Verwaltungsdisplays. Sie erfasst künftig auf AJAX umgestellte Views ebenfalls.
+Vollständige Seitenaufrufe erhalten keine zusätzliche Ansage; die vorhandene
+AJAX-Einstellung und die bisherige Fokusbehandlung bleiben unverändert.
+
+Die Ansage übernimmt ausschließlich konfigurierte sichtbare Textmeldungen aus
+den Standard-Empty-Handlern `Text` und `TextCustom`. Deren `render(TRUE)`-Ausgabe
+wird mit Drupals `renderInIsolation()` gerendert; bei `Text` werden dabei die
+Filter des konfigurierten Textformats angewendet. HTML-Tags werden entfernt,
+HTML-Entities dekodiert und der fertige Text erneut escaped, weil
+`Drupal.announce()` intern HTML einsetzt. Andere Empty-Plugins und fehlende oder
+leere Textmeldungen erzeugen keine zusätzliche Ansage. Es wird kein Meldungstext
+erfunden. Antworten mit eigenen `announce`- oder `message`-Kommandos behalten
+ihre bestehende Ansage, damit keine Doppelmeldung entsteht.
+
+Der Subscriber fügt den Ansagebefehl nach dem Austausch der View ein und
+verwendet Drupals bereits vorhandene, zunächst leere Live-Region. Die
+Abhängigkeiten `views/views.ajax` → `core/drupal.ajax` → `core/drupal.message`
+→ `core/drupal.announce` laden diese schon auf der ursprünglichen Seite.
+Ein bloßes `role="status"` am neu eingefügten Nulltreffertext wäre für die
+dynamische Ansage nicht zuverlässig. Es werden weder der ganze Ergebnisbereich
+als Live-Region markiert noch Fokus, Filter, Ergebnisse oder sichtbare Texte
+verändert; eigenes JavaScript und ein Patch sind nicht nötig.
+
+```sh
+drush cr
+drush php:script web/modules/custom/ddbgo_gin/tests/php/views-empty-status.test.php
+```
+
+Zusätzlich mit NVDA oder VoiceOver die AJAX-Listen
+`/search/bestand/europeana` und `/search/bestand/cdv` sowie weitere neu aktivierte
+AJAX-Displays filtern: Bei Nulltreffern soll die konfigurierte sichtbare
+Textmeldung einmal höflich vorgelesen werden, auch bei einer erneuten Filterung
+mit demselben Ergebnis. Die Ergänzung darf die bisherige Fokusbehandlung nicht
+verändern. Treffer, vollständige Seitenaufrufe und Views ohne unterstützte
+Nulltreffer-Textmeldung dürfen keine zusätzliche Ansage erzeugen.
+
 ### Tagify-Hilfsinput und offener Beschriftungsbefund
 
 Die Korrektur aus DDBGO-51 gilt in `ddbgo_gin.form-controls.css` zentral für

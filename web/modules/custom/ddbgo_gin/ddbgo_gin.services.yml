@@ -10,6 +10,11 @@ services:
     class: Drupal\ddbgo_gin\Routing\RouteSubscriber
     tags:
       - { name: event_subscriber }
+  ddbgo_gin.empty_views_results:
+    class: Drupal\ddbgo_gin\EventSubscriber\EmptyViewsResultsSubscriber
+    arguments: ['@renderer']
+    tags:
+      - { name: event_subscriber }
   ddbgo_gin.user_key_auth_access_check:
     class: Drupal\ddbgo_gin\Access\UserKeyAuthAccessCheck
     tags:
