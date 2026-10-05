@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
  */
 final class KweQueueWorker {
 
-  private const QUEUE_NAME = 'kwe_queue_worker';
+  public const QUEUE_NAME = 'kwe_queue_worker';
 
   private const ORGANIZATION_URL = 'https://www.deutsche-digitale-bibliothek.de/organization/';
 
@@ -57,11 +57,16 @@ final class KweQueueWorker {
       ->condition('type', 'kwe')
       ->execute();
 
-    $queued_ids = $this->getQueuedNodeIds();
+    $queued_ids = array_fill_keys($this->getQueuedNodeIds(), TRUE);
     $queue = $this->getQueue();
     foreach ($node_ids as $node_id) {
-      if (!in_array((int) $node_id, $queued_ids, TRUE)) {
-        $queue->createItem((int) $node_id);
+      if (!isset($queued_ids[(int) $node_id])) {
+        if ($queue instanceof KweDatabaseQueue) {
+          $this->enqueueNodeId((int) $node_id, $queue);
+        }
+        else {
+          $queue->createItem((int) $node_id);
+        }
       }
     }
   }
@@ -75,8 +80,14 @@ final class KweQueueWorker {
     }
 
     $node_id = (int) $node->id();
+    $queue = $this->getQueue();
+    if ($queue instanceof KweDatabaseQueue) {
+      $this->enqueueNodeId($node_id, $queue);
+      return;
+    }
+
     if (!in_array($node_id, $this->getQueuedNodeIds(), TRUE)) {
-      $this->getQueue()->createItem($node_id);
+      $queue->createItem($node_id);
     }
   }
 
@@ -170,15 +181,19 @@ final class KweQueueWorker {
   }
 
   /**
-   * Returns all node IDs currently present in the queue.
+   * Returns all node IDs with an unclaimed queue item.
    *
-   * Claimed items are released immediately so their original state is kept.
+   * Other queue backends retain the original claim/release fallback.
    *
    * @return int[]
    *   Queued node IDs.
    */
   private function getQueuedNodeIds(): array {
     $queue = $this->getQueue();
+    if ($queue instanceof KweDatabaseQueue) {
+      return $queue->getUnclaimedNodeIds();
+    }
+
     $items = [];
     $node_ids = [];
     while ($item = $queue->claimItem(60)) {
@@ -191,6 +206,34 @@ final class KweQueueWorker {
     }
 
     return array_values(array_unique($node_ids));
+  }
+
+  /**
+   * Serializes concurrent producers without blocking an editor for long.
+   */
+  private function enqueueNodeId(int $node_id, KweDatabaseQueue $queue): void {
+    $lock_name = "ddbgo_cj:enqueue:$node_id";
+    if (!$this->lock->acquire($lock_name)) {
+      $this->lock->wait($lock_name, 1);
+      if (!$this->lock->acquire($lock_name)) {
+        // A stuck producer must not discard a new refresh. A duplicate is safe
+        // to process, whereas skipping this save could lose the only request.
+        $queue->createItem($node_id);
+        $this->logger->warning('Queued KWE node @id without deduplication because another producer still holds the lock.', ['@id' => $node_id]);
+        return;
+      }
+    }
+
+    try {
+      // Claimed items deliberately do not suppress a follow-up: the worker may
+      // be about to delete one after a newer editor save has completed.
+      if (!$queue->hasUnclaimedNode($node_id)) {
+        $queue->createItem($node_id);
+      }
+    }
+    finally {
+      $this->lock->release($lock_name);
+    }
   }
 
   /**

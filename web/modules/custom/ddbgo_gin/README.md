@@ -1212,6 +1212,10 @@ unter `/search/bestand` prüfen. Der Browserdurchlauf steht lokal noch aus.
   Reiter öffnen auch ihre übergeordneten Bereiche. Auf kleinen Bildschirmen wird
   der entsprechende Details-Abschnitt geöffnet. Validierungsfehler haben Vorrang,
   und AJAX-Aktualisierungen setzen den Reiter nicht auf den anfänglichen Wert zurück.
+  Die passenden Navigationslinks werden einmal erfasst und nur bei einem
+  tatsächlichen Reiterwechsel aktualisiert. AJAX ergänzt Links aus dem neuen
+  Fragment. Eingaben in Formularfeldern lösen keine Link- oder Tab-Durchläufe
+  aus; Navigationsereignisse prüfen nur den gerade bedienten Link.
 - `ddbgo_gin.unique-field-submit.js`: Verhindert fehlende Feldwerte beim Speichern
   während einer Dublettenprüfung. Das Script wird über die Library von
   `unique_field_ajax` geladen, unabhängig vom Theme. Es wartet auf laufende
@@ -1278,9 +1282,12 @@ zweiten Seitenaufruf mit gefülltem Cache ebenfalls prüfen.
 node --test web/modules/custom/ddbgo_gin/tests/js/node-tabs.test.cjs
 ```
 
-Die Tests prüfen die Navigationslogik mit einem kleinen DOM-/Field-Group-Adapter,
-ohne Datenbank: Reiterübernahme, URL-Parameter, fremde Links, Gruppenzuordnung,
+Die Tests führen die installierten Field-Group-Tab- und Validierungsfunktionen
+mit einem kleinen DOM-/jQuery-Adapter aus, ohne Datenbank: Reiterübernahme,
+URL-Parameter, fremde Links, Gruppenzuordnung,
 verschachtelte Reiter, mobile Details, Tastaturbedienung, AJAX und Fehlervorrang.
+Sie zählen außerdem Link-/Tab-Abfragen bei vielen Links und Eingabeereignissen;
+dies ist keine Messung der tatsächlichen Browserlatenz.
 Die Darstellung und das Zusammenspiel mit dem echten Formular zusätzlich im
 Browser prüfen.
 

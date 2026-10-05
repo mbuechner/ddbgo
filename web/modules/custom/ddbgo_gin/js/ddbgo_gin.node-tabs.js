@@ -42,6 +42,10 @@
   // Several mobile details may be open at once; remember the last opened one.
   // updateLinks() only uses this reference while it belongs to the active DOM.
   let mobilePane;
+  const links = new Set();
+  let destinations = [];
+  let selectedKey;
+  let observer;
 
   /**
    * Adds the current section to this node's existing view/edit links.
@@ -49,7 +53,7 @@
    * Covers local tasks and contextual edit links without relying on link text
    * or theme-specific markup. Navigation itself remains the browser's job.
    */
-  function updateLinks() {
+  function currentKey() {
     const root = content();
     if (!root) {
       return;
@@ -68,34 +72,96 @@
     // Mobile details use the last-opened section instead of this ordering.
     const pane = active.includes(mobilePane) && !$(mobilePane).data('horizontalTab')
       ? mobilePane : active.at(-1);
-    if (!pane) {
+    return pane && paneKey(pane);
+  }
+
+  function destinationUrl(link) {
+    let url;
+    try {
+      url = new URL(link.href, document.baseURI);
+    }
+    catch {
       return;
     }
+    // Match aliases/language prefixes supplied by PHP, retaining each link's
+    // query parameters. Explicit deep links and other records stay untouched.
+    if (destinations.some((target) =>
+      target.origin === url.origin && target.pathname === url.pathname)
+      && (!url.hash || url.hash.startsWith(fragmentPrefix))) {
+      return url;
+    }
+  }
 
-    const destinations = (drupalSettings.ddbgoNodeTabs?.links || [])
-      .map((link) => new URL(link, document.baseURI));
-    document.querySelectorAll('a[href]').forEach((link) => {
-      let url;
-      try {
-        url = new URL(link.href, document.baseURI);
+  function updateLink(link, key, url = destinationUrl(link)) {
+    if (key && url) {
+      url.hash = fragmentPrefix + key;
+      if (link.href !== url.href) {
+        link.href = url.href;
       }
-      catch {
-        return;
+    }
+  }
+
+  function updateLinks() {
+    links.forEach((link) => {
+      if (!link.isConnected) {
+        links.delete(link);
       }
-      // Match server-generated paths (including aliases/language prefixes),
-      // but allow each link to carry its own query parameters. Other records
-      // and external origins must not inherit this record's selected section.
-      if (!destinations.some((target) =>
-        target.origin === url.origin && target.pathname === url.pathname)) {
-        return;
-      }
-      // Preserve explicit deep links; query strings such as destination stay intact.
-      if (url.hash && !url.hash.startsWith(fragmentPrefix)) {
-        return;
-      }
-      url.hash = fragmentPrefix + paneKey(pane);
-      link.href = url.href;
     });
+    const key = currentKey();
+    if (key === selectedKey) {
+      return;
+    }
+    selectedKey = key;
+    links.forEach((link) => {
+      // AJAX may remove a local task or replace the whole node form.
+      const url = destinationUrl(link);
+      if (url) {
+        updateLink(link, key, url);
+      }
+      else {
+        links.delete(link);
+      }
+    });
+  }
+
+  function collectLinks(context) {
+    const collect = (link) => {
+      const url = destinationUrl(link);
+      if (url) {
+        links.add(link);
+        updateLink(link, selectedKey, url);
+      }
+    };
+    // An AJAX context can itself be the newly inserted link.
+    if (context.matches?.('a[href]')) {
+      collect(context);
+    }
+    context.querySelectorAll('a[href]').forEach(collect);
+  }
+
+  function observeTabs() {
+    const root = content();
+    observer?.disconnect();
+    if (root) {
+      // Field Group's focus()/tabShow()/tabHide() have no change event. Their
+      // selected class also covers validation and programmatic tab switches.
+      observer ||= new MutationObserver((records) => {
+        if (records.some((record) =>
+          /(^|\s)selected(\s|$)/.test(record.oldValue || '')
+            !== record.target.classList.contains('selected'))) {
+          updateLinks();
+        }
+      });
+      // Observe only tab buttons, not changing classes throughout the form.
+      // Refresh the observed buttons after AJAX adds tabs or replaces a form.
+      root.querySelectorAll(paneSelector).forEach((pane) => {
+        const tab = $(pane).data('horizontalTab');
+        if (tab) {
+          observer.observe(tab.item[0], { attributes: true,
+            attributeFilter: ['class'], attributeOldValue: true });
+        }
+      });
+    }
   }
 
   /**
@@ -147,30 +213,53 @@
     attach(context) {
       // One set of document listeners per page, even when Drupal reattaches
       // behaviors to fragments returned by Paragraphs or other AJAX widgets.
-      once('ddbgo-node-tabs', 'html', context).forEach(() => {
-        // A microtask runs after the synchronous attachBehaviors() pass: both
-        // Field Group's tab objects and validation markers are available then.
-        window.queueMicrotask(() => {
-          restoreTab();
-          updateLinks();
-        });
-        // Bubbling lets Field Group's target handlers select the tab first.
-        // Updating href (without preventing navigation) also supports keyboard,
-        // middle-click and the browser's "open link in new tab" context menu.
+      const initial = once('ddbgo-node-tabs', 'html', context).length > 0;
+      if (initial) {
+        // Navigation needs only its own link, including newly inserted links
+        // that have not received an AJAX behavior attach yet. Read the current
+        // selection synchronously before the browser opens a new tab/menu.
         ['click', 'keydown', 'auxclick', 'contextmenu'].forEach((event) => {
-          document.addEventListener(event, updateLinks);
+          document.addEventListener(event, (interaction) => {
+            if (event === 'keydown' && interaction.key !== 'Enter'
+              && interaction.keyCode !== 13) {
+              return;
+            }
+            const link = interaction.target.closest?.('a[href]');
+            if (link) {
+              const url = destinationUrl(link);
+              if (url) {
+                links.add(link);
+                updateLink(link, currentKey(), url);
+              }
+            }
+          });
         });
         // Native details toggle events do not bubble, so listen in capture.
         document.addEventListener('toggle', (event) => {
-          if (event.target.matches(paneSelector) && event.target.open
+          if (event.target.matches(paneSelector)
             && !$(event.target).data('horizontalTab')) {
-            mobilePane = event.target;
+            if (event.target.open) {
+              mobilePane = event.target;
+            }
             updateLinks();
           }
         }, true);
+      }
+      // Run after Field Group initializes (including AJAX form replacements).
+      // Only the first attach inventories the document; later attaches inspect
+      // their new fragment. The incoming tab is restored once per navigation.
+      window.queueMicrotask(() => {
+        destinations = (drupalSettings.ddbgoNodeTabs?.links || [])
+          .map((link) => new URL(link, document.baseURI));
+        if (initial) {
+          restoreTab();
+        }
+        observeTabs();
+        updateLinks();
+        if (initial || context !== document) {
+          collectLinks(context);
+        }
       });
-      // AJAX may insert fresh links. Do not restore the initial tab a second time.
-      window.queueMicrotask(updateLinks);
     },
   };
 })(jQuery, Drupal, once, drupalSettings);
