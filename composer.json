@@ -244,6 +244,9 @@
             "drupal/toolbar_menu": {
                 "Fix Gin class conflict and empty menu links (3271757)": "patches/toolbar_menu-gin-compatibility.patch"
             },
+            "drupal/toastify": {
+                "Restore constructible Toastify initializer": "patches/toastify-init-constructor.patch"
+            },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"
             }

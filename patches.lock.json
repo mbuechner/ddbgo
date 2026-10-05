@@ -1,5 +1,5 @@
 {
-    "_hash": "494d4bcc5075e3f990756bc62e68f4962bc31e6e445f13635e0b66d719df3f25",
+    "_hash": "023804e552d649d71fc6a8639c58db5a923b182846fcb8ffe187e407d32b10c6",
     "patches": {
         "consolidation/site-process": [
             {
@@ -31,6 +31,18 @@
                 "description": "Fix Gin class conflict and empty menu links (3271757)",
                 "url": "patches/toolbar_menu-gin-compatibility.patch",
                 "sha256": "1335616b7ff9546d063d50574cfdfffe7367344012b468331438987e68a5ac1e",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/toastify": [
+            {
+                "package": "drupal/toastify",
+                "description": "Restore constructible Toastify initializer",
+                "url": "patches/toastify-init-constructor.patch",
+                "sha256": "ff3b1b1bda225412214358ca1f3d98d6529e9840a9c9e1b74e7cfa9d7fda61f2",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"

@@ -26,6 +26,13 @@ See folder [patches/](patches/).
    
    Discussion at: https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
 
+4. [toastify-init-constructor.patch](patches/toastify-init-constructor.patch)
+
+   Applies the upstream fix from [Toastify MR !28](https://git.drupalcode.org/project/toastify/-/merge_requests/28)
+   ([commit 1462614b](https://git.drupalcode.org/project/toastify/-/commit/1462614bd1a08cc0a5e02960ca082757a615e928))
+   to prevent `Toastify.lib.init is not a constructor` when displaying Drupal
+   messages. Remove this patch once the fix is included in an installed release.
+
 ## Composer
 DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Please make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
 

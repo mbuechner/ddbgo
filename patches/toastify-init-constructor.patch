@@ -1,0 +1,12 @@
+diff --git a/js/toastify.js b/js/toastify.js
+--- a/js/toastify.js
++++ b/js/toastify.js
+@@ -54,7 +54,7 @@
+     constructor: Toastify,
+ 
+     // Initializing the object with required parameters
+-    init(options) {
++    init: function (options) {
+       // Verifying and validating the input object
+       if (!options) {
+         options = {};
