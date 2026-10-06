@@ -367,6 +367,57 @@ lesbar, Vorfahren sind per Tab erreichbar, die aktuelle Seite erzeugt keinen
 zusätzlichen Tab-Stopp, und alle Trennzeichen sehen gleich aus. Der CLI-Test
 ersetzt diese visuelle und tastaturbezogene Prüfung nicht.
 
+## Tabs und Details mit Strg+F durchsuchen
+
+`ddbgo_gin.searchable-tabs.js` ergänzt FieldGroups horizontale Tabs in
+Node-Anzeige- und Bearbeitungs-/Anlegeformularen. In Browsern mit `beforematch`
+werden inaktive Tab-Panels mit `hidden="until-found"` statt `display: none`
+verborgen. Die native Seitensuche kann ihren bereits geladenen Text finden.
+Bei einem Treffer aktiviert die Ergänzung den Abschnitt über FieldGroups
+`focus()`-API; Tabmarkierung, aktiver Formularwert und die bestehenden
+Verknüpfungen zwischen Anzeige und Bearbeitung folgen derselben Auswahl.
+Der Tastaturfokus wird dabei nicht verschoben, Strg+F wird nicht abgefangen.
+
+Normale eingeklappte `<details>` sind bereits nativ durchsuchbar: Der Browser
+kann sie beim Treffer öffnen. Sie erhalten kein zusätzliches `hidden`, damit
+ihre Zusammenfassung sichtbar bleibt. Bei verschachtelten Tabs und Details
+öffnet der `beforematch`-Handler die Vorfahren von außen nach innen. Das ist
+nötig, weil die browserseitige Enthüllung vorzeitig enden kann, wenn der
+Handler das `hidden`-Attribut des passenden Panels bereits entfernt hat.
+
+Die CSS-Datei `ddbgo_gin.searchable-tabs.css` betrifft ausschließlich die
+markierten, inaktiven Tab-Panels und verhindert leere Zwischenräume. Aktive
+Tabs behalten ihre bisherigen Gin-Stile. Die Klasse `horizontal-tab-hidden`
+bleibt für FieldGroups Formularvalidierung und die Tab-Verknüpfungen erhalten.
+Über `tabHide()` absichtlich ausgeblendete Tabs bleiben ausgeschlossen. Neue
+Tabs aus AJAX-Antworten werden ebenfalls berücksichtigt. Ohne `beforematch`
+bleiben FieldGroups ursprüngliche Tabs bestehen; unterhalb seines Breakpoints
+bleiben die nativen Details bestehen. Nicht geladene Inhalte weiterer
+Ergebnisseiten und die Suche in Eingabewerten bleiben Browser-/Widget-Verhalten.
+
+Die Assets werden an `field_group/element.horizontal_tabs` angehängt: Das
+JavaScript läuft nach FieldGroups Implementierung, bevor Drupal die Behaviors
+initialisiert. Core-/Contrib-Dateien, Templates und Konfiguration bleiben
+unverändert; ein Composer-Patch ist nicht erforderlich. Nach dem Deployment
+`drush cr` ausführen.
+
+Automatische Prüfung mit den tatsächlich installierten FieldGroup-Tabmethoden
+und ihrer Validierung:
+
+```sh
+node --test web/modules/custom/ddbgo_gin/tests/js/searchable-tabs.test.cjs web/modules/custom/ddbgo_gin/tests/js/node-tabs.test.cjs web/modules/custom/ddbgo_gin/tests/js/tab-validation.test.cjs
+```
+
+Zusätzlich manuell in Chrome auf einer KWE-/Bestandsanzeige und im
+Anlegeformular prüfen: Nach Text in einem inaktiven Tab sowie in einem
+eingeklappten Detail suchen, auch bei verschachtelten Abschnitten; Treffer
+vorwärts/rückwärts wechseln, anschließend Tabs und Details normal bedienen.
+Ein ungültiges Feld in einem inaktiven Tab muss beim Speichern weiterhin
+aufgedeckt werden. Den mobilen Detailmodus ebenfalls prüfen. Die Tests
+simulieren `beforematch` und prüfen die Tabzustände; die native Suchoberfläche,
+das tatsächliche Scrollen und die Browserdarstellung wurden hier mangels
+verfügbarem Browser noch nicht direkt geprüft.
+
 ## Kategorien unter „Meine Lesezeichen“
 
 Die Kategorien auf `/bookmarks` werden als Überschriften der Ebene `h2`

@@ -61,6 +61,14 @@ function ddbgo_gin_library_info_alter(array &$libraries, string $extension): voi
     $libraries['tab_validation']['dependencies'][] = 'core/drupal';
     $libraries['tab_validation']['dependencies'][] = 'core/once';
   }
+  if ($extension === 'field_group' && isset($libraries['element.horizontal_tabs'])) {
+    // Field Group's original script has weight -1; load our small extension
+    // after it, before Drupal attaches behaviors. Native details need no extra
+    // script to reveal browser-search matches; only inactive tabs are adapted.
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    $libraries['element.horizontal_tabs']['js'][$module_path . '/js/ddbgo_gin.searchable-tabs.js'] = [];
+    $libraries['element.horizontal_tabs']['css']['component'][$module_path . '/css/ddbgo_gin.searchable-tabs.css'] = [];
+  }
   if ($extension === 'unique_field_ajax' && isset($libraries['unique_event'])) {
     $libraries['unique_event']['dependencies'][] = 'ddbgo_gin/unique_field_submit';
   }

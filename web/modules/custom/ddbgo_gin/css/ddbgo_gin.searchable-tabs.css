@@ -1,0 +1,12 @@
+/* Only opted-in inactive FieldGroup panes use native find-in-page revelation.
+ * Retain the browser's content-visibility rule for hidden="until-found"; a
+ * display:none or visibility:hidden rule would prevent discovery of matches.
+ * Removing hidden restores the selected pane's normal Gin/FieldGroup layout. */
+details.horizontal-tabs-pane[data-ddbgo-searchable-tab][hidden="until-found"] {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  contain-intrinsic-size: 0px !important;
+}
