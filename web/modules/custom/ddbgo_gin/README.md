@@ -503,6 +503,27 @@ Bewegung und Screenreader-Ansage prüfen. Auch bei Klicks auf andere Inhalte
 muss die Meldung stehen bleiben. Die
 Bestätigung beim Entfernen unter `/bookmarks` ist davon unabhängig.
 
+## Tabellenköpfe der verknüpften Inhalte
+
+Die Beziehungstabellen unterhalb der Datensatzansicht verwenden normale,
+mitscrollende Tabellenköpfe. In den Views `aggregator` und `person` ist dafür
+`display.default.display_options.style.options.sticky: false` gesetzt.
+Die Block-Displays `aggregator:block_1`, `person:person_aggregator`,
+`person:person_bestand` und `person:person_kwe` erben diese Einstellung.
+`kwe:block` hat bereits einen normalen Tabellenkopf. Damit sind alle fünf
+Beziehungstabellen erfasst.
+
+Gin ordnet bei mehreren mitlaufenden Tabellen die berechneten Spaltenbreiten
+dem ersten Sticky-Kopf der Seite zu. Durch die Views-Einstellung erzeugt Gin
+hier keine zusätzlichen Sticky-Köpfe mehr; das Öffnen eines weiteren
+Accordions kann deren Spaltenbreiten deshalb nicht mehr überschreiben.
+Die Umsetzung benötigt nur Konfiguration.
+
+Deployment: Konfiguration importieren (`drush cim`), danach Caches neu aufbauen
+(`drush cr`). Zur visuellen Kontrolle etwa auf `/node/220` nacheinander
+„Kultur- und Wissenseinrichtungen“ und „Bestände“ öffnen und scrollen:
+Jede Tabelle soll einen normalen, zu ihren Daten passenden Tabellenkopf haben.
+
 ## Leere verknüpfte Einträge
 
 Das Inline-Paragraphs-Widget (`entity_reference_paragraphs`) zeigt bei leeren
