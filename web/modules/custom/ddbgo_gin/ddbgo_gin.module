@@ -41,6 +41,9 @@ function ddbgo_gin_library_info_alter(array &$libraries, string $extension): voi
   if ($extension === 'core' && isset($libraries['drupal.tabledrag'])) {
     $libraries['drupal.tabledrag']['dependencies'][] = 'ddbgo_gin/tabledrag_focus';
   }
+  if ($extension === 'flag' && isset($libraries['flag.link_ajax'])) {
+    $libraries['flag.link_ajax']['dependencies'][] = 'ddbgo_gin/bookmark_feedback';
+  }
 }
 
 /**

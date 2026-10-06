@@ -4,6 +4,18 @@ footer:
     theme:
       css/ddbgo_gin.footer.css: {}
 
+# Flag removes its feedback on animationend. Keep bookmark feedback visible
+# wherever its AJAX link is rendered; the next action replaces the whole link.
+bookmark_feedback:
+  css:
+    theme:
+      css/ddbgo_gin.bookmark-feedback.css: {}
+  js:
+    js/ddbgo_gin.bookmark-feedback.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+
 bestand_tags:
   css:
     theme:

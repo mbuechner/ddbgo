@@ -439,6 +439,70 @@ Im Browser zusätzlich Einzel-/Sammelauswahl, Abbrechen, Rückkehr zu einer
 gefilterten Liste, Tastaturfokus und Screenreader-Ausgabe prüfen; diese
 visuelle Prüfung steht noch aus.
 
+## Dauerhafte Lesezeichenmeldungen
+
+Nach dem Setzen oder Entfernen eines Lesezeichens bleibt Flags vorhandene
+Rückmeldung sichtbar. Bei der nächsten Aktion am selben Lesezeichen ersetzt
+Flag den gesamten Linkbereich einschließlich der alten Meldung. Sie lässt sich
+auch ausdrücklich über „×“ schließen. Es entsteht keine Sammlung alter
+Rückmeldungen; ein Seitenwechsel beendet die Anzeige.
+
+Die Library `bookmark_feedback` wird über `hook_library_info_alter()` an
+`flag/flag.link_ajax` angehängt und erreicht damit auch Lesezeichen außerhalb
+der Gin-Frontend-Detailansicht. Sie deaktiviert ausschließlich bei
+`.flag-bookmark .js-flag-message` die Animation: Flag entfernt die Nachricht in
+seinem `animationend`-Handler, nicht durch einen Timer. Ohne Animation wird
+dieser Handler nicht ausgelöst. Die bisherigen vier Sekunden langen Animationen
+und ihre Variante für reduzierte Bewegung sind aus der Frontend-CSS entfernt.
+
+In der Seitenaktionsleiste steht die Meldung im normalen Layoutfluss unter dem
+Lesezeichen. Sie überdeckt dadurch keinen nachfolgenden Inhalt, kann auf kleinen
+Bildschirmen umbrechen und hat keine feste Höhe.
+
+Die kleine JavaScript-Ergänzung dekoriert Flags `actionLinkFlash`-Kommando einmal
+im Behavior-Attach, nachdem die Scripts geladen sind. Flag fügt die Nachricht
+erst nach dem AJAX-Neuaufbau und dessen Behavior-Attach ein; deshalb genügt ein
+gewöhnliches Attach auf der Nachricht nicht. Das Originalkommando mit seiner
+Ansage, seinem Rückgabewert und seiner Fehlerbehandlung bleibt erhalten. Nur
+Lesezeichenmeldungen erhalten eine native Schaltfläche `type="button"` mit dem
+zugänglichen Namen „Lesezeichenmeldung schließen“. Das sichtbare × ist für
+assistive Technik dekorativ. Der Button hat eine Zielgröße von mindestens
+24 × 24 Pixeln sowie einen sichtbaren Tastaturfokus.
+
+Tab erreicht den Button, Enter und Leertaste aktivieren ihn nativ. Escape
+schließt die Meldung ebenfalls, wenn der Fokus innerhalb der Meldung liegt.
+Liegt der Fokus beim Schließen darin, geht er zum zugehörigen Lesezeichen-Link
+zurück; bei geändertem Zugriff ohne Link bleibt die Tab-Position am Wrapper.
+Ein Fokus außerhalb der Nachricht wird nicht verschoben. Außenklicks,
+Fokuswechsel und Zeitablauf schließen die Meldung nicht automatisch. Das
+Schließen blendet nur die Rückmeldung aus und ändert nicht das Lesezeichen.
+Grundlage: [W3C Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/).
+
+Flag kündigt den Meldungstext bereits über `Drupal.announce()` an. Das redundante
+`aria-live` am Nachrichtenabsatz wird vor dem Einfügen der Schaltfläche entfernt,
+damit deren Beschriftung keine zusätzliche Live-Ansage auslöst. Es werden keine
+eigenen Meldungsansagen, Timer, globalen Klick-Listener oder DOM-Observer ergänzt.
+Andere Flags erhalten keine Schließen-Schaltfläche. Ein Patch oder eine
+Konfigurationsänderung ist nicht nötig.
+
+```sh
+drush cr
+node --test web/modules/custom/ddbgo_gin/tests/js/bookmark-feedback.test.cjs
+```
+
+Die JavaScript-Regression verwendet Flags echtes Originalkommando mit einem
+minimalen DOM-Harness. Sie prüft Ergänzung nach dem AJAX-Attach, Originalansage,
+Schließen, Fokus, Escape und mehrfache Anbindung. Sie ersetzt keinen Browser-
+oder Screenreader-Test.
+
+Manuell auf einer Detailseite ein Lesezeichen setzen,
+länger als vier Sekunden warten und es wieder entfernen: Es soll jeweils nur
+die aktuelle Rückmeldung sichtbar sein. Zusätzlich per Tab, Enter/Leertaste
+und Escape schließen, Fokus-Rückkehr, schmale Bildschirmbreite, reduzierte
+Bewegung und Screenreader-Ansage prüfen. Auch bei Klicks auf andere Inhalte
+muss die Meldung stehen bleiben. Die
+Bestätigung beim Entfernen unter `/bookmarks` ist davon unabhängig.
+
 ## Leere verknüpfte Einträge
 
 Das Inline-Paragraphs-Widget (`entity_reference_paragraphs`) zeigt bei leeren
