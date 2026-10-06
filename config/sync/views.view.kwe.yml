@@ -170,7 +170,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status des Bestands'
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false

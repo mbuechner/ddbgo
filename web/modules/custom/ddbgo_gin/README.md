@@ -1473,6 +1473,23 @@ erscheinen. Die Linkausgabe und fehlende Formatter-Kontextplatzhalter lassen
 sich per Renderprüfung kontrollieren; die tatsächliche Tab-Reihenfolge
 zusätzlich im Browser prüfen.
 
+## Einheitliche Spaltenbeschriftungen
+
+Die Views-Tabellen verwenden „Kultur- oder Wissenseinrichtung“ als Spaltenkopf
+für Einrichtungen und „Status der KWE“ für deren Datensatzstatus. Das gilt
+für Suchlisten und die Beziehungstabellen auf Personen- und Aggregatorseiten;
+auch die zugehörigen Suchhilfetexte verwenden diese Namen. Die Beschriftungen
+sind direkt in `config/sync/views.view.*.yml` hinterlegt.
+
+Bestands- und Aggregatorstatus heißen in Suchlisten und Beziehungstabellen
+einheitlich „Bestandsstatus“ beziehungsweise „Aggregatorstatus“. Die
+Personenliste verwendet „Telefonnummer“ statt „Tel.“. In der Europeana-Liste
+heißen Spalte und Datumsfilter „Datum des Lieferstatus“; gemeint ist der Status
+der Europeana-Lieferung. Die Suchhilfetexte nennen dieselben Spaltennamen.
+
+Deployment: Konfiguration importieren (`drush cim`), danach Caches neu aufbauen
+(`drush cr`).
+
 ## Barrierefreie Verknüpfung der aufklappbaren Suchfilter
 
 Die Suchfilter verwenden ein natives `<details>` mit `<summary>` als

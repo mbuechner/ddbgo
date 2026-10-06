@@ -202,7 +202,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: Status
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -341,7 +341,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status (KWE)'
+          label: 'Status der KWE'
           exclude: false
           alter:
             alter_text: false
@@ -1025,7 +1025,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Es werden alle angezeigten Spalten durchsucht, außer Status, Status (KWE), DDBdash und Link zu Coding da Vinci. Nicht hervorgehoben werden ID und JIRA-Hauptticket.'
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Bestandsstatus, Status der KWE, DDBdash und Link zu Coding da Vinci. Nicht hervorgehoben werden ID und JIRA-Hauptticket.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false

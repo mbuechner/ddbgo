@@ -207,7 +207,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: Status
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -905,7 +905,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: "Datum des Status'"
+          label: 'Datum des Lieferstatus'
           exclude: false
           alter:
             alter_text: false
@@ -1126,7 +1126,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Es werden alle angezeigten Spalten durchsucht, außer Status und DDBdash. Nicht hervorgehoben werden ID, Anzahl der Objekte, beide JIRA-Ticket-Spalten und Statusdatum.'
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Bestandsstatus und DDBdash. Nicht hervorgehoben werden ID, Anzahl der Objekte, beide JIRA-Ticket-Spalten und Datum des Lieferstatus.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
@@ -1277,7 +1277,7 @@ display:
           exposed: true
           expose:
             operator_id: field_datum_des_status_der_europ_op
-            label: "Datum des Status'"
+            label: 'Datum des Lieferstatus'
             description: ''
             use_operator: true
             operator: field_datum_des_status_der_europ_op

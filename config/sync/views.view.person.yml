@@ -237,7 +237,7 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-          label: KWE
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -701,7 +701,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status des Aggregators'
+          label: Aggregatorstatus
           exclude: false
           alter:
             alter_text: false
@@ -1045,7 +1045,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status des Bestands'
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -1238,7 +1238,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status der Kultur- oder Wisseneinrichtung'
+          label: 'Status der KWE'
           exclude: false
           alter:
             alter_text: false
@@ -1613,7 +1613,7 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-          label: KWE
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -1676,7 +1676,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status der Kultur- oder Wisseneinrichtung'
+          label: 'Status der KWE'
           exclude: false
           alter:
             alter_text: false

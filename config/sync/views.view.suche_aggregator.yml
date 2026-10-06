@@ -190,7 +190,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: Status
+          label: Aggregatorstatus
           exclude: false
           alter:
             alter_text: false
@@ -259,7 +259,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Kultur- und Wisseneinrichtungen'
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -477,7 +477,7 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: 'Es werden alle angezeigten Spalten durchsucht, außer Status. Nicht hervorgehoben wird die ID.'
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Aggregatorstatus. Nicht hervorgehoben wird die ID.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
