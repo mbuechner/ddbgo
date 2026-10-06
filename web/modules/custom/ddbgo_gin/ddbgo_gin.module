@@ -17,6 +17,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\ddbgo_gin\Render\FormErrorAccessibility;
+use Drupal\ddbgo_gin\Render\Select2Markup;
 use Drupal\node\Form\NodeForm;
 use Drupal\node\NodeInterface;
 use Symfony\Component\String\AbstractUnicodeString;
@@ -29,6 +30,37 @@ use Symfony\Component\String\UnicodeString;
  * including AJAX forms and forms rendered with other themes.
  */
 function ddbgo_gin_library_info_alter(array &$libraries, string $extension): void {
+  if ($extension === 'core' && isset($libraries['drupal.collapse'])) {
+    // Native details/summary already exposes its expanded state. Core's
+    // compatibility script would reintroduce invalid aria-expanded on click.
+    // Keep the separate summary-text and details behaviors in this library.
+    unset($libraries['drupal.collapse']['js']['misc/details-aria.js']);
+  }
+  if ($extension === 'gin') {
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    if (isset($libraries['scrollsync']['js']['js/libs/scrollsync.js'])) {
+      // Our table templates use valid data-syncscroll instead of name.
+      $options = $libraries['scrollsync']['js']['js/libs/scrollsync.js'];
+      unset($libraries['scrollsync']['js']['js/libs/scrollsync.js']);
+      $options['minified'] = FALSE;
+      $libraries['scrollsync']['js'][$module_path . '/js/ddbgo_gin.scrollsync.js'] = $options;
+      $libraries['scrollsync']['dependencies'][] = 'core/drupal';
+    }
+    if (isset($libraries['more_actions'])) {
+      // Load after Gin's implementation and replace only its focus helper.
+      $libraries['more_actions']['js'][$module_path . '/js/ddbgo_gin.focus-helpers.js'] = [];
+    }
+  }
+  if ($extension === 'field_group' && isset($libraries['tab_validation']['js']['js/field_group.tab_validation.js'])) {
+    // FieldGroup's nested-details validation still reads aria-expanded.
+    // Use the native open state so invalid fields can be revealed on mobile.
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    $options = $libraries['tab_validation']['js']['js/field_group.tab_validation.js'];
+    unset($libraries['tab_validation']['js']['js/field_group.tab_validation.js']);
+    $libraries['tab_validation']['js'][$module_path . '/js/ddbgo_gin.tab-validation.js'] = $options;
+    $libraries['tab_validation']['dependencies'][] = 'core/drupal';
+    $libraries['tab_validation']['dependencies'][] = 'core/once';
+  }
   if ($extension === 'unique_field_ajax' && isset($libraries['unique_event'])) {
     $libraries['unique_event']['dependencies'][] = 'ddbgo_gin/unique_field_submit';
   }
@@ -64,6 +96,10 @@ function ddbgo_gin_is_theme(string $name): bool {
  * callback checks the active theme when rendering, after errors are known.
  */
 function ddbgo_gin_element_info_alter(array &$info): void {
+  if (isset($info['select2'])) {
+    // Run after Select2 deliberately restores the empty placeholder option.
+    $info['select2']['#pre_render'][] = [Select2Markup::class, 'preRender'];
+  }
   foreach ($info as &$definition) {
     if (FormErrorAccessibility::usesWrapper($definition)) {
       $definition['#pre_render'][] = [FormErrorAccessibility::class, 'preRender'];
@@ -261,7 +297,7 @@ function ddbgo_gin_theme(): array {
 
   // Explicit suggestions let module templates override Gin without changing
   // the installed theme. Keep Gin's preprocessors through the base hooks.
-  foreach (['form_element', 'fieldset', 'details', 'datetime_wrapper', 'menu', 'flag'] as $hook) {
+  foreach (['form_element', 'fieldset', 'details', 'datetime_wrapper', 'menu', 'flag', 'views_view_table', 'table'] as $hook) {
     $hooks[$hook . '__ddbgo_gin'] = [
       'base hook' => $hook,
       'template' => str_replace('_', '-', $hook) . '--ddbgo-gin',
@@ -320,7 +356,9 @@ function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables
     && in_array('field-add-more-submit', $variables['element']['#attributes']['class'] ?? [], TRUE)) {
     $suggestions[] = 'input__ddbgo_gin_paragraph_add';
   }
-  if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper'], TRUE)
+  if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper', 'views_view_table'], TRUE)
+    // Preserve specialized tables such as Core's table__simple.
+    || ($hook === 'table' && ($variables['theme_hook_original'] ?? 'table') === 'table')
     || ($hook === 'menu' && ($variables['theme_hook_original'] ?? '') === 'menu__ddbgo_gin')
     || ($hook === 'flag' && ($variables['flag'] ?? NULL)?->id() === 'bookmark')) {
     $suggestions[] = $hook . '__ddbgo_gin';
@@ -356,6 +394,11 @@ function ddbgo_gin_theme_suggestions_block_alter(array &$suggestions, array $var
  * branding and navigation regions.
  */
 function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
+  if (isset($theme_registry['page__user__login'])) {
+    // Keep Gin Login's preprocessors/layout; correct only the home-link markup.
+    $theme_registry['page__user__login']['template'] = 'page--ddbgo-gin-login';
+    $theme_registry['page__user__login']['path'] = \Drupal::service('extension.list.module')->getPath('ddbgo_gin') . '/templates';
+  }
   if (isset($theme_registry['page'])) {
     $theme_registry['page__gin_frontend'] = $theme_registry['page'];
 
@@ -1097,6 +1140,16 @@ function ddbgo_gin_preprocess_flag(array &$variables): void {
 function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   ddbgo_gin_set_reset_button_labels($form);
 
+  if ($form_id === 'user_login_form' && isset($form['name'])) {
+    // Core uses "none", which belongs to autocapitalize, not autocorrect.
+    $form['name']['#attributes']['autocorrect'] = 'off';
+  }
+  if (ddbgo_gin_is_theme('gin')) {
+    // Gin adds its focus helper in the subsequent theme form alter. Adjust it
+    // after the complete build, retaining its position and keyboard behavior.
+    $form['#after_build'][] = 'ddbgo_gin_valid_focus_helper';
+  }
+
   if ($form_id === 'views_form_flag_bookmark_page') {
     ddbgo_gin_alter_bookmark_bulk_form($form);
     // The intermediate confirmation takes precedence over a destination on
@@ -1137,6 +1190,23 @@ function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, stri
   }
 
   $form['#validate'] = $validators;
+}
+
+/**
+ * Uses a valid custom attribute for Gin's existing focus-transfer link.
+ *
+ * The paired JS overrides only moveFocus() to read the data-* marker. Replace
+ * the exact known token; no page-wide HTML parsing or vendor patch is needed.
+ */
+function ddbgo_gin_valid_focus_helper(array $form, FormStateInterface $form_state): array {
+  if (isset($form['gin_move_focus_to_sticky_bar']['#markup'])) {
+    $form['gin_move_focus_to_sticky_bar']['#markup'] = str_replace(
+      ' gin-move-focus-to-sticky-bar',
+      ' data-gin-move-focus-to-sticky-bar',
+      (string) $form['gin_move_focus_to_sticky_bar']['#markup'],
+    );
+  }
+  return $form;
 }
 
 /**

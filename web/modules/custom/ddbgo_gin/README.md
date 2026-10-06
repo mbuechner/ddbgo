@@ -1511,6 +1511,11 @@ der Europeana-Lieferung. Die Suchhilfetexte nennen dieselben Spaltennamen.
 Deployment: Konfiguration importieren (`drush cim`), danach Caches neu aufbauen
 (`drush cr`).
 
+Die Rollenspalten der Beziehungstabellen auf Personenseiten heißen passend
+zum verknüpften Datensatz „Rolle zum Aggregator“, „Rolle zum Bestand“ und
+„Rolle zur KWE“. Die Beschriftungen sind in `views.view.person.yml` hinterlegt;
+die Feldbeschriftungen in den Eingabeformularen bleiben davon unabhängig.
+
 ## Barrierefreie Verknüpfung der aufklappbaren Suchfilter
 
 Die Suchfilter verwenden ein natives `<details>` mit `<summary>` als
@@ -1525,14 +1530,22 @@ Schalters zum eingeblendeten Inhalt.
 und setzt `aria-controls` am zugehörigen `<summary>` auf genau diese ID.
 Die eindeutige Vergabe berücksichtigt mehrere Filterformulare und AJAX-Ausgaben.
 Andere Details bleiben unverändert. Öffnen, Schließen und Tastaturbedienung
-übernimmt weiterhin das native HTML-Element; die vorhandene Aktualisierung von
-`aria-expanded` bleibt bei Drupal Core. Zusätzliches JavaScript, ein Modul oder
-ein Patch sind nicht erforderlich.
+übernimmt weiterhin das native HTML-Element. Rolle und aufgeklappter Zustand
+werden vom Browser über `<summary>` und `<details open>` bereitgestellt;
+explizite `role`- und `aria-expanded`-Attribute sind hier nach ARIA in HTML
+nicht zulässig. Das Template entfernt sie, und `hook_library_info_alter()`
+nimmt ausschließlich `details-aria.js` aus `core/drupal.collapse`, damit Core
+das Attribut bei Klick nicht wieder einfügt. Die übrigen Details- und
+Zusammenfassungstext-Funktionen bleiben enthalten. FieldGroups kleine
+`tab_validation`-Bibliothek wird entsprechend durch `ddbgo_gin.tab-validation.js`
+ersetzt: Ungültige Eingaben öffnen umgebende Details anhand von `open` statt
+des entfernten ARIA-Attributs. Das erhält insbesondere die Validierung bei
+den auf mobilen Bildschirmen als Details dargestellten Tabs.
 
 Deployment: Caches neu aufbauen (`drush cr`). Zur Kontrolle im gerenderten HTML
 prüfen, dass jedes Filter-`<summary>` mit `aria-controls` genau einen vorhandenen
 Inhaltswrapper referenziert. Im Browser geöffneten und geschlossenen Zustand,
-Enter- und Leertastenbedienung sowie `aria-expanded` prüfen. Auch bei mehreren
+Enter- und Leertastenbedienung sowie den nativen geöffneten Zustand prüfen. Auch bei mehreren
 Filterformularen auf einer Seite und nach AJAX-Filterung müssen die IDs eindeutig
 und die Verknüpfungen gültig bleiben.
 
@@ -1654,6 +1667,70 @@ Prüfung mit zwei vorhandenen Bestandstags, ohne Inhaltsänderungen:
 ```sh
 drush php:script web/modules/custom/ddbgo_gin/tests/php/bestand-tags.test.php
 ```
+
+## HTML-Fehler aus der Nu-Prüfung
+
+Die Überarbeitung behebt die Fehlermeldungen des Nu Html Checker; allgemeine
+Warnungen und Hinweise waren nicht Teil dieses Schritts. Core und Contrib-Dateien
+bleiben unangetastet; es wird kein zusätzlicher Composer-Patch benötigt.
+
+- Die Europeana-View schließt den `nobreak`-Span der Objektanzahl korrekt mit
+  `</span>`. Beide JIRA-Formatter erzeugen bei komma-getrennten Ticketnummern
+  einzelne Links statt einer ungültigen URL mit Leerzeichen. Bestehende
+  Datensätze müssen dafür nicht migriert werden.
+- Die eigenen `views-view-table--ddbgo-gin.html.twig` und
+  `table--ddbgo-gin.html.twig` übernehmen Gins Tabellenstruktur. Nur der
+  synthetische mitlaufende Kopf verliert seine kopierten Spalten-IDs; die
+  Original-IDs und die `headers`-Verknüpfungen der Datenzellen bleiben erhalten.
+  Spezialisierte Tabellen wie `table__simple` behalten ihre eigenen Templates.
+- Tabellen und Scrollwrapper verwenden eindeutige `data-syncscroll`-Werte
+  statt des dort unzulässigen `name`-Attributs. `ddbgo_gin.scrollsync.js`
+  ersetzt die kleine Gin-Scrollbibliothek mit gleichem proportionalen Abgleich
+  beider Achsen und `window.syncscroll.reset()`. AJAX-Austausch entfernt alte
+  Listener; andere Gin-Templates werden über einen Legacy-Fallback unterstützt.
+- Der vorhandene Gin-Fokushelfer wird nach dem Formularaufbau auf einen
+  gültigen `data-*`-Marker umgestellt. `ddbgo_gin.focus-helpers.js` ersetzt
+  ausschließlich Gins `moveFocus()` und verwendet auch beim dynamischen
+  Rückkehr-Link einen gültigen Marker. Gins übrige Aktionslogik bleibt erhalten.
+- Die zwei nicht editierbaren Node-Metadatentitel (`meta.changed` und
+  `meta.author`) sind gestylte Spans statt Labels für nicht vorhandene Controls.
+  Echte Eingabefelder behalten ihre Labels.
+- `Render/Select2Markup.php` ergänzt nach Select2s letzter Vorverarbeitung das
+  `label`-Attribut der leeren Einzel-Auswahloption über das bereits eingesetzte
+  Modul `form_options_attributes`. Wert und Optionstext bleiben leer; der
+  konfigurierte Platzhalter, die Zurücksetzen-Funktion und die Validierung
+  bleiben erhalten.
+- Das eigene Login-Template entfernt `alt` vom Startseiten-Link. Beim
+  Benutzernamen wird das ungültige `autocorrect="none"` zu `autocorrect="off"`.
+
+Bewusst offen bleibt `autocomplete="off"` am versteckten `form_build_id`.
+Drupal Core verwendet es gegen wiederhergestellte, veraltete Formular-IDs in
+Firefox nach AJAX und Neuladen. Ein Entfernen kann diesen Fehler zurückbringen;
+siehe [Core-Issue 3320467](https://www.drupal.org/project/drupal/issues/3320467).
+Es verändert weder den sichtbaren Inhalt noch die Beschriftung von Controls.
+
+Kontrolle am 06.10.2026 mit Nu 26.10.2: 22 vollständige lokale HTTP-Antworten
+(Startseite und Login anonym; Startseite, alle Suchlisten, leere KWE-Suche,
+Lesezeichen, Seitenübersicht, vier Anlegeformulare und vier Einzelansichten
+als Administrator) haben nach der Korrektur 6 statt 428 Fehler. Die sechs
+verbleibenden Meldungen betreffen ausschließlich den beschriebenen Core-Befund.
+Die Prüfung erfasst serverseitiges HTML; browserseitige Interaktionen und
+Screenreader-Ausgaben benötigen weiterhin einen manuellen Test.
+
+Deployment: Konfiguration importieren (`drush cim`), danach Caches neu aufbauen
+(`drush cr`). Bei Gin-Updates die drei übernommenen Twig-Templates sowie den
+Fokushelfer mit den aktuellen Contrib-Versionen vergleichen.
+
+```sh
+node --test web/modules/custom/ddbgo_gin/tests/js/scrollsync.test.cjs web/modules/custom/ddbgo_gin/tests/js/focus-helpers.test.cjs web/modules/custom/ddbgo_gin/tests/js/tab-validation.test.cjs
+drush php:script web/modules/custom/ddbgo_gin/tests/php/html-markup.test.php
+drush php:script web/modules/custom/ddbgo_gin/tests/php/form-labels.test.php
+drush php:script web/modules/custom/ddbgo_gin/tests/php/details-help.test.php
+```
+
+Die Tests prüfen Scrollpaare, AJAX-Listener, Fokusübertragung mit Gins echter
+Aktionsbibliothek, Library-Reihenfolge und gerenderte Formularbeziehungen.
+Sie speichern keine Inhalte oder Konfiguration.
 
 ## Migration des Statusfelds
 

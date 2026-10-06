@@ -11,4 +11,4 @@ type: twig
 description: ''
 field_types:
   - string
-data: "{% for item in items %}\r\n {{ link(item.value, 'https://europeana.atlassian.net/browse/' ~ item.value, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"
+data: "{% set tickets = [] -%}\r\n{% for item in items -%}\r\n  {% for value in item.value|split(',') -%}\r\n    {% set ticket = value|trim -%}\r\n    {% if ticket != '' -%}\r\n      {% set tickets = tickets|merge([ticket]) -%}\r\n    {% endif -%}\r\n  {% endfor -%}\r\n{% endfor -%}\r\n{% for ticket in tickets %}\r\n {{ link(ticket, 'https://europeana.atlassian.net/browse/' ~ ticket, {'target':'_blank'}) }}{% if not loop.last %}, {% endif %}\r\n{% endfor %}"

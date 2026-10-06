@@ -7,5 +7,6 @@ dependencies:
   - drupal:block
   - custom_breadcrumbs:custom_breadcrumbs
   - flag:flag
+  - form_options_attributes:form_options_attributes
   - sitemap:sitemap
   - toolbar_menu:toolbar_menu

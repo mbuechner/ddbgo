@@ -72,7 +72,8 @@ try {
           $check($details instanceof DOMElement && $details->hasAttribute('open') === $open, "$case: native open/closed state is preserved.");
           $summary = $xpath->query('./summary', $details)->item(0);
           $check($summary instanceof DOMElement && str_contains($summary->textContent, $label), "$case: summary keeps its original field label.");
-          $check($summary->getAttribute('role') === 'button' && $summary->getAttribute('aria-controls') === $details->getAttribute('id'), "$case: native summary controls relationship remains.");
+          $check(!$summary->hasAttribute('role') && !$summary->hasAttribute('aria-expanded'), "$case: native summary exposes role/state without forbidden explicit attributes.");
+          $check($summary->getAttribute('aria-controls') === $details->getAttribute('id'), "$case: summary controls relationship remains.");
           $check($xpath->query($focusable, $summary)->length === 0, "$case: summary has no nested focusable controls.");
           $descriptions = $xpath->query('./div[' . $class('claro-details__wrapper') . ']/div[' . $class('claro-details__description') . ']', $details);
           $check($descriptions->length === 1, "$case: description is directly inside the details content wrapper.");

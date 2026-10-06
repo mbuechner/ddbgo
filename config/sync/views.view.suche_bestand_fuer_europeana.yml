@@ -561,7 +561,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<span class="nobreak">{{ field_ddb_objekte }}</div>'
+            text: '<span class="nobreak">{{ field_ddb_objekte }}</span>'
             make_link: false
             path: ''
             absolute: false

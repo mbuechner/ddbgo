@@ -35,6 +35,19 @@ js-form-type-[something] exists on form items. We have to keep them.
     description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
   ]
 %}
+{# These Core node metadata items display text and have no labelable control. #}
+{% if type == 'item' and element['#parents'] in [['meta', 'changed'], ['meta', 'author']] %}
+  {% set metadata_title_attributes = create_attribute(label['#attributes']).removeAttribute('for') %}
+  {% set label %}
+    {% if element['#title'] is not empty %}
+      <span{{ metadata_title_attributes.addClass([
+        'form-item__label',
+        label_display == 'after' ? 'option',
+        label_display == 'invisible' ? 'visually-hidden',
+      ]) }}>{{ element['#title'] }}</span>
+    {% endif %}
+  {% endset %}
+{% endif %}
 {# Render once: checkbox/radio labels follow their input, other labels precede it. #}
 {% set label_with_help %}
   {% if label_display in ['before', 'after', 'invisible'] %}

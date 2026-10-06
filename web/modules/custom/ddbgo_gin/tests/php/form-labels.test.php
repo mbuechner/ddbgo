@@ -125,6 +125,25 @@ try {
         }
       }
       $xpath = $render($form);
+      if ($theme_name !== 'claro') {
+        // Core's node metadata items contain text, not labelable controls.
+        // Their titles keep Gin's label styling without invalid for targets.
+        foreach (['entity-meta__last-saved' => t('Last saved'), 'entity-meta__author' => t('Author')] as $metadata_class => $title) {
+          $scope = $xpath->query('//*[' . $class($metadata_class) . ']')->item(0);
+          $check($scope instanceof DOMElement, "$theme_name/$bundle/$metadata_class: read-only metadata remains.");
+          $titles = $xpath->query('./span[' . $class('form-item__label') . ']', $scope);
+          $check($titles->length === 1 && trim($titles->item(0)->textContent) === (string) $title, "$theme_name/$bundle/$metadata_class: metadata title is styled text.");
+          $check($xpath->query('.//label', $scope)->length === 0, "$theme_name/$bundle/$metadata_class: no label points to a non-control.");
+        }
+        $last_saved = $xpath->query('//*[' . $class('entity-meta__last-saved') . ']')->item(0);
+        $check(str_contains($last_saved->textContent, (string) t('Not saved yet')), "$theme_name/$bundle: last-saved value remains visible.");
+        $author = $xpath->query('//*[' . $class('entity-meta__author') . ']')->item(0);
+        $check(str_contains($author->textContent, (string) $node->getOwner()->getDisplayName()), "$theme_name/$bundle: author value remains visible.");
+        // Person titles are generated automatically; use its visible first name.
+        $input_name = $bundle === 'person' ? 'field_vorname[0][value]' : 'title[0][value]';
+        $input = $xpath->query('//input[@name="' . $input_name . '"]')->item(0);
+        $check($input instanceof DOMElement && $xpath->query('//label[@for="' . $input->getAttribute('id') . '"]')->length === 1, "$theme_name/$bundle: editable text retains its native label.");
+      }
       foreach ($fields as $field) {
         $scopes = $xpath->query('//*[' . $class('field--name-' . str_replace('_', '-', $field)) . ']');
         $check($scopes->length === 1, "$theme_name/$bundle/$field: exactly one outer widget.");

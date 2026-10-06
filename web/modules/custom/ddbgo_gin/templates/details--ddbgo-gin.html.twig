@@ -38,6 +38,10 @@
   ? description_display_toggle|default('after')
   : description_display %}
 {% set tooltip_id = 'ddbgo-help'|clean_unique_id %}
+{# Native summary exposes its button role and expanded state through details.open.
+   Explicit role/aria-expanded are forbidden here by ARIA in HTML. Preserve
+   global ARIA attributes, including our controls/help relationships. #}
+{% set summary_attributes = summary_attributes.removeAttribute('role', 'aria-expanded') %}
 {# Views filters use one native disclosure, not an ARIA accordion. Give its
    content an explicit relationship to the summary without changing other
    details widgets. Generate both references together at render time so
