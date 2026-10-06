@@ -8,12 +8,15 @@ use Drupal\content_lock\ContentLock\ContentLockInterface;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Lock\LockBackendInterface;
+use Drupal\Core\Queue\DelayableQueueInterface;
 use Drupal\Core\Queue\QueueFactory;
 use Drupal\Core\Queue\QueueInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\node\NodeInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -26,6 +29,12 @@ final class KweQueueWorker {
   private const ORGANIZATION_URL = 'https://www.deutsche-digitale-bibliothek.de/organization/';
 
   private const API_URL = 'https://api.deutsche-digitale-bibliothek.de/2/items/';
+
+  private const QUEUE_LEASE_TIME = 600;
+
+  private const QUEUE_RUN_TIME = 300;
+
+  private const RETRY_DELAY = 600;
 
   /**
    * Prevents a synchronized save from enqueuing the same node again.
@@ -92,36 +101,46 @@ final class KweQueueWorker {
   }
 
   /**
-   * Processes all queue items that are currently available.
+   * Processes available items within a bounded run, reserving one at a time.
    */
   public function processQueue(): void {
     $queue = $this->getQueue();
-    $items = [];
-    while ($item = $queue->claimItem(600)) {
-      $items[] = $item;
-    }
+    $end = $this->time->getCurrentTime() + self::QUEUE_RUN_TIME;
+    $retry_items = [];
+    try {
+      while ($this->time->getCurrentTime() < $end && ($item = $queue->claimItem(self::QUEUE_LEASE_TIME))) {
+        try {
+          if ($this->processItem((int) $item->data)) {
+            $queue->deleteItem($item);
+            continue;
+          }
+        }
+        catch (\Throwable $exception) {
+          $this->logger->error('Could not update KWE node @id: @message', [
+            '@id' => $item->data,
+            '@message' => $exception->getMessage(),
+          ]);
+        }
 
-    foreach ($items as $item) {
-      try {
-        if ($this->processItem((int) $item->data)) {
-          $queue->deleteItem($item);
+        if ($queue instanceof DelayableQueueInterface) {
+          $queue->delayItem($item, self::RETRY_DELAY);
         }
         else {
-          $queue->releaseItem($item);
+          // Keep failed items reserved until the loop finishes so a backend
+          // without delayed release cannot retry the same item immediately.
+          $retry_items[] = $item;
         }
       }
-      catch (\Throwable $exception) {
+    }
+    finally {
+      foreach ($retry_items as $item) {
         $queue->releaseItem($item);
-        $this->logger->error('Could not update KWE node @id: @message', [
-          '@id' => $item->data,
-          '@message' => $exception->getMessage(),
-        ]);
       }
     }
   }
 
   /**
-   * Updates one node. Returns FALSE when a lock requires a later retry.
+   * Updates one node. Returns FALSE when a lock or API failure needs a retry.
    */
   public function processItem(int $node_id): bool {
     $node_storage = $this->entityTypeManager->getStorage('node');
@@ -142,7 +161,12 @@ final class KweQueueWorker {
     }
 
     $api_url = self::API_URL . substr($ddb_uri, strlen(self::ORGANIZATION_URL)) . '/source/record';
-    $organization = $this->loadOrganization($node_id, $api_url);
+    try {
+      $organization = $this->loadOrganization($node_id, $api_url);
+    }
+    catch (GuzzleException | \RuntimeException) {
+      return FALSE;
+    }
     if ($organization === NULL) {
       return TRUE;
     }
@@ -247,7 +271,12 @@ final class KweQueueWorker {
    * Downloads and parses organization data from the trusted DDB API endpoint.
    *
    * @return array<string, string>|null
-   *   Parsed values, or NULL when the response cannot be processed.
+   *   Parsed values, or NULL when the organization no longer exists.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *   When the API request fails and must be retried.
+   * @throws \RuntimeException
+   *   When the API response cannot be parsed and must be retried.
    */
   private function loadOrganization(int $node_id, string $url): ?array {
     try {
@@ -256,6 +285,11 @@ final class KweQueueWorker {
         'headers' => ['Accept' => 'application/xml'],
         'timeout' => 5.0,
       ]);
+      // Alternate clients can disable Guzzle's HTTP error middleware. Never
+      // interpret an error response as successfully downloaded organization data.
+      if ($response->getStatusCode() >= 400) {
+        throw RequestException::create(new Request('GET', $url), $response);
+      }
       $contents = (string) $response->getBody();
 
       $previous = libxml_use_internal_errors(TRUE);
@@ -279,7 +313,10 @@ final class KweQueueWorker {
         '@url' => $url,
         '@message' => $exception->getMessage(),
       ]);
-      return NULL;
+      if ($exception instanceof RequestException && in_array($exception->getResponse()?->getStatusCode(), [404, 410], TRUE)) {
+        return NULL;
+      }
+      throw $exception;
     }
   }
 

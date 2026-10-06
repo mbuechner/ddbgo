@@ -78,6 +78,27 @@ $check(ddbgo_gin_exposed_filter_has_selection($option_filter, '0'), 'Zero-valued
 $check(ddbgo_gin_exposed_filter_has_selection($option_filter, '1'), 'Selected option ignores the active widget default');
 $check(!ddbgo_gin_exposed_filter_has_selection(['#type' => 'select', '#options' => [0 => 'Default', 1 => 'Other']], '0'), 'Numeric default matches submitted string values');
 
+// Composite filter wrappers are layout elements, not submitted identifiers.
+$range_form = [
+  '#info' => ['filter-range' => ['value' => 'range', 'operator' => 'range_op']],
+  'range_wrapper' => [
+    '#type' => 'fieldset',
+    'range_op' => ['#type' => 'select', '#options' => ['=' => 'Equals', 'between' => 'Between']],
+    'range' => [
+      '#parents' => ['filters', 'range'],
+      'min' => ['#type' => 'textfield'],
+      'max' => ['#type' => 'textfield'],
+    ],
+  ],
+];
+foreach ([['min' => '0', 'max' => '10'], ['min' => '', 'max' => '10'], ['min' => '', 'max' => '']] as $values) {
+  $range_state = (new FormState())->setUserInput(['range_op' => 'between', 'filters' => ['range' => $values]]);
+  $range_details = ddbgo_gin_build_exposed_filter_details($range_form, $range_state)['ddbgo_exposed_filters'];
+  $check($range_details['#open'] === ($values['max'] !== ''), 'Composite range follows submitted value parents, including zero and empty values');
+}
+$range_state = (new FormState())->setUserInput(['range_op' => 'between']);
+$check(!ddbgo_gin_build_exposed_filter_details($range_form, $range_state)['ddbgo_exposed_filters']['#open'], 'An operator requiring values does not open an empty filter');
+
 // Exercise label placement branches that are not present in every live form.
 $renderer = Drupal::service('renderer');
 foreach (['before', 'after', 'invisible', 'none'] as $placement) {

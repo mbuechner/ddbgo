@@ -13,6 +13,17 @@ Bleibt ein konkurrierender Producer auch nach kurzem Warten blockiert, wird
 der Auftrag trotzdem angelegt und eine Warnung protokolliert. Ein möglicher
 Doppelauftrag erhält die Aktualisierung auch bei einem fehlerhaften Producer.
 
+Der Worker reserviert jeden Auftrag erst unmittelbar vor seiner Verarbeitung
+für 600 Sekunden. Nach 300 Sekunden beginnt er keinen weiteren Auftrag mehr;
+der gerade bearbeitete Auftrag wird noch abgeschlossen. Wartende Aufträge
+verbrauchen dadurch keine Reservierungszeit. Sperren, Verbindungsfehler,
+HTTP-Fehler außer 404/410 und ungültige XML-Antworten behalten den Auftrag für
+einen späteren Versuch. Die Datenbank-Queue verzögert diese Wiederholung um
+600 Sekunden; Core macht sie bei einer nachfolgenden Queue-Bereinigung wieder
+verfügbar. Andere Backends geben Fehlversuche erst am Ende des Laufs frei,
+damit derselbe Auftrag nicht sofort erneut verarbeitet wird. HTTP 404/410
+beendet den Auftrag ohne Änderung am KWE-Knoten.
+
 Die Anzahl der Queue-Abfragen beim einzelnen Speichern hängt nicht mehr von
 der Zahl der Einträge ab. Ohne Index auf dem serialisierten Datenfeld kann die
 Datenbank intern weiterhin Einträge dieser Queue durchsuchen. Die Optimierung
@@ -34,11 +45,13 @@ Regressionstests:
 php web/modules/custom/ddbgo_cj/tests/php/kwe-queue-worker.test.php
 php web/modules/custom/ddbgo_cj/tests/php/kwe-queue-membership.test.php
 php vendor/bin/drush.php php:script web/modules/custom/ddbgo_cj/tests/php/kwe-queue-database.test.php
+php vendor/bin/drush.php php:script web/modules/custom/ddbgo_cj/tests/php/kwe-queue-processing.test.php
 ```
 
 Die ersten beiden Tests verwenden isolierte Fixtures; der Membership-Test
 benötigt die PHP-Erweiterung SQLite3 für seine Datenbank im Arbeitsspeicher.
-Der native Datenbanktest
-verwendet zufällig benannte Test-Queues in einer zurückgerollten Transaktion.
-Er verarbeitet keine echten Aufträge, ruft keine API auf und speichert keine
-Inhalte oder Konfiguration.
+Die nativen Datenbanktests verwenden zufällig benannte Test-Queues in einer
+zurückgerollten Transaktion. Sie verarbeiten keine echten Aufträge, rufen keine
+API auf und speichern keine Inhalte oder Konfiguration. Der Processing-Test
+prüft zusätzlich die Reservierung während der Core-Queue-Bereinigung, einen
+gleichzeitigen URI-Wechsel und verzögerte Wiederholungen nach einem HTTP-Fehler.

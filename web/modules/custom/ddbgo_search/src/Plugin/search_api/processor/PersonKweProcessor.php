@@ -3,6 +3,7 @@
 namespace Drupal\ddbgo_search\Plugin\search_api\processor;
 
 use Drupal;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -197,7 +198,7 @@ class PersonKweProcessor extends ProcessorPluginBase {
         $role_names = [];
         foreach ($node_role_ids[$node->id()] ?? [] as $role_id) {
           if (isset($roles[$role_id])) {
-            $role_names[] = $roles[$role_id]->label();
+            $role_names[] = Html::escape($roles[$role_id]->label());
           }
         }
 

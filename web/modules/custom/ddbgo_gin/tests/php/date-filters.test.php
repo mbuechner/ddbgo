@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormState;
+use Drupal\views\Plugin\views\filter\NumericFilter;
 use Drupal\views\Views;
 
 $check = static function (bool $condition, string $message): void {
@@ -54,6 +55,78 @@ try {
     $check($xpath->query('//label[@for="' . $id . '"]')->length === 1, "One accessible label for $id");
   }
   $check($xpath->query('//legend')->length === 1, 'One shared fieldset legend');
+
+  // Keep all dropdowns unfiltered so the date widget alone must open details.
+  $defaults = ['query' => '', $operator => 'between'];
+  foreach (['field_europeana_lieferung', 'europeana_lieferung_ueber_ddb'] as $identifier) {
+    $defaults[$identifier] = array_key_first($form['ddbgo_exposed_filters'][$identifier]['#options']);
+  }
+  foreach ([
+    ['value' => '', 'min' => '', 'max' => ''],
+    ['value' => '', 'min' => '2026-01-01', 'max' => '2026-09-01'],
+  ] as $dates) {
+    $date_view = Views::getView('suche_bestand_fuer_europeana');
+    $date_view->setDisplay('default');
+    $date_view->setExposedInput($defaults + ['datum_des_status' => $dates]);
+    $date_view->initHandlers();
+    $date_form = $date_view->display_handler->getPlugin('exposed_form')->renderExposedForm();
+    $check($date_form['ddbgo_exposed_filters']['#open'] === ($dates['min'] !== ''), 'Only an active date range opens details with all other filters empty');
+    foreach (['min', 'max'] as $part) {
+      $check($date_form['ddbgo_exposed_filters']['datum_des_status_wrapper']['datum_des_status'][$part]['#value'] === $dates[$part], "Active date input retained: $part");
+    }
+  }
+
+  // Build native numeric widgets in memory, including operators that do not
+  // need a value. No View configuration or content is saved.
+  $numeric_view = Views::getView('suche_bestand_fuer_europeana');
+  $numeric_view->setDisplay('default');
+  $numeric_view->initHandlers();
+  $numeric = new NumericFilter([], 'numeric', ['allow empty' => TRUE]);
+  $numeric->view = $numeric_view;
+  $numeric->options['exposed'] = TRUE;
+  $numeric->options['expose']['identifier'] = 'amount';
+  $numeric->options['expose']['operator_id'] = 'amount_op';
+  $numeric->options['expose']['use_operator'] = TRUE;
+  $numeric->options['expose']['label'] = 'Amount';
+  $numeric->options['expose']['description'] = '';
+  $numeric->value = ['value' => '', 'min' => '', 'max' => ''];
+  $numeric_view->filter = ['amount' => $numeric];
+  foreach ([
+    ['between', ['value' => '', 'min' => '', 'max' => ''], FALSE],
+    ['between', ['value' => '', 'min' => '0', 'max' => '10'], TRUE],
+    ['=', ['value' => '', 'min' => '0', 'max' => '10'], FALSE],
+    ['=', ['value' => '0', 'min' => '', 'max' => ''], TRUE],
+    ['empty', ['value' => '', 'min' => '', 'max' => ''], TRUE],
+    ['not empty', ['value' => '', 'min' => '', 'max' => ''], TRUE],
+    ['<', [], FALSE],
+  ] as [$comparison, $values, $open]) {
+    $numeric->operator = $comparison;
+    $numeric_state = (new FormState())->set('view', $numeric_view)->set('exposed', TRUE);
+    $numeric_state->setUserInput(['amount_op' => $comparison, 'amount' => $values]);
+    $numeric_form = ['#info' => ['filter-amount' => $numeric->exposedInfo()]];
+    $numeric->buildExposedForm($numeric_form, $numeric_state);
+    $numeric_form = ddbgo_gin_build_exposed_filter_details($numeric_form, $numeric_state);
+    $check($numeric_form['ddbgo_exposed_filters']['#open'] === $open, "Numeric details follow active operator values: $comparison / " . json_encode($values));
+  }
+  $numeric->operator = 'between';
+  $numeric->options['expose']['use_operator'] = FALSE;
+  $numeric_state = (new FormState())->set('view', $numeric_view)->set('exposed', TRUE);
+  $numeric_state->setUserInput(['amount_op' => '=', 'amount' => ['min' => '0', 'max' => '10']]);
+  $numeric_form = ['#info' => ['filter-amount' => $numeric->exposedInfo()]];
+  $numeric->buildExposedForm($numeric_form, $numeric_state);
+  $numeric_form = ddbgo_gin_build_exposed_filter_details($numeric_form, $numeric_state);
+  $check($numeric_form['ddbgo_exposed_filters']['#open'] === TRUE, 'URL operators cannot override a non-exposed comparison');
+
+  $numeric->operator = '=';
+  $numeric->options['expose']['use_operator'] = TRUE;
+  $numeric->options['expose']['operator_limit_selection'] = TRUE;
+  $numeric->options['expose']['operator_list'] = ['=' => '='];
+  $numeric_state = (new FormState())->set('view', $numeric_view)->set('exposed', TRUE);
+  $numeric_state->setUserInput(['amount_op' => 'empty', 'amount' => ['value' => '', 'min' => '', 'max' => '']]);
+  $numeric_form = ['#info' => ['filter-amount' => $numeric->exposedInfo()]];
+  $numeric->buildExposedForm($numeric_form, $numeric_state);
+  $numeric_form = ddbgo_gin_build_exposed_filter_details($numeric_form, $numeric_state);
+  $check($numeric_form['ddbgo_exposed_filters']['#open'] === FALSE, 'Excluded zero-value operators cannot open an empty filter');
 
   // Inspect the initial HTML before JavaScript can fix its visibility. Test
   // submitted operators too, so a remembered/default "between" cannot win.

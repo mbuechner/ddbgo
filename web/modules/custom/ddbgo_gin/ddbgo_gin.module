@@ -5,6 +5,7 @@
  * DDBgo integration and behavior for Gin-based themes.
  */
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -694,13 +695,55 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
   }
 
   $user_input = $form_state->getUserInput();
+  $numeric_filters = [];
+  $view = $form_state->get('view');
+  if ($view instanceof \Drupal\views\ViewExecutable) {
+    foreach ($view->filter as $filter) {
+      if ($filter instanceof \Drupal\views\Plugin\views\filter\NumericFilter && $filter->isExposed() && !$filter->isAGroup()) {
+        $numeric_filters[$filter->exposedInfo()['value']] = $filter;
+      }
+    }
+  }
+
   $has_active_filter = FALSE;
   foreach ($filter_keys as $key) {
-    if (
-      ($form[$key]['#type'] ?? NULL) !== 'actions'
-      && array_key_exists($key, $user_input)
-      && ddbgo_gin_exposed_filter_has_selection($form[$key], $user_input[$key])
-    ) {
+    if (($form[$key]['#type'] ?? NULL) === 'actions') {
+      continue;
+    }
+    $element = $form[$key];
+    $value_key = $key;
+    // Core wraps composite values and operators in a fieldset. The wrapper
+    // is not submitted; its value widget keeps the exposed identifier.
+    foreach ($form['#info'] ?? [] as $info) {
+      $identifier = $info['value'] ?? NULL;
+      if (is_string($identifier) && isset($element[$identifier])) {
+        $value_key = $identifier;
+        $element = $element[$value_key];
+        break;
+      }
+    }
+    $input_exists = FALSE;
+    $input = NestedArray::getValue($user_input, $element['#parents'] ?? [$value_key], $input_exists);
+    if (isset($numeric_filters[$value_key])) {
+      $filter = $numeric_filters[$value_key];
+      $operator_key = $filter->exposedInfo()['operator'];
+      $operator = !empty($filter->options['expose']['use_operator'])
+        ? ($user_input[$operator_key] ?? $filter->operator)
+        : $filter->operator;
+      $value_count = is_string($operator) ? ($filter->operators()[$operator]['values'] ?? NULL) : NULL;
+      $operator_options = $form[$key][$operator_key]['#options'] ?? $form[$operator_key]['#options'] ?? [];
+      $operator_allowed = empty($filter->options['expose']['use_operator']) || (is_string($operator) && array_key_exists($operator, $operator_options));
+      if ($value_count === 0 && $operator_allowed && ($input_exists || array_key_exists($operator_key, $user_input))) {
+        $has_active_filter = TRUE;
+        break;
+      }
+      if (is_array($input) && ($value_count === 1 || $value_count === 2)) {
+        // Hidden values from a previous operator do not restrict the query.
+        $parts = $value_count === 1 ? ['value'] : ['min', 'max'];
+        $input = array_intersect_key($input, array_flip($parts));
+      }
+    }
+    if ($input_exists && ddbgo_gin_exposed_filter_has_selection($element, $input)) {
       $has_active_filter = TRUE;
       break;
     }

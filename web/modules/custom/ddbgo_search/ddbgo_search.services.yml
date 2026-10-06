@@ -15,3 +15,8 @@ services:
     class: Drupal\ddbgo_search\EventSubscriber\OriginalSearchValuesSubscriber
     tags:
       - { name: event_subscriber }
+
+  ddbgo_search.kwe_sector_dependencies:
+    class: Drupal\ddbgo_search\EventSubscriber\KweSectorDependenciesSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -13,7 +13,7 @@ function ddbgo_cj_kwe_daily_queue_worker(): void {
 }
 
 /**
- * Processes all currently available KWE queue items.
+ * Processes currently available KWE queue items within the worker's time limit.
  */
 function ddbgo_cj_kwe_queue_worker(): void {
   _ddbgo_cj_worker()->processQueue();

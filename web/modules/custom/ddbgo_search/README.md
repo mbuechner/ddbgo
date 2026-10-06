@@ -78,4 +78,18 @@ Die isolierten und nativen Regressionstests lassen sich so ausführen:
 ```sh
 php web/modules/custom/ddbgo_search/tests/php/person-relations.test.php
 php vendor/bin/drush.php php:script web/modules/custom/ddbgo_search/tests/php/person-search-batch.test.php
+php vendor/bin/drush.php php:script web/modules/custom/ddbgo_search/tests/php/person-role-output.test.php
+php vendor/bin/drush.php php:script web/modules/custom/ddbgo_search/tests/php/kwe-sector-dependencies.test.php
 ```
+
+Rollenbezeichnungen werden als Text in die verlinkte HTML-Ausgabe eingefügt.
+Auch Zeichen wie `<` und `&` bleiben deshalb in Batch- und Einzelverarbeitung
+sichtbar. Der native Ausgabetest verwendet dafür ausschließlich ungespeicherte
+Rollenkopien in einem isolierten Speichercache.
+
+`KweSectorDependenciesSubscriber` registriert die Namen von Sparte und
+Untersparte als Abhängigkeiten des berechneten KWE-Feldes bei Search API.
+Änderungen und Löschungen dieser Begriffe merken die referenzierenden KWEs zur
+Neuindexierung vor. Nach dem Deployment `drush cr` ausführen, damit der neue
+Subscriber und das erneuerte Beziehungsmapping aktiv werden. Bereits veraltete
+KWE-Suchtexte wie oben beschrieben einmalig neu indexieren.
