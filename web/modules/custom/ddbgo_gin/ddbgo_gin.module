@@ -20,6 +20,7 @@ use Drupal\ddbgo_gin\Render\FormErrorAccessibility;
 use Drupal\ddbgo_gin\Render\Select2Markup;
 use Drupal\node\Form\NodeForm;
 use Drupal\node\NodeInterface;
+use Drupal\tagify\Element\SelectTagify;
 use Symfony\Component\String\AbstractUnicodeString;
 use Symfony\Component\String\UnicodeString;
 
@@ -736,6 +737,10 @@ function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface 
     if (
       (is_string($type) && str_contains($type, 'tagify'))
       || in_array('tagify-select-widget', $classes, TRUE)
+      // Since Tagify 2.0.5, #process changes #type to 'select' for validation.
+      // Its widget class is added only at render time, after this #after_build.
+      // The resolved process callback still identifies the actual widget here.
+      || in_array([SelectTagify::class, 'processSelectTagify'], $form[$key]['#process'] ?? [], TRUE)
     ) {
       $tag_filter_keys[] = $key;
     }

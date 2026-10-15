@@ -124,7 +124,10 @@ $query = $effective_input['query'] ?? '';
 $check($form['ddbgo_exposed_filters']['#open'] === ($query !== '' && $query !== NULL), 'Active full-text searches remain visible after the Facets rebuild, including "0" and remembered input.');
 $check(isset($form['field_bestandstags']), 'Tag filter exists. Rebuild Drupal caches after importing configuration.');
 $tag = $form['field_bestandstags'];
-$check(($tag['#type'] ?? '') === 'select_tagify', 'Tagify remains visible, including empty results.');
+// Tagify 2.0.5 changes #type to select during #process. Check the widget's
+// assets and rendered marker as well, rather than relying on the initial type.
+$check(in_array($tag['#type'] ?? '', ['select_tagify', 'select'], TRUE), 'Tag filter remains a select element.');
+$check(in_array('tagify/default', $tag['#attached']['library'] ?? [], TRUE), 'Tagify stays attached, including empty results.');
 $check($normalize(array_values($tag['#value'])) === $selected, 'All selected tags remain removable.');
 $check($normalize(array_values($session->get('views')['suche_bestand']['default']['field_bestandstags'])) === $selected, 'Views remembers the complete selection.');
 $check(isset($tag['#attributes']['data-ddbgo-tag-auto-submit']), 'Native Tagify change submission stays attached.');
@@ -179,6 +182,7 @@ $dom = new DOMDocument();
 @$dom->loadHTML($html);
 $xpath = new DOMXPath($dom);
 $check($xpath->query('//select[@name="field_bestandstags[]"]')->length === 1, 'Existing GET parameter is preserved.');
+$check($xpath->query('//select[@name="field_bestandstags[]" and contains(concat(" ", normalize-space(@class), " "), " tagify-select-widget ") and @data-ddbgo-tag-auto-submit]')->length === 1, 'Rendered Tagify widget retains automatic submission.');
 $check($xpath->query('//select[@name="field_bestandstags[]"]/ancestor::details')->length === 0, 'Tag field is visible outside the collapsible filters.');
 $check($xpath->query('//select[@name="field_bestandstags[]"]/option[@selected]')->length === count($selected), 'Rendered selection survives rebuilding.');
 

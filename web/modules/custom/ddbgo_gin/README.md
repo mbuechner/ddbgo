@@ -1704,6 +1704,13 @@ Die Berechnung verfügbarer Tags und die Suchabfrage bleiben vollständig bei
 Facets/Search API. Das Widget ist nur für diesen Filter vorgesehen; zusätzliche
 JavaScript-Anpassungen oder Composer-Patches sind nicht erforderlich.
 
+Die Gruppierung der Suchfilter erkennt verarbeitete Tagify-Selects zusätzlich
+an ihrem `processSelectTagify`-Callback. Seit Tagify 2.0.5 lautet ihr `#type`
+bereits in `#after_build` nur noch `select`; die CSS-Klasse des Widgets wird
+erst beim Rendern ergänzt. So bleiben Bestandstags unterhalb der Filterklappe
+und erhalten weiterhin die Markierungen für das automatische Absenden über
+den vorhandenen Views-Submit. Die AJAX-Einstellung der View bleibt maßgeblich.
+
 Die Aktivierung des mitgelieferten Untermoduls und die View werden über den
 regulären Konfigurationsimport übernommen. Danach Drupal-Caches neu aufbauen,
 damit Views den neuen Facettenfilter erkennt; eine veraltete Filterdefinition
