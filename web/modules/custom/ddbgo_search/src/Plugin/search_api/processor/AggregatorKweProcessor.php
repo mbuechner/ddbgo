@@ -146,7 +146,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       if ($datasource
         && $datasource->getEntityTypeId() === 'node'
         && $direct === 'ddbgo_aggregator_kwe') {
-        $to_extract[$nested][] = $field;
+        $to_extract[$nested ?? ''][] = $field;
       }
     }
 

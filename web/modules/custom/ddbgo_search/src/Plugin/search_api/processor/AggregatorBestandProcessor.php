@@ -146,7 +146,7 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
       if ($datasource
         && $datasource->getEntityTypeId() === 'node'
         && $direct === 'ddbgo_aggregator_bestand') {
-        $to_extract[$nested][] = $field;
+        $to_extract[$nested ?? ''][] = $field;
       }
     }
 
