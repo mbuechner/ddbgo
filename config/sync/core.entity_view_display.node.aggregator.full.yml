@@ -47,6 +47,7 @@ content:
     weight: 100
     region: content
 hidden:
+  breadcrumbs: true
   field_ablehnungsgrund: true
   field_bemerkung: true
   field_bemerkungen: true

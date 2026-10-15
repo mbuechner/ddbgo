@@ -596,6 +596,7 @@ content:
     weight: 26
     region: content
 hidden:
+  breadcrumbs: true
   field_api_blacklisting: true
   field_api_blacklisting_jira_tick: true
   field_status: true

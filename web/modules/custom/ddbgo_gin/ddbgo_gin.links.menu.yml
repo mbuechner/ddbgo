@@ -1,5 +1,5 @@
 # Footer links are maintained here; Drupal's menu UI can change order/visibility.
-# Remaining <front> placeholders can be replaced once their pages exist.
+# Internal URLs resolve the aliases of the published information pages.
 ddbgo_gin.footer_sitemap:
   title: Seitenübersicht
   route_name: sitemap.page
@@ -8,24 +8,24 @@ ddbgo_gin.footer_sitemap:
 
 ddbgo_gin.footer_contact:
   title: Kontakt
-  route_name: '<front>'
+  url: 'internal:/impressum#kontakt'
   menu_name: footer
   weight: 1
 
 ddbgo_gin.footer_accessibility:
   title: Barrierefreiheit
-  route_name: '<front>'
+  url: 'internal:/barrierefreiheit'
   menu_name: footer
   weight: 2
 
 ddbgo_gin.footer_terms:
   title: Nutzungsbedingungen
-  route_name: '<front>'
+  url: 'internal:/nutzungsbedingungen'
   menu_name: footer
   weight: 3
 
 ddbgo_gin.footer_impressum:
   title: Impressum
-  route_name: '<front>'
+  url: 'internal:/impressum'
   menu_name: footer
   weight: 4

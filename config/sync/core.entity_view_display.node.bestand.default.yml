@@ -767,6 +767,7 @@ content:
     weight: 14
     region: content
 hidden:
+  breadcrumbs: true
   field_status: true
   flag_bookmark: true
   langcode: true

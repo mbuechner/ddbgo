@@ -111,14 +111,48 @@ Prüfung steht aus; die Browsersteuerung ist in dieser Sitzung nicht verfügbar.
 Der Footer enthält in dieser Reihenfolge **Seitenübersicht** (Sitemap),
 **Kontakt**, **Barrierefreiheit**, **Nutzungsbedingungen** und **Impressum**.
 Alle fünf Einträge sind statische Menüdefinitionen in
-`ddbgo_gin.links.menu.yml`. „Seitenübersicht“ verwendet `route_name: sitemap.page`;
-die übrigen vier Einträge zeigen weiterhin vorläufig mit `route_name: '<front>'`
-auf die Startseite. Für diese vier Einträge werden noch keine Zielseiten angelegt.
-Der Sitemap-Link ist über die Zugriffsprüfung seiner Route für Gäste ausgeblendet.
+`ddbgo_gin.links.menu.yml`. „Seitenübersicht“ verwendet `route_name: sitemap.page`.
+Die Informationsseiten verwenden interne URLs zu `/barrierefreiheit`,
+`/nutzungsbedingungen` und `/impressum`; „Kontakt“ verweist auf
+`/impressum#kontakt`. Im Impressum muss dafür ein Element mit `id="kontakt"`
+vorhanden sein. Die veröffentlichten Inhalte vom Typ „Einfache Seite“ und ihre
+URL-Aliasse werden in Drupal gepflegt und liegen in der Datenbank; ein
+Konfigurationsimport legt sie nicht an. Der Sitemap-Link ist über die
+Zugriffsprüfung seiner Route für Gäste ausgeblendet.
+
+Veröffentlichte „Einfache Seiten“ sind öffentlich lesbar. Die exportierten Rollen
+`anonymous` und `authenticated` besitzen dafür `access content` und
+`view any page content`. Alle angemeldeten Benutzer erben die zweite Rolle.
+Die Seiten müssen veröffentlicht sein und die passenden URL-Aliasse besitzen.
+Die Textkörper einfacher Seiten und einfacher Inhaltsblöcke erlauben über
+`settings.allowed_formats` ausschließlich „Einfaches HTML“ (`basic_html`). Bei
+einem erlaubten Format blendet Drupal die Formatauswahl aus. Bestehende Inhalte
+mit einem anderen gespeicherten Format müssen einmal auf `basic_html` umgestellt
+werden; ein Konfigurationsimport ändert das gespeicherte Inhaltsformat nicht.
+Die übrigen Formularfelder bleiben verfügbar. Andere globale Formatdefinitionen
+bleiben für ältere Revisionen erhalten; `plain_text` bleibt Drupals Pflicht-Fallback.
+
+Falls die aktiven Rollen einer bestehenden Installation noch abweichen, lassen
+sich die Leserechte gezielt übernehmen:
+
+```sh
+drush role:perm:add anonymous 'access content,view any page content'
+drush role:perm:add authenticated 'access content,view any page content'
+drush cr
+```
+
+Bleibt eine veröffentlichte Seite trotz dieser Rechte gesperrt, die gespeicherten
+Node-Zugriffsrechte für `node_view_permissions` neu aufbauen:
+
+```sh
+drush php:eval '\Drupal::service(\Drupal\node\NodeAccessRebuild::class)->rebuild();'
+drush cr
+```
 
 Titel und Ziele werden in dieser YAML-Datei gepflegt. Sobald ein Ziel feststeht,
-`route_name` und gegebenenfalls `route_parameters` setzen oder stattdessen `url`
-angeben. Die stabilen IDs `ddbgo_gin.footer_impressum`,
+für Drupal-Routen `route_name` und gegebenenfalls `route_parameters` setzen oder
+für Pfade `url: 'internal:/…'` angeben. Nach Änderungen `drush cr` ausführen.
+Die stabilen IDs `ddbgo_gin.footer_impressum`,
 `ddbgo_gin.footer_contact`, `ddbgo_gin.footer_terms`,
 `ddbgo_gin.footer_accessibility` und `ddbgo_gin.footer_sitemap` beibehalten.
 Reihenfolge und Aktivierung können weiterhin unter **Struktur → Menüs →

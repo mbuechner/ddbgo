@@ -582,6 +582,7 @@ content:
     weight: 19
     region: content
 hidden:
+  breadcrumbs: true
   field_status: true
   flag_bookmark: true
   langcode: true

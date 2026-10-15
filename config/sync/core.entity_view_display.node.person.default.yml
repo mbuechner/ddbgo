@@ -132,6 +132,7 @@ content:
     weight: 3
     region: content
 hidden:
+  breadcrumbs: true
   flag_bookmark: true
   langcode: true
   layout_builder__layout: true
