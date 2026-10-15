@@ -20,7 +20,7 @@ entity_type: node
 global: false
 flag_short: 'Lesezeichen setzen'
 flag_long: 'Diesen Beitrag zu den Lesezeichen hinzufügen.'
-flag_message: 'Dieser Beitrag wurde zu Ihren Lesezeichen hinzugefügt'
+flag_message: 'Dieser Beitrag wurde zu den Lesezeichen hinzugefügt'
 unflag_short: 'Lesezeichen entfernen'
 unflag_long: 'Diesen Beitrag aus den Lesezeichen entfernen'
 unflag_message: 'Dieser Beitrag wurde aus den Lesezeichen entfernt'
