@@ -12,7 +12,7 @@ field_name: field_fragebogen
 entity_type: node
 bundle: bestand
 label: Fragebogen
-description: 'Alter Fragebogen aus Zeiten vor LimeSurvey'
+description: 'Hier wird der alte Fragebogen aus der Zeit vor LimeSurvey hinterlegt.'
 required: false
 translatable: false
 default_value: {  }

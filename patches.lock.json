@@ -1,12 +1,48 @@
 {
-    "_hash": "9ff518c694fd9de1da5c97e0a382604d7eb02bef06f15317db5f1497b2c1c000",
+    "_hash": "023804e552d649d71fc6a8639c58db5a923b182846fcb8ffe187e407d32b10c6",
     "patches": {
+        "consolidation/site-process": [
+            {
+                "package": "consolidation/site-process",
+                "description": "Preserve valid JSON before legacy Windows shell unescaping",
+                "url": "patches/site-process-preserve-valid-json.patch",
+                "sha256": "def125948a8d34bd013cd245e4ef32d2555f84266acb5acf515d184918d8ae3e",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
         "drupal/select2": [
             {
                 "package": "drupal/select2",
                 "description": "Changed tokenSeparator in Select2 module",
                 "url": "patches/Changed_tokenSeparator_in_Select2_module.patch",
-                "sha256": "743d8bd9df66c1d951f985a3f4a12744f3b001e8b52e5a532ad737449d9d0d63",
+                "sha256": "377594f8fad8983235ab657d7c3a300994fe692d1c134abe4c876450a02ef536",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/toolbar_menu": [
+            {
+                "package": "drupal/toolbar_menu",
+                "description": "Fix Gin class conflict and empty menu links (3271757)",
+                "url": "patches/toolbar_menu-gin-compatibility.patch",
+                "sha256": "1335616b7ff9546d063d50574cfdfffe7367344012b468331438987e68a5ac1e",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/toastify": [
+            {
+                "package": "drupal/toastify",
+                "description": "Restore constructible Toastify initializer",
+                "url": "patches/toastify-init-constructor.patch",
+                "sha256": "ff3b1b1bda225412214358ca1f3d98d6529e9840a9c9e1b74e7cfa9d7fda61f2",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"
@@ -18,7 +54,7 @@
                 "package": "drupal/unique_field_ajax",
                 "description": "Fixing bug with warning message at Unique Field Ajax",
                 "url": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch",
-                "sha256": "535fac7b31b9444528a916da6eec7897ddd8f447ed7328a74dd5ef3466f8b256",
+                "sha256": "0088ec152d1b281ff21dbae814f91d4ba88719ad8234729ade0139a00dc1d1b2",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"

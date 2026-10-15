@@ -12,7 +12,7 @@ field_name: field_workflow
 entity_type: node
 bundle: aggregator
 label: Workflow
-description: ''
+description: 'Hier wird die Präsentation zum Workflow des Aggregators hinterlegt.'
 required: false
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_vertragsstatus
 entity_type: node
 bundle: kwe
 label: Vertragsstatus
-description: 'Status des Vertrags (aus der Dropdown Liste bitte auswählen).'
+description: 'Die Angabe beschreibt den Status des Vertrags.'
 required: false
 translatable: false
 default_value: {  }

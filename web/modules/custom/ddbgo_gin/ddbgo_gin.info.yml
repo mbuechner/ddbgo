@@ -1,0 +1,12 @@
+name: DDBgo Gin
+type: module
+description: Integrates DDBgo navigation, layout, and shared form behavior with Gin-based themes.
+package: ddbgo
+core_version_requirement: ^11 || ^12
+dependencies:
+  - drupal:block
+  - custom_breadcrumbs:custom_breadcrumbs
+  - flag:flag
+  - form_options_attributes:form_options_attributes
+  - sitemap:sitemap
+  - toolbar_menu:toolbar_menu

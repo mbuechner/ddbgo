@@ -1,0 +1,28 @@
+# Redis service overrides.
+#
+# Loaded conditionally from settings.php when USE_REDIS evaluates to true.
+
+services:
+  # Cache tag checksum backend. Used by redis and most other cache backends
+  # to handle cache tag invalidations.
+  cache_tags.invalidator.checksum:
+    class: Drupal\redis\Cache\RedisCacheTagsChecksum
+    arguments: ['@redis.factory']
+    tags:
+      - { name: cache_tags_invalidator }
+
+  # Replace default lock backend with a Redis implementation.
+  lock:
+    class: Drupal\Core\Lock\LockBackendInterface
+    factory: ['@redis.lock.factory', get]
+
+  # Replace default persistent lock backend with a Redis implementation.
+  lock.persistent:
+    class: Drupal\Core\Lock\LockBackendInterface
+    factory: ['@redis.lock.factory', get]
+    arguments: [true]
+
+  # Replace default flood backend with a Redis implementation.
+  flood:
+    class: Drupal\Core\Flood\FloodInterface
+    factory: ['@redis.flood.factory', get]

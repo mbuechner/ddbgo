@@ -10,7 +10,7 @@ field_name: field_bemerkung_archivportal
 entity_type: node
 bundle: kwe
 label: 'Bemerkung für Archivportal Europa-Lieferung'
-description: 'Weitere Bermerkungen zur Archivportal Europa-Lieferung. '
+description: 'Dieses Feld enthält ergänzende Bemerkungen zur Archivportal Europa-Lieferung.'
 required: false
 translatable: false
 default_value: {  }

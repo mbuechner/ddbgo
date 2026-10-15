@@ -1,0 +1,16 @@
+better_exposed_filters.filter.ddbgo_bestand_tags:
+  type: better_exposed_filters.filter.bef_tagify
+  label: 'DDBgo Bestandstags facet widget'
+  mapping:
+    advanced:
+      type: mapping
+      mapping:
+        match_operator:
+          type: string
+          label: 'Autocomplete matching'
+        max_items:
+          type: string
+          label: 'Maximum number of suggestions'
+        placeholder:
+          type: label
+          label: 'Placeholder'

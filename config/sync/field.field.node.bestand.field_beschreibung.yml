@@ -10,7 +10,7 @@ field_name: field_beschreibung
 entity_type: node
 bundle: bestand
 label: Beschreibung
-description: 'Beschreibung des Bestandes.'
+description: 'Dieses Feld enthält eine Beschreibung des Bestands.'
 required: false
 translatable: false
 default_value: {  }

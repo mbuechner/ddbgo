@@ -1,0 +1,67 @@
+{# Based on Gin's datetime-wrapper.html.twig. Keep its structure and preprocess variables
+   in sync on theme updates; DDBgo supplies the help button attributes in Twig. #}
+{#
+/**
+ * @file
+ * Theme override of a datetime form wrapper.
+ *
+ * @todo Refactor when https://www.drupal.org/node/3010558 is fixed.
+ *
+ * @see template_preprocess_form_element()
+ */
+#}
+{% set show_description_toggle = description_toggle and description %}
+{% set tooltip_id = description_attributes.id ?: 'ddbgo-help'|clean_unique_id %}
+{%
+  set classes = [
+    'form-item',
+    'form-datetime-wrapper',
+    show_description_toggle ? 'help-icon__description-container',
+  ]
+%}
+{%
+  set title_classes = [
+    'form-item__label',
+    required ? 'js-form-required',
+    required ? 'form-required',
+    errors ? 'has-error',
+  ]
+%}
+{%
+  set description_classes = [
+    'form-item__description',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  {% if show_description_toggle %}
+    <div class="help-icon ddbgo-form-help">
+  {% endif %}
+  {% if title %}
+    {# This title labels a date/time field group, not a document section.
+       Keep Gin's classes/attributes and the individual date/time input labels. #}
+    <span{{ title_attributes.addClass(title_classes) }}>{{ title }}</span>
+  {% endif %}
+  {% if show_description_toggle %}
+    {% include '@ddbgo_gin/ddbgo-help.html.twig' with {
+      label: null,
+      contextual_label: false,
+      tooltip_attributes: description_attributes,
+      tooltip_id: tooltip_id,
+      description_classes: description_classes,
+      description: description,
+    } only %}
+  </div>
+  {% endif %}
+  {{ content }}
+  {% if errors %}
+    <div class="form-item__error-message"{% if element['#ddbgo_inline_error_id'] %} id="{{ element['#ddbgo_inline_error_id'] }}"{% endif %}>
+      {{ errors }}
+    </div>
+  {% endif %}
+  {% if description and not show_description_toggle %}
+    <div{{ description_attributes.addClass(description_classes) }}>
+      {{ description }}
+    </div>
+  {% endif %}
+</div>

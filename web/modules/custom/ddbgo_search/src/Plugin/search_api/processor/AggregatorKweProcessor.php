@@ -10,13 +10,12 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\search_api\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
- * Adds the user's soul mate node for indexing.
+ * Exposes KWE nodes linked to an aggregator for Search API indexing.
  *
  * @SearchApiProcessor(
  *   id = "ddbgo_aggregator_kwe",
@@ -40,13 +39,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   protected $entityTypeManager;
 
   /**
-   * The fields helper.
-   *
-   * @var \Drupal\search_api\Utility\FieldsHelperInterface|null
-   */
-  protected $fieldsHelper;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
@@ -55,7 +47,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
     $processor->setEntityTypeManager($container->get('entity_type.manager'));
-    $processor->setFieldsHelper($container->get('search_api.fields_helper'));
 
     return $processor;
   }
@@ -86,31 +77,6 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   }
 
   /**
-   * Retrieves the fields helper.
-   *
-   * @return \Drupal\search_api\Utility\FieldsHelperInterface
-   *   The fields helper.
-   */
-  public function getFieldsHelper()
-  {
-    return $this->fieldsHelper ?: Drupal::service('search_api.fields_helper');
-  }
-
-  /**
-   * Sets the fields helper.
-   *
-   * @param \Drupal\search_api\Utility\FieldsHelperInterface $fields_helper
-   *   The new fields helper.
-   *
-   * @return $this
-   */
-  public function setFieldsHelper(FieldsHelperInterface $fields_helper)
-  {
-    $this->fieldsHelper = $fields_helper;
-    return $this;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function supportsIndex(IndexInterface $index)
@@ -126,7 +92,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array
   {
     $properties = [];
 
@@ -147,15 +113,30 @@ class AggregatorKweProcessor extends ProcessorPluginBase
 
   /**
    * {@inheritdoc}
+   *
+   * Enriches node datasource fields for property "ddbgo_aggregator_kwe".
+   *
+   * Input:
+   * - Search API item whose original object is expected to be an aggregator
+   *   node.
+   *
+   * Output:
+   * - Entity list (node references) used by Search API field extraction.
+   *
+   * Notes:
+   * - Resolves KWE nodes indirectly via linked bestand nodes.
+   * - Leaves extraction semantics unchanged by relying on Search API helpers.
    */
   public function addFieldValues(ItemInterface $item)
   {
+    // This processor only applies when the indexed item is a node entity.
     $original_entity = $item->getOriginalObject()->getValue();
 
     if (!($original_entity instanceof Node)) {
       return;
     }
 
+    // Collect target fields for this processor's property path.
     /** @var \Drupal\search_api\Item\FieldInterface[][] $to_extract */
     $to_extract = [];
     foreach ($item->getFields() as $field) {
@@ -173,6 +154,7 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Find published bestand nodes for this aggregator that reference KWE.
     $query = Drupal::entityQuery('node')
       ->accessCheck(FALSE)
       ->condition('status', 1)
@@ -182,10 +164,18 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       ->sort('field_kwe.entity.title', 'ASC')
       ->execute();
 
+    // Collect referenced KWE node IDs from all matched bestand nodes.
     $nids = [];
-    foreach (\Drupal::entityTypeManager()->getStorage('node')->loadMultiple($query) as $e) {
-      foreach ($e->get('field_kwe')->referencedEntities() as $re) {
-        array_push($nids, $re->id());
+    foreach (Drupal::entityTypeManager()->getStorage('node')->loadMultiple($query) as $e) {
+      if (!($e instanceof Node)) {
+        continue;
+      }
+      /** @var \Drupal\node\Entity\Node $e */
+
+      foreach ($e->get('field_kwe')->getValue() as $ref) {
+        if (!empty($ref['target_id'])) {
+          $nids[] = (int) $ref['target_id'];
+        }
       }
     }
 
@@ -193,10 +183,11 @@ class AggregatorKweProcessor extends ProcessorPluginBase
       ->getStorage('node')
       ->loadMultiple($nids);
 
-    if (!isset($nodes) || count($nodes) < 1) {
+    if (count($nodes) < 1) {
       return;
     }
 
+    // Populate root-level property values first, then nested fields.
     if (isset($to_extract[''])) {
       foreach ($to_extract[''] as $field) {
         $field->setValues($nodes);

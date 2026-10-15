@@ -10,13 +10,12 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\IndexInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api\Utility\FieldsHelperInterface;
 use Drupal\search_api\Utility\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 /**
- * Adds the user's soul mate node for indexing.
+ * Exposes bestand nodes linked to an aggregator for Search API indexing.
  *
  * @SearchApiProcessor(
  *   id = "ddbgo_aggregator_bestand",
@@ -40,13 +39,6 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
   protected $entityTypeManager;
 
   /**
-   * The fields helper.
-   *
-   * @var \Drupal\search_api\Utility\FieldsHelperInterface|null
-   */
-  protected $fieldsHelper;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
@@ -55,7 +47,6 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
     $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
     $processor->setEntityTypeManager($container->get('entity_type.manager'));
-    $processor->setFieldsHelper($container->get('search_api.fields_helper'));
 
     return $processor;
   }
@@ -86,31 +77,6 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
   }
 
   /**
-   * Retrieves the fields helper.
-   *
-   * @return \Drupal\search_api\Utility\FieldsHelperInterface
-   *   The fields helper.
-   */
-  public function getFieldsHelper()
-  {
-    return $this->fieldsHelper ?: Drupal::service('search_api.fields_helper');
-  }
-
-  /**
-   * Sets the fields helper.
-   *
-   * @param \Drupal\search_api\Utility\FieldsHelperInterface $fields_helper
-   *   The new fields helper.
-   *
-   * @return $this
-   */
-  public function setFieldsHelper(FieldsHelperInterface $fields_helper)
-  {
-    $this->fieldsHelper = $fields_helper;
-    return $this;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function supportsIndex(IndexInterface $index)
@@ -126,7 +92,7 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
+  public function getPropertyDefinitions(?DatasourceInterface $datasource = NULL): array
   {
     $properties = [];
 
@@ -147,15 +113,30 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
 
   /**
    * {@inheritdoc}
+   *
+   * Enriches node datasource fields for property "ddbgo_aggregator_bestand".
+   *
+   * Input:
+   * - Search API item whose original object is expected to be an aggregator
+   *   node.
+   *
+   * Output:
+   * - Entity list (node references) used by Search API field extraction.
+   *
+   * Notes:
+   * - Keeps linked bestand node order by title ASC.
+   * - Leaves extraction semantics unchanged by relying on Search API helpers.
    */
   public function addFieldValues(ItemInterface $item)
   {
+    // This processor only applies when the indexed item is a node entity.
     $original_entity = $item->getOriginalObject()->getValue();
 
     if (!($original_entity instanceof Node)) {
       return;
     }
 
+    // Collect target fields for this processor's property path.
     /** @var \Drupal\search_api\Item\FieldInterface[][] $to_extract */
     $to_extract = [];
     foreach ($item->getFields() as $field) {
@@ -173,6 +154,7 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
       return;
     }
 
+    // Query all published bestand nodes linked to this aggregator.
     $nids = Drupal::entityQuery('node')
       ->accessCheck(FALSE)
       ->condition('status', 1)
@@ -185,10 +167,11 @@ class AggregatorBestandProcessor extends ProcessorPluginBase
       ->getStorage('node')
       ->loadMultiple($nids);
 
-    if (!isset($nodes) || count($nodes) < 1) {
+    if (count($nodes) < 1) {
       return;
     }
 
+    // Populate root-level property values first, then nested fields.
     if (isset($to_extract[''])) {
       foreach ($to_extract[''] as $field) {
         $field->setValues($nodes);

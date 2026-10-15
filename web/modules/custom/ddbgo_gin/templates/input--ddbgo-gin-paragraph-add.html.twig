@@ -1,0 +1,8 @@
+{#
+/**
+ * @file
+ * Wrap long Paragraphs add labels while retaining native submit semantics.
+ * Preserve all attributes, including name/value and Drupal's AJAX selector.
+ */
+#}
+<button{{ attributes }}>{{ element['#value'] }}</button>{{ children }}

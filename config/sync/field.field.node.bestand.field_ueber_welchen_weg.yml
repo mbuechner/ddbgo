@@ -10,7 +10,7 @@ field_name: field_ueber_welchen_weg
 entity_type: node
 bundle: bestand
 label: 'Über welchen Weg?'
-description: 'Wie wird der Bestand an Europeana geliefert?'
+description: 'Hier wird beschrieben, wie der Bestand an Europeana geliefert wird.'
 required: false
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_aggregiert
 entity_type: node
 bundle: bestand
 label: Aggregiert
-description: 'Werden die Daten aktuell über einen Aggregator an die DDB geliefert?'
+description: 'Die Angabe beschreibt, ob die Daten des Bestands aktuell über einen Aggregator an die DDB geliefert werden.'
 required: false
 translatable: false
 default_value: {  }

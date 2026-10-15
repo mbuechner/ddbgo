@@ -21,7 +21,7 @@ field_name: field_ddburi
 entity_type: node
 bundle: kwe
 label: DDB-URI
-description: 'URI bei der Deutschen Digitale Bibliothek, z.B. https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5'
+description: 'Erfasst wird die URI der Kultur- oder Wissenseinrichtung bei der Deutschen Digitalen Bibliothek, zum Beispiel „https://www.deutsche-digitale-bibliothek.de/organization/2Q37XY5KXJNJE5MV6SWP3UKKZ6RSBLK5“.'
 required: false
 translatable: false
 default_value: {  }

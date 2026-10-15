@@ -1,0 +1,72 @@
+{#
+/**
+ * @file
+ * Gin Frontend's page template with a native Happy New Year garland anchor.
+ *
+ * Adds branding and navigation regions Gin omits, then renders the standard
+ * Drupal page structure. Bypasses Gin's admin-specific sticky toolbar and
+ * "Back to site" secondary toolbar since those don't apply on a frontend.
+ */
+#}
+<div class="gin-frontend">
+  <header class="gin-frontend__header" role="banner">
+    <div class="gin-frontend__header-inner">
+      {% if page.branding %}
+        <div class="gin-frontend__branding">
+          {{ page.branding }}
+        </div>
+      {% endif %}
+      {% if page.primary_menu %}
+        <nav class="gin-frontend__primary-menu" role="navigation" aria-label="{{ 'Primary menu'|t }}">
+          {{ page.primary_menu }}
+        </nav>
+      {% endif %}
+      {% if page.secondary_menu %}
+        <nav class="gin-frontend__secondary-menu" role="navigation" aria-label="{{ 'Secondary menu'|t }}">
+          {{ page.secondary_menu }}
+        </nav>
+      {% endif %}
+    </div>
+  </header>
+
+  <div style="position: relative; z-index: 0; height: 0;">
+    <div id="garland" aria-hidden="true"></div>
+  </div>
+
+  {% if page.breadcrumb %}
+    <div class="gin-frontend__breadcrumb">
+      {{ page.breadcrumb }}
+    </div>
+  {% endif %}
+
+  {% if page.header %}
+    <div class="gin-frontend__page-header">
+      {{ page.header }}
+    </div>
+  {% endif %}
+
+  {{ page.pre_content }}
+
+  <main class="gin-frontend__main" role="main">
+    <a id="main-content" tabindex="-1"></a>
+    {{ page.highlighted }}
+    {% if page.help %}
+      <div class="gin-frontend__help">{{ page.help }}</div>
+    {% endif %}
+    {{ page.content }}
+  </main>
+
+  {% if page.pre_footer %}
+    <div class="gin-frontend__pre-footer">
+      {{ page.pre_footer }}
+    </div>
+  {% endif %}
+
+  {% if page.footer %}
+    <footer class="gin-frontend__footer" role="contentinfo">
+      <div class="gin-frontend__footer-inner">
+        {{ page.footer }}
+      </div>
+    </footer>
+  {% endif %}
+</div>

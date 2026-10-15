@@ -7,15 +7,18 @@ dependencies:
     - field.storage.node.field_ddb_id
     - field.storage.node.field_isil
     - field.storage.node.field_stadt
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - search_api.index.suche_kwe
     - system.menu.kwe
+    - taxonomy.vocabulary.kultursparte_kwe
+    - taxonomy.vocabulary.kulturuntersparte_kwe
     - taxonomy.vocabulary.zustimmungsformular
     - user.role.administrator
     - user.role.authenticated
     - user.role.ddb_team
   module:
-    - color_field
+    - better_exposed_filters
+    - ddbgo_gin
     - custom_formatters
     - search_api
     - user
@@ -180,11 +183,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -195,7 +198,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status der Kultur- oder Wisseneinrichtung'
+          label: 'Status der KWE'
           exclude: false
           alter:
             alter_text: false
@@ -236,13 +239,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: true
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -325,11 +324,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name:
@@ -395,11 +394,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         zustimmungsformular:
@@ -465,21 +464,21 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-        sparte:
-          id: sparte
+        aggregated_sparte:
+          id: aggregated_sparte
           table: search_api_index_suche_kwe
-          field: sparte
+          field: aggregated_sparte
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: search_api_field
+          plugin_id: search_api
           label: Sparte
           exclude: false
           alter:
@@ -513,35 +512,22 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: –
+          empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
+          link_to_item: false
+          use_highlighting: true
+          multi_type: separator
+          multi_separator: ', '
           delta_limit: 0
           delta_offset: 0
           delta_reversed: false
           delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
         field_ddb_id:
           id: field_ddb_id
           table: search_api_index_suche_kwe
@@ -605,11 +591,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_isil:
@@ -681,10 +667,15 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ','
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
       pager:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h2
           items_per_page: 100
           total_pages: null
           id: 0
@@ -702,17 +693,91 @@ display:
             offset: false
             offset_label: Versatz
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
           exposed_sorts_label: 'Sortieren nach'
           expose_sort_order: true
           sort_asc_label: Aufsteigend
           sort_desc_label: Absteigend
+          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: plain_text
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              search_api_fulltext:
+                plugin_id: default
+                advanced:
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_sparte:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_untersparte:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_zustimmungsformular:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
       access:
         type: role
         options:
@@ -721,19 +786,20 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Kultur- und Wissenseinrichtungen gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -765,21 +831,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Status der KWE. Nicht hervorgehoben werden ID und ISIL.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
-              administrator: '0'
             expose_fields: false
             placeholder: Suchbegriff
             searched_fields_id: ''
@@ -798,15 +861,106 @@ display:
           parse_mode: terms
           min_length: null
           fields:
-            - field_bemerkung
+            - aggregated_sparte
             - field_ddb_id
             - field_isil
-            - field_kurzname
             - field_stadt
             - name
-            - sparte
+            - nid_search
             - title
             - zustimmungsformular
+        field_sparte:
+          id: field_sparte
+          table: search_api_index_suche_kwe
+          field: field_sparte
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_sparte_op
+            label: Sparte
+            description: ''
+            use_operator: false
+            operator: field_sparte_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_sparte
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: kultursparte_kwe
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_untersparte:
+          id: field_untersparte
+          table: search_api_index_suche_kwe
+          field: field_untersparte
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_term
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_untersparte_op
+            label: Untersparte
+            description: ''
+            use_operator: false
+            operator: field_untersparte_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_untersparte
+            required: false
+            remember: true
+            multiple: false
+            remember_roles:
+              anonymous: anonymous
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: kulturuntersparte_kwe
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
         field_zustimmungsformular:
           id: field_zustimmungsformular
           table: search_api_index_suche_kwe
@@ -829,14 +983,11 @@ display:
             operator_list: {  }
             identifier: field_zustimmungsformular
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
-              administrator: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -873,7 +1024,7 @@ display:
             field_stadt: field_stadt
             name: name
             zustimmungsformular: zustimmungsformular
-            sparte: sparte
+            aggregated_sparte: aggregated_sparte
             field_ddb_id: field_ddb_id
             field_isil: field_isil
           default: title
@@ -920,7 +1071,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            sparte:
+            aggregated_sparte:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -947,6 +1098,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -977,15 +1129,15 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
         - 'config:field.storage.node.field_ddb_id'
         - 'config:field.storage.node.field_isil'
         - 'config:field.storage.node.field_stadt'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.suche_kwe'
+        - 'search_api_list:suche_kwe'
   page_1:
     id: page_1
     display_title: Page
@@ -1010,12 +1162,12 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
         - 'config:field.storage.node.field_ddb_id'
         - 'config:field.storage.node.field_isil'
         - 'config:field.storage.node.field_stadt'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.suche_kwe'
+        - 'search_api_list:suche_kwe'

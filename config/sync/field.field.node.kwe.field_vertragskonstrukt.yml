@@ -11,7 +11,7 @@ field_name: field_vertragskonstrukt
 entity_type: node
 bundle: kwe
 label: Vertragskonstrukt
-description: 'Haben wir mit dieser Kultur- oder Wissenseinrichtung einen Kooperationsvertrag oder einen Aggregationsvertrag abgeschlossen?'
+description: 'Erfasst wird, ob mit der Kultur- oder Wissenseinrichtung ein Kooperationsvertrag oder ein Aggregationsvertrag abgeschlossen wurde.'
 required: false
 translatable: true
 default_value: {  }

@@ -12,7 +12,7 @@ field_name: field_link_fragebogen
 entity_type: node
 bundle: aggregator
 label: 'Link zum Fragebogen'
-description: 'Link zum ausgefüllten Aggregatoren-Fragebogen in Lime-Survey.'
+description: 'Der Link verweist auf den ausgefüllten Aggregatoren-Fragebogen in LimeSurvey.'
 required: false
 translatable: true
 default_value: {  }

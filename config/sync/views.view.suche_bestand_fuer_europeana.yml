@@ -12,7 +12,7 @@ dependencies:
     - field.storage.node.field_jira_ticket_bei_europeana
     - field.storage.node.field_kwe
     - field.storage.node.field_link_zu_ddbdash
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_ueber_welchen_weg
     - search_api.index.bestand
     - system.menu.bestand
@@ -24,7 +24,7 @@ dependencies:
   content:
     - 'taxonomy_term:europeana:ea20445b-9ef5-41c5-84fd-61872d0d4519'
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - datetime
     - entity_reference_revisions
@@ -192,11 +192,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -207,7 +207,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status des Bestands'
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -248,13 +248,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -275,7 +271,7 @@ display:
         field_kwe:
           id: field_kwe
           table: search_api_index_bestand
-          field: field_kwe
+          field: title_kwe
           relationship: none
           group_type: group
           admin_label: ''
@@ -335,33 +331,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         field_europeana_lieferung_enum:
           id: field_europeana_lieferung_enum
           table: search_api_index_bestand
-          field: field_europeana_lieferung_enum
+          field: name_5
           relationship: none
           group_type: group
           admin_label: ''
@@ -421,57 +401,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              akademischer_titel:
-                display_method: label
-              bestandsart:
-                display_method: label
-              bundesland:
-                display_method: label
-                view_mode: default
-              coding_da_vinci_event:
-                display_method: label
-              datenformat:
-                display_method: label
-              europeana:
-                display_method: label
-              europeanastatus:
-                display_method: label
-              favorienkarussell:
-                display_method: label
-              fragebogen:
-                display_method: label
-              ja_nein_feld:
-                display_method: label
-              ja_nein_teilweise_feld:
-                display_method: label
-              kultursparte:
-                display_method: label
-                view_mode: default
-              land:
-                display_method: label
-                view_mode: default
-              lieferweg:
-                display_method: label
-              medientyp:
-                display_method: label
-              personenrolle:
-                display_method: label
-              region_ort:
-                display_method: label
-              sichtbarkeit:
-                display_method: label
-              vertragskonstrukt:
-                display_method: label
-              vertragsstatus:
-                display_method: label
         field_ueber_welchen_weg:
           id: field_ueber_welchen_weg
           table: search_api_index_bestand
@@ -535,11 +471,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_2:
@@ -605,11 +541,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_ddb_objekte:
@@ -625,7 +561,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<span class="nobreak">{{ field_ddb_objekte }}</div>'
+            text: '<span class="nobreak">{{ field_ddb_objekte }}</span>'
             make_link: false
             path: ''
             absolute: false
@@ -884,11 +820,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_7:
@@ -954,11 +890,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_datum_des_status_der_europ:
@@ -969,7 +905,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: "Datum des Status'"
+          label: 'Datum des Lieferstatus'
           exclude: false
           alter:
             alter_text: false
@@ -1109,6 +1045,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h2
           items_per_page: 100
           total_pages: null
           id: 0
@@ -1126,14 +1063,13 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: Sortierung
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
@@ -1145,19 +1081,20 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Bestände gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -1189,21 +1126,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Bestandsstatus und DDBdash. Nicht hervorgehoben werden ID, Anzahl der Objekte, beide JIRA-Ticket-Spalten und Datum des Lieferstatus.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -1220,15 +1154,17 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - europeana_lieferung_search
+            - europeana_status_date_search
             - field_jira_europeana
-            - field_jira_hauptticket
             - field_jira_ticket_bei_europeana
             - field_ueber_welchen_weg
-            - name
             - name_1
+            - name_5
+            - name_7
             - nid
+            - object_count_search
             - title
-            - title_aggregator
             - title_kwe
         field_europeana_lieferung_enum:
           id: field_europeana_lieferung_enum
@@ -1253,14 +1189,11 @@ display:
             operator_list: {  }
             identifier: field_europeana_lieferung
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -1302,14 +1235,11 @@ display:
             operator_list: {  }
             identifier: europeana_lieferung_ueber_ddb
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -1347,7 +1277,7 @@ display:
           exposed: true
           expose:
             operator_id: field_datum_des_status_der_europ_op
-            label: "Datum des Status'"
+            label: 'Datum des Lieferstatus'
             description: ''
             use_operator: true
             operator: field_datum_des_status_der_europ_op
@@ -1355,14 +1285,11 @@ display:
             operator_list: {  }
             identifier: datum_des_status
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             min_placeholder: ''
             max_placeholder: ''
             placeholder: ''
@@ -1507,15 +1434,16 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
         type: search_api_query
         options:
-          skip_access: 0
-          bypass_access: 0
+          bypass_access: false
+          skip_access: false
       relationships: {  }
-      use_ajax: false
+      use_ajax: true
       show_admin_links: true
       header: {  }
       footer:
@@ -1537,7 +1465,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1548,9 +1475,10 @@ display:
         - 'config:field.storage.node.field_jira_ticket_bei_europeana'
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_ueber_welchen_weg'
         - 'config:search_api.index.bestand'
+        - 'search_api_list:bestand'
   page:
     id: page
     display_title: Page
@@ -1576,7 +1504,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1587,6 +1514,7 @@ display:
         - 'config:field.storage.node.field_jira_ticket_bei_europeana'
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_ueber_welchen_weg'
         - 'config:search_api.index.bestand'
+        - 'search_api_list:bestand'

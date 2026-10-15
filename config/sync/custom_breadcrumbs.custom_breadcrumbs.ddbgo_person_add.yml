@@ -1,0 +1,23 @@
+uuid: 723db3ed-a2ad-456c-b9ea-ae4e6eb4719c
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.person
+      - views.view.personensuche
+id: ddbgo_person_add
+label: 'DDBgo: person - Hinzufügen'
+description: 'Anlegen eines Datensatzes unter seiner Standardliste; aktueller Routentitel ohne Link.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: |-
+  /search/person
+  <nolink>
+breadcrumbTitles: |-
+  Personenliste
+  [current-page:title]
+type: '2'
+pathPattern: /node/add/person
+extraCacheContexts: ''

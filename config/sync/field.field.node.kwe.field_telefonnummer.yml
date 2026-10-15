@@ -10,7 +10,7 @@ field_name: field_telefonnummer
 entity_type: node
 bundle: kwe
 label: Telefonnummer
-description: 'Telefonnummer der KWE in der Form „+49 69 1525-0“.'
+description: 'Die Telefonnummer der Kultur- oder Wissenseinrichtung wird in der Form „+49 69 1525-0“ erfasst.'
 required: false
 translatable: true
 default_value: {  }

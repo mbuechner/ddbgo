@@ -1,0 +1,26 @@
+services:
+  ddbgo_gin.status_migration:
+    class: Drupal\ddbgo_gin\Status\StatusMigration
+    arguments: ['@database', '@config.storage', '@entity.last_installed_schema.repository']
+  ddbgo_gin.status_import:
+    class: Drupal\ddbgo_gin\EventSubscriber\StatusImportSubscriber
+    tags:
+      - { name: event_subscriber }
+  ddbgo_gin.route_subscriber:
+    class: Drupal\ddbgo_gin\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+  ddbgo_gin.empty_views_results:
+    class: Drupal\ddbgo_gin\EventSubscriber\EmptyViewsResultsSubscriber
+    arguments: ['@renderer']
+    tags:
+      - { name: event_subscriber }
+  ddbgo_gin.user_key_auth_access_check:
+    class: Drupal\ddbgo_gin\Access\UserKeyAuthAccessCheck
+    tags:
+      - { name: access_check, applies_to: _ddbgo_administer_user_api_keys_access }
+  cache_context.ddbgo_view_filters:
+    class: Drupal\ddbgo_gin\Cache\Context\RememberedViewsFiltersCacheContext
+    arguments: ['@request_stack']
+    tags:
+      - { name: cache.context }

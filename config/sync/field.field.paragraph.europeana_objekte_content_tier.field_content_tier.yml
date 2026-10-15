@@ -11,7 +11,7 @@ field_name: field_content_tier
 entity_type: paragraph
 bundle: europeana_objekte_content_tier
 label: Content-Tier
-description: ''
+description: 'Diese Angabe ordnet die nachfolgenden Objektzahlen einem Content-Tier zu.'
 required: true
 translatable: true
 default_value: {  }

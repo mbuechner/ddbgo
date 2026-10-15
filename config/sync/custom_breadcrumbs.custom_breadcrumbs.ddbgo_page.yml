@@ -1,0 +1,18 @@
+uuid: 6afc2069-cbcf-489e-9645-2a2b344fc338
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.page
+id: ddbgo_page
+label: 'DDBgo: Informationsseiten'
+description: 'Statische Informationsseiten direkt unter Startseite. Auf der Startseite selbst wird die Breadcrumb ausgeblendet.'
+entityType: node
+entityBundle: page
+language: und
+breadcrumbPaths: '<nolink>'
+breadcrumbTitles: '[node:title]'
+type: '1'
+pathPattern: ''
+extraCacheContexts: ''

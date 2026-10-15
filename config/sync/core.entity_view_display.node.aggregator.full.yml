@@ -24,7 +24,7 @@ dependencies:
     - field.field.node.aggregator.field_region_ort
     - field.field.node.aggregator.field_sichtbarkeit
     - field.field.node.aggregator.field_sparten
-    - field.field.node.aggregator.field_status
+    - field.field.node.aggregator.field_record_status
     - field.field.node.aggregator.field_status_fragebogen
     - field.field.node.aggregator.field_url
     - field.field.node.aggregator.field_vertrag
@@ -41,11 +41,6 @@ targetEntityType: node
 bundle: aggregator
 mode: full
 content:
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -69,6 +64,7 @@ hidden:
   field_link_zu_ddbdash: true
   field_link_zu_ddbpro: true
   field_personen: true
+  field_record_status: true
   field_region_ort: true
   field_sichtbarkeit: true
   field_sparten: true
@@ -81,5 +77,6 @@ hidden:
   field_workflow: true
   field_zustimmungsformular: true
   field_zwischenaggregatoren: true
+  flag_bookmark: true
   langcode: true
   search_api_excerpt: true

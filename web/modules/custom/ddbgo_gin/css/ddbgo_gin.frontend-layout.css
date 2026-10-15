@@ -1,0 +1,1012 @@
+/**
+ * Compact grid inside Drupal's native details element. Gin supplies the
+ * container, arrow, hover/focus states and collapse behavior.
+ */
+.gin-frontend .views-exposed-form.views-exposed-form {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-block: var(--gin-spacing-l);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin-frontend .views-exposed-form > .ddbgo-exposed-filters {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-block: 0 var(--gin-spacing-m);
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--gin-spacing-m);
+  align-items: end;
+  min-width: 0;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > :is(
+  .views-exposed-form__item,
+  .fieldset
+) {
+  align-self: end;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+}
+
+/* BEF still floats its form items; grid items must use the common flow. */
+.gin-frontend .bef-exposed-form .ddbgo-exposed-filters > .claro-details__wrapper > .form-item,
+.gin-frontend .bef-exposed-form .ddbgo-exposed-filters > .claro-details__wrapper .js-form-wrapper > .form-item {
+  float: none;
+}
+
+.gin-frontend .views-exposed-form .form-item__label {
+  display: block;
+  margin-block: 0 var(--gin-spacing-xxs);
+  line-height: 1.35;
+}
+
+.gin-frontend .views-exposed-form :is(
+  .form-element,
+  .form-textarea-wrapper,
+  .form-datetime-wrapper,
+  .tagify
+) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > .views-exposed-form__item--actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+  align-items: center;
+  align-self: end;
+  margin: 0;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > .views-exposed-form__item--actions .button {
+  margin: 0;
+}
+
+/* Grouped filters receive their own compact nested grid. */
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > :is(fieldset, .fieldset) {
+  grid-column: 1 / -1;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > :is(fieldset, .fieldset) > .fieldset__legend {
+  margin-block-end: var(--gin-spacing-xs);
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > :is(fieldset, .fieldset) > .fieldset__wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--gin-spacing-s);
+  align-items: end;
+  margin: 0;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > :is(fieldset, .fieldset) > .fieldset__wrapper > .form-item {
+  min-width: 0;
+  margin: 0;
+}
+
+/* A date filter shares the row with the other filters instead of spanning
+ * the entire grid. Keep useful field widths and wrap when space runs out. */
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > .views-exposed-form__item {
+  flex: 0 1 14rem;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > .ddbgo-date-filter {
+  flex: 0 1 30rem;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > .views-exposed-form__item--actions {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+}
+
+.gin-frontend .ddbgo-date-filter__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+  align-items: end;
+  min-width: 0;
+}
+
+.gin-frontend .views-exposed-form .ddbgo-date-filter__controls > .form-item {
+  flex: 1 1 9rem;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 47.99em) {
+  .gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper:has(> .ddbgo-date-filter) > :is(.views-exposed-form__item, .ddbgo-date-filter) {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .gin-frontend .views-exposed-form .ddbgo-date-filter__controls > .form-item {
+    flex-basis: 100%;
+    max-width: none;
+  }
+}
+
+/* Tag filters always form the final, full-width row above the results. */
+.gin-frontend .views-exposed-form > .ddbgo-exposed-filter--tags {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 47.99em) {
+  .gin-frontend .ddbgo-exposed-filters > .claro-details__wrapper > .views-exposed-form__item--actions .button {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+/*
+ * Tagify select-style exposed filters (BEF's "bef_tagify_select" widget,
+ * Drupal's own "select_tagify" form element) grow to a phantom second line
+ * because the empty ".tagify__input" caret span wraps below the tag instead
+ * of sharing its row. This selector isn't view-specific, so it applies
+ * uniformly to every view using this widget (currently /search/bestand,
+ * ready for /search/bestand/europeana and /search/bestand/cdv as well).
+ */
+.views-exposed-form .tagify.form-element--type-select {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  min-height: calc((var(--input-padding-vertical) * 2) + var(--input-line-height));
+}
+
+.views-exposed-form .tagify.form-element--type-select .tagify__input {
+  flex: 1 1 auto;
+  min-width: 1rem;
+}
+
+.views-exposed-form .tagify.form-element--type-select .tagify__tag {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
+/**
+ * Full-width layout for the DDBgo frontend.
+ *
+ * Gin Frontend centers its chrome and content in a 1200px container by
+ * default. DDBgo uses wide forms and tabular views, so every page region uses
+ * the complete viewport width while retaining Gin's responsive side padding.
+ */
+
+.gin-frontend.gin-frontend {
+  --gin-frontend-max-width: none;
+}
+
+.gin-frontend :is(
+  .gin-frontend__header-inner,
+  .gin-frontend__breadcrumb,
+  .gin-frontend__page-header,
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+}
+
+/* Long entity titles must remain fully readable at every viewport width. */
+.gin-frontend .gin-frontend__page-header .block-page-title-block {
+  width: 100%;
+  min-width: 0;
+}
+
+.gin-frontend .gin-frontend__page-header .page-title {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding-inline-end: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+/* Gin's first divider separates its admin "Back to site" action. Frontend
+ * breadcrumbs use the same slash between every level of the hierarchy.
+ * Match Gin's admin-style specificity without changing the admin theme. */
+:is(#ddbgo-breadcrumb-specificity, .gin-frontend).gin-frontend .gin-breadcrumb .gin-breadcrumb__item:first-of-type + .gin-breadcrumb__item::before {
+  content: "/";
+  border: 0;
+  width: auto;
+  height: auto;
+  padding: 0 .5em;
+  margin-inline-end: 0;
+}
+
+/* Full titles must wrap rather than disappear on small screens or at zoom. */
+:is(#ddbgo-breadcrumb-specificity, .gin-frontend).gin-frontend .gin-breadcrumb .gin-breadcrumb__list {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.gin-frontend .gin-breadcrumb :is(.gin-breadcrumb__link, .gin-breadcrumb__text) {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Keep floating table headers at the viewport edge after branding scrolls. */
+.gin-frontend table.gin--sticky-table-header {
+  top: 0 !important;
+  inset-block-start: 0 !important;
+}
+
+/* Make an empty result set as easy to find as a populated result table. */
+.gin-frontend .view-empty,
+:is(#ddbgo-empty-specificity, .gin-frontend).gin-frontend .view-flag-bookmark .view-content:has(.ddbgo-view-empty-marker) {
+  margin-block: var(--gin-spacing-l);
+  padding: var(--gin-spacing-m);
+  border: 1px solid var(--gin-border-color);
+  border-inline-start: 4px solid var(--gin-color-primary);
+  border-radius: var(--gin-border-m);
+  background: var(--gin-bg-layer);
+  box-shadow: none;
+  color: var(--gin-color-text);
+}
+
+.gin-frontend .view-empty > :first-child {
+  margin-block-start: 0;
+}
+
+.gin-frontend .view-empty > :last-child {
+  margin-block-end: 0;
+}
+
+/*
+ * Keep text links identifiable without relying on color. Component links such
+ * as buttons and navigation retain their more specific component styling.
+ */
+.gin-frontend.gin-frontend :where(
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) :where(a:any-link:not(
+  .button,
+  .action-link,
+  .tabs__link,
+  .pager__link,
+  [role="button"]
+)) {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+.gin-frontend.gin-frontend :where(
+  .gin-frontend__main,
+  .gin-frontend__pre-footer,
+  .gin-frontend__footer-inner
+) :where(a:any-link:not(
+  .button,
+  .action-link,
+  .tabs__link,
+  .pager__link,
+  [role="button"]
+):is(:hover, :focus-visible)) {
+  text-decoration-line: none;
+}
+
+/* Gin reverses the link behavior in table cells; use the common behavior. */
+:is(#ddbgo-table-link-specificity, .gin-frontend).gin-frontend table td :where(a:any-link:not(
+  .button,
+  .action-link,
+  [role="button"]
+)) {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+}
+
+:is(#ddbgo-table-link-specificity, .gin-frontend).gin-frontend table td :where(a:any-link:not(
+  .button,
+  .action-link,
+  [role="button"]
+):is(:hover, :focus-visible)) {
+  text-decoration-line: none;
+}
+
+/* Keep columns aligned across the separate tables produced by View grouping. */
+.gin-frontend .view-flag-bookmark table.views-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Keep h2 semantics with Gin's h3 size; both levels share the same spacing. */
+.gin-frontend .view-flag-bookmark.view-display-id-page table.views-table > caption > h2,
+.gin-frontend .sitemap > .sitemap-item > h2 {
+  font-size: var(--gin-font-size-h3);
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-flagging-bulk-form {
+  width: 3.25rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-counter {
+  width: 4rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-created {
+  width: 10.5rem;
+}
+
+.gin-frontend .view-flag-bookmark :is(th, td).views-field-link-flag {
+  width: 14rem;
+}
+
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field {
+  padding-block: var(--ddbgo-display-row-space);
+}
+
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field > .field__items {
+  gap: var(--gin-spacing-xs);
+}
+
+/* Long download names must shrink inside multi-value grids on narrow screens.
+ * Keep the file icon's padding inside the available column width as well. */
+.gin-frontend .node--view-mode-full .field__items > .field__item {
+  min-width: 0;
+}
+
+.gin-frontend .node--view-mode-full .file {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.gin-frontend .node--view-mode-full .file a {
+  overflow-wrap: anywhere;
+}
+
+/*
+ * Present read-only field output inside details as scannable label/value rows.
+ * The DOM order and native details/summary interaction remain unchanged.
+ */
+.gin-frontend details.claro-details > .claro-details__summary {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 220ms ease;
+}
+
+.gin-frontend details.claro-details[open] > .claro-details__summary {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--gin-color-primary) 22%, transparent);
+}
+
+.gin-frontend details.claro-details[open] > .claro-details__wrapper {
+  transform-origin: top center;
+  animation: ddbgo-details-reveal 280ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes ddbgo-details-reveal {
+  from {
+    opacity: .2;
+    transform: translateY(-.4rem) scale(.995);
+  }
+
+  65% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .claro-details__description {
+  max-width: 80ch;
+  margin: 0 0 var(--gin-spacing-m);
+  padding-block-end: var(--gin-spacing-m);
+  border-block-end: 1px solid var(--gin-border-color);
+  font-size: var(--gin-font-size-s);
+  line-height: 1.5;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gin-spacing-xxs) var(--gin-spacing-l);
+  align-items: start;
+  margin: 0;
+  padding-block: var(--gin-spacing-s);
+  border-block-end: 1px solid var(--gin-border-color);
+  font-size: var(--gin-font-size-s);
+  line-height: 1.5;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field:last-child {
+  border-block-end: 0;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field::after {
+  display: none;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > :is(
+  .field__label,
+  .field__item,
+  .field__items
+) {
+  float: none;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__label {
+  color: var(--gin-color-title);
+  font-weight: var(--gin-font-weight-semibold, 600);
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > :is(.field__item, .field__items) {
+  color: var(--gin-color-text);
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field > .field__items {
+  display: grid;
+  gap: var(--gin-spacing-xxs);
+}
+
+/* Collapsible linked-content Views below full entity nodes. */
+.gin-frontend .ddbgo-linked-content-view {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin-block: var(--ddbgo-section-space);
+}
+
+.gin-frontend .ddbgo-linked-content-view > .claro-details__summary {
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend .ddbgo-linked-content-view > .ddbgo-linked-content-view__content {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+@media (min-width: 48em) {
+  .gin-frontend details.claro-details > .claro-details__wrapper > .field {
+    grid-template-columns: minmax(8rem, 28%) minmax(0, 1fr);
+  }
+}
+
+/* People and contacts keep cards with their fields stacked vertically.
+ * Match the details selectors so labeled fields use the same wrapping layout. */
+.gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt).field__items,
+.gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) > .field__items,
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > :is(.field--name-field-personen, .field--name-field-kontakt) > .field__items,
+.gin-frontend details.claro-details > .claro-details__wrapper > :is(.field--name-field-personen, .field--name-field-kontakt).field__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gin-spacing-m);
+  min-inline-size: 0;
+  padding-block: 0;
+  border-block-end: 0;
+}
+
+.gin-frontend :is(
+  .field--name-field-personen.field__items,
+  .field--name-field-personen > .field__items
+) > .field__item {
+  flex: 0 1 auto;
+  inline-size: max-content;
+  min-inline-size: 0;
+  max-inline-size: min(100%, 36rem);
+  overflow-wrap: anywhere;
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) .field__item > .paragraph {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  box-sizing: border-box;
+  min-inline-size: 0;
+  gap: var(--gin-spacing-xs);
+  align-content: start;
+  padding: var(--gin-spacing-m);
+  border: 1px solid var(--gin-border-color-layer);
+  border-radius: var(--gin-border-m);
+  background: var(--gin-bg-layer);
+  box-shadow: 0 1px 2px rgba(20, 20, 30, .05), 0 4px 12px rgba(20, 20, 30, .03);
+  transition: border-color 180ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) .field__item > .paragraph:hover {
+    border-color: color-mix(in srgb, var(--gin-color-primary) 35%, var(--gin-border-color-layer));
+    box-shadow: 0 2px 4px rgba(20, 20, 30, .06), 0 12px 28px rgba(20, 20, 30, .1);
+    transform: translateY(-2px);
+  }
+}
+
+.gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) .field__item > .paragraph:focus-within {
+  border-color: var(--gin-color-focus-border);
+  box-shadow: 0 0 0 1px var(--gin-color-focus-border), 0 0 0 4px var(--gin-color-focus);
+}
+
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-rolle {
+  color: var(--gin-color-text-light);
+  font-size: var(--gin-font-size-xs);
+  line-height: 1.35;
+}
+
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person {
+  display: flex;
+  gap: var(--gin-spacing-xs);
+  align-items: flex-start;
+  min-width: 0;
+  font-weight: var(--gin-font-weight-semibold, 600);
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person::before,
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum::before {
+  content: "";
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  margin-block-start: .15em;
+  background-color: var(--gin-color-primary);
+}
+
+.gin-frontend .field--name-field-personen .paragraph > .field--name-field-person::before {
+  -webkit-mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
+  mask: var(--ddbgo-content-type-icon-person) center / contain no-repeat;
+}
+
+/* Contacts follow the manually arranged field order, independent of dates.
+ * Reserve space for the rail inside each item so long cards fit the container.
+ * Support both hidden and visible field labels, as with the shared card flow. */
+.gin-frontend .field--name-field-kontakt.field__items,
+.gin-frontend .field--name-field-kontakt > .field__items {
+  flex-direction: column;
+  gap: var(--gin-spacing-m);
+  isolation: isolate;
+}
+
+.gin-frontend details.claro-details > .claro-details__wrapper > .field--name-field-kontakt.field__items > .field__item,
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item {
+  --ddbgo-contact-marker-top: calc(var(--gin-spacing-m) + .55rem);
+  position: relative;
+  box-sizing: border-box;
+  flex: 0 1 auto;
+  inline-size: max-content;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+  /* Override the details field-item padding reset to keep cards off the rail. */
+  padding-inline-start: var(--gin-spacing-l);
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::before,
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::after {
+  content: "";
+  position: absolute;
+  /* Hover transforms create stacking contexts; keep the rail above shadows. */
+  z-index: 1;
+  inset-block-start: var(--ddbgo-contact-marker-top);
+  pointer-events: none;
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::before {
+  inset-inline-start: .3125rem;
+  inset-block-end: calc(-1 * (var(--gin-spacing-m) + var(--ddbgo-contact-marker-top)));
+  border-inline-start: 2px solid var(--gin-border-color);
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item:last-child::before {
+  display: none;
+}
+
+.gin-frontend :is(
+  .field--name-field-kontakt.field__items,
+  .field--name-field-kontakt > .field__items
+) > .field__item::after {
+  inset-inline-start: 0;
+  inline-size: .75rem;
+  block-size: .75rem;
+  border-radius: 50%;
+  background: var(--gin-color-primary);
+  transform: translateY(-50%);
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum {
+  display: flex;
+  gap: var(--gin-spacing-xs);
+  align-items: flex-start;
+  min-width: 0;
+  color: var(--gin-color-text-light);
+  font-size: var(--gin-font-size-xs);
+  font-weight: var(--gin-font-weight-semibold, 600);
+  line-height: 1.35;
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-datum::before {
+  -webkit-mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
+  mask: var(--ddbgo-field-icon-contact) center / contain no-repeat;
+}
+
+.gin-frontend .field--name-field-kontakt .paragraph > .field--name-field-bemerkung {
+  min-width: 0;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Full-width, consistently sized form controls inside details. */
+.gin-frontend details.claro-details > .claro-details__wrapper :is(.form-item, .form-wrapper) {
+  min-width: 0;
+  max-width: none;
+}
+
+/* Match the common control exclusions: uploads, dates and row weights need
+ * their native/compact widths rather than a full-width input plus a button. */
+.gin-frontend details.claro-details > .claro-details__wrapper :is(input.form-element, select.form-element, textarea.form-element):not(
+  .form-boolean, [type="button"], [type="color"], [type="hidden"],
+  [type="image"], [type="reset"], [type="submit"], [type="checkbox"],
+  [type="radio"], [type="file"], [type="date"], [type="time"],
+  [type="datetime-local"], .form-element--extrasmall,
+  .form-element--editor-format, .select2-hidden-accessible,
+  [name$="][_weight]"]
+),
+.gin-frontend details.claro-details > .claro-details__wrapper .form-textarea-wrapper,
+.gin-frontend details.claro-details > .claro-details__wrapper .select2-container:has(> .selection) {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100%;
+}
+
+/* Keep local node tasks and the bookmark action in one responsive row. */
+.gin-frontend .ddbgo-page-actions {
+  position: relative;
+  display: flex;
+  gap: var(--gin-spacing-s);
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.gin-frontend .ddbgo-page-actions > .block-local-tasks-block {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow: visible;
+}
+
+@media (min-width: 48em) {
+  .gin-frontend .ddbgo-page-actions .is-horizontal .tabs--primary {
+    width: auto;
+    overflow: visible;
+    flex-wrap: wrap;
+  }
+}
+
+/* Compact, state-aware bookmark action on full node pages. */
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark {
+  display: grid;
+  justify-items: end;
+  gap: var(--gin-spacing-xxs);
+  width: max-content;
+  max-width: 100%;
+  margin-block: 0 var(--gin-spacing-xs);
+  margin-inline-start: auto;
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gin-spacing-xxs);
+  min-height: 2rem;
+  padding: var(--gin-spacing-xxs) var(--gin-spacing-xs);
+  border-radius: var(--gin-border-xs);
+  color: var(--gin-color-text-light);
+  font-size: var(--gin-font-size-xxs);
+  font-weight: var(--gin-font-weight-normal, 400);
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 120ms ease;
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:active {
+  transform: scale(.97);
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a::before {
+  content: "";
+  flex: 0 0 .75rem;
+  width: .75rem;
+  height: .75rem;
+  background-color: currentColor;
+  -webkit-mask: var(--ddbgo-icon-bookmark) center / contain no-repeat;
+  mask: var(--ddbgo-icon-bookmark) center / contain no-repeat;
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark.action-unflag a::before {
+  -webkit-mask-image: var(--ddbgo-icon-bookmark-filled);
+  mask-image: var(--ddbgo-icon-bookmark-filled);
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:is(:hover, :focus-visible) {
+  background: var(--gin-color-primary-light);
+  color: var(--gin-color-primary-active);
+  text-decoration: none;
+}
+
+/* Persistent AJAX feedback appears below the action and is announced by Flag.
+ * The shared bookmark_feedback library disables Flag's animation/removal. */
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark .js-flag-message {
+  display: inline-flex;
+  /* Center the status icon, message text and dismiss button together. */
+  align-items: center;
+  gap: var(--gin-spacing-xs);
+  box-sizing: border-box;
+  max-width: min(30rem, 100%);
+  margin: 0;
+  padding: var(--gin-spacing-xs) var(--gin-spacing-s);
+  border: 1px solid var(--gin-color-green);
+  border-radius: var(--gin-border-s);
+  background: var(--gin-bg-layer);
+  background: color-mix(in srgb, var(--gin-color-green) 10%, var(--gin-bg-layer));
+  color: var(--gin-color-text);
+  box-shadow: 0 4px 14px rgba(20, 20, 30, .14);
+  font-size: var(--gin-font-size-xs);
+  line-height: 1.4;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark .js-flag-message::before {
+  content: "";
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--gin-color-green);
+  -webkit-mask: var(--ddbgo-icon-success) center / contain no-repeat;
+  mask: var(--ddbgo-icon-success) center / contain no-repeat;
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+/* Same rounded silhouette and height as Gin's primary actions, with the
+ * original light color and normal font weight for the visible action name. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle {
+  justify-content: center;
+  gap: var(--gin-spacing-xs);
+  box-sizing: border-box;
+  width: auto;
+  max-width: 100%;
+  min-height: 2rem;
+  padding: var(--gin-spacing-xxs) var(--gin-spacing-s);
+  border-radius: 2rem;
+  color: var(--gin-color-text-light);
+}
+
+.gin-frontend .ddbgo-bookmark-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Retain the small, thin outline icon; only a saved bookmark uses the fill. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle::before {
+  flex: 0 0 .875rem;
+  width: .875rem;
+  height: .875rem;
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark.action-unflag a.ddbgo-bookmark-toggle,
+.gin-frontend .ddbgo-page-actions .flag-bookmark a.ddbgo-bookmark-toggle:is(:hover, :focus-visible) {
+  background: var(--gin-color-primary-light);
+  color: var(--gin-color-primary-active);
+}
+
+.gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
+  /* A persistent notice needs space instead of overlaying the next section. */
+  position: static;
+  width: max-content;
+  max-width: min(30rem, 100%);
+}
+
+@media (max-width: 48em) {
+  .gin-frontend .ddbgo-page-actions {
+    display: block;
+  }
+
+  .gin-frontend .ddbgo-page-actions > .block-local-tasks-block {
+    width: 100%;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark {
+    /* Keep the full label clear of Gin's collapsed mobile tab controls. */
+    margin-block-start: var(--gin-spacing-xs);
+    margin-inline-start: auto;
+  }
+
+  .gin-frontend .ddbgo-page-actions .flag-bookmark .js-flag-message {
+    width: min(20rem, 100%);
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gin-frontend details.claro-details[open] > .claro-details__wrapper {
+    animation: none;
+  }
+
+  .gin-frontend details.claro-details > .claro-details__summary,
+  .gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) .field__item > .paragraph,
+  .gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a {
+    transition: none;
+  }
+
+  .gin-frontend :is(.field--name-field-personen, .field--name-field-kontakt) .field__item > .paragraph:hover,
+  .gin-frontend :is(.node--view-mode-full, .ddbgo-page-actions) .flag-bookmark a:active {
+    transform: none;
+  }
+}
+
+/* Node forms already contain their own tab/section cards. Gin also decorates
+ * the outer form, adding a second white frame and 12/24px of padding per side.
+ * Remove only that outer layer, for both add and edit forms at every viewport. */
+.gin-frontend .block-system-main-block > form.node-form {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/*
+ * Gin normally subtracts its fixed sidebar from the page width. Gin Frontend
+ * does not render the matching edit-form page wrapper, so use an explicit
+ * full-width grid: the main form fills the available space and the populated
+ * metadata sidebar occupies the right-hand column within that same width.
+ */
+body.gin--edit-form.gin--edit-form {
+  --gin-sidebar-offset: 0px;
+  padding-inline-end: 0;
+}
+
+body.gin--edit-form .gin-frontend .layout-node-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gin-spacing-l);
+  align-items: start;
+}
+
+body.gin--edit-form .gin-frontend :is(
+  .layout-region-node-main,
+  .layout-region-node-footer,
+  .layout-region-node-secondary
+) {
+  box-sizing: border-box;
+  float: none;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  padding-inline: 0;
+}
+
+body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+  align-self: start;
+  position: static;
+  height: auto;
+  margin-block: 0;
+  overflow: visible;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+}
+
+body.gin--edit-form .gin-frontend #gin-sidebar-draggable,
+body.gin--edit-form .gin-frontend .meta-sidebar__close {
+  display: none;
+}
+
+@media (min-width: 75em) {
+  body.gin--edit-form .gin-frontend .layout-node-form {
+    grid-template-columns:
+      minmax(0, 1fr)
+      clamp(
+        var(--gin-sidebar-min-width),
+        var(--gin-sidebar-width),
+        var(--gin-sidebar-max-width)
+      );
+  }
+
+  body.gin--edit-form .gin-frontend :is(.layout-region-node-main, .layout-region-node-footer) {
+    grid-column: 1;
+  }
+
+  body.gin--edit-form .gin-frontend .layout-region-node-main {
+    grid-row: 1;
+    align-self: start;
+    margin-block: 0;
+  }
+
+  body.gin--edit-form .gin-frontend .layout-region-node-secondary {
+    grid-column: 2;
+    grid-row: 1;
+    position: sticky;
+    inset-block-start: calc(var(--gin-toolbar-y-offset) + var(--gin-spacing-l));
+    margin-block-start: var(--gin-spacing-m);
+    max-height: calc(100vh - var(--gin-toolbar-y-offset) - var(--gin-spacing-xxl));
+    overflow-y: auto;
+    background: var(--gin-bg-layer);
+    border: 1px solid var(--gin-border-color-layer);
+    border-radius: var(--gin-border-m);
+  }
+
+  body.gin--edit-form .gin-frontend #gin-sidebar-draggable {
+    display: block;
+  }
+}

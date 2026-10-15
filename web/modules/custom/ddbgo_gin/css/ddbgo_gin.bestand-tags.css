@@ -1,0 +1,38 @@
+/* Native field/link templates retain labels, keyboard navigation and escaping.
+ * Outrank the generic detail-field grid regardless of library attachment order. */
+.field--name-field-bestandstags > .field__items,
+.gin-frontend .node--view-mode-full details.claro-details > .claro-details__wrapper > .field.field--name-field-bestandstags > .field__items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--gin-spacing-xs, .5rem);
+}
+
+.field--name-field-bestandstags > .field__items > .field__item {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.field--name-field-bestandstags a.ddbgo-tag-link {
+  display: inline-block;
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  padding: .25rem .625rem;
+  border: 1px solid var(--gin-border-color, #bbb);
+  border-radius: 1rem;
+  background: var(--gin-color-primary-light, #e4eeee);
+  color: var(--gin-color-primary-active, #084441);
+  font-size: .875rem;
+  line-height: 1.5;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.field--name-field-bestandstags a.ddbgo-tag-link:hover {
+  text-decoration: none;
+}
+
+.field--name-field-bestandstags a.ddbgo-tag-link:focus-visible {
+  outline: 2px solid var(--gin-color-focus-border, #005fcc);
+  outline-offset: 2px;
+}

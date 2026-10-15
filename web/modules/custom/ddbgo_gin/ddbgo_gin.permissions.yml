@@ -1,0 +1,4 @@
+administer user api keys:
+  title: 'Administer user API keys'
+  description: 'View, create, and delete user API keys. Grant only to administrators.'
+  restrict access: true

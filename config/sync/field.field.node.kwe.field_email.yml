@@ -10,7 +10,7 @@ field_name: field_email
 entity_type: node
 bundle: kwe
 label: E-Mail
-description: 'Die allgemeine E-Mail Adresse der KWE (z.B. „info@...“ oder „service@...“).'
+description: 'Hier wird die allgemeine E-Mail-Adresse der Kultur- oder Wissenseinrichtung erfasst, zum Beispiel „info@...“ oder „service@...“.'
 required: false
 translatable: true
 default_value: {  }

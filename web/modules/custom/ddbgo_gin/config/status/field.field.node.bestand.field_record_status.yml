@@ -1,0 +1,21 @@
+uuid: 2d7e2b3c-0d6a-4657-a8a8-14eb0ee33b8b
+langcode: de
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_record_status
+    - node.type.bestand
+  module:
+    - options
+id: node.bestand.field_record_status
+field_name: field_record_status
+entity_type: node
+bundle: bestand
+label: Status
+description: 'Bearbeitungsstatus: abgelehnt, in Bearbeitung oder ingestiert. Eine leere Auswahl bedeutet „keine Angabe“.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

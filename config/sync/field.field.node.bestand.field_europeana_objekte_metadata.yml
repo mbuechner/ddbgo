@@ -13,7 +13,7 @@ field_name: field_europeana_objekte_metadata
 entity_type: node
 bundle: bestand
 label: 'Europeana-Objekte: Metadata-Tier'
-description: ''
+description: 'Die Europeana-Objekte werden nach Metadata-Tier erfasst. Innerhalb jedes Tiers sind die Objektzahlen nach Medientyp aufgeschlüsselt.'
 required: false
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_coding_da_vinci_event
 entity_type: node
 bundle: bestand
 label: 'Coding da Vinci-Event'
-description: ''
+description: 'Hier werden die zugehörigen Coding da Vinci-Events erfasst. Eine Mehrfachauswahl ist möglich.'
 required: false
 translatable: false
 default_value: {  }

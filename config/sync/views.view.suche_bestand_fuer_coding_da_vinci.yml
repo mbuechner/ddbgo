@@ -10,7 +10,7 @@ dependencies:
     - field.storage.node.field_kwe
     - field.storage.node.field_link_zu_coding_da_vinci
     - field.storage.node.field_link_zu_ddbdash
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - search_api.index.bestand
     - system.menu.bestand
     - taxonomy.vocabulary.ja_nein_feld
@@ -20,7 +20,8 @@ dependencies:
   content:
     - 'taxonomy_term:ja_nein_feld:bb649cfd-b464-4206-a97d-43b50066ee27'
   module:
-    - color_field
+    - better_exposed_filters
+    - ddbgo_gin
     - custom_formatters
     - link
     - search_api
@@ -39,7 +40,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Bestandsliste
+      title: 'Bestandsliste für Coding da Vinci'
       fields:
         nid:
           id: nid
@@ -186,11 +187,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -201,7 +202,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status des Bestands'
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -242,13 +243,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -269,7 +266,7 @@ display:
         field_kwe:
           id: field_kwe
           table: search_api_index_bestand
-          field: field_kwe
+          field: title_kwe
           relationship: none
           group_type: group
           admin_label: ''
@@ -329,29 +326,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         field_status_kwe:
           id: field_status_kwe
           table: search_api_index_bestand
@@ -360,7 +341,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status der Kultur- oder Wissenseinrichtung'
+          label: 'Status der KWE'
           exclude: false
           alter:
             alter_text: false
@@ -401,14 +382,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: true
-            data_attribute: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -429,7 +405,7 @@ display:
         field_aggregator:
           id: field_aggregator
           table: search_api_index_bestand
-          field: field_aggregator
+          field: title_aggregator
           relationship: none
           group_type: group
           admin_label: ''
@@ -489,29 +465,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              aggregator:
-                display_method: label
-                view_mode: default
-              bestand:
-                display_method: label
-                view_mode: default
-              kwe:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
-              person:
-                display_method: label
-                view_mode: default
         name_4:
           id: name_4
           table: search_api_index_bestand
@@ -575,11 +535,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         name_3:
@@ -645,17 +605,17 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_datenformat:
           id: field_datenformat
           table: search_api_index_bestand
-          field: field_datenformat
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
@@ -715,53 +675,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
+          field_rendering: false
+          fallback_handler: search_api
           fallback_options:
             link_to_item: false
-            use_highlighting: false
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
-            display_methods:
-              akademischer_titel:
-                display_method: label
-              bestandsart:
-                display_method: label
-              bundesland:
-                display_method: label
-                view_mode: default
-              datenformat:
-                display_method: label
-              europeana:
-                display_method: label
-              fragebogen:
-                display_method: label
-              ja_nein_feld:
-                display_method: label
-              ja_nein_teilweise_feld:
-                display_method: label
-              kultursparte:
-                display_method: label
-                view_mode: default
-              land:
-                display_method: label
-                view_mode: default
-              lieferweg:
-                display_method: label
-              medientyp:
-                display_method: label
-              personenrolle_aggregator:
-                display_method: label
-              personenrolle_bestand:
-                display_method: label
-              personenrolle_kwe:
-                display_method: label
-              region_ort:
-                display_method: label
-              vertragskonstrukt:
-                display_method: label
-              vertragsstatus:
-                display_method: label
         field_jira_hauptticket:
           id: field_jira_hauptticket
           table: search_api_index_bestand
@@ -979,6 +899,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h2
           items_per_page: 100
           total_pages: null
           id: 0
@@ -996,17 +917,61 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Suchen
-          reset_button: false
+          reset_button: true
           reset_button_label: Zurücksetzen
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: Sortierung
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Wählen Sie einen beliebigen Filter und klicken Sie auf Anwenden, um Ergebnisse zu sehen'
+          text_input_required_format: plain_text
+          bef:
+            general:
+              autosubmit: false
+              auto_submit_sort_only: false
+              autosubmit_breakpoint: ''
+              autosubmit_exclude_textfield: false
+              autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Erweiterte Optionen'
+              secondary_open: false
+              reset_button_always_show: false
+            filter:
+              search_api_fulltext:
+                plugin_id: default
+                advanced:
+                  placeholder_text: Suchen
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
+              field_coding_da_vinci_teilnahme:
+                plugin_id: default
+                advanced:
+                  sort_options: false
+                  sort_options_method: alphabetical_asc
+                  sort_options_natural: true
+                  rewrite:
+                    filter_rewrite_values: ''
+                    filter_rewrite_values_key: false
+                  collapsible: false
+                  collapsible_disable_automatic_open: false
+                  open_by_default: false
+                  is_secondary: false
+                  hide_label: false
+                  field_classes: ''
       access:
         type: role
         options:
@@ -1015,19 +980,20 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Bestände gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -1059,21 +1025,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Bestandsstatus, Status der KWE, DDBdash und Link zu Coding da Vinci. Nicht hervorgehoben werden ID und JIRA-Hauptticket.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -1092,8 +1055,8 @@ display:
           fields:
             - field_jira_hauptticket
             - name
-            - name_1
             - name_3
+            - name_4
             - nid
             - title
             - title_aggregator
@@ -1113,7 +1076,7 @@ display:
           exposed: true
           expose:
             operator_id: field_coding_da_vinci_teilnahme_op
-            label: 'Coding da Vinci-Teilnahme'
+            label: CdV-Teilnahme
             description: ''
             use_operator: false
             operator: field_coding_da_vinci_teilnahme_op
@@ -1121,14 +1084,11 @@ display:
             operator_list: {  }
             identifier: field_coding_da_vinci_teilnahme
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -1263,15 +1223,16 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
         type: search_api_query
         options:
-          skip_access: 0
-          bypass_access: 0
+          bypass_access: false
+          skip_access: false
       relationships: {  }
-      use_ajax: false
+      use_ajax: true
       show_admin_links: true
       header: {  }
       footer:
@@ -1293,7 +1254,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1303,8 +1263,9 @@ display:
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_coding_da_vinci'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.bestand'
+        - 'search_api_list:bestand'
   page:
     id: page
     display_title: Page
@@ -1331,7 +1292,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1341,5 +1301,6 @@ display:
         - 'config:field.storage.node.field_kwe'
         - 'config:field.storage.node.field_link_zu_coding_da_vinci'
         - 'config:field.storage.node.field_link_zu_ddbdash'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.bestand'
+        - 'search_api_list:bestand'

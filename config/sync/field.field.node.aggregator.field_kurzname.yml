@@ -10,7 +10,7 @@ field_name: field_kurzname
 entity_type: node
 bundle: aggregator
 label: 'Weitere Namen/ Abkürzungen'
-description: 'Offizielle Namen oder Abkürzung für den Aggregator-Namen, falls vorhanden (z.B. „d:kult“ für Digitales Kunst- und Kulturarchiv).'
+description: 'Hier werden weitere offizielle Namen oder Abkürzungen des Aggregators erfasst, sofern vorhanden, zum Beispiel „d:kult“ für Digitales Kunst- und Kulturarchiv.'
 required: false
 translatable: true
 default_value: {  }

@@ -1,39 +1,61 @@
 {
     "name": "ddbkultur/ddbgo",
-    "description": "DDBgo composer project for Deutsche Digitale Bibliothek <https://www.deutsche-digitale-bibliothek.de/>",
+    "description": "DDBgo is a database of the German Digital Library that provides information on cultural and academic institutions, collections, aggregators, and contact persons. DDBgo is an internal administrative and operational tool used by the Service Center and the specialized units of the German Digital Library.",
     "type": "project",
     "license": "Apache-2.0",
-    "authors": [{
+    "homepage": "https://github.com/mbuechner/ddbgo",
+    "support": {
+        "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
+        "chat": "https://www.drupal.org/node/314178"
+    },
+    "authors": [
+        {
             "name": "Michael Büchner <m.buechner@dnb.de>",
             "role": "Developer"
         }
     ],
-    "repositories": [{
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        }, {
+        },
+        {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "scottschiller/snowstorm",
+                "version": "dev-master",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/scottschiller/Snowstorm/archive/refs/heads/master.zip",
+                    "type": "zip"
+                },
+                "license": "BSD-3-Clause"
+            }
         }
     ],
     "require": {
-        "composer/installers": "^1.11",
+        "php": ">=8.5",
+        "ext-gd": "*",
+        "ext-imagick": "*",
         "cweagans/composer-patches": "^2.0",
         "drupal/admin_toolbar": "^3.6",
-        "drupal/adminimal_admin_toolbar": "^2.0",
-        "drupal/adminimal_theme": "^1.7",
         "drupal/auto_entitylabel": "^3.4",
-        "drupal/better_exposed_filters": "^7.1.3",
-        "drupal/color": "^1.0",
+        "drupal/better_exposed_filters": "^7.2",
         "drupal/color-color": "^1.0",
         "drupal/color_field": "^3.1@beta",
         "drupal/conditional_fields": "^4.0@alpha",
-        "drupal/content_lock": "^3.0",
-        "drupal/core": "^10.6.15",
-        "drupal/core-composer-scaffold": "^10.6.15",
-        "drupal/core-recommended": "^10.6.15",
+        "drupal/content_lock": "^3.0@alpha",
+        "drupal/core-composer-scaffold": "^11",
+        "drupal/core-project-message": "^11",
+        "drupal/core-recipe-unpack": "^11",
+        "drupal/core-recommended": "^11",
         "drupal/csv_serialization": "^4.0",
-        "drupal/custom_formatters": "^4.1",
+        "drupal/custom_breadcrumbs": "^1.1",
+        "drupal/custom_formatters": "^4.2",
         "drupal/date_popup": "^2.0",
         "drupal/diff": "^2.1",
         "drupal/empty_fields": "^1.0",
@@ -42,25 +64,23 @@
         "drupal/exclude_node_title": "^2.0",
         "drupal/facets": "^3.0",
         "drupal/field_defaults": "^2.1",
-        "drupal/field_group": "^4.0",
+        "drupal/field_group": "^4.1@beta",
         "drupal/field_validation": "^3.0@beta",
-        "drupal/flag": "^5.1@beta",
+        "drupal/flag": "^5.1",
         "drupal/flood_control": "^3.0",
-        "drupal/fontawesome": "^3.0",
-        "drupal/fontawesome_menu_icons": "^3.0",
         "drupal/form_options_attributes": "^2.1",
-        "drupal/happy_new_year": "^2.0",
+        "drupal/gin": "^5.0",
+        "drupal/gin_everywhere": "^1.5",
+        "drupal/gin_frontend": "^1.0@alpha",
+        "drupal/gin_login": "^2.1",
+        "drupal/gin_toolbar": "^3.0",
+        "drupal/gin_toolbar_custom_menu": "^1.0",
+        "drupal/happy_new_year": "^2.1",
         "drupal/health_check": "^3.2",
-        "drupal/hook_post_action": "^2.0",
-        "drupal/jquery_ui_accordion": "^2.1",
-        "drupal/jquery_ui_datepicker": "^2.1",
-        "drupal/jquery_ui_slider": "^2.1",
-        "drupal/jquery_ui_touch_punch": "^1.1",
         "drupal/jsonapi_extras": "^3.28",
-        "drupal/key_auth": "^2.2",
-        "drupal/libraries": "^4.1",
-        "drupal/menu_block": "^1.14",
+        "drupal/key_auth": "^2.2.4",
         "drupal/metatag": "^2.2",
+        "drupal/node_delete_redirect": "^4.0",
         "drupal/node_view_permissions": "^2.0",
         "drupal/noreqnewpass": "^1.6",
         "drupal/paragraphs": "^1.23",
@@ -69,61 +89,81 @@
         "drupal/search_api": "^1.41",
         "drupal/select2": "^2.0",
         "drupal/semanticviews": "^3.1",
-        "drupal/seven": "^1.0",
+        "drupal/sitemap": "^2.6",
         "drupal/smtp": "^1.4",
+        "drupal/tagify": "^2.0",
         "drupal/taxonomy_unique": "^2.6",
         "drupal/term_merge": "^2.0",
+        "drupal/toastify": "^1.3",
         "drupal/token": "^1.17",
         "drupal/toolbar_menu": "^3.1",
         "drupal/toolbar_menu_clean": "^2.0",
         "drupal/ultimate_cron": "^2.0@beta",
         "drupal/unique_field_ajax": "^2.2",
         "drupal/upgrade_status": "^4.3",
+        "drupal/user_switcher": "^1.0",
         "drupal/userprotect": "^1.4",
-        "drupal/views_data_export": "^1.10",
-        "drupal/viewsreference": "^2.0@beta",
-        "drush/drush": "^13.7",
-        "npm-asset/fontawesome-iconpicker": "^3.2",
-        "npm-asset/jquery-simple-color": "^1.2",
+        "drush/drush": "^13.8",
+        "mnsami/composer-custom-directory-installer": "^2.2",
+        "npm-asset/fortawesome--fontawesome-free": "^7",
         "npm-asset/select2": "^4.1",
-        "npm-asset/spectrum-colorpicker": "^1.8",
-        "oomphinc/composer-installers-extender": "^2.0",
-        "vlucas/phpdotenv": "^4.3",
-        "webflo/drupal-finder": "^1.3",
+        "scottschiller/snowstorm": "dev-master",
+        "vlucas/phpdotenv": "^5.7",
         "wikimedia/composer-merge-plugin": "^2.1"
     },
     "conflict": {
-        "drupal/drupal": "*"
+        "drupal/drupal": "*",
+        "fontawesome/fontawesome": "*"
     },
     "minimum-stability": "beta",
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
-        "platform": {
-            "php": "8.3",
-            "ext-gd": "1"
-        },
         "allow-plugins": {
             "composer/installers": true,
             "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
-            "oomphinc/composer-installers-extender": true,
+            "drupal/core-recipe-unpack": true,
+            "mnsami/composer-custom-directory-installer": true,
             "symfony/runtime": true,
             "wikimedia/composer-merge-plugin": true
+        },
+        "platform": {
+            "php": "8.5",
+            "ext-gd": "1",
+            "ext-imagick": "3"
         }
     },
     "autoload": {
-        "classmap": ["scripts/composer/ScriptHandler.php"],
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "scripts": {
-        "pre-install-cmd": ["DrupalProject\\composer\\ScriptHandler::checkComposerVersion"],
-        "pre-update-cmd": ["DrupalProject\\composer\\ScriptHandler::checkComposerVersion"],
-        "post-install-cmd": ["DrupalProject\\composer\\ScriptHandler::createRequiredFiles"],
-        "post-update-cmd": ["DrupalProject\\composer\\ScriptHandler::createRequiredFiles"]
+        "post-install-cmd": [
+            "@refresh-snowstorm"
+        ],
+        "post-update-cmd": [
+            "@refresh-snowstorm"
+        ],
+        "refresh-snowstorm": "@composer --no-cache --no-scripts reinstall scottschiller/snowstorm --prefer-dist --no-interaction --no-progress --no-autoloader"
     },
     "extra": {
+    	"drupal-scaffold": {
+            "initial": {
+                ".editorconfig": "../.editorconfig",
+                ".gitattributes": "../.gitattributes"
+            },
+            "locations": {
+                "web-root": "web/"
+        },
+            "file-mapping": {
+            	"[web-root]/robots.txt": false,
+                "[web-root]/README.md": false
+            }
+        },
         "patchLevel": {
             "drupal/core": "-p2"
         },
@@ -141,24 +181,23 @@
             "merge-scripts": false
         },
         "installer-types": [
-            "bower-asset",
             "npm-asset",
+            "drupal-core",
             "drupal-drush",
-            "drupal-theme",
-            "drupal-profile",
+            "drupal-library",
             "drupal-module",
-            "drupal-core"
+            "drupal-profile",
+            "drupal-theme"
         ],
         "installer-paths": {
             "web/core": [
                 "type:drupal-core"
             ],
-            "web/libraries/spectrum": [
-                "npm-asset/spectrum-colorpicker"
+            "web/libraries/fontawesome": [
+                "npm-asset/fortawesome--fontawesome-free"
             ],
             "web/libraries/{$name}": [
                 "type:drupal-library",
-                "type:bower-asset",
                 "type:npm-asset"
             ],
             "web/modules/contrib/{$name}": [
@@ -183,20 +222,20 @@
                 "type:drupal-custom-theme"
             ]
         },
-        "drupal-scaffold": {
-            "initial": {
-                ".editorconfig": "../.editorconfig",
-                ".gitattributes": "../.gitattributes"
-            },
-            "file-mapping": {
-                "[web-root]/README.md": false
-            }
-        },
         "enable-patching": true,
         "composer-exit-on-patch-failure": true,
         "patches": {
+            "consolidation/site-process": {
+                "Preserve valid JSON before legacy Windows shell unescaping": "patches/site-process-preserve-valid-json.patch"
+            },
             "drupal/select2": {
                 "Changed tokenSeparator in Select2 module": "patches/Changed_tokenSeparator_in_Select2_module.patch"
+            },
+            "drupal/toolbar_menu": {
+                "Fix Gin class conflict and empty menu links (3271757)": "patches/toolbar_menu-gin-compatibility.patch"
+            },
+            "drupal/toastify": {
+                "Restore constructible Toastify initializer": "patches/toastify-init-constructor.patch"
             },
             "drupal/unique_field_ajax": {
                 "Fixing bug with warning message at Unique Field Ajax": "patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch"

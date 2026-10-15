@@ -11,7 +11,7 @@ field_name: field_datenformat
 entity_type: node
 bundle: bestand
 label: Datenformat
-description: 'Das Datenformat/die Datenformate, in dem der Bestand vorliegt.'
+description: 'Die Auswahl beschreibt die Datenformate, in denen der Bestand vorliegt. Eine Mehrfachauswahl ist möglich.'
 required: false
 translatable: false
 default_value: {  }

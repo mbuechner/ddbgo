@@ -1,0 +1,234 @@
+/* Shared spacing for full node output and node add/edit forms in both themes.
+ * CSS also reaches paragraph widgets after AJAX rebuilds. Search forms retain
+ * their independent filter grid.
+ * Below Field Group's tab breakpoint, native details retain the same inset.
+ * Use padding rather than child margins, which collapse or disappear for cards. */
+:is(.gin-frontend, .node-form) {
+  --ddbgo-section-space: var(--gin-spacing-m);
+  --ddbgo-display-row-space: var(--gin-spacing-s);
+}
+
+@media (min-width: 48em) {
+  :is(.gin-frontend, .node-form) {
+    --ddbgo-section-space: var(--gin-spacing-l);
+    --ddbgo-display-row-space: var(--gin-spacing-m);
+  }
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) .field-group-tabs-wrapper {
+  min-width: 0;
+  padding: var(--gin-spacing-m) var(--ddbgo-section-space);
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper {
+  min-width: 0;
+  margin: 0;
+  padding: var(--ddbgo-section-space);
+}
+
+/* Enhanced tabs already have their side inset from the surrounding card.
+ * Reset the pane margins so they do not add a second bottom spacing layer. */
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs .horizontal-tabs-pane {
+  margin: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details.horizontal-tabs-pane > .claro-details__wrapper {
+  padding-inline: 0;
+}
+
+/* Subordinate groups inside a form tab should read as compact controls, not
+ * another large section. Use the server-rendered tab-pane attribute so this
+ * also works before JS, on mobile and after AJAX rebuilds. Outer tabs retain
+ * their Gin styling. These selectors include all three Bestand object groups. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details {
+  margin-block: var(--gin-spacing-s);
+  box-shadow: none;
+}
+
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__summary {
+  /* Regular Gin text needs a little breathing room: 44px including the outer
+   * borders at standard density. Keep a minimum so mobile/zoom can wrap. */
+  min-block-size: calc(2 * var(--input-padding-vertical) + var(--input-line-height) + 2px);
+  padding-block: calc(var(--input-padding-vertical) + 1px);
+  padding-inline: calc(var(--gin-spacing-s) + 1rem + var(--gin-spacing-xs)) var(--gin-spacing-s);
+  font-size: var(--gin-font-size);
+  line-height: var(--input-line-height);
+  overflow-wrap: anywhere;
+}
+
+/* Gin enlarges multiple-value table labels to 18px. Inside a subordinate
+ * group, match the summary's regular text size, including nested object rows.
+ * Ordinary input labels retain their own Gin typography. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__wrapper .form-item__label--multiple-value-form {
+  font-size: var(--gin-font-size);
+}
+
+/* Keep Gin's native chevron, hover/focus colors and focus outline; only move
+ * the chevron to suit the smaller inline padding. */
+.node-form [data-horizontal-tabs-panes] > details.claro-details > .claro-details__wrapper > details.claro-details > .claro-details__summary::before {
+  inset-inline-start: var(--gin-spacing-s);
+}
+
+/* Gin overlaps the tab strip and pane using a negative bottom margin.
+ * Let the pane padding determine the actual distance from the underline. */
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list {
+  margin-block-end: 0;
+  padding-block-end: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list::after {
+  inset-block-end: 0;
+}
+
+/* Shared hover effects for section tabs, primary node actions and tag links.
+ * Target the tasks block itself: the bookmark wrapper exists only on view pages.
+ * Keep the selected tab's underline stationary and retain Gin's focus shadow.
+ * An inset outline stays visible inside the tab strip's clipped overflow. */
+.gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle:focus-visible,
+:is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:focus-visible,
+:is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a:focus-visible {
+  outline: 2px solid var(--gin-color-focus-border, #005fcc);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .field--name-field-bestandstags a.ddbgo-tag-link:hover:not(:focus-visible),
+  .gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle:hover:not(:focus-visible),
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:hover:not(:focus-visible),
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a:hover:not(:focus-visible) {
+    box-shadow: 0 2px 8px rgba(20, 20, 30, .12);
+  }
+}
+
+/* Reduced-motion and touch users keep the static Gin tab interaction. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .field--name-field-bestandstags a.ddbgo-tag-link,
+  .gin-frontend .ddbgo-page-actions .flag-bookmark > a.ddbgo-bookmark-toggle,
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link,
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button > a {
+    transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .field--name-field-bestandstags a.ddbgo-tag-link:hover:not(:focus-visible),
+  .gin-frontend .ddbgo-page-actions .flag-bookmark.action-flag > a.ddbgo-bookmark-toggle:hover:not(:focus-visible),
+  :is(.gin-frontend, .gin--edit-form) .block-local-tasks-block .tabs--primary .tabs__link:not(.is-active):hover:not(:focus-visible),
+  :is(.gin-frontend .node--view-mode-full, .node-form) .horizontal-tabs ul.horizontal-tabs-list li.horizontal-tab-button:not(.selected) > a:hover:not(:focus-visible) {
+    transform: translateY(-1px);
+  }
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper > :first-child,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper > :first-child {
+  margin-block-start: 0;
+}
+
+:is(.gin-frontend .node--view-mode-full, .node-form) details.claro-details > .claro-details__wrapper > :last-child,
+.gin-frontend .ddbgo-linked-content-view > .claro-details__wrapper > :last-child {
+  margin-block-end: 0;
+}
+
+/* Field widgets add their own .form-item margin one level below the wrapper.
+ * Let the section inset own its edges, retaining spacing between form fields. */
+.node-form .claro-details__wrapper > .form-wrapper:first-of-type > .form-item:first-child,
+.node-form .paragraphs-subform > .form-wrapper:first-of-type > .form-item:first-child,
+.node-form [data-horizontal-tabs-panes] > .form-wrapper:first-of-type > .form-item:first-child {
+  margin-block-start: 0;
+}
+
+.node-form .claro-details__wrapper > .form-wrapper:last-child > .form-item:last-child,
+.node-form .paragraphs-subform > .form-wrapper:last-child > .form-item:last-child {
+  margin-block-end: 0;
+}
+
+/* Paragraphs already sit inside padded table cells. Add breathing room below
+ * their heading/actions without another horizontal inset around the inputs. */
+.node-form .paragraphs-subform {
+  min-width: 0;
+  padding-block-start: var(--gin-spacing-m);
+  overflow-wrap: anywhere;
+}
+
+/* Long paragraph titles and action controls must share or wrap their row
+ * instead of imposing a minimum table width on small screens. */
+.node-form .paragraph-type-top {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+.node-form .paragraph-type-top > .paragraph-type-title {
+  flex: 1 1 8rem;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Action containers may move below the title at narrow viewport widths or
+ * browser zoom. Keep the contrib dropdown itself and its open state intact. */
+.node-form .paragraph-type-top > :not(.paragraph-type-title),
+.node-form :is(.paragraphs-actions, .paragraphs-dropbutton-wrapper, .field-actions, .tabledrag-toggle-weight-wrapper) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .paragraphs-actions {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+/* The weight toggle is a native button, so its existing text can wrap without
+ * changing the label or TableDrag's keyboard/reordering behavior. */
+.node-form .tabledrag-toggle-weight-wrapper > button {
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Field-widget tables are form layout, distinct from View result tables. Let
+ * their flex content shrink; preserve table cells, columns and weight fields. */
+.node-form .field-multiple-table :is(.tabledrag-cell-content, .tabledrag-cell-content__item) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .field-multiple-table .tabledrag-cell-content__item {
+  flex: 1 1 auto;
+}
+
+/* Claro places the native file input/name and upload/remove button in one
+ * inline flex row. Wrap the controls as a group instead of forcing that row
+ * wider than its section. Native file selection and filenames stay intact. */
+.node-form :is(.form-managed-file, .form-managed-file__main, .form-managed-file__meta-items) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.node-form .form-managed-file__main {
+  flex-wrap: wrap;
+  gap: var(--gin-spacing-xs);
+}
+
+.node-form .form-managed-file__main :is(input[type="file"], .file) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+/* These submit buttons use a Twig button element so long action labels can
+ * wrap instead of overflowing nested sections. Submission attributes remain. */
+.node-form button.field-add-more-submit {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.node-form .field-group-tabs-wrapper > .horizontal-tabs {
+  margin-block-start: 0;
+}
+
+/* Native sections need their own border inset on mobile; avoid stacking a
+ * full card inset around that again when tabs become an accordion. */
+@media (max-width: 40em) {
+  :is(.gin-frontend .node--view-mode-full, .node-form) .field-group-tabs-wrapper {
+    padding: var(--gin-spacing-xs);
+  }
+}

@@ -6,7 +6,7 @@ definitions:
     parent: ''
     weight: 0
     expanded: false
-    enabled: true
+    enabled: false
   admin_toolbar_tools__drupalorg:
     menu_name: admin
     parent: admin_toolbar_tools.help

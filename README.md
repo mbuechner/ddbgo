@@ -8,23 +8,35 @@ DDBgo ist eine Datenbank der [Deutsche Digitalen Bibliothek](https://www.deutsch
 </p>
 
 ## Drupal modules
-### DDBgo Work-a-rounds
-See folder [web/modules/custom/ddbgo_workarounds/](web/modules/custom/ddbgo_workarounds/).
-### DDBgo Cron Job
-See folder [web/modules/custom/ddbgo_cj/](web/modules/custom/ddbgo_cj/).
-### DDBgo Search
-See folder [web/modules/custom/ddbgo_search](web/modules/custom/ddbgo_search/).
+
+- **DDBgo Gin:** navigation, layout, and shared form behavior for Gin-based themes
+  ([source](web/modules/custom/ddbgo_gin/)).
+- **DDBgo Cron Job:** synchronization of cultural and knowledge institutions
+  with the DDB API ([source](web/modules/custom/ddbgo_cj/)).
+- **DDBgo Search:** DDBgo-specific Search API processors
+  ([source](web/modules/custom/ddbgo_search/)).
+
 ## Drupal patches
+
 See folder [patches/](patches/).
+
 1. [Changed_tokenSeparator_in_Select2_module.patch](patches/Changed_tokenSeparator_in_Select2_module.patch)
-2. [DDBgo-improvements_in_unique_field_ajax_module.patch](patches/DDBgo-improvements_in_unique_field_ajax_module.patch)
+2. [toolbar_menu-gin-compatibility.patch](patches/toolbar_menu-gin-compatibility.patch)
+3. [Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch](patches/Bugfix_for_Warning_Message_in_unique_field_ajax_module.patch)
    
    Discussion at: https://www.drupal.org/project/unique_field_ajax/issues/2932042#comment-12950248
+
+4. [toastify-init-constructor.patch](patches/toastify-init-constructor.patch)
+
+   Applies the upstream fix from [Toastify MR !28](https://git.drupalcode.org/project/toastify/-/merge_requests/28)
+   ([commit 1462614b](https://git.drupalcode.org/project/toastify/-/commit/1462614bd1a08cc0a5e02960ca082757a615e928))
+   to prevent `Toastify.lib.init is not a constructor` when displaying Drupal
+   messages. Remove this patch once the fix is included in an installed release.
 
 ## Composer
 DDBgo is developed using the package manager [Composer](https://getcomposer.org/). Please make sure you have installed it correctly. All Composer commands should be executed within the folder with the file [composer.json](composer.json).
 
-### Run DDBgo localy
+### Run DDBgo locally
 1. Run `composer install` to install the project in your local directory
 2. Add file `.env` with the following configuration for Drupal's MySQL database connection (example file [.env.example](.env.example)).
    ```
@@ -37,15 +49,63 @@ DDBgo is developed using the package manager [Composer](https://getcomposer.org/
    UPDATE_FREE_ACCESS=FALSE
    FILE_PUBLIC_PATH=sites/default/files
    TRUSTED_HOST_PATTERNS="^localhost\$, ^127.0.0.1\$"
+   USE_REDIS=no
+   REDIS_HOST=127.0.0.1
+   REDIS_PORT=6379
    TMP=/tmp
+   UPDATEDB_ON_STARTUP=no
+   CONFIG_IMPORT_ON_STARTUP=no
+   CACHEREBUILD_ON_STARTUP=no
    ```
 3. Use [Drush](https://www.drush.org/) command to run local server: `vendor/bin/drush rs`
 4. Access via  http://127.0.0.1:8888
 
-If you start with a blank database you need to import all configuration with [Drush](https://www.drush.org/), which is stored in the folder [config/sync](config/sync). Therefor run `vendor/drush/drush/drush config:import`.
+If you start with a blank database, import the configuration from [config/sync](config/sync) with `vendor/bin/drush config:import`.
+
+### Environment variables
+The following environment variables are used by DDBgo and can be set via `.env`.
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `MYSQL_DATABASE` | Yes | `drupal` | MySQL database name. |
+| `MYSQL_USER` | Yes | `drupal` | MySQL username. |
+| `MYSQL_PASSWORD` | Yes | `drupal` | MySQL password. |
+| `MYSQL_HOSTNAME` | No | `localhost` | MySQL host name or IP address. |
+| `MYSQL_PORT` | No | `3306` | MySQL TCP port. |
+| `HASH_SALT` | Yes | `''` (empty) | Drupal hash salt for tokens and one-time links. |
+| `UPDATE_FREE_ACCESS` | No | `false` | Enables access to `update.php` without login when set to `true` (not recommended in production). |
+| `FILE_PUBLIC_PATH` | No | `sites/default/files` | Public files directory relative to Drupal web root. |
+| `FILE_PRIVATE_PATH` | No | `$app_root . '/../private'` | Absolute private-files path outside the Drupal web root. |
+| `TMP` | No | `sys_get_temp_dir()` | Temporary directory path used by Drupal. |
+| `TRUSTED_HOST_PATTERNS` | No | `^localhost$, ^127\.0\.0\.1$` | Comma-separated regex list for trusted host validation. |
+| `USE_REDIS` | No | `false` | Enables Redis cache backend integration when set to `true`. |
+| `REDIS_HOST` | No | `127.0.0.1` | Redis host name or IP address (used when `USE_REDIS=true`). |
+| `REDIS_PORT` | No | `6379` | Redis TCP port (used when `USE_REDIS=true`). |
+| `REDIS_PASSWORD` | No | not set | Redis password (used when `USE_REDIS=true` and authentication is enabled). |
+| `DRUSH_OPTIONS_URI` | No | not set | Optional Drush URI override for CLI commands. |
+| `UPDATEDB_ON_STARTUP` | No | `no` | Runs Drupal database updates when the container starts if set to `yes`. |
+| `CONFIG_IMPORT_ON_STARTUP` | No | `no` | Imports the Drupal configuration from [config/sync](config/sync) when the container starts if set to `yes`. |
+| `CACHEREBUILD_ON_STARTUP` | No | `no` | Rebuilds Drupal caches when the container starts if set to `yes`. |
+| `HTPASSWD_GREETING` | No | not set | Optional Nginx HTTP Basic Auth prompt. The container uses its built-in prompt if authentication is enabled and this variable is unset. |
+| `HTPASSWD_USER` | No | not set | Enables Nginx HTTP Basic Auth when set together with `HTPASSWD_PWD`. |
+| `HTPASSWD_PWD` | No | not set | Password for Nginx HTTP Basic Auth; has no effect without `HTPASSWD_USER`. |
 
 ### Composer project maintenance
-1. Find update-able packages: 
+
+Font Awesome is supplied exclusively by `npm-asset/fortawesome--fontawesome-free`
+at `web/libraries/fontawesome`. The legacy `fontawesome/fontawesome` package is
+explicitly conflicting because it uses the same directory: removing it during
+a Composer merge update also deletes the current package's icons. Do not add it
+back to `composer.lock` or a module's `composer.libraries.json`.
+
+Generated Composer assets are excluded from the Docker context so local files
+cannot mask a broken clean installation.
+
+If an existing local installation has already lost its icons, run
+`composer reinstall npm-asset/fortawesome--fontawesome-free` after installing
+the corrected lockfile. Deploy a newly built image to repair a running cluster.
+
+1. Find updateable packages:
    `composer outdated --direct`
 2. Show available package versions for a package: 
    `composer show --all drupal/facets`
@@ -55,26 +115,36 @@ If you start with a blank database you need to import all configuration with [Dr
    `composer update drupal/facets` or `composer update 'drupal/facets:^1.4'`
 5. Update all packages to newest version: 
    `composer update`
-6. Update to new major version: 
-   `composer require drupal/core-recommended:^8.8 --update-with-dependencies --no-plugins`
+6. Update Drupal core and its locked dependencies:
+   `composer update drupal/core-* --with-all-dependencies`
 
 ### Drush commands
 1. Update Drupal's database: 
-   `vendor/drush/drush/drush updatedb`
+   `vendor/bin/drush updatedb`
 2. Rebuild cache: 
-   `vendor/drush/drush/drush cr`
+   `vendor/bin/drush cr`
 3. Runs PHP's built-in HTTP server (for development only): 
-   `vendor/drush/drush/drush rs`
+   `vendor/bin/drush rs`
 4. Export all configuration to folder [config/sync](config/sync): 
-   `vendor/drush/drush/drush config:export`.
+   `vendor/bin/drush config:export`.
 5. Import all configuration from folder [config/sync](config/sync): 
-   `vendor/drush/drush/drush config:import`.
+   `vendor/bin/drush config:import`.
 
 ## Docker
 Yes, there's a docker container for DDBgo available at GitHub: https://github.com/mbuechner/ddbgo/pkgs/container/ddbgo%2Fddbgo
 ```
-docker pull ghcr.io/mbuechner/ddbgo/ddbgo:tagged
+docker pull ghcr.io/mbuechner/ddbgo:tagged
 ```
+
+## Helm / Kubernetes und OpenShift
+
+Das Helm-Chart für Kubernetes und OpenShift einschließlich Redis und MariaDB
+liegt als vollständig eigenständiges, auslagerbares Repository unter
+[`helm/`](helm/README.md). Es enthält Profile für DDBgo und DDBpro, die
+chartbezogenen GitHub Actions sowie die Release-Dokumentation. Der
+Drupal-Container und seine Version werden ausschließlich über Values gewählt
+und unabhängig vom Chart veröffentlicht.
+
 ## Container build
 1. Checkout GitHub repository:
    `git clone https://github.com/mbuechner/ddbgo`

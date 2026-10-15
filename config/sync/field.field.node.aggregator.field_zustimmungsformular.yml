@@ -22,7 +22,7 @@ field_name: field_zustimmungsformular
 entity_type: node
 bundle: aggregator
 label: Zustimmungsformular
-description: 'Zustimmung des Aggregators zur Umstellung auf die neuen Rechtehinweise. Zustimmung eingeholt ab 2023.'
+description: 'Erfasst wird die ab 2023 eingeholte Zustimmung des Aggregators zur Umstellung auf die neuen Rechtehinweise.'
 required: false
 translatable: true
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_person
 entity_type: paragraph
 bundle: person_aggregator
 label: Person
-description: ''
+description: 'Hier wird dem Aggregator eine vorhandene Person zugeordnet. Die Person ist über die Suche auswählbar.'
 required: true
 translatable: true
 default_value: {  }

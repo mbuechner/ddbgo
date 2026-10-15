@@ -7,14 +7,12 @@
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
-
 /**
  * Load any .env file. See /.env.example.
+ *
+ * Use the unsafe variant to also populate getenv()/putenv(). Drupal settings
+ * in this project read from getenv(), and Drush CLI should behave the same on
+ * Linux and Windows.
  */
-$dotenv = Dotenv::createImmutable(__DIR__);
-try {
-  $dotenv->load();
-}
-catch (InvalidPathException $e) {
-  // Do nothing. Production environments rarely use .env files.
-}
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->safeLoad();

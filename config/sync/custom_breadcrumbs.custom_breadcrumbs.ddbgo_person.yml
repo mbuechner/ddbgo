@@ -1,0 +1,23 @@
+uuid: 61e9b8d1-cb89-4b46-980e-5d50545927e7
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.person
+      - views.view.personensuche
+id: ddbgo_person
+label: 'DDBgo: person - Datensatz'
+description: 'Feste Zuordnung aller Datensätze dieses Typs zur Standardliste; aktueller Titel ohne Link.'
+entityType: node
+entityBundle: person
+language: und
+breadcrumbPaths: |-
+  /search/person
+  <nolink>
+breadcrumbTitles: |-
+  Personenliste
+  [node:title]
+type: '1'
+pathPattern: ''
+extraCacheContexts: ''

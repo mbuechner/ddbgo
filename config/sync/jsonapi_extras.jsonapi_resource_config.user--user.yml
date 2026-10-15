@@ -1,0 +1,17 @@
+uuid: 7dd32820-3e4a-42e4-b2c6-221d5107c75a
+langcode: de
+status: true
+dependencies:
+  module:
+    - user
+id: user--user
+disabled: false
+path: user/user
+resourceType: user--user
+resourceFields:
+  api_key:
+    disabled: true
+    fieldName: api_key
+    publicName: api_key
+    enhancer:
+      id: ''

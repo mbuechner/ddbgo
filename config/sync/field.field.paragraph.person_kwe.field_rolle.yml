@@ -22,7 +22,7 @@ field_name: field_rolle
 entity_type: paragraph
 bundle: person_kwe
 label: Rolle
-description: ''
+description: 'Erfasst wird die Rolle der Person bei der Kultur- oder Wissenseinrichtung. Neue Rollen können durch Eingabe und Auswahl eines neuen Eintrags ergänzt werden. Neue Rollen werden beim Speichern des Formulars angelegt.'
 required: true
 translatable: false
 default_value: {  }
@@ -36,5 +36,5 @@ settings:
       field: name
       direction: asc
     auto_create: true
-    auto_create_bundle: personenrolle_aggregator
+    auto_create_bundle: personenrolle
 field_type: entity_reference

@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_erstingest
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_zwischenaggregatoren
     - node.type.bestand
     - user.role.administrator
@@ -12,7 +12,7 @@ dependencies:
     - user.role.ddb_team
     - user.role.ddb_team_login_admin
   module:
-    - color_field
+    - ddbgo_gin
     - datetime
     - node
     - semanticviews
@@ -164,13 +164,13 @@ display:
           field_api_classes: false
         field_status:
           id: field_status
-          table: node__field_status
-          field: field_status
+          table: node__field_record_status
+          field: field_record_status
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: 'Status des Bestands'
+          label: Bestandsstatus
           exclude: false
           alter:
             alter_text: false
@@ -211,13 +211,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -495,8 +491,8 @@ display:
         options:
           submit_button: Anwenden
           reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: Sortierung
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
@@ -604,10 +600,6 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
           is_grouped: false
           group_info:
             label: ''
@@ -725,6 +717,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: semanticviews_row
         options:
@@ -779,7 +772,7 @@ display:
         - user.roles
       tags:
         - 'config:field.storage.node.field_erstingest'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_zwischenaggregatoren'
   block:
     id: block
@@ -801,5 +794,5 @@ display:
         - user.roles
       tags:
         - 'config:field.storage.node.field_erstingest'
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:field.storage.node.field_zwischenaggregatoren'

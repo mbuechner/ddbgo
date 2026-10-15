@@ -13,7 +13,7 @@ field_name: field_ddb_objekte
 entity_type: node
 bundle: bestand
 label: DDB-Objekte
-description: 'Aus wie vielen Objekten besteht der Bestand? Hier bitte nach den verschiedenen Medientypen aufschlüsseln.'
+description: 'Die Objektzahlen beschreiben den Umfang des Bestands, aufgeschlüsselt nach Medientyp.'
 required: false
 translatable: false
 default_value: {  }

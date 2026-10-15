@@ -1,0 +1,79 @@
+/* Toolbar icon mapping for custom toolbar_menu top-level entries in Gin. */
+.gin-frontend .page-title--ddbgo-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding-inline-start: 0.25em;
+  line-height: 1.2;
+}
+
+.gin-frontend .page-title--ddbgo-type::before {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  flex: 0 0 0.9em;
+  background-color: currentColor;
+  -webkit-mask: var(--ddbgo-type-icon) center / contain no-repeat;
+  mask: var(--ddbgo-type-icon) center / contain no-repeat;
+  transform: translateY(-0.02em);
+}
+
+.gin-frontend .page-title--ddbgo-type-aggregator {
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-aggregator);
+}
+
+.gin-frontend .page-title--ddbgo-type-bestand {
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-bestand);
+}
+
+.gin-frontend .page-title--ddbgo-type-kwe {
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-kwe);
+}
+
+.gin-frontend .page-title--ddbgo-type-person {
+  --ddbgo-type-icon: var(--ddbgo-content-type-icon-person);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-kwe {
+  --icon: var(--ddbgo-content-type-icon-kwe);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-aggregator {
+  --icon: var(--ddbgo-content-type-icon-aggregator);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-bestand {
+  --icon: var(--ddbgo-content-type-icon-bestand);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-person {
+  --icon: var(--ddbgo-content-type-icon-person);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-einstellungen {
+  --icon: var(--ddbgo-icon-settings);
+}
+
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-start {
+  --icon: var(--ddbgo-icon-start);
+}
+
+/* Keep the DDB logo as image instead of monochrome mask. */
+.toolbar .toolbar-bar .toolbar-icon-toolbar-menu-start::before {
+  -webkit-mask-image: none;
+  mask-image: none;
+  background-color: transparent;
+  background-image: var(--ddbgo-icon-start);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/*
+ * Gin prepends a generic home item to toolbar menus. Hide it only in trays
+ * created by toolbar_menu; the core administration tray has a different ID.
+ */
+.toolbar-tray[id^="toolbar-item-toolbar-menu-"][id$="-tray"] .menu-item__tools {
+  display: none;
+}

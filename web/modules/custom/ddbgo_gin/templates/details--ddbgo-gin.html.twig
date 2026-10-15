@@ -1,0 +1,137 @@
+{# Based on Gin's details.html.twig. Keep its structure and preprocess variables
+   in sync on theme updates; DDBgo supplies the help button attributes in Twig. #}
+{#
+/**
+ * @file
+ * Theme override for a details element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the details element.
+ * - errors: (optional) Any errors for this details element, may not be set.
+ * - title: (optional) The title of the element, may not be set.
+ * - description: (optional) The description of the element, may not be set.
+ * - children: (optional) The children of the element, may not be set.
+ * - value: (optional) The value of the element, may not be set.
+ * - accordion: whether the details element should look as an accordion.
+ * - accordion_item: whether the details element is an item of an accordion
+ *   list.
+ * - disabled: whether the details is disabled.
+ *
+ * @see template_preprocess_details()
+ * @see claro_preprocess_details()
+ */
+#}
+{#
+  Prefix 'details' class to avoid collision with Modernizr.
+
+  @todo Remove prefix after https://www.drupal.org/node/2981732 has been solved.
+#}
+{# Core renders multi-file fields as details using file_widget_multiple.
+   Its summary is already an interactive control: a help button inside it
+   would nest two controls. Show the unchanged help in the opened content.
+   Gin saves the original display mode before hiding tooltip descriptions;
+   restore it here so normal help is visible and intentionally invisible
+   descriptions remain invisible. Other details retain their help behavior. #}
+{% set is_multiple_file_widget = element['#theme'] == 'file_widget_multiple' %}
+{% set show_description_toggle = description_toggle and description and not is_multiple_file_widget %}
+{% set description_display = is_multiple_file_widget and description_toggle
+  ? description_display_toggle|default('after')
+  : description_display %}
+{% set tooltip_id = 'ddbgo-help'|clean_unique_id %}
+{# Native summary exposes its button role and expanded state through details.open.
+   Explicit role/aria-expanded are forbidden here by ARIA in HTML. Preserve
+   global ARIA attributes, including our controls/help relationships. #}
+{% set summary_attributes = summary_attributes.removeAttribute('role', 'aria-expanded') %}
+{# Views filters use one native disclosure, not an ARIA accordion. Give its
+   content an explicit relationship to the summary without changing other
+   details widgets. Generate both references together at render time so
+   multiple filter forms and AJAX replacements keep matching, unique IDs. #}
+{% if attributes.hasClass('ddbgo-exposed-filters') %}
+  {% set filter_content_id = 'ddbgo-filter-content'|clean_unique_id %}
+  {% set summary_attributes = summary_attributes.setAttribute('aria-controls', filter_content_id) %}
+  {% set content_attributes = content_attributes.setAttribute('id', filter_content_id) %}
+{% endif %}
+{%
+  set classes = [
+    'claro-details',
+    accordion ? 'claro-details--accordion',
+    accordion_item ? 'claro-details--accordion-item',
+    show_description_toggle ? 'help-icon__description-container',
+  ]
+%}
+{%
+  set content_wrapper_classes = [
+    'claro-details__wrapper',
+    'details-wrapper',
+    accordion ? 'claro-details__wrapper--accordion',
+    accordion_item ? 'claro-details__wrapper--accordion-item',
+  ]
+%}
+{%
+  set inner_wrapper_classes = [
+    'claro-details__content',
+    accordion ? 'claro-details__content--accordion',
+    accordion_item ? 'claro-details__content--accordion-item',
+  ]
+%}
+{%
+  set description_classes = [
+    'claro-details__description',
+    disabled ? 'is-disabled',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
+  ]
+%}
+<details{{ attributes.addClass(classes) }}>
+  {%- if title -%}
+    {%
+  set summary_classes = [
+    'claro-details__summary',
+    required ? 'js-form-required',
+    required ? 'form-required',
+    accordion ? 'claro-details__summary--accordion',
+    accordion_item ? 'claro-details__summary--accordion-item',
+  ]
+%}
+    <summary{{ summary_attributes.addClass(summary_classes) }}>
+      {{- title -}}
+      <span class="required-mark"></span>
+      {% if show_description_toggle %}
+        {% include '@ddbgo_gin/ddbgo-help-toggle.html.twig' with {
+          description_id: tooltip_id,
+        } only %}
+      {% endif %}
+    </summary>
+  {%- endif -%}
+  {% if show_description_toggle %}
+    {% include '@ddbgo_gin/ddbgo-help-tooltip.html.twig' with {
+      tooltip_attributes: create_attribute(),
+      tooltip_id: tooltip_id,
+      description_classes: description_classes,
+      description: description,
+    } only %}
+  {% endif %}
+  <div{{ content_attributes.addClass(content_wrapper_classes) }}>
+    {% if accordion or accordion_item %}
+    <div{{ create_attribute({class: inner_wrapper_classes}) }}>
+    {% endif %}
+
+      {% if errors %}
+        <div class="form-item form-item--error-message"{% if element['#ddbgo_inline_error_id'] %} id="{{ element['#ddbgo_inline_error_id'] }}"{% endif %}>
+          {{ errors }}
+        </div>
+      {% endif %}
+      {%- if description and not show_description_toggle -%}
+        <div{{ create_attribute().addClass(description_classes) }}>{{ description }}</div>
+      {%- endif -%}
+      {%- if children -%}
+        {{ children }}
+      {%- endif -%}
+      {%- if value -%}
+        {{ value }}
+      {%- endif -%}
+
+    {% if accordion or accordion_item %}
+    </div>
+    {% endif %}
+  </div>
+</details>

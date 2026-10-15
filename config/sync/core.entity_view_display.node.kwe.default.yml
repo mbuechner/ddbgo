@@ -4,11 +4,8 @@ status: true
 dependencies:
   config:
     - custom_formatters.formatter.isil_link
-    - custom_formatters.formatter.jira_link
     - custom_formatters.formatter.label_als_link
     - field.field.node.kwe.field_ablehnungsgrund
-    - field.field.node.kwe.field_api_blacklisting
-    - field.field.node.kwe.field_api_blacklisting_jira_tick
     - field.field.node.kwe.field_archivportal_lieferung
     - field.field.node.kwe.field_bemerkung
     - field.field.node.kwe.field_bemerkung_archivportal
@@ -30,9 +27,10 @@ dependencies:
     - field.field.node.kwe.field_plz
     - field.field.node.kwe.field_sparte
     - field.field.node.kwe.field_stadt
-    - field.field.node.kwe.field_status
+    - field.field.node.kwe.field_record_status
     - field.field.node.kwe.field_strasse
     - field.field.node.kwe.field_telefonnummer
+    - field.field.node.kwe.field_untersparte
     - field.field.node.kwe.field_url
     - field.field.node.kwe.field_vertrag
     - field.field.node.kwe.field_vertragskonstrukt
@@ -40,7 +38,7 @@ dependencies:
     - field.field.node.kwe.field_zustimmungsformular
     - node.type.kwe
   module:
-    - color_field
+    - ddbgo_gin
     - custom_formatters
     - datetime
     - empty_fields
@@ -54,14 +52,18 @@ third_party_settings:
     group_kontakt:
       children:
         - field_kontakt
-      label: Kontakt
-      parent_name: ''
+      label: Kontaktverlauf
+      parent_name: group_kwe
       region: content
       weight: 4
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_kontakt
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -73,13 +75,17 @@ third_party_settings:
       children:
         - field_personen
       label: Personen
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 3
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_personen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -94,18 +100,19 @@ third_party_settings:
         - field_zustimmungsformular
         - field_vertrag
         - field_favorienkarussell
-        - field_api_blacklisting
-        - field_api_blacklisting_jira_tick
-        - field_widerspruch
         - field_bemerkungen
-      label: Informationen
-      parent_name: ''
+      label: Verwaltung
+      parent_name: group_kwe
       region: content
       weight: 5
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_informationen
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -121,14 +128,18 @@ third_party_settings:
         - field_archivportal_lieferung
         - field_erstingest_archivportal
         - field_bemerkung_archivportal
-      label: 'Europeana/ Archivportal'
-      parent_name: ''
+      label: 'Europeana / Archivportal'
+      parent_name: group_kwe
       region: content
       weight: 6
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_europeana
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -138,24 +149,20 @@ third_party_settings:
         speed: fast
     group_status:
       children:
-        - flag_bookmark
-        - field_status
+        - field_record_status
         - field_ablehnungsgrund
       label: Status
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 1
-      format_type: html_element
+      format_type: tab
       format_settings:
-        classes: fieldgroup_status
-        id: fieldgroup_kwe_status
-        element: fieldset
-        show_label: true
-        label_element: legend
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: slow
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        formatter: open
+        description: ''
     group_allgemeines:
       children:
         - field_ddburi
@@ -168,18 +175,23 @@ third_party_settings:
         - field_bundesland
         - field_land
         - field_sparte
+        - field_untersparte
         - field_telefonnummer
         - field_email
         - field_url
         - field_bemerkung
       label: Allgemeines
-      parent_name: ''
+      parent_name: group_kwe
       region: content
       weight: 2
-      format_type: html_element
+      format_type: tab
       format_settings:
         classes: fieldgroup_allgemeines
+        show_empty_fields: true
         id: ''
+        label_as_html: false
+        formatter: closed
+        description: ''
         element: fieldset
         show_label: true
         label_element: legend
@@ -187,6 +199,26 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
+    group_kwe:
+      children:
+        - group_status
+        - group_allgemeines
+        - group_personen
+        - group_kontakt
+        - group_informationen
+        - group_einstellungen
+      label: KWE
+      parent_name: ''
+      region: content
+      weight: 1
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        label_as_html: false
+        direction: horizontal
+        width_breakpoint: 640
 id: node.kwe.default
 targetEntityType: node
 bundle: kwe
@@ -198,29 +230,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
-    region: content
-  field_api_blacklisting:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: false
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 29
-    region: content
-  field_api_blacklisting_jira_tick:
-    type: 'custom_formatters:jira_link'
-    label: inline
-    settings: {  }
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 30
     region: content
   field_archivportal_lieferung:
     type: entity_reference_label
@@ -243,7 +252,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 17
+    weight: 18
     region: content
   field_bemerkung_archivportal:
     type: basic_string
@@ -295,6 +304,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -305,7 +315,8 @@ content:
   field_ddburi:
     type: 'custom_formatters:label_als_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -322,7 +333,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 15
+    weight: 16
     region: content
   field_erstingest_archivportal:
     type: datetime_default
@@ -377,7 +388,8 @@ content:
   field_isil:
     type: 'custom_formatters:isil_link'
     label: inline
-    settings: {  }
+    settings:
+      formatter_setting_uuid: ''
     third_party_settings:
       empty_fields:
         handler: text
@@ -403,6 +415,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -440,12 +453,20 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
         settings:
           empty_text: –
     weight: 9
+    region: content
+  field_record_status:
+    type: ddbgo_record_status
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_sparte:
     type: entity_reference_label
@@ -464,6 +485,7 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -471,27 +493,12 @@ content:
           empty_text: –
     weight: 10
     region: content
-  field_status:
-    type: color_field_formatter_swatch
-    label: hidden
-    settings:
-      shape: square
-      width: '50'
-      height: '50'
-      opacity: true
-      data_attribute: false
-    third_party_settings:
-      empty_fields:
-        handler: text
-        settings:
-          empty_text: –
-    weight: 1
-    region: content
   field_strasse:
     type: string
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
     third_party_settings:
       empty_fields:
         handler: text
@@ -504,6 +511,19 @@ content:
     label: inline
     settings:
       link_to_entity: false
+      link_rel: canonical
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 15
+    region: content
+  field_untersparte:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
     third_party_settings:
       empty_fields:
         handler: text
@@ -525,7 +545,7 @@ content:
         handler: text
         settings:
           empty_text: –
-    weight: 16
+    weight: 17
     region: content
   field_vertrag:
     type: file_default
@@ -575,12 +595,11 @@ content:
           empty_text: –
     weight: 26
     region: content
-  flag_bookmark:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
+  field_api_blacklisting: true
+  field_api_blacklisting_jira_tick: true
+  field_status: true
+  flag_bookmark: true
   langcode: true
   links: true
   search_api_excerpt: true

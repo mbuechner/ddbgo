@@ -1,0 +1,22 @@
+services:
+  ddbgo_search.person_relations:
+    class: Drupal\ddbgo_search\PersonRelations
+    arguments:
+      - '@entity_type.manager'
+      - '@search_api.fields_helper'
+
+  ddbgo_search.reverse_reference_tracker:
+    class: Drupal\ddbgo_search\ReverseReferenceTracker
+    arguments:
+      - '@entity_type.manager'
+      - '@search_api.entity_datasource.tracking_manager'
+
+  ddbgo_search.original_search_values:
+    class: Drupal\ddbgo_search\EventSubscriber\OriginalSearchValuesSubscriber
+    tags:
+      - { name: event_subscriber }
+
+  ddbgo_search.kwe_sector_dependencies:
+    class: Drupal\ddbgo_search\EventSubscriber\KweSectorDependenciesSubscriber
+    tags:
+      - { name: event_subscriber }

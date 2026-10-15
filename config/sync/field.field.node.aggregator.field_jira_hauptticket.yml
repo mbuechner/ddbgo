@@ -10,7 +10,7 @@ field_name: field_jira_hauptticket
 entity_type: node
 bundle: aggregator
 label: JIRA-Hauptticket
-description: 'Bitte das Haupttickets des Bestands angeben, z.B.: DDBDATA-3361'
+description: 'Hier wird das Hauptticket des Bestands angegeben, zum Beispiel DDBDATA-3361.'
 required: false
 translatable: true
 default_value: {  }

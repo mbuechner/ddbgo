@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Footer for Gin admin/login pages, which have no native footer region.
+ *
+ * Gin Frontend keeps its own footer template. Both render the same configured
+ * Core menu block, including its accessible navigation name and menu markup.
+ */
+#}
+{% if content %}
+  <footer class="ddbgo-footer">
+    <div class="ddbgo-footer__inner">
+      {{ content }}
+    </div>
+  </footer>
+{% endif %}

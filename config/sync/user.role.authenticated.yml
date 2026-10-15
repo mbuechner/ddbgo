@@ -2,14 +2,18 @@ uuid: 381ef53d-e43f-4226-9aa8-9499aaff1bb5
 langcode: de
 status: true
 dependencies:
+  config:
+    - node.type.aggregator
+    - node.type.bestand
+    - node.type.kwe
+    - node.type.page
+    - node.type.person
   module:
     - file
-    - fontawesome
     - key_auth
     - node_view_permissions
-    - noreqnewpass
+    - sitemap
     - system
-    - toolbar
     - toolbar_menu
     - userprotect
 _core:
@@ -20,9 +24,7 @@ weight: -9
 is_admin: false
 permissions:
   - 'access content'
-  - 'access fontawesome additional settings'
-  - 'access toolbar'
-  - 'can change your own password'
+  - 'access sitemap'
   - 'delete own files'
   - 'use key authentication'
   - userprotect.account.edit
@@ -42,3 +44,4 @@ permissions:
   - 'view own person content'
   - 'view person in toolbar'
   - 'view start in toolbar'
+  - 'view the administration theme'

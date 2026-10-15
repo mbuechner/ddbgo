@@ -13,7 +13,7 @@ field_name: field_land
 entity_type: node
 bundle: kwe
 label: Land
-description: ''
+description: 'Erfasst wird das Land, in dem die Kultur- oder Wissenseinrichtung liegt.'
 required: false
 translatable: false
 default_value:

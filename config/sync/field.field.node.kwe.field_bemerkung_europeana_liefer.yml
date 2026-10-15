@@ -10,7 +10,7 @@ field_name: field_bemerkung_europeana_liefer
 entity_type: node
 bundle: kwe
 label: 'Bemerkung für Europeana-Lieferung'
-description: 'Weitere Bermerkungen zur Europeanalieferung.'
+description: 'Dieses Feld enthält ergänzende Bemerkungen zur Europeana-Lieferung.'
 required: false
 translatable: false
 default_value: {  }

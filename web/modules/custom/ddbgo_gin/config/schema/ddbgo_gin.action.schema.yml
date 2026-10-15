@@ -1,0 +1,3 @@
+action.configuration.ddbgo_bookmark_remove:
+  type: action_configuration_default
+  label: 'Confirm personal bookmark removal'

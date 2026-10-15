@@ -7,8 +7,8 @@ display:
       exposed_form:
         options:
           submit_button: Filter
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: Sortierung
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:

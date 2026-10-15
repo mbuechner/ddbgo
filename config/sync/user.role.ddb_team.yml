@@ -17,7 +17,6 @@ dependencies:
     - node
     - node_view_permissions
     - taxonomy
-    - toolbar
     - toolbar_menu
 id: ddb_team
 label: DDBgo-Editor
@@ -26,7 +25,6 @@ is_admin: null
 permissions:
   - 'access content overview'
   - 'access taxonomy overview'
-  - 'access toolbar'
   - 'break content lock'
   - 'create aggregator content'
   - 'create bestand content'

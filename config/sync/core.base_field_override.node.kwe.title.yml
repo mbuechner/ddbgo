@@ -9,7 +9,7 @@ field_name: title
 entity_type: node
 bundle: kwe
 label: 'Name der KWE'
-description: ''
+description: 'Dieses Feld enthält den Namen der Kultur- oder Wissenseinrichtung.'
 required: true
 translatable: true
 default_value: {  }

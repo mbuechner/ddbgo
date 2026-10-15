@@ -1,4 +1,8 @@
 parameters:
+  # Toggles the super user access policy. If your website has at least one user
+  # with the Administrator role, it is advised to set this to false. This allows
+  # you to make user 1 a regular user, strengthening the security of your site.
+  security.enable_super_user: true
   session.storage.options:
     # Default ini options for sessions.
     #
@@ -11,10 +15,11 @@ parameters:
     # @default 100
     gc_divisor: 100
     #
-    # Set session lifetime (in seconds), i.e. the time from the user's last
-    # visit to the active session may be deleted by the session garbage
-    # collector. When a session is deleted, authenticated users are logged out,
-    # and the contents of the user's $_SESSION variable is discarded.
+    # Set session lifetime (in seconds), i.e. the grace period for session
+    # data. Sessions are deleted by the session garbage collector after one
+    # session lifetime has elapsed since the user's last visit. When a session
+    # is deleted, authenticated users are logged out, and the contents of the
+    # user's session is discarded.
     # @default 200000
     gc_maxlifetime: 200000
     #
@@ -33,9 +38,24 @@ parameters:
     # To maximize compatibility and normalize the behavior across user agents,
     # the cookie domain should start with a dot.
     #
+    # Sessions themselves will only be synchronized across subdomains if they
+    # are all served from the same Drupal installation or if some other session
+    # sharing mechanism is implemented.
+    #
     # @default none
     # cookie_domain: '.example.com'
     #
+    # Set the SameSite cookie attribute: 'None', 'Lax', or 'Strict'. If set,
+    # this value will override the server value. See
+    # https://www.php.net/manual/en/session.security.ini.php for more
+    # information.
+    # @default no value
+    cookie_samesite: Lax
+    # By default, Drupal generates a session cookie name based on the full
+    # domain name. Set the name_suffix to a short random string to ensure this
+    # session cookie name is unique on different installations on the same
+    # domain and path (for example, when migrating from Drupal 7).
+    name_suffix: ''
   twig.config:
     # Twig debugging:
     #
@@ -53,7 +73,7 @@ parameters:
     # For more information about debugging Twig templates, see
     # https://www.drupal.org/node/1906392.
     #
-    # Not recommended in production environments
+    # Enabling Twig debugging is not recommended in production environments.
     # @default false
     debug: false
     # Twig auto-reload:
@@ -62,7 +82,7 @@ parameters:
     # If you don't provide a value for auto_reload, it will be determined
     # based on the value of debug.
     #
-    # Not recommended in production environments
+    # Enabling auto-reload is not recommended in production environments.
     # @default null
     auto_reload: null
     # Twig cache:
@@ -73,9 +93,24 @@ parameters:
     # auto_reload setting above should be enabled rather than disabling the
     # Twig cache.
     #
-    # Not recommended in production environments
+    # Disabling the Twig cache is not recommended in production environments.
     # @default true
     cache: true
+    # File extensions:
+    #
+    # List of file extensions the Twig system is allowed to load via the
+    # twig.loader.filesystem service. Files with other extensions will not be
+    # loaded unless they are added here. For example, to allow a file named
+    # 'example.partial' to be loaded, add 'partial' to this list. To load files
+    # with no extension, add an empty string '' to the list.
+    #
+    # @default ['css', 'html', 'js', 'svg', 'twig']
+    allowed_file_extensions:
+      - css
+      - html
+      - js
+      - svg
+      - twig
   renderer.config:
     # Renderer required cache contexts:
     #
@@ -115,29 +150,37 @@ parameters:
       #
       # @default []
       tags: []
+    # Renderer cache debug:
+    #
+    # Allows cache debugging output for each rendered element.
+    #
+    # Enabling render cache debugging is not recommended in production
+    # environments.
+    # @default false
+    debug: false
   # Cacheability debugging:
   #
   # Responses with cacheability metadata (CacheableResponseInterface instances)
-  # get X-Drupal-Cache-Tags and X-Drupal-Cache-Contexts headers.
+  # get X-Drupal-Cache-Tags, X-Drupal-Cache-Contexts and X-Drupal-Cache-Max-Age
+  # headers.
   #
   # For more information about debugging cacheable responses, see
   # https://www.drupal.org/developing/api/8/response/cacheable-response-interface
   #
-  # Not recommended in production environments
+  # Enabling cacheability debugging is not recommended in production
+  # environments.
   # @default false
   http.response.debug_cacheability_headers: false
-  factory.keyvalue:
-    {}
-    # Default key/value storage service to use.
-    # @default keyvalue.database
-    # default: keyvalue.database
-    # Collection-specific overrides.
-    # state: keyvalue.database
-  factory.keyvalue.expirable:
-    {}
-    # Default key/value expirable storage service to use.
-    # @default keyvalue.database.expirable
-    # default: keyvalue.database.expirable
+  factory.keyvalue: {}
+  # Default key/value storage service to use.
+  # @default keyvalue.database
+  # default: keyvalue.database
+  # Collection-specific overrides.
+  # state: keyvalue.database
+  factory.keyvalue.expirable: {}
+  # Default key/value expirable storage service to use.
+  # @default keyvalue.database.expirable
+  # default: keyvalue.database.expirable
   # Allowed protocols for URL generation.
   filter_protocols:
     - http
@@ -154,21 +197,60 @@ parameters:
     - webcal
     - rtsp
 
-   # Configure Cross-Site HTTP requests (CORS).
-   # Read https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-   # for more information about the topic in general.
-   # Note: By default the configuration is disabled.
+  # Configure Cross-Site HTTP requests (CORS).
+  # Read https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+  # for more information about the topic in general.
+  # Note: By default the configuration is disabled.
   cors.config:
     enabled: false
-    # Specify allowed headers, like 'x-allowed-header'.
+    # Specifies allowed headers and sets the Access-Control-Allow-Headers
+    # header. For example, ['X-Custom-Header']. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Headers
     allowedHeaders: []
-    # Specify allowed request methods, specify ['*'] to allow all possible ones.
+    # Specifies allowed request methods and sets the
+    # Access-Control-Allow-Methods header. For example, ['POST', 'GET',
+    # 'OPTIONS'] or ['*'] to allow all. Note the wildcard is not yet implemented
+    # in all browsers. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
     allowedMethods: []
-    # Configure requests allowed from specific origins.
+    # Configure requests allowed from specific origins and sets the
+    # Access-Control-Allow-Origin header. For example,
+    # ['https://www.drupal.org'] or ['*'] to allow any origin to access your
+    # resource. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
     allowedOrigins: ['*']
-    # Sets the Access-Control-Expose-Headers header.
+    # Configure requests allowed from origins, matching against regex patterns.
+    allowedOriginsPatterns: []
+    # Sets the Access-Control-Expose-Headers header. The default is false which
+    # means the header will not be set. To set the header use a comma delimited
+    # list within square brackets. For example, ['Content-Type', 'Expires'] or
+    # ['*'] to expose all headers. Setting exposedHeaders: ['*'] will result in
+    # a Access-Control-Expose-Headers: * response header. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
     exposedHeaders: false
-    # Sets the Access-Control-Max-Age header.
+    # Setting Access-Control-Max-Age header value to '0' or false will omit this
+    # from the response. However, setting it to '-1' will explicitly disable
+    # caching. For example, setting the value to 600 will cache results of a
+    # preflight request for 10 minutes. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
     maxAge: false
-    # Sets the Access-Control-Allow-Credentials header.
+    # Sets the Access-Control-Allow-Credentials header if set to true. See
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials
     supportsCredentials: false
+
+  # The maximum number of entities stored in memory. Lowering this number can
+  # reduce the amount of memory used in long-running processes like migrations,
+  # however will also increase requests to the database or entity cache backend.
+  entity.memory_cache.slots: 1000
+
+  queue.config:
+    # The maximum number of seconds to wait if a queue is temporarily suspended.
+    # This is not applicable when a queue is suspended but does not specify
+    # how long to wait before attempting to resume.
+    suspendMaximumWait: 30
+
+  # Can be argon2i, argon2id or 2y (bcrypt). Setting to NULL (~) will use PASSWORD_DEFAULT.
+  # See https://www.php.net/password_hash
+  password.algorithm: ~
+  # Options passed to password_hash. See https://www.php.net/password_hash
+  password.options: [ ]

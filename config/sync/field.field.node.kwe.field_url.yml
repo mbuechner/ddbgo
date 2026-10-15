@@ -12,7 +12,7 @@ field_name: field_url
 entity_type: node
 bundle: kwe
 label: Webseite
-description: 'Der Link zu der Website der KWE.'
+description: 'Der Link verweist auf die Webseite der Kultur- oder Wissenseinrichtung.'
 required: false
 translatable: true
 default_value: {  }

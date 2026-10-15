@@ -1,0 +1,1321 @@
+<?php
+
+/**
+ * @file
+ * DDBgo integration and behavior for Gin-based themes.
+ */
+
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\ddbgo_gin\Render\FormErrorAccessibility;
+use Drupal\ddbgo_gin\Render\Select2Markup;
+use Drupal\node\Form\NodeForm;
+use Drupal\node\NodeInterface;
+use Symfony\Component\String\AbstractUnicodeString;
+use Symfony\Component\String\UnicodeString;
+
+/**
+ * Implements hook_library_info_alter().
+ *
+ * Attach shared widget corrections wherever their contrib libraries are used,
+ * including AJAX forms and forms rendered with other themes.
+ */
+function ddbgo_gin_library_info_alter(array &$libraries, string $extension): void {
+  if ($extension === 'core' && isset($libraries['drupal.collapse'])) {
+    // Native details/summary already exposes its expanded state. Core's
+    // compatibility script would reintroduce invalid aria-expanded on click.
+    // Keep the separate summary-text and details behaviors in this library.
+    unset($libraries['drupal.collapse']['js']['misc/details-aria.js']);
+  }
+  if ($extension === 'gin') {
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    if (isset($libraries['scrollsync']['js']['js/libs/scrollsync.js'])) {
+      // Our table templates use valid data-syncscroll instead of name.
+      $options = $libraries['scrollsync']['js']['js/libs/scrollsync.js'];
+      unset($libraries['scrollsync']['js']['js/libs/scrollsync.js']);
+      $options['minified'] = FALSE;
+      $libraries['scrollsync']['js'][$module_path . '/js/ddbgo_gin.scrollsync.js'] = $options;
+      $libraries['scrollsync']['dependencies'][] = 'core/drupal';
+    }
+    if (isset($libraries['more_actions'])) {
+      // Load after Gin's implementation and replace only its focus helper.
+      $libraries['more_actions']['js'][$module_path . '/js/ddbgo_gin.focus-helpers.js'] = [];
+    }
+  }
+  if ($extension === 'field_group' && isset($libraries['tab_validation']['js']['js/field_group.tab_validation.js'])) {
+    // FieldGroup's nested-details validation still reads aria-expanded.
+    // Use the native open state so invalid fields can be revealed on mobile.
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    $options = $libraries['tab_validation']['js']['js/field_group.tab_validation.js'];
+    unset($libraries['tab_validation']['js']['js/field_group.tab_validation.js']);
+    $libraries['tab_validation']['js'][$module_path . '/js/ddbgo_gin.tab-validation.js'] = $options;
+    $libraries['tab_validation']['dependencies'][] = 'core/drupal';
+    $libraries['tab_validation']['dependencies'][] = 'core/once';
+  }
+  if ($extension === 'field_group' && isset($libraries['element.horizontal_tabs'])) {
+    // Field Group's original script has weight -1; load our small extension
+    // after it, before Drupal attaches behaviors. Native details need no extra
+    // script to reveal browser-search matches; only inactive tabs are adapted.
+    $module_path = '/' . \Drupal::service('extension.list.module')->getPath('ddbgo_gin');
+    $libraries['element.horizontal_tabs']['js'][$module_path . '/js/ddbgo_gin.searchable-tabs.js'] = [];
+    $libraries['element.horizontal_tabs']['css']['component'][$module_path . '/css/ddbgo_gin.searchable-tabs.css'] = [];
+  }
+  if ($extension === 'unique_field_ajax' && isset($libraries['unique_event'])) {
+    $libraries['unique_event']['dependencies'][] = 'ddbgo_gin/unique_field_submit';
+  }
+  if ($extension === 'tagify' && isset($libraries['default'])) {
+    $libraries['default']['dependencies'][] = 'ddbgo_gin/tagify_keyboard';
+  }
+  if ($extension === 'select2' && isset($libraries['select2'])) {
+    $libraries['select2']['dependencies'][] = 'ddbgo_gin/select2_accessibility';
+  }
+  if ($extension === 'core' && isset($libraries['drupal.tabledrag'])) {
+    $libraries['drupal.tabledrag']['dependencies'][] = 'ddbgo_gin/tabledrag_focus';
+  }
+  if ($extension === 'flag' && isset($libraries['flag.link_ajax'])) {
+    $libraries['flag.link_ajax']['dependencies'][] = 'ddbgo_gin/bookmark_feedback';
+  }
+}
+
+/**
+ * Checks the active theme and its ancestors without caching across theme switches.
+ *
+ * Form rendering and AJAX can negotiate another theme in the same request.
+ * Cache metadata remains the responsibility of the calling hook/render array.
+ */
+function ddbgo_gin_is_theme(string $name): bool {
+  $theme = \Drupal::service('theme.manager')->getActiveTheme();
+  return $theme->getName() === $name || isset($theme->getBaseThemeExtensions()[$name]);
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Register independently of the theme: element definitions are cached. The
+ * callback checks the active theme when rendering, after errors are known.
+ */
+function ddbgo_gin_element_info_alter(array &$info): void {
+  if (isset($info['select2'])) {
+    // Run after Select2 deliberately restores the empty placeholder option.
+    $info['select2']['#pre_render'][] = [Select2Markup::class, 'preRender'];
+  }
+  foreach ($info as &$definition) {
+    if (FormErrorAccessibility::usesWrapper($definition)) {
+      $definition['#pre_render'][] = [FormErrorAccessibility::class, 'preRender'];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_fieldset().
+ *
+ * Core replaces fieldset aria-describedby with its description ID. Restore
+ * the original references and our error reference after that preprocessing.
+ */
+function ddbgo_gin_preprocess_fieldset(array &$variables): void {
+  FormErrorAccessibility::preprocessFieldset($variables);
+}
+
+/**
+ * Implements hook_preprocess_html().
+ *
+ * A failed full-page POST must be recognizable when the document title is
+ * read. Peek at the messenger without consuming the error summary. GET pages
+ * after a redirect can come from Dynamic Page Cache; their individual messages
+ * are instead announced from the session-specific status_messages placeholder.
+ */
+function ddbgo_gin_preprocess_html(array &$variables): void {
+  $request = \Drupal::request();
+  if (!$request->isMethod('POST') || $request->isXmlHttpRequest()
+    || !ddbgo_gin_is_theme('gin') || !\Drupal::messenger()->messagesByType('error')) {
+    return;
+  }
+
+  // Preserve the original page/site title and its escaping. Unsafe-method
+  // responses are not page-cached; also keep this render metadata explicit.
+  $variables['head_title'] = ['feedback' => t('Fehler')] + $variables['head_title'];
+  $variables['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_preprocess_status_messages().
+ *
+ * Mark only server-rendered Gin messages. This hook runs in Core's per-session
+ * lazy placeholder, including cached redirect destinations. Attaching the
+ * behavior here avoids putting flash-message state in the cached page. AJAX
+ * responses retain Core/Gin's existing announcement and focus handling.
+ */
+function ddbgo_gin_preprocess_status_messages(array &$variables): void {
+  if (!ddbgo_gin_is_theme('gin') || \Drupal::request()->isXmlHttpRequest()
+    || !array_filter($variables['message_list'] ?? [])) {
+    return;
+  }
+
+  $variables['attributes']['data-ddbgo-page-messages'] = '';
+  $variables['attributes']['tabindex'] = -1;
+  $variables['#attached']['library'][] = 'ddbgo_gin/page_feedback';
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function ddbgo_gin_page_attachments(array &$attachments): void {
+  if (ddbgo_gin_is_theme('gin_frontend')) {
+    $attachments['#attached']['library'][] = 'ddbgo_gin/frontend_layout';
+  }
+
+  if (!ddbgo_gin_is_theme('gin')) {
+    return;
+  }
+
+  $attachments['#attached']['library'][] = 'ddbgo_gin/theme_components';
+
+  // Carry a section between this record's view/edit pages in either Gin theme.
+  // The server supplies URL destinations; the browser adds the selected tab
+  // fragment. No per-user tab state enters Drupal's render cache.
+  $route = \Drupal::routeMatch();
+  $node = $route->getParameter('node');
+  $cache = CacheableMetadata::createFromRenderArray($attachments);
+  // Vary even when no library is attached: applicability depends on the route
+  // and theme, and cached settings must not point to another record's URLs.
+  $cache->addCacheContexts(['route', 'theme']);
+  if ($node instanceof NodeInterface
+    && in_array($node->bundle(), ['kwe', 'bestand', 'aggregator'], TRUE)
+    && in_array($route->getRouteName(), ['entity.node.canonical', 'entity.node.edit_form'], TRUE)) {
+    $attachments['#attached']['library'][] = 'ddbgo_gin/node_tabs';
+    foreach (['canonical', 'edit-form'] as $relation) {
+      // Resolve aliases/language prefixes through Drupal and bubble the URL's
+      // cache metadata. JS only updates matching links that already exist;
+      // the settings neither render an edit link nor grant editing access.
+      $url = $node->toUrl($relation)->toString(TRUE);
+      $attachments['#attached']['drupalSettings']['ddbgoNodeTabs']['links'][] = $url->getGeneratedUrl();
+      $cache->addCacheableDependency($url);
+    }
+    $cache->addCacheableDependency($node);
+  }
+  $cache->applyTo($attachments);
+
+  if (!\Drupal::currentUser()->hasPermission('access toolbar')) {
+    return;
+  }
+
+  $attachments['#attached']['library'][] = 'ddbgo_gin/toolbar_icons';
+}
+
+/**
+ * Implements hook_page_bottom().
+ *
+ * Gin Frontend renders the configured footer block in its native footer region.
+ * Gin (including Gin Login) has no such region. Render that same block after
+ * the page there, retaining its visibility, menu access checks and cache tags.
+ */
+function ddbgo_gin_page_bottom(array &$page_bottom): void {
+  if (!ddbgo_gin_is_theme('gin') || ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+
+  $block_id = 'gin_frontend_footer';
+  $page_bottom['ddbgo_footer'] = [
+    '#cache' => [
+      'contexts' => ['theme'],
+      'tags' => ['config:block.block.' . $block_id],
+    ],
+  ];
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $block = $entity_type_manager->getStorage('block')->load($block_id);
+  if ($block) {
+    $page_bottom['ddbgo_footer'] += [
+      '#theme' => 'ddbgo_footer',
+      '#content' => $entity_type_manager->getViewBuilder('block')->view($block),
+      '#access' => $block->access('view', NULL, TRUE),
+      '#attached' => ['library' => ['ddbgo_gin/footer']],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function ddbgo_gin_preprocess_block(array &$variables): void {
+  if (ddbgo_gin_is_theme('gin')
+    && ($variables['elements']['#plugin_id'] ?? '') === 'system_menu_block:footer') {
+    $variables['attributes']['class'][] = 'ddbgo-footer-menu';
+    $variables['#attached']['library'][] = 'ddbgo_gin/footer';
+  }
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ *
+ * The configured workspace menus are rendered in Gin Frontend's header. Keep
+ * the Drupal administration toolbar focused on administration links only.
+ */
+function ddbgo_gin_toolbar_alter(array &$items): void {
+  foreach (array_keys($items) as $key) {
+    if (str_starts_with($key, 'toolbar_menu_')) {
+      unset($items[$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ddbgo_gin_theme(): array {
+  $hooks = [
+    'block__ddbgo_linked_content_view' => [
+      'base hook' => 'block',
+      'template' => 'block--ddbgo-linked-content-view',
+    ],
+    'block__ddbgo_gin_site_branding' => [
+      'base hook' => 'block',
+      'template' => 'block--ddbgo-gin-site-branding',
+    ],
+    'pager__ddbgo_gin' => [
+      'base hook' => 'pager',
+      'template' => 'pager--ddbgo-gin',
+    ],
+    'ddbgo_date_filter' => [
+      'render element' => 'element',
+      'template' => 'ddbgo-date-filter',
+    ],
+    'ddbgo_footer' => [
+      'variables' => ['content' => []],
+      'template' => 'ddbgo-footer',
+    ],
+    'ddbgo_workspace_navigation' => [
+      'variables' => [
+        'items' => [],
+        'is_authenticated' => FALSE,
+        'account_label' => NULL,
+        'account_links' => [],
+      ],
+      'template' => 'ddbgo-workspace-navigation',
+    ],
+  ];
+
+  // Explicit suggestions let module templates override Gin without changing
+  // the installed theme. Keep Gin's preprocessors through the base hooks.
+  foreach (['form_element', 'fieldset', 'details', 'datetime_wrapper', 'menu', 'flag', 'views_view_table', 'table'] as $hook) {
+    $hooks[$hook . '__ddbgo_gin'] = [
+      'base hook' => $hook,
+      'template' => str_replace('_', '-', $hook) . '--ddbgo-gin',
+    ];
+  }
+  $hooks['ddbgo_page_actions'] = [
+    'variables' => ['tasks' => [], 'bookmark' => []],
+    'template' => 'ddbgo-page-actions',
+  ];
+  foreach (['ddbgo_record_status', 'ddbgo_record_status_plain'] as $hook) {
+    $hooks[$hook] = [
+      'variables' => ['status' => 'unknown', 'label' => 'Keine Angabe'],
+      'template' => str_replace('_', '-', $hook),
+    ];
+  }
+  $hooks['input__ddbgo_gin_paragraph_add'] = [
+    'base hook' => 'input',
+    'template' => 'input--ddbgo-gin-paragraph-add',
+  ];
+  return $hooks;
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Maintenance mode alone does not stop privileged/API/queue writers. Keep the
+ * migration snapshot stable until the operator completes the deployment.
+ */
+function ddbgo_gin_node_presave(NodeInterface $node): void {
+  if (in_array($node->bundle(), \Drupal\ddbgo_gin\Status\RecordStatus::BUNDLES, TRUE)
+    && \Drupal::state()->get('ddbgo_gin.status_migrating')) {
+    throw new \RuntimeException('Status migration in progress; node writes are temporarily blocked.');
+  }
+}
+
+/**
+ * Implements hook_node_predelete().
+ */
+function ddbgo_gin_node_predelete(NodeInterface $node): void {
+  ddbgo_gin_node_presave($node);
+}
+
+/**
+ * Implements hook_theme_suggestions_alter().
+ *
+ * Use accessible form wrappers only with Gin. Workspace menus opt in through
+ * their render array, so administration menus keep their own templates.
+ */
+function ddbgo_gin_theme_suggestions_alter(array &$suggestions, array $variables, string $hook): void {
+  if (!ddbgo_gin_is_theme('gin')) {
+    return;
+  }
+  // A native button lets long Paragraphs add-action labels wrap on mobile.
+  // Keep the render element and its submit/AJAX attributes unchanged.
+  if ($hook === 'input' && ($variables['element']['#type'] ?? '') === 'submit'
+    && in_array('field-add-more-submit', $variables['element']['#attributes']['class'] ?? [], TRUE)) {
+    $suggestions[] = 'input__ddbgo_gin_paragraph_add';
+  }
+  if (in_array($hook, ['form_element', 'fieldset', 'details', 'datetime_wrapper', 'views_view_table'], TRUE)
+    // Preserve specialized tables such as Core's table__simple.
+    || ($hook === 'table' && ($variables['theme_hook_original'] ?? 'table') === 'table')
+    || ($hook === 'menu' && ($variables['theme_hook_original'] ?? '') === 'menu__ddbgo_gin')
+    || ($hook === 'flag' && ($variables['flag'] ?? NULL)?->id() === 'bookmark')) {
+    $suggestions[] = $hook . '__ddbgo_gin';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for block templates.
+ */
+function ddbgo_gin_theme_suggestions_block_alter(array &$suggestions, array $variables): void {
+  $plugin_id = $variables['elements']['#plugin_id'] ?? NULL;
+  if ($plugin_id === 'system_branding_block' && ddbgo_gin_is_theme('gin_frontend')) {
+    $suggestions[] = 'block__ddbgo_gin_site_branding';
+  }
+  $linked_content_views = [
+    'views_block:aggregator-block_1',
+    'views_block:kwe-block',
+    'views_block:person-person_aggregator',
+    'views_block:person-person_bestand',
+    'views_block:person-person_kwe',
+  ];
+
+  if (is_string($plugin_id) && in_array($plugin_id, $linked_content_views, TRUE)) {
+    $suggestions[] = 'block__ddbgo_linked_content_view';
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * Gin provides route-specific page templates (for example page--node) that
+ * otherwise take precedence over Gin Frontend's page template and omit its
+ * branding and navigation regions.
+ */
+function ddbgo_gin_theme_registry_alter(array &$theme_registry): void {
+  if (isset($theme_registry['page__user__login'])) {
+    // Keep Gin Login's preprocessors/layout; correct only the home-link markup.
+    $theme_registry['page__user__login']['template'] = 'page--ddbgo-gin-login';
+    $theme_registry['page__user__login']['path'] = \Drupal::service('extension.list.module')->getPath('ddbgo_gin') . '/templates';
+  }
+  if (isset($theme_registry['page'])) {
+    $theme_registry['page__gin_frontend'] = $theme_registry['page'];
+
+    if (ddbgo_gin_is_theme('gin_frontend')) {
+      $theme_registry['page__gin_frontend']['template'] = 'page--gin-frontend';
+      $theme_registry['page__gin_frontend']['path'] = \Drupal::service('extension.list.module')->getPath('ddbgo_gin') . '/templates';
+    }
+
+    // Gin ships a dedicated page--node-add template which bypasses Gin
+    // Frontend's chrome. Point that exact suggestion at the active frontend
+    // page implementation as well.
+    if (ddbgo_gin_is_theme('gin_frontend') && isset($theme_registry['page__node_add'])) {
+      $theme_registry['page__node_add'] = $theme_registry['page__gin_frontend'];
+    }
+  }
+
+  // Keep the configured hierarchy in Gin Frontend. Gin's admin preprocessor
+  // replaces Home, discards node ancestors and appends its own operation label.
+  // The frontend preprocessor then rewrites Home again. Neither is needed here;
+  // Core preprocessing and Gin's template, styling and focus states remain.
+  // Inspect each registry entry: a registry can be built for a non-active theme,
+  // and breadcrumb suggestions have already inherited their preprocessors.
+  foreach ($theme_registry as $hook => &$definition) {
+    // Metatag replaces head_title rather than extending it. Run the feedback
+    // prefix after all normal title processing, including HTML suggestions,
+    // so an error on an existing record's edit form keeps its indication.
+    if (($hook === 'html' || str_starts_with($hook, 'html__'))
+      && in_array('ddbgo_gin_preprocess_html', $definition['preprocess functions'] ?? [], TRUE)) {
+      $definition['preprocess functions'] = array_values(array_filter(
+        $definition['preprocess functions'],
+        static fn ($callback): bool => $callback !== 'ddbgo_gin_preprocess_html',
+      ));
+      $definition['preprocess functions'][] = 'ddbgo_gin_preprocess_html';
+    }
+
+    if (($hook === 'breadcrumb' || str_starts_with($hook, 'breadcrumb__'))
+      && in_array('gin_frontend_preprocess_breadcrumb', $definition['preprocess functions'] ?? [], TRUE)) {
+      $definition['preprocess functions'] = array_values(array_filter(
+        $definition['preprocess functions'],
+        static fn ($callback): bool => !in_array($callback, ['gin_preprocess_breadcrumb', 'gin_frontend_preprocess_breadcrumb'], TRUE),
+      ));
+    }
+  }
+}
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ *
+ * Custom Breadcrumbs owns the hierarchy and labels through exported config.
+ * Entity rules are shared by view/edit/delete, so replace their last (unlinked)
+ * node title on edit/delete with a view link and an unlinked action. The module
+ * does not check configured parent links for access; do that here and retain
+ * every access result's cache metadata. No navigation history is consulted.
+ */
+function ddbgo_gin_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context): void {
+  if (!($context['builder'] instanceof \Drupal\custom_breadcrumbs\BreadcrumbBuilder)) {
+    return;
+  }
+
+  // Breadcrumb::setLinks() cannot replace an already populated trail. A new
+  // object inherits all cache tags, contexts and max-age from the builder.
+  $result = (new Breadcrumb())->addCacheableDependency($breadcrumb);
+  $result->addCacheTags(\Drupal::entityTypeManager()->getDefinition('custom_breadcrumbs')->getListCacheTags());
+  if (\Drupal::service('path.matcher')->isFrontPage()) {
+    $breadcrumb = $result;
+    return;
+  }
+
+  $links = $breadcrumb->getLinks();
+  $node = $route_match->getParameter('node');
+  $actions = [
+    'entity.node.edit_form' => t('Edit'),
+    'entity.node.delete_form' => t('Delete'),
+  ];
+  if ($node instanceof NodeInterface && $links && isset($actions[$route_match->getRouteName()])) {
+    $last = end($links)->getUrl();
+    // Only replace the explicit current-page entry, never a configured parent.
+    if ($last->isRouted() && in_array($last->getRouteName(), ['<none>', '<nolink>'], TRUE)) {
+      array_pop($links);
+      $links[] = $node->toLink();
+      $links[] = Link::createFromRoute($actions[$route_match->getRouteName()], '<nolink>');
+      $result->addCacheableDependency($node);
+    }
+  }
+
+  foreach ($links as $link) {
+    $access = $link->getUrl()->access(NULL, TRUE);
+    $result->addCacheableDependency($access);
+    if ($access->isAllowed()) {
+      $result->addLink($link);
+    }
+  }
+  $breadcrumb = $result;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for page templates.
+ */
+function ddbgo_gin_theme_suggestions_page_alter(array &$suggestions): void {
+  if (ddbgo_gin_is_theme('gin_frontend')) {
+    $suggestions[] = 'page__gin_frontend';
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for pagers.
+ */
+function ddbgo_gin_theme_suggestions_pager_alter(array &$suggestions): void {
+  if (ddbgo_gin_is_theme('gin')) {
+    $suggestions[] = 'pager__ddbgo_gin';
+  }
+}
+
+/**
+ * Implements hook_field_widget_complete_form_alter().
+ *
+ * Mark the affected field-group labels on every build, including AJAX.
+ * Scope by owning entity and field instead of route: contact/object Paragraphs
+ * are embedded in node forms, and add/remove requests rebuild their widgets.
+ * Other fields and the field configuration's default-value form stay intact.
+ */
+function ddbgo_gin_field_widget_complete_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+  if (!empty($context['default'])) {
+    return;
+  }
+  $items = $context['items'];
+  $entity = $items->getEntity();
+  $fields = [
+    'node' => [
+      'person' => ['field_email'],
+      'kwe' => ['field_email', 'field_personen', 'field_kontakt'],
+      'aggregator' => ['field_personen', 'field_kontakt'],
+      'bestand' => array_merge(['field_personen', 'field_kontakt'], array_keys(ddbgo_gin_object_field_labels())),
+    ],
+    'paragraph' => [
+      'europeana_objekte_content_tier' => ['field_objekte'],
+      'europeana_objekte_metadata_tier' => ['field_objekte'],
+    ],
+  ];
+  if (in_array($items->getName(), $fields[$entity->getEntityTypeId()][$entity->bundle()] ?? [], TRUE)) {
+    $field_widget_complete_form['widget']['#ddbgo_field_group_label'] = TRUE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_field_multiple_value_form().
+ *
+ * Core builds multiple-value table labels as h4 in FieldPreprocess. The marked
+ * labels name field groups, not document sections below the page h1. Change
+ * only the tag; preserve table headers, label classes, required markers and
+ * individual input labels. Claro/Gin can still apply their preprocessing.
+ * Empty Paragraphs widgets already use strong, so they need no tag change.
+ */
+function ddbgo_gin_preprocess_field_multiple_value_form(array &$variables): void {
+  // Check the theme at render time, independently of the cached widget build.
+  if (empty($variables['element']['#ddbgo_field_group_label']) || !ddbgo_gin_is_theme('gin')) {
+    return;
+  }
+  if (($variables['table']['#header'][0]['data']['#tag'] ?? NULL) === 'h4') {
+    $variables['table']['#header'][0]['data']['#tag'] = 'span';
+  }
+}
+
+/**
+ * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().
+ *
+ * Inline Paragraphs calls empty entries "Seitenabschnitte", even for person
+ * links or object counts. Omit its generic empty-state text while retaining
+ * the field label, description, required marker and add actions. Altering the
+ * widget also covers AJAX rebuilds and future fields using this widget type.
+ * The contrib widget builds this text directly, without a dedicated template.
+ */
+function ddbgo_gin_field_widget_complete_entity_reference_paragraphs_form_alter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
+  unset($field_widget_complete_form['widget']['text']);
+
+  $entity = $context['items']->getEntity();
+  $labels = ddbgo_gin_object_field_labels();
+  $field = $context['items']->getName();
+  if (!$entity instanceof NodeInterface || $entity->bundle() !== 'bestand'
+    || !isset($labels[$field]) || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  // Mark only the owning node widget, including its AJAX rebuilds. Nested
+  // object inputs inherit this scope; unrelated Paragraphs widgets do not.
+  $field_widget_complete_form['#attributes']['class'][] = 'ddbgo-object-widget';
+  $field_widget_complete_form['#attached']['library'][] = 'ddbgo_gin/object_paragraphs';
+  $field_widget_complete_form['widget']['#title'] = $labels[$field];
+  if (isset($field_widget_complete_form['widget']['title'])) {
+    $field_widget_complete_form['widget']['title']['#value'] = $labels[$field];
+  }
+}
+
+/**
+ * Consistent titles for Bestand object components, matching field/group labels.
+ */
+function ddbgo_gin_object_field_labels(): array {
+  return [
+    'field_ddb_objekte' => new TranslatableMarkup('DDB-Objekte'),
+    'field_europeana_objekte_content_' => new TranslatableMarkup('Europeana-Objekte: Content-Tier'),
+    'field_europeana_objekte_metadata' => new TranslatableMarkup('Europeana-Objekte: Metadata-Tier'),
+  ];
+}
+
+/**
+ * Implements hook_entity_view_display_alter().
+ */
+function ddbgo_gin_entity_view_display_alter(EntityViewDisplayInterface &$display, array $context): void {
+  if ($context['entity_type'] !== 'node' || $context['bundle'] !== 'bestand'
+    || $context['view_mode'] !== 'full' || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  // The default display can also serve other view modes in this request.
+  // Never mutate that shared config entity. A separate paragraph view mode
+  // also keeps nested render caches independent of lists and form previews.
+  $display = clone $display;
+  foreach (array_keys(ddbgo_gin_object_field_labels()) as $field) {
+    if ($component = $display->getComponent($field)) {
+      $component['settings']['view_mode'] = 'ddbgo_object_details';
+      $display->setComponent($field, $component);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view_alter().
+ */
+function ddbgo_gin_node_view_alter(array &$build, NodeInterface $node, EntityViewDisplayInterface $display): void {
+  $build['#cache']['contexts'][] = 'theme';
+  if ($node->bundle() !== 'bestand' || ($build['#view_mode'] ?? '') !== 'full'
+    || !ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+  foreach (ddbgo_gin_object_field_labels() as $field => $label) {
+    if (isset($build[$field])) {
+      $build[$field]['#attributes']['class'][] = 'ddbgo-object-list';
+      $build[$field]['#title'] = $label;
+      $build[$field]['#attached']['library'][] = 'ddbgo_gin/object_paragraphs';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ *
+ * Prevents browsers from suggesting unrelated previous searches in the
+ * exposed full-text query fields used throughout DDBgo.
+ */
+function ddbgo_gin_form_views_exposed_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (isset($form['query'])) {
+    $form['query']['#attributes']['autocomplete'] = 'off';
+  }
+
+  // A clean URL can still restore remembered filters. Cache their values as
+  // well as the URL, otherwise Reset can reload stale form/result markup.
+  $view = $form_state->get('view');
+  if ($view instanceof \Drupal\views\ViewExecutable) {
+    foreach ($view->display_handler->getOption('filters') as $filter) {
+      if (!empty($filter['exposed']) && (!empty($filter['expose']['remember']) || !empty($filter['group_info']['remember']))) {
+        $form['#cache']['contexts'][] = 'ddbgo_view_filters:' . $view->id();
+        $form['#after_build'][] = 'ddbgo_gin_prepare_exposed_reset';
+        break;
+      }
+    }
+  }
+
+  if (!ddbgo_gin_is_theme('gin_frontend')) {
+    return;
+  }
+
+  $form['#after_build'][] = 'ddbgo_gin_build_exposed_filter_details';
+}
+
+/**
+ * Keeps Reset as a native submit so BEF clears remembered filters server-side.
+ *
+ * BEF's reset_ajax script only visits the clean URL, retaining session values.
+ * Use core Views' reserved reset selector to exclude this button from AJAX.
+ * Run after FormBuilder assigns selectors, before the visual filter grouping.
+ */
+function ddbgo_gin_prepare_exposed_reset(array $form, FormStateInterface $form_state): array {
+  if (isset($form['actions']['reset'])) {
+    $form['actions']['reset']['#attributes']['data-drupal-selector'] = 'edit-reset';
+    $form['#attached']['library'] = array_values(array_diff(
+      $form['#attached']['library'] ?? [],
+      ['better_exposed_filters/reset_ajax'],
+    ));
+  }
+  return $form;
+}
+
+/**
+ * Groups finalized exposed filter widgets in Gin's native details element.
+ */
+function ddbgo_gin_build_exposed_filter_details(array $form, FormStateInterface $form_state): array {
+  if (isset($form['ddbgo_exposed_filters'])) {
+    return $form;
+  }
+
+  ddbgo_gin_prepare_exposed_date_filters($form, $form_state);
+
+  // Views normally applies exposed labels during theme preprocessing. Since
+  // the elements are nested below, apply the same metadata before moving them.
+  foreach ($form['#info'] ?? [] as $info) {
+    $value_key = $info['value'] ?? NULL;
+    if (is_string($value_key) && isset($form[$value_key])) {
+      if (!empty($info['label'])) {
+        $form[$value_key]['#title'] = $info['label'];
+      }
+      if (!empty($info['description'])) {
+        $form[$value_key]['#description'] = $info['description'];
+        // Gin enables its help button automatically only on content forms.
+        // Opt exposed filters in as well, keeping their help text in Views config.
+        $form[$value_key]['#description_toggle'] = TRUE;
+        $form[$value_key]['#ddbgo_help_mouseover'] = TRUE;
+      }
+    }
+  }
+
+  $filter_keys = [];
+  $tag_filter_keys = [];
+
+  foreach (Element::children($form) as $key) {
+    $type = $form[$key]['#type'] ?? NULL;
+    $classes = $form[$key]['#attributes']['class'] ?? [];
+    $classes = is_array($classes) ? $classes : [$classes];
+
+    if (
+      (is_string($type) && str_contains($type, 'tagify'))
+      || in_array('tagify-select-widget', $classes, TRUE)
+    ) {
+      $tag_filter_keys[] = $key;
+    }
+    elseif (is_string($type) && $type !== 'hidden') {
+      $filter_keys[] = $key;
+    }
+  }
+
+  if ($filter_keys === []) {
+    return $form;
+  }
+
+  $user_input = $form_state->getUserInput();
+  $numeric_filters = [];
+  $view = $form_state->get('view');
+  if ($view instanceof \Drupal\views\ViewExecutable) {
+    foreach ($view->filter as $filter) {
+      if ($filter instanceof \Drupal\views\Plugin\views\filter\NumericFilter && $filter->isExposed() && !$filter->isAGroup()) {
+        $numeric_filters[$filter->exposedInfo()['value']] = $filter;
+      }
+    }
+  }
+
+  $has_active_filter = FALSE;
+  foreach ($filter_keys as $key) {
+    if (($form[$key]['#type'] ?? NULL) === 'actions') {
+      continue;
+    }
+    $element = $form[$key];
+    $value_key = $key;
+    // Core wraps composite values and operators in a fieldset. The wrapper
+    // is not submitted; its value widget keeps the exposed identifier.
+    foreach ($form['#info'] ?? [] as $info) {
+      $identifier = $info['value'] ?? NULL;
+      if (is_string($identifier) && isset($element[$identifier])) {
+        $value_key = $identifier;
+        $element = $element[$value_key];
+        break;
+      }
+    }
+    $input_exists = FALSE;
+    $input = NestedArray::getValue($user_input, $element['#parents'] ?? [$value_key], $input_exists);
+    if (isset($numeric_filters[$value_key])) {
+      $filter = $numeric_filters[$value_key];
+      $operator_key = $filter->exposedInfo()['operator'];
+      $operator = !empty($filter->options['expose']['use_operator'])
+        ? ($user_input[$operator_key] ?? $filter->operator)
+        : $filter->operator;
+      $value_count = is_string($operator) ? ($filter->operators()[$operator]['values'] ?? NULL) : NULL;
+      $operator_options = $form[$key][$operator_key]['#options'] ?? $form[$operator_key]['#options'] ?? [];
+      $operator_allowed = empty($filter->options['expose']['use_operator']) || (is_string($operator) && array_key_exists($operator, $operator_options));
+      if ($value_count === 0 && $operator_allowed && ($input_exists || array_key_exists($operator_key, $user_input))) {
+        $has_active_filter = TRUE;
+        break;
+      }
+      if (is_array($input) && ($value_count === 1 || $value_count === 2)) {
+        // Hidden values from a previous operator do not restrict the query.
+        $parts = $value_count === 1 ? ['value'] : ['min', 'max'];
+        $input = array_intersect_key($input, array_flip($parts));
+      }
+    }
+    if ($input_exists && ddbgo_gin_exposed_filter_has_selection($element, $input)) {
+      $has_active_filter = TRUE;
+      break;
+    }
+  }
+
+  if ($tag_filter_keys !== [] && isset($form['actions']['submit'])) {
+    // Keep the regular Views submit as the single submission path. The
+    // frontend behavior clicks it after Tagify has synchronized its select,
+    // preserving both normal and AJAX-enabled Views behavior.
+    $form['actions']['submit']['#attributes']['data-ddbgo-tag-auto-submit-click'] = '';
+  }
+
+  $details = [
+    '#type' => 'details',
+    '#title' => new TranslatableMarkup('Filter'),
+    '#open' => $has_active_filter,
+    '#weight' => -100,
+    '#attributes' => [
+      'class' => ['ddbgo-exposed-filters'],
+    ],
+  ];
+
+  foreach ($filter_keys as $key) {
+    if (($form[$key]['#type'] ?? NULL) === 'actions') {
+      $form[$key]['#attributes']['class'][] = 'views-exposed-form__item';
+      $form[$key]['#attributes']['class'][] = 'views-exposed-form__item--actions';
+    }
+    else {
+      $form[$key]['#wrapper_attributes']['class'][] = 'views-exposed-form__item';
+      // Keep Views' configured identifier in the submitted request even
+      // though the element is rendered inside the details container.
+      $form[$key]['#parents'] = [$key];
+      $form[$key]['#name'] = $key;
+    }
+
+    $details[$key] = $form[$key];
+    unset($form[$key]);
+  }
+
+  $form['ddbgo_exposed_filters'] = $details;
+
+  // Tag filters stay outside the collapsible details and therefore remain
+  // available as the full-width final row directly above the view results.
+  foreach ($tag_filter_keys as $key) {
+    $form[$key]['#weight'] = -90;
+    $form[$key]['#attributes']['data-ddbgo-tag-auto-submit'] = '';
+    $form[$key]['#wrapper_attributes']['class'][] = 'ddbgo-exposed-filter--tags';
+  }
+
+  return $form;
+}
+
+/**
+ * Selects the shared Twig component and initial date filter visibility.
+ *
+ * Keep the built widgets, names and #states intact, including BEF date pickers.
+ */
+function ddbgo_gin_prepare_exposed_date_filters(array &$form, FormStateInterface $form_state): void {
+  $view = $form_state->get('view');
+  if (!$view instanceof \Drupal\views\ViewExecutable) {
+    return;
+  }
+
+  foreach ($view->filter as $filter) {
+    if (!$filter instanceof \Drupal\views\Plugin\views\filter\Date || !$filter->isExposed() || $filter->isAGroup()) {
+      continue;
+    }
+    $info = $filter->exposedInfo();
+    $value_key = $info['value'];
+    $wrapper_key = $value_key . '_wrapper';
+    if (($form[$wrapper_key]['#type'] ?? NULL) !== 'fieldset') {
+      continue;
+    }
+
+    $wrapper = &$form[$wrapper_key];
+    $wrapper['#attributes']['class'][] = 'ddbgo-date-filter';
+    // The operator carries the visible group title on the shared input row.
+    // Keep the fieldset legend available to assistive technology.
+    if (isset($wrapper[$info['operator'] ?? ''])) {
+      $wrapper['#title_display'] = 'invisible';
+    }
+    $wrapper['#theme'] = 'ddbgo_date_filter';
+    $wrapper['#ddbgo_date_value'] = $value_key;
+    $wrapper['#ddbgo_date_operator'] = $info['operator'] ?? '';
+    // Core #states only hides inactive inputs after JavaScript attaches. Match
+    // that state in the initial HTML to avoid a fourth control wrapping the row.
+    // Use the built operator value, including remembered and submitted input.
+    $operator = $wrapper[$info['operator'] ?? '']['#value'] ?? $filter->operator;
+    $value_count = $filter->operators()[$operator]['values'] ?? NULL;
+    foreach (['value' => 1, 'min' => 2, 'max' => 2] as $part => $count) {
+      if ($value_count !== NULL && $value_count !== $count && isset($wrapper[$value_key][$part]['#states']['visible'])) {
+        // Inline display is intentional: core's state:visible handler toggles
+        // this same wrapper. A hidden attribute or CSS class would stay hidden.
+        $attributes = &$wrapper[$value_key][$part]['#wrapper_attributes'];
+        $attributes['style'] = ($attributes['style'] ?? '') . ';display: none;';
+        unset($attributes);
+      }
+    }
+    unset($wrapper);
+  }
+}
+
+/**
+ * Determines whether an exposed filter contains a non-empty selection.
+ */
+function ddbgo_gin_exposed_filter_has_selection(array $element, mixed $input): bool {
+  $values = is_array($input) ? $input : [$input];
+  // Views can rebuild widgets with the active input as their #default_value.
+  // Text inputs are empty only without text; option widgets retain their first
+  // (unfiltered/default) choice independently of that mutable widget value.
+  $empty_value = array_key_first($element['#options'] ?? []);
+  $multiple = $element['#multiple'] ?? FALSE;
+
+  foreach ($values as $value) {
+    if (is_array($value)) {
+      if (ddbgo_gin_exposed_filter_has_selection($element, $value)) {
+        return TRUE;
+      }
+      continue;
+    }
+
+    if ($value === '' || $value === NULL || $value === FALSE) {
+      continue;
+    }
+    if (!$multiple && $empty_value !== NULL && (string) $value === (string) $empty_value) {
+      continue;
+    }
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+/**
+ * Resolves a DDBgo bundle name from route and View identifiers.
+ */
+function ddbgo_gin_normalize_bundle_identifier(string $identifier): ?string {
+  $normalized = strtolower(trim($identifier));
+  // Every run of separators (including underscores) becomes one underscore.
+  $normalized = preg_replace('/[^a-z0-9]+/', '_', $normalized);
+  $normalized = trim($normalized, '_');
+
+  if ($normalized === '') {
+    return NULL;
+  }
+
+  foreach (['kwe', 'bestand', 'person', 'aggregator'] as $bundle_name) {
+    if (str_contains($normalized, $bundle_name)) {
+      return $bundle_name;
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Determines the workspace for content, edit forms and search displays.
+ */
+function ddbgo_gin_resolve_bundle_from_route(): ?string {
+  $route_match = \Drupal::routeMatch();
+
+  $node = $route_match->getParameter('node');
+  if ($node instanceof NodeInterface) {
+    return $node->bundle();
+  }
+
+  $node_type = $route_match->getParameter('node_type');
+  if ($node_type instanceof \Drupal\node\NodeTypeInterface) {
+    return $node_type->id();
+  }
+
+  $path = \Drupal::request()->getPathInfo();
+  if (is_string($path) && $path !== '') {
+    $normalized_path = rtrim(strtolower($path), '/');
+    $path_map = [
+      '/search/kwe' => 'kwe',
+      '/search/bestand' => 'bestand',
+      '/search/person' => 'person',
+      '/search/aggregator' => 'aggregator',
+      '/search/personen' => 'person',
+      '/admin/kwe' => 'kwe',
+      '/admin/bestand' => 'bestand',
+      '/admin/person' => 'person',
+      '/admin/aggregator' => 'aggregator',
+    ];
+
+    if (isset($path_map[$normalized_path])) {
+      return $path_map[$normalized_path];
+    }
+  }
+
+  $view_id = $route_match->getParameter('view_id');
+  if (is_string($view_id) && $view_id !== '') {
+    $bundle = ddbgo_gin_normalize_bundle_identifier($view_id);
+    if ($bundle !== NULL) {
+      return $bundle;
+    }
+  }
+
+  $route_name = $route_match->getRouteName();
+  if (is_string($route_name)) {
+    foreach (explode('.', $route_name) as $route_part) {
+      $bundle = ddbgo_gin_normalize_bundle_identifier($route_part);
+      if ($bundle !== NULL) {
+        return $bundle;
+      }
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Accepts either Drupal Attribute objects or unprocessed attribute arrays.
+ */
+function ddbgo_gin_attribute_from_value(mixed $attributes): Attribute {
+  if ($attributes instanceof Attribute) {
+    return $attributes;
+  }
+
+  return new Attribute(is_array($attributes) ? $attributes : []);
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function ddbgo_gin_preprocess_page_title(array &$variables): void {
+  $bundle = ddbgo_gin_resolve_bundle_from_route();
+
+  if ($bundle !== NULL && in_array($bundle, ['kwe', 'bestand', 'person', 'aggregator'], TRUE)) {
+    $attributes = ddbgo_gin_attribute_from_value($variables['title_attributes'] ?? []);
+    $attributes->addClass([
+      'page-title--ddbgo-type',
+      'page-title--ddbgo-type-' . $bundle,
+    ]);
+    $variables['title_attributes'] = $attributes;
+  }
+}
+
+/**
+ * Finds the visible primary tab block that can host the current node's bookmark.
+ *
+ * Check the block placement/access instead of assuming a configured block ID.
+ * Bubble these dependencies even when no block is visible so cached node links
+ * also update when administrators change the header or its visibility rules.
+ */
+function ddbgo_gin_bookmark_header_block(CacheableMetadata $cache): ?string {
+  $cache->addCacheContexts(['route', 'theme'])->addCacheTags(['config:block_list']);
+  if (!ddbgo_gin_is_theme('gin_frontend')
+    || \Drupal::routeMatch()->getRouteName() !== 'entity.node.canonical'
+    || !\Drupal::routeMatch()->getParameter('node') instanceof NodeInterface) {
+    return NULL;
+  }
+  $region_cache = [];
+  $regions = \Drupal::service('block.repository')->getVisibleBlocksPerRegion($region_cache);
+  if (isset($region_cache['header'])) {
+    $cache->addCacheableDependency($region_cache['header']);
+  }
+  foreach ($regions['header'] ?? [] as $id => $block) {
+    $cache->addCacheableDependency($block);
+    if ($block->getPluginId() === 'local_tasks_block' && $block->getPlugin()->getConfiguration()['primary']) {
+      return $id;
+    }
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Render the bookmark beside the tabs without moving DOM nodes after load.
+ * Flag's link builder retains access checks, AJAX behavior and user cache data.
+ */
+function ddbgo_gin_preprocess_page(array &$variables): void {
+  $cache = CacheableMetadata::createFromRenderArray($variables);
+  $block_id = ddbgo_gin_bookmark_header_block($cache);
+  $cache->applyTo($variables);
+  if ($block_id === NULL || !isset($variables['page']['header'][$block_id])) {
+    return;
+  }
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $flags = \Drupal::service('flag')->getAllFlags('node', $node->bundle());
+  $flag = $flags['bookmark'] ?? NULL;
+  $cache->addCacheTags(['config:flag.flag.bookmark'])->applyTo($variables);
+  if ($flag === NULL || !$flag->status() || !in_array('full', $flag->get('flagTypeConfig')['show_in_links'] ?? [], TRUE)) {
+    return;
+  }
+  // Keep Flag's lazy placeholder: the personal flag state must not be baked
+  // into the cached page alongside the otherwise shared local tasks.
+  $bookmark = [
+    '#lazy_builder' => ['flag.link_builder:build', ['node', $node->id(), 'bookmark', 'ddbgo_page_actions']],
+    '#create_placeholder' => TRUE,
+  ];
+  $variables['page']['header'][$block_id] = [
+    '#theme' => 'ddbgo_page_actions',
+    '#tasks' => $variables['page']['header'][$block_id],
+    '#bookmark' => $bookmark,
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for flag links.
+ *
+ * Confirm removal from the bookmark list. Flag links on record pages retain
+ * their existing immediate AJAX behavior for both adding and removing.
+ */
+function ddbgo_gin_preprocess_flag(array &$variables): void {
+  // Flag's entity-field lazy builder omits the view mode and uses "default".
+  // Both that field and the full-view link are replaced by the header action.
+  // Keep the distinct "ddbgo_page_actions" mode visible, including AJAX updates.
+  if (($variables['flag'] ?? NULL)?->id() === 'bookmark' && in_array($variables['view_mode'] ?? NULL, ['full', 'default'], TRUE)
+    && in_array('full', $variables['flag']->get('flagTypeConfig')['show_in_links'] ?? [], TRUE)) {
+    $cache = CacheableMetadata::createFromRenderArray($variables);
+    $variables['ddbgo_bookmark_in_header'] = ddbgo_gin_bookmark_header_block($cache) !== NULL
+      && ($variables['flaggable'] ?? NULL)?->id() === \Drupal::routeMatch()->getParameter('node')?->id();
+    $cache->applyTo($variables);
+  }
+
+  if (
+    \Drupal::routeMatch()->getRouteName() !== 'view.flag_bookmark.page'
+    || ($variables['action'] ?? NULL) !== 'unflag'
+    || ($variables['flag'] ?? NULL)?->id() !== 'bookmark'
+  ) {
+    return;
+  }
+
+  $flagging = \Drupal::service('flag')->getFlagging($variables['flag'], $variables['flaggable']);
+  $url = Url::fromRoute('ddbgo_gin.bookmark_remove_confirm', [
+    'flagging' => $flagging?->id() ?? 0,
+  ], ['query' => \Drupal::destination()->getAsArray()])->toString(TRUE);
+  $url->applyTo($variables);
+  CacheableMetadata::createFromRenderArray($variables)
+    ->addCacheableDependency($flagging)
+    ->addCacheContexts(['user', 'url'])
+    ->applyTo($variables);
+
+  $attributes = ddbgo_gin_attribute_from_value($variables['attributes'] ?? []);
+  $attributes->setAttribute('href', $url->getGeneratedUrl());
+  $attributes->removeClass('use-ajax');
+  $variables['attributes'] = $attributes;
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Form values and validation belong in Form API, independently of the theme.
+ */
+function ddbgo_gin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  ddbgo_gin_set_reset_button_labels($form);
+
+  if ($form_id === 'user_login_form' && isset($form['name'])) {
+    // Core uses "none", which belongs to autocapitalize, not autocorrect.
+    $form['name']['#attributes']['autocorrect'] = 'off';
+  }
+  if (ddbgo_gin_is_theme('gin')) {
+    // Gin adds its focus helper in the subsequent theme form alter. Adjust it
+    // after the complete build, retaining its position and keyboard behavior.
+    $form['#after_build'][] = 'ddbgo_gin_valid_focus_helper';
+  }
+
+  if ($form_id === 'views_form_flag_bookmark_page') {
+    ddbgo_gin_alter_bookmark_bulk_form($form);
+    // The intermediate confirmation takes precedence over a destination on
+    // the list page. Views preserves that destination in the confirmation URL.
+    $form['#submit'][] = 'ddbgo_gin_bookmark_confirmation_redirect';
+  }
+
+  $form_object = $form_state->getFormObject();
+  if (!$form_object instanceof NodeForm) {
+    return;
+  }
+
+  $normalized_bundles = ['kwe', 'bestand', 'person', 'aggregator'];
+  if (!in_array($form_object->getEntity()->bundle(), $normalized_bundles, TRUE)) {
+    return;
+  }
+
+  if (ddbgo_gin_is_theme('gin')) {
+    // The form marker limits dynamic status announcements to these four node
+    // forms. It also survives Paragraphs and other widget AJAX rebuilds.
+    $form['#attributes']['data-ddbgo-form-status'] = '';
+    $form['#attached']['library'][] = 'ddbgo_gin/form_status';
+  }
+
+  $validators = $form['#validate'] ?? [];
+
+  // Form API expects a list, but custom forms occasionally provide one
+  // callback directly. Preserve that callback while normalizing the shape.
+  if (is_callable($validators)) {
+    $validators = [$validators];
+  }
+  elseif (!is_array($validators)) {
+    $validators = [];
+  }
+
+  if (!in_array('ddbgo_gin_normalize_form_values', $validators, TRUE)) {
+    array_unshift($validators, 'ddbgo_gin_normalize_form_values');
+  }
+
+  $form['#validate'] = $validators;
+}
+
+/**
+ * Uses a valid custom attribute for Gin's existing focus-transfer link.
+ *
+ * The paired JS overrides only moveFocus() to read the data-* marker. Replace
+ * the exact known token; no page-wide HTML parsing or vendor patch is needed.
+ */
+function ddbgo_gin_valid_focus_helper(array $form, FormStateInterface $form_state): array {
+  if (isset($form['gin_move_focus_to_sticky_bar']['#markup'])) {
+    $form['gin_move_focus_to_sticky_bar']['#markup'] = str_replace(
+      ' gin-move-focus-to-sticky-bar',
+      ' data-gin-move-focus-to-sticky-bar',
+      (string) $form['gin_move_focus_to_sticky_bar']['#markup'],
+    );
+  }
+  return $form;
+}
+
+/**
+ * Uses one consistent German label for native form reset controls.
+ */
+function ddbgo_gin_set_reset_button_labels(array &$element): void {
+  if (($element['#type'] ?? NULL) === 'reset') {
+    $element['#value'] = new TranslatableMarkup('Zurücksetzen');
+  }
+
+  foreach (Element::children($element) as $key) {
+    ddbgo_gin_set_reset_button_labels($element[$key]);
+  }
+}
+
+/**
+ * Replaces the redundant one-option bulk-action select with a direct button.
+ */
+function ddbgo_gin_alter_bookmark_bulk_form(array &$form): void {
+  // Claro adds its selection counter after module form alters have run.
+  $form['#after_build'][] = 'ddbgo_gin_remove_bookmark_selection_summary';
+
+  $bulk_form_id = 'flagging_bulk_form';
+
+  if (!isset($form['header'][$bulk_form_id]['action'])) {
+    return;
+  }
+
+  $form['header'][$bulk_form_id]['action'] = [
+    '#type' => 'hidden',
+    '#value' => 'ddbgo_bookmark_remove',
+  ];
+
+  $button_label = new TranslatableMarkup('Ausgewählte Lesezeichen entfernen');
+  if (isset($form['header'][$bulk_form_id]['actions']['submit'])) {
+    $form['header'][$bulk_form_id]['actions']['submit']['#value'] = $button_label;
+  }
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = $button_label;
+  }
+}
+
+/**
+ * Preserves the confirmation step when the list has a destination parameter.
+ */
+function ddbgo_gin_bookmark_confirmation_redirect(array &$form, FormStateInterface $form_state): void {
+  $redirect = $form_state->getRedirect();
+  if ($redirect instanceof Url && $redirect->isRouted()
+    && $redirect->getRouteName() === 'ddbgo_gin.bookmark_remove_confirm') {
+    $form_state->setIgnoreDestination();
+  }
+}
+
+/**
+ * Removes Claro's counter, which assumes one select-all checkbox per form.
+ */
+function ddbgo_gin_remove_bookmark_selection_summary(array $form, FormStateInterface $form_state): array {
+  // Also detach the counter behavior: it requires the status element and would
+  // otherwise announce incorrect counts for the separately grouped tables.
+  // Core's table selection and the submitted bulk-action values are independent.
+  unset(
+    $form['bulk_actions_container']['status'],
+    $form['bulk_actions_container']['#attributes']['data-drupal-views-bulk-actions'],
+  );
+
+  return $form;
+}
+
+/**
+ * Normalizes all submitted form values before the form's own validators run.
+ */
+function ddbgo_gin_normalize_form_values(array &$form, FormStateInterface $form_state): void {
+  foreach ($form_state->getValues() as $key => $value) {
+    ddbgo_gin_normalize_form_value($value);
+    $form_state->setValue($key, $value);
+  }
+}
+
+/**
+ * Recursively trims and NFC-normalizes string values.
+ */
+function ddbgo_gin_normalize_form_value(mixed &$value): void {
+  if (is_array($value)) {
+    foreach ($value as &$nested_value) {
+      ddbgo_gin_normalize_form_value($nested_value);
+    }
+  }
+  elseif (is_string($value)) {
+    $value = (new UnicodeString($value))
+      ->normalize(AbstractUnicodeString::NFC)
+      ->trim()
+      ->toString();
+  }
+}
+
+/**
+ * Disable locale translation update checks for this custom module.
+ *
+ * @param array $projects
+ *   Project data used by locale translation update checks.
+ */
+function ddbgo_gin_locale_translation_projects_alter(array &$projects): void {
+  unset($projects['ddbgo_gin']);
+}

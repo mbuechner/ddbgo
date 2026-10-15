@@ -10,7 +10,7 @@ field_name: field_ablehnungsgrund
 entity_type: node
 bundle: kwe
 label: Ablehnungsgrund
-description: ''
+description: 'Hier wird der Grund für die Ablehnung der Kultur- oder Wissenseinrichtung dokumentiert.'
 required: false
 translatable: false
 default_value: {  }

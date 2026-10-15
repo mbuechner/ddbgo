@@ -10,7 +10,7 @@ field_name: field_api_blacklisting_jira_tick
 entity_type: node
 bundle: kwe
 label: API-Blacklisting-Jira-Ticket
-description: 'Bitte das Tickets für das Blacklisting der KWE angeben, z.B.: DDBDATA-12345'
+description: 'Hier wird das Ticket für das API-Blacklisting der Kultur- oder Wissenseinrichtung angegeben, zum Beispiel DDBDATA-12345.'
 required: false
 translatable: false
 default_value: {  }

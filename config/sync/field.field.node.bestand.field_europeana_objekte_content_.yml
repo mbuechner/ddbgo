@@ -13,7 +13,7 @@ field_name: field_europeana_objekte_content_
 entity_type: node
 bundle: bestand
 label: 'Europeana-Objekte: Content-Tier'
-description: ''
+description: 'Die Europeana-Objekte werden nach Content-Tier erfasst. Innerhalb jedes Tiers sind die Objektzahlen nach Medientyp aufgeschlüsselt.'
 required: false
 translatable: false
 default_value: {  }

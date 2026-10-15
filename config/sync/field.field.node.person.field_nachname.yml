@@ -10,7 +10,7 @@ field_name: field_nachname
 entity_type: node
 bundle: person
 label: Nachname
-description: ''
+description: 'Dieses Feld enthält den Nachnamen der Person.'
 required: true
 translatable: false
 default_value: {  }

@@ -11,7 +11,7 @@ field_name: field_person
 entity_type: paragraph
 bundle: person_kwe
 label: Person
-description: ''
+description: 'Hier wird der Kultur- oder Wissenseinrichtung eine vorhandene Person zugeordnet. Die Person ist über die Suche auswählbar.'
 required: true
 translatable: false
 default_value: {  }

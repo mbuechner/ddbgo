@@ -1,26 +1,22 @@
 uuid: 9457d15c-66d8-4ed4-a440-89e1c22b237f
 langcode: de
-status: false
+status: true
 dependencies:
   config:
+    - custom_formatters.formatter.label_als_telefonnummer
     - field.storage.node.field_email
     - field.storage.node.field_nachname
+    - field.storage.node.field_telefonnummer
     - field.storage.node.field_vorname
     - search_api.index.personen
     - system.menu.person
-    - taxonomy.vocabulary.ja_nein_feld
     - user.role.administrator
     - user.role.ddb_team
     - user.role.ddb_team_login_admin
-  content:
-    - 'taxonomy_term:ja_nein_feld:bb649cfd-b464-4206-a97d-43b50066ee27'
   module:
-    - csv_serialization
-    - rest
+    - custom_formatters
     - search_api
-    - serialization
     - user
-    - views_data_export
 id: personensuche
 label: 'Suche: Person'
 module: views
@@ -182,11 +178,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_vorname:
@@ -252,11 +248,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_email:
@@ -328,6 +324,79 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+        field_telefonnummer:
+          id: field_telefonnummer
+          table: search_api_index_personen
+          field: field_telefonnummer
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_field
+          label: Telefonnummer
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: –
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: 'custom_formatters:label_als_telefonnummer'
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+            delta_limit: 0
+            delta_offset: 0
+            delta_reversed: false
+            delta_first_last: false
         ddbgo_person_kwe:
           id: ddbgo_person_kwe
           table: search_api_index_personen
@@ -336,7 +405,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api
-          label: 'Kultur- und Wisseneinrichtungen'
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -378,9 +447,14 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          filter_type: xss
         ddbgo_person_bestand:
           id: ddbgo_person_bestand
           table: search_api_index_personen
@@ -431,7 +505,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
         ddbgo_person_aggregator:
@@ -484,14 +558,14 @@ display:
           empty_zero: false
           hide_alter_empty: true
           link_to_item: false
-          use_highlighting: false
+          use_highlighting: true
           multi_type: separator
           multi_separator: ', '
       pager:
         type: full
         options:
           offset: 0
-          pagination_heading_level: h4
+          pagination_heading_level: h2
           items_per_page: 100
           total_pages: null
           id: 0
@@ -513,8 +587,8 @@ display:
         type: basic
         options:
           submit_button: Suchen
-          reset_button: false
-          reset_button_label: Reset
+          reset_button: true
+          reset_button_label: Zurücksetzen
           exposed_sorts_label: Sortierung
           expose_sort_order: false
           sort_asc_label: Asc
@@ -530,16 +604,17 @@ display:
         type: search_api_none
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Personen gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts:
         field_nachname:
           id: field_nachname
@@ -584,21 +659,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Es werden alle angezeigten Spalten durchsucht. Nicht hervorgehoben werden ID, E-Mail und Telefonnummer.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -622,7 +694,7 @@ display:
             - field_nachname
             - field_telefonnummer
             - field_vorname
-            - title
+            - nid_search
       filter_groups:
         operator: AND
         groups: {  }
@@ -697,6 +769,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -732,454 +805,7 @@ display:
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
-        - 'config:field.storage.node.field_vorname'
-        - 'config:search_api.index.personen'
-        - 'search_api_list:personen'
-  data_export_1:
-    id: data_export_1
-    display_title: 'Data export'
-    display_plugin: data_export
-    position: 3
-    display_options:
-      fields:
-        field_nachname:
-          id: field_nachname
-          table: search_api_index_personen
-          field: field_nachname
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: Nachname
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_vorname:
-          id: field_vorname
-          table: search_api_index_personen
-          field: field_vorname
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: Vorname
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_email:
-          id: field_email
-          table: search_api_index_personen
-          field: field_email
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: E-Mail
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: email_mailto
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        ddbgo_person_kwe:
-          id: ddbgo_person_kwe
-          table: search_api_index_personen
-          field: ddbgo_person_kwe
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          label: 'Kultur- und Wisseneinrichtungen'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ', '
-        ddbgo_person_aggregator:
-          id: ddbgo_person_aggregator
-          table: search_api_index_personen
-          field: ddbgo_person_aggregator
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          label: Aggregatoren
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ', '
-      access:
-        type: role
-        options:
-          role:
-            administrator: administrator
-            ddb_team_login_admin: ddb_team_login_admin
-      filters:
-        field_weihnachtsmailing:
-          id: field_weihnachtsmailing
-          table: search_api_index_personen
-          field: field_weihnachtsmailing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_term
-          operator: or
-          value:
-            616: 616
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_weihnachtsmailing_op
-            label: 'E-Mail an Weihnachten'
-            description: 'Die Person wird beim Weihnachtsmailing der DDB angeschrieben.'
-            use_operator: false
-            operator: field_weihnachtsmailing_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_weihnachtsmailing
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: ja_nein_feld
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      style:
-        type: data_export
-        options:
-          formats:
-            csv: csv
-          csv_settings:
-            delimiter: ;
-            enclosure: '"'
-            escape_char: \
-            strip_tags: true
-            trim: true
-            encoding: utf8
-            utf8_bom: '1'
-            use_serializer_encode_only: false
-      row:
-        type: data_field
-        options:
-          field_options:
-            field_nachname:
-              alias: ''
-              raw_output: false
-            field_vorname:
-              alias: ''
-              raw_output: false
-            field_email:
-              alias: ''
-              raw_output: false
-            ddbgo_person_kwe:
-              alias: ''
-              raw_output: false
-            ddbgo_person_aggregator:
-              alias: ''
-              raw_output: false
-      defaults:
-        access: false
-        fields: false
-        filters: false
-        filter_groups: false
-      display_extenders: {  }
-      path: search/person/xmas/csv
-      displays:
-        page_1: page_1
-        default: '0'
-        page: '0'
-      filename: '[date:html_date]-ddbxmas.csv'
-      automatic_download: false
-      store_in_public_file_directory: false
-      custom_redirect_path: false
-      redirect_to_display: none
-      include_query_params: false
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - request_format
-        - url
-        - 'user.node_grants:view'
-        - user.roles
-      tags:
-        - 'config:field.storage.node.field_email'
-        - 'config:field.storage.node.field_nachname'
+        - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
         - 'search_api_list:personen'
@@ -1190,7 +816,8 @@ display:
     position: 1
     display_options:
       cache:
-        type: search_api_none
+        type: search_api_tag
+        options: {  }
       defaults:
         cache: false
       exposed_block: false
@@ -1217,425 +844,7 @@ display:
       tags:
         - 'config:field.storage.node.field_email'
         - 'config:field.storage.node.field_nachname'
-        - 'config:field.storage.node.field_vorname'
-        - 'config:search_api.index.personen'
-        - 'search_api_list:personen'
-  page_1:
-    id: page_1
-    display_title: Xmas
-    display_plugin: page
-    position: 1
-    display_options:
-      fields:
-        field_nachname:
-          id: field_nachname
-          table: search_api_index_personen
-          field: field_nachname
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: Nachname
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_vorname:
-          id: field_vorname
-          table: search_api_index_personen
-          field: field_vorname
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: Vorname
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_email:
-          id: field_email
-          table: search_api_index_personen
-          field: field_email
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: E-Mail
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: email_mailto
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        ddbgo_person_kwe:
-          id: ddbgo_person_kwe
-          table: search_api_index_personen
-          field: ddbgo_person_kwe
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          label: 'Kultur- und Wisseneinrichtungen'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ', '
-        ddbgo_person_aggregator:
-          id: ddbgo_person_aggregator
-          table: search_api_index_personen
-          field: ddbgo_person_aggregator
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          label: Aggregatoren
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: –
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ', '
-      access:
-        type: role
-        options:
-          role:
-            administrator: administrator
-            ddb_team_login_admin: ddb_team_login_admin
-      cache:
-        type: search_api_none
-      filters:
-        field_weihnachtsmailing:
-          id: field_weihnachtsmailing
-          table: search_api_index_personen
-          field: field_weihnachtsmailing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_term
-          operator: or
-          value:
-            616: 616
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_weihnachtsmailing_op
-            label: 'E-Mail an Weihnachten'
-            description: 'Die Person wird beim Weihnachtsmailing der DDB angeschrieben.'
-            use_operator: false
-            operator: field_weihnachtsmailing_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_weihnachtsmailing
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          vid: ja_nein_feld
-          type: select
-          hierarchy: false
-          limit: true
-          error_message: true
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      defaults:
-        access: false
-        cache: false
-        fields: false
-        filters: false
-        filter_groups: false
-      display_description: ''
-      exposed_block: false
-      display_extenders: {  }
-      path: search/person/xmas
-      menu:
-        type: normal
-        title: Weihnachtsmailing
-        description: ''
-        weight: -49
-        expanded: false
-        menu_name: person
-        parent: ''
-        context: '0'
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - url.query_args
-        - 'user.node_grants:view'
-        - user.roles
-      tags:
-        - 'config:field.storage.node.field_email'
-        - 'config:field.storage.node.field_nachname'
+        - 'config:field.storage.node.field_telefonnummer'
         - 'config:field.storage.node.field_vorname'
         - 'config:search_api.index.personen'
         - 'search_api_list:personen'

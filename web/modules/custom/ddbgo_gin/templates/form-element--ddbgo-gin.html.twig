@@ -1,0 +1,106 @@
+{# Based on Gin's form-element.html.twig. Keep its structure and preprocess variables
+   in sync on theme updates; DDBgo supplies the help button attributes in Twig. #}
+{#
+/**
+ * @file
+ * Theme override for a form element.
+ *
+ * @see template_preprocess_form_element()
+ */
+#}
+{#
+Most of core-provided js assumes that the CSS class pattern js-form-item-[something] or
+js-form-type-[something] exists on form items. We have to keep them.
+#}
+{% set show_description_toggle = description_toggle and description.content and label_display in ['before', 'after', 'invisible'] %}
+{% set tooltip_id = description.attributes.id ?: 'ddbgo-help'|clean_unique_id %}
+{%
+  set classes = [
+    'js-form-item',
+    'form-item',
+    'js-form-type-' ~ type|clean_class,
+    'form-type--' ~ type|clean_class,
+    type in ['checkbox', 'radio'] ? 'form-type--boolean',
+    'js-form-item-' ~ name|clean_class,
+    'form-item--' ~ name|clean_class,
+    title_display not in ['after', 'before'] ? 'form-item--no-label',
+    disabled == 'disabled' ? 'form-item--disabled',
+    errors ? 'form-item--error',
+    show_description_toggle ? 'help-icon__description-container'
+  ]
+%}
+{%
+  set description_classes = [
+    'form-item__description',
+    description_display == 'invisible' and not show_description_toggle ? 'visually-hidden',
+  ]
+%}
+{# These Core node metadata items display text and have no labelable control. #}
+{% if type == 'item' and element['#parents'] in [['meta', 'changed'], ['meta', 'author']] %}
+  {% set metadata_title_attributes = create_attribute(label['#attributes']).removeAttribute('for') %}
+  {% set label %}
+    {% if element['#title'] is not empty %}
+      <span{{ metadata_title_attributes.addClass([
+        'form-item__label',
+        label_display == 'after' ? 'option',
+        label_display == 'invisible' ? 'visually-hidden',
+      ]) }}>{{ element['#title'] }}</span>
+    {% endif %}
+  {% endset %}
+{% endif %}
+{# Render once: checkbox/radio labels follow their input, other labels precede it. #}
+{% set label_with_help %}
+  {% if label_display in ['before', 'after', 'invisible'] %}
+    {% if show_description_toggle %}
+      <div class="help-icon ddbgo-form-help">
+        {{ label }}
+        {% include '@ddbgo_gin/ddbgo-help.html.twig' with {
+          label: element['#title'],
+          contextual_label: element['#ddbgo_help_mouseover'],
+          tooltip_attributes: description.attributes,
+          tooltip_id: tooltip_id,
+          description_classes: description_classes,
+          description: description.content,
+        } only %}
+      </div>
+    {% else %}
+      {{ label }}
+    {% endif %}
+  {% endif %}
+{% endset %}
+<div{{ attributes.addClass(classes) }}>
+  {% if label_display in ['before', 'invisible'] %}
+    {{ label_with_help }}
+  {% endif %}
+  {% if show_description_toggle %}
+  <div class="help-icon__element-has-description">
+  {% endif %}
+  {% if prefix is not empty %}
+    <span class="form-item__prefix{{disabled == 'disabled' ? ' is-disabled'}}">{{ prefix }}</span>
+  {% endif %}
+  {% if not show_description_toggle and description_display == 'before' and description.content %}
+    <div{{ description.attributes.addClass(description_classes) }}>
+      {{ description.content }}
+    </div>
+  {% endif %}
+  {{ children }}
+  {% if suffix is not empty %}
+    <span class="form-item__suffix{{disabled == 'disabled' ? ' is-disabled'}}">{{ suffix }}</span>
+  {% endif %}
+  {% if label_display == 'after' %}
+    {{ label_with_help }}
+  {% endif %}
+  {% if show_description_toggle %}
+  </div>
+  {% endif %}
+  {% if errors %}
+    <div class="form-item__error-message"{% if element['#ddbgo_inline_error_id'] %} id="{{ element['#ddbgo_inline_error_id'] }}"{% endif %}>
+      {{ errors }}
+    </div>
+  {% endif %}
+  {% if not show_description_toggle and description_display in ['after', 'invisible'] and description.content %}
+    <div{{ description.attributes.addClass(description_classes) }}>
+      {{ description.content }}
+    </div>
+  {% endif %}
+</div>

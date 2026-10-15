@@ -10,7 +10,7 @@ field_name: field_beschreibung
 entity_type: node
 bundle: aggregator
 label: Beschreibung
-description: 'Kurze inhaltliche Beschreibung des Aggregators.'
+description: 'Dieses Feld enthält eine kurze inhaltliche Beschreibung des Aggregators.'
 required: false
 translatable: true
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_bemerkung_europeana_liefer
 entity_type: node
 bundle: bestand
 label: 'Bemerkung für Europeana-Lieferung'
-description: ''
+description: 'Dieses Feld enthält ergänzende Bemerkungen zur Europeana-Lieferung des Bestands.'
 required: false
 translatable: true
 default_value: {  }

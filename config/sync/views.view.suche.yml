@@ -307,10 +307,16 @@ display:
           use_highlighting: true
           multi_type: separator
           multi_separator: ', '
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          filter_type: xss_admin
       pager:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h2
           items_per_page: 25
           total_pages: null
           id: 0
@@ -328,14 +334,13 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
           submit_button: Suchen
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button: true
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: Sortierung
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
@@ -347,19 +352,20 @@ display:
             administrator: administrator
             ddb_team: ddb_team
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Ergebnisse gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts: {  }
       arguments: {  }
       filters:
@@ -378,21 +384,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Die Volltextsuche durchsucht auch Inhalte außerhalb der angezeigten Spalten. Hervorgehoben werden Treffer nur in der Spalte „Suchtreffer“.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             expose_fields: false
             placeholder: Suchbegriff
             searched_fields_id: ''
@@ -459,6 +462,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -493,6 +497,7 @@ display:
         - user.roles
       tags:
         - 'config:search_api.index.suche'
+        - 'search_api_list:suche'
   page_1:
     id: page_1
     display_title: Page
@@ -521,3 +526,4 @@ display:
         - user.roles
       tags:
         - 'config:search_api.index.suche'
+        - 'search_api_list:suche'

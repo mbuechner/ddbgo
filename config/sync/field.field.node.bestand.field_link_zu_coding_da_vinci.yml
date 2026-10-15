@@ -10,7 +10,7 @@ field_name: field_link_zu_coding_da_vinci
 entity_type: node
 bundle: bestand
 label: 'Link zu Coding da Vinci'
-description: 'Permalink zur Webseite des Datensets auf codingdavinci.de'
+description: 'Der Permalink verweist auf die Webseite des Datensets auf codingdavinci.de.'
 required: false
 translatable: false
 default_value: {  }

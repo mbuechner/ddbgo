@@ -1,0 +1,20 @@
+uuid: 0974c93c-4168-49ac-89cd-64e99b7bcbaf
+langcode: de
+status: true
+dependencies:
+  theme:
+    - gin_frontend
+_core:
+  default_config_hash: HLQY2xgby8K3vN_98hiOSasOhm9pdCsH234-s0duJ8Q
+id: gin_frontend_page_title
+theme: gin_frontend
+region: header
+weight: -30
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: Seitentitel
+  label_display: '0'
+  provider: core
+visibility: {  }

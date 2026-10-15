@@ -1,0 +1,16 @@
+ndr_admin_form_settings:
+  ndr_check: 1
+  ndr_settings:
+    aggregator:
+      is_enabled: true
+      redirect: /search/aggregator
+    bestand:
+      is_enabled: true
+      redirect: /search/bestand
+    kwe:
+      is_enabled: true
+      redirect: /search/kwe
+    person:
+      is_enabled: true
+      redirect: /search/person
+  ndr_lang: false

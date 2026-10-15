@@ -10,7 +10,7 @@ field_name: field_plz
 entity_type: node
 bundle: kwe
 label: PLZ
-description: 'Postleitzahl ohne Länderkennung (z.B. „60320“)'
+description: 'Die Postleitzahl wird ohne Länderkennung erfasst, zum Beispiel „60320“.'
 required: false
 translatable: false
 default_value: {  }

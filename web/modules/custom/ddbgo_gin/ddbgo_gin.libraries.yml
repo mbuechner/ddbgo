@@ -1,0 +1,184 @@
+# Attach components at their entry points; Drupal resolves shared dependencies.
+footer:
+  css:
+    theme:
+      css/ddbgo_gin.footer.css: {}
+
+# Flag removes its feedback on animationend. Keep bookmark feedback visible
+# wherever its AJAX link is rendered; the next action replaces the whole link.
+bookmark_feedback:
+  css:
+    theme:
+      css/ddbgo_gin.bookmark-feedback.css: {}
+  js:
+    js/ddbgo_gin.bookmark-feedback.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+
+bestand_tags:
+  css:
+    theme:
+      css/ddbgo_gin.bestand-tags.css: {}
+  dependencies:
+    - ddbgo_gin/section_spacing
+
+object_paragraphs:
+  css:
+    theme:
+      css/ddbgo_gin.object-paragraphs.css: {}
+  dependencies:
+    - ddbgo_gin/frontend_layout
+
+record_status:
+  css:
+    component:
+      css/ddbgo_gin.record-status.css: {}
+
+icons:
+  css:
+    theme:
+      css/ddbgo_gin.icons.css: {}
+
+theme_components:
+  css:
+    theme:
+      css/ddbgo_gin.theme-components.css: {}
+  dependencies:
+    - ddbgo_gin/form_controls
+    - ddbgo_gin/section_spacing
+
+# Shared tab/details spacing for node views and add/edit forms in both themes.
+section_spacing:
+  css:
+    theme:
+      css/ddbgo_gin.section-spacing.css: {}
+
+# CSS only: native fields and Select2 share Gin's dimensions and state colors.
+# Reached by Gin/Gin Frontend pages, including forms loaded through AJAX.
+form_controls:
+  css:
+    theme:
+      css/ddbgo_gin.form-controls.css: {}
+
+# Attached only for toolbar users on Gin-based themes.
+toolbar_icons:
+  css:
+    theme:
+      css/ddbgo_gin.toolbar-icons.css: {}
+  js:
+    js/ddbgo_gin.toolbar-navigation.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - ddbgo_gin/icons
+    - ddbgo_gin/theme_components
+
+# Attached by the workspace block, including its anonymous login variant.
+workspace_navigation:
+  css:
+    theme:
+      css/ddbgo_gin.workspace-navigation.css: {}
+  js:
+    js/ddbgo_gin.workspace-navigation.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - ddbgo_gin/icons
+    - ddbgo_gin/theme_components
+
+# Attached only by Gin Frontend and its descendants.
+frontend_layout:
+  css:
+    theme:
+      css/ddbgo_gin.frontend-layout.css: {}
+  js:
+    js/ddbgo_gin.exposed-filters.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - ddbgo_gin/icons
+    - ddbgo_gin/theme_components
+    - gin_frontend/global
+    # Retain Gin's wrapper/checkbox CSS and support for remaining native controls.
+    - gin/gin_description_toggle
+
+# Loaded with Tagify in every theme, including AJAX-created select widgets.
+tagify_keyboard:
+  js:
+    js/ddbgo_gin.tagify-keyboard.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+# Loaded with Select2's Drupal integration, including AJAX-created widgets.
+select2_accessibility:
+  js:
+    js/ddbgo_gin.select2-accessibility.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
+# Loaded with Core TableDrag, including Gin's override and AJAX-created tables.
+tabledrag_focus:
+  js:
+    js/ddbgo_gin.tabledrag-focus.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+
+# Keep the current section when following this node's view/edit links.
+# Attached by hook_page_attachments() together with ddbgoNodeTabs.links.
+node_tabs:
+  js:
+    js/ddbgo_gin.node-tabs.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery
+    - core/once
+    # Provides the horizontalTab data/API used to activate the matching pane.
+    - field_group/element.horizontal_tabs
+
+# Injected into unique_field_ajax/unique_event by hook_library_info_alter().
+# This guard intentionally also runs outside Gin.
+unique_field_submit:
+  js:
+    js/ddbgo_gin.unique-field-submit.js: {}
+  dependencies:
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+    - core/drupal.announce
+
+# Attached only to the four Gin node forms, including AJAX-created fields.
+form_status:
+  js:
+    js/ddbgo_gin.form-status.js: {}
+  dependencies:
+    - core/drupal.ajax
+    - core/drupal.announce
+
+# Attached by server-rendered Gin status messages, including cached destinations.
+# Initial page feedback is separate from the widgets' existing AJAX handling.
+page_feedback:
+  js:
+    js/ddbgo_gin.page-feedback.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.announce
+
+# Attached by the shared help-button template, including AJAX responses.
+form_help:
+  css:
+    theme:
+      css/ddbgo_gin.form-help.css: {}
+  js:
+    js/ddbgo_gin.form-help.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    # Retain Gin's wrapper/checkbox CSS and support for remaining native controls.
+    - gin/gin_description_toggle

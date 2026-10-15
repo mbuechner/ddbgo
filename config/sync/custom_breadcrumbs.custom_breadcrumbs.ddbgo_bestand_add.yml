@@ -1,0 +1,23 @@
+uuid: fe11f4f3-146c-4836-89cd-195705016496
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.bestand
+      - views.view.suche_bestand
+id: ddbgo_bestand_add
+label: 'DDBgo: bestand - Hinzufügen'
+description: 'Anlegen eines Datensatzes unter seiner Standardliste; aktueller Routentitel ohne Link.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: |-
+  /search/bestand
+  <nolink>
+breadcrumbTitles: |-
+  Bestandsliste
+  [current-page:title]
+type: '2'
+pathPattern: /node/add/bestand
+extraCacheContexts: ''

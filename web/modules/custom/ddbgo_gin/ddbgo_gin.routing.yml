@@ -1,0 +1,9 @@
+ddbgo_gin.bookmark_remove_confirm:
+  path: '/bookmarks/remove/{flagging}'
+  defaults:
+    _form: '\Drupal\ddbgo_gin\Form\BookmarkRemoveConfirmForm'
+    _title: 'Lesezeichen entfernen'
+    flagging: null
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    flagging: '\d+'

@@ -17,7 +17,7 @@ third_party_settings:
     message_warning: 'Diese Person ist schon vorhanden (siehe %link)!'
 name: Person
 type: person
-description: 'Personen in unterschiedlichen Rollen'
+description: 'Ansprechperson mit Kontaktdaten und Zuordnung zu Einrichtungen, Beständen oder Aggregatoren.'
 help: null
 new_revision: true
 preview_mode: 0

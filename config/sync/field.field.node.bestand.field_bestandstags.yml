@@ -11,7 +11,7 @@ field_name: field_bestandstags
 entity_type: node
 bundle: bestand
 label: Bestandstags
-description: 'Schlagworte zum Bestand zur internen Filterung'
+description: 'Die Schlagworte beschreiben den Bestand und dienen der internen Filterung.'
 required: false
 translatable: false
 default_value: {  }

@@ -10,7 +10,7 @@ field_name: field_bemerkung
 entity_type: node
 bundle: person
 label: Bemerkung
-description: ''
+description: 'Dieses Feld enthält ergänzende Angaben zu dieser Person.'
 required: false
 translatable: false
 default_value: {  }

@@ -1,0 +1,42 @@
+uuid: b76abaad-0c1f-42dc-bc4b-ae32ab9e7af4
+langcode: de
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.ddbgo_object_details
+    - field.field.paragraph.europeana_objekte_content_tier.field_content_tier
+    - field.field.paragraph.europeana_objekte_content_tier.field_objekte
+    - paragraphs.paragraphs_type.europeana_objekte_content_tier
+  module:
+    - empty_fields
+    - entity_reference_revisions
+id: paragraph.europeana_objekte_content_tier.ddbgo_object_details
+targetEntityType: paragraph
+bundle: europeana_objekte_content_tier
+mode: ddbgo_object_details
+content:
+  field_content_tier:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings:
+      empty_fields:
+        handler: nbsp
+    weight: 0
+    region: content
+  field_objekte:
+    type: entity_reference_revisions_entity_view
+    label: inline
+    settings:
+      view_mode: ddbgo_object_details
+      link: ''
+    third_party_settings:
+      empty_fields:
+        handler: text
+        settings:
+          empty_text: –
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

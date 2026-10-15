@@ -11,7 +11,7 @@ field_name: field_titel
 entity_type: node
 bundle: person
 label: Titel
-description: 'Akademischer Titel'
+description: 'Erfasst wird der akademische Titel der Person. Neue Titel können durch Eingabe und Auswahl eines neuen Eintrags ergänzt werden. Neue Titel werden beim Speichern des Formulars angelegt.'
 required: false
 translatable: false
 default_value: {  }

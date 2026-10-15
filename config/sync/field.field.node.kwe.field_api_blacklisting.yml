@@ -11,7 +11,7 @@ field_name: field_api_blacklisting
 entity_type: node
 bundle: kwe
 label: API-Blacklisting
-description: 'Sollen die Daten der KWE geblacklisted werden (nicht über das API weitergegeben werden)?'
+description: 'Die Angabe beschreibt, ob die Daten der Kultur- oder Wissenseinrichtung von der Weitergabe über die API ausgeschlossen werden sollen.'
 required: false
 translatable: false
 default_value: {  }

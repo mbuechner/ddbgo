@@ -11,7 +11,7 @@ field_name: field_kwe
 entity_type: node
 bundle: bestand
 label: 'Kultur- oder Wissenseinrichtung'
-description: 'Zu welcher Kultur- oder Wissenseinrichtung gehört der Bestand?'
+description: 'Dieses Feld ordnet den Bestand der zugehörigen Kultur- oder Wissenseinrichtung zu.'
 required: true
 translatable: false
 default_value: {  }

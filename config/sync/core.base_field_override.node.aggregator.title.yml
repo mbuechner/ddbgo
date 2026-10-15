@@ -9,7 +9,7 @@ field_name: title
 entity_type: node
 bundle: aggregator
 label: 'Name des Dienstes'
-description: ''
+description: 'Dieses Feld enthält den Namen des Dienstes.'
 required: true
 translatable: true
 default_value: {  }

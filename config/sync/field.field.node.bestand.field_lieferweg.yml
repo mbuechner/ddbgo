@@ -11,7 +11,7 @@ field_name: field_lieferweg
 entity_type: node
 bundle: bestand
 label: Lieferweg
-description: 'Wie soll der Bestand an die DDB geliefert werden?'
+description: 'Die Angabe beschreibt, wie der Bestand an die DDB geliefert werden soll.'
 required: false
 translatable: false
 default_value: {  }

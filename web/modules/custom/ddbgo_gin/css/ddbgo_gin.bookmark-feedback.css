@@ -1,0 +1,43 @@
+/**
+ * Flag removes its message on animationend, not on a JavaScript timer.
+ * Disabling the animation keeps bookmark feedback visible until Flag's next
+ * AJAX replacement updates this same link. Other flags keep their behavior.
+ */
+.flag-bookmark .js-flag-message {
+  animation: none;
+}
+
+.flag-bookmark .js-flag-message > button.ddbgo-bookmark-message-dismiss {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 1.5rem;
+  inline-size: 1.5rem;
+  min-inline-size: 24px;
+  block-size: 1.5rem;
+  min-block-size: 24px;
+  margin: 0;
+  margin-inline-start: .5rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--gin-border-xs, .25rem);
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.flag-bookmark .js-flag-message > button.ddbgo-bookmark-message-dismiss:hover {
+  border-color: currentColor;
+  background: var(--gin-color-primary-light, transparent);
+}
+
+.flag-bookmark .js-flag-message > button.ddbgo-bookmark-message-dismiss:focus-visible {
+  outline: 2px solid var(--gin-color-focus-border, #005fcc);
+  outline-offset: 2px;
+}

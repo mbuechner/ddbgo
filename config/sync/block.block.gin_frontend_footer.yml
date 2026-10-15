@@ -1,0 +1,26 @@
+uuid: 52ad0398-1e87-4d99-8c9a-a49c4c302d40
+langcode: de
+status: true
+dependencies:
+  config:
+    - system.menu.footer
+  module:
+    - system
+  theme:
+    - gin_frontend
+id: gin_frontend_footer
+theme: gin_frontend
+region: footer
+weight: 0
+provider: null
+plugin: 'system_menu_block:footer'
+settings:
+  id: 'system_menu_block:footer'
+  label: Website-Informationen
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 1
+  expand_all_items: false
+  ignore_active_trail: true
+visibility: {  }

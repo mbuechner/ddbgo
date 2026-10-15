@@ -1,0 +1,23 @@
+uuid: 84899af0-541e-471f-b9e3-f8efde2ce563
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - node.type.aggregator
+      - views.view.suche_aggregator_fuer_claudia
+id: ddbgo_aggregator
+label: 'DDBgo: aggregator - Datensatz'
+description: 'Feste Zuordnung aller Aggregatoren zur Aggregatorenübersicht; aktueller Titel ohne Link.'
+entityType: node
+entityBundle: aggregator
+language: und
+breadcrumbPaths: |-
+  /search/aggregator/uebersicht
+  <nolink>
+breadcrumbTitles: |-
+  Aggregatorenübersicht
+  [node:title]
+type: '1'
+pathPattern: ''
+extraCacheContexts: ''

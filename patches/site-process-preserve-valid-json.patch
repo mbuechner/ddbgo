@@ -1,0 +1,16 @@
+diff --git a/src/ProcessBase.php b/src/ProcessBase.php
+--- a/src/ProcessBase.php
++++ b/src/ProcessBase.php
+@@ -153,6 +153,12 @@ class ProcessBase extends Process
+         if (empty($output)) {
+             throw new \InvalidArgumentException('Output is empty.');
+         }
++        // Native Windows processes can already return correctly escaped JSON.
++        // Only try legacy shell unescaping when decoding the original fails.
++        $json = json_decode($this->removeNonJsonJunk($output), true);
++        if (json_last_error() === JSON_ERROR_NONE && isset($json)) {
++            return $json;
++        }
+         if (Escape::isWindows()) {
+             // Doubled double quotes were converted to \\".
+             // Revert to double quote.

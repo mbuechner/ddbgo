@@ -1,0 +1,31 @@
+uuid: d9aea6da-37fb-4441-8fe7-0c21049165f1
+langcode: de
+status: true
+dependencies:
+  enforced:
+    config:
+      - views.view.suche
+      - views.view.flag_bookmark
+      - sitemap.settings
+      - views.view.suche_kwe
+      - views.view.suche_aggregator
+      - views.view.suche_bestand
+      - views.view.personensuche
+id: ddbgo_standalone
+label: 'DDBgo: Einstiegsseiten'
+description: 'Volltextsuche, Standardlisten, Meine Lesezeichen und Seitenübersicht direkt unter Startseite.'
+entityType: _none
+entityBundle: _none
+language: und
+breadcrumbPaths: '<nolink>'
+breadcrumbTitles: '[current-page:title]'
+type: '2'
+pathPattern: |-
+  /search
+  /bookmarks
+  /sitemap
+  /search/kwe
+  /search/aggregator
+  /search/bestand
+  /search/person
+extraCacheContexts: ''

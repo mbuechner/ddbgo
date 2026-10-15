@@ -11,7 +11,7 @@ field_name: field_status_fragebogen
 entity_type: node
 bundle: aggregator
 label: 'Status des Fragebogens'
-description: ''
+description: 'Die Angabe beschreibt den Status des Fragebogens.'
 required: false
 translatable: true
 default_value: {  }

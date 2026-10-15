@@ -12,7 +12,7 @@ field_name: field_url
 entity_type: node
 bundle: bestand
 label: Webseite
-description: 'Webseite, die weiterführende Informationen zum Bestand liefert oder über die man den Bestand direkt durchsuchen kann.'
+description: 'Der Link verweist auf eine Webseite mit weiterführenden Informationen zum Bestand oder einer direkten Suchmöglichkeit im Bestand.'
 required: false
 translatable: false
 default_value: {  }

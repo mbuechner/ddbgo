@@ -1,0 +1,19 @@
+uuid: 75cff71d-0517-43fb-85a7-fcd887b27191
+langcode: de
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_lieferweg_angaben
+field_name: field_lieferweg_angaben
+entity_type: node
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

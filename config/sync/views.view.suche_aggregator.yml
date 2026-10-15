@@ -3,7 +3,7 @@ langcode: de
 status: true
 dependencies:
   config:
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - search_api.index.aggregator
     - system.menu.aggregator
     - user.role.administrator
@@ -11,7 +11,7 @@ dependencies:
     - user.role.ddb_team
     - user.role.ddb_team_login_admin
   module:
-    - color_field
+    - ddbgo_gin
     - search_api
     - user
 id: suche_aggregator
@@ -175,11 +175,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         field_status:
@@ -190,7 +190,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Status des Aggregators'
+          label: Aggregatorstatus
           exclude: false
           alter:
             alter_text: false
@@ -231,13 +231,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: color
-          type: color_field_formatter_swatch
-          settings:
-            shape: square
-            width: '15'
-            height: '15'
-            opacity: false
+          click_sort_column: value
+          type: ddbgo_record_status
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -263,7 +259,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_field
-          label: 'Kultur- und Wisseneinrichtungen'
+          label: 'Kultur- oder Wissenseinrichtung'
           exclude: false
           alter:
             alter_text: false
@@ -318,11 +314,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
         title_1_1:
@@ -388,17 +384,18 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
-            link_to_item: false
-            use_highlighting: false
+            link_to_item: true
+            use_highlighting: true
             multi_type: separator
             multi_separator: ', '
       pager:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h2
           items_per_page: 100
           total_pages: null
           id: 0
@@ -416,14 +413,13 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
           submit_button: Suchen
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          reset_button: true
+          reset_button_label: Zurücksetzen
+          exposed_sorts_label: Sortierung
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
@@ -436,19 +432,20 @@ display:
             ddb_team: ddb_team
             ddb_team_login_admin: ddb_team_login_admin
       cache:
-        type: search_api_none
+        type: search_api_tag
         options: {  }
       empty:
-        result:
-          id: result
+        area_text_custom:
+          id: area_text_custom
           table: views
-          field: result
+          field: area_text_custom
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: result
+          plugin_id: text_custom
           empty: true
-          content: '@start - @end von @total wird angezeigt'
+          content: 'Keine Aggregatoren gefunden. Versuchen Sie es mit anderen Suchbegriffen oder Filtern.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -480,21 +477,18 @@ display:
           expose:
             operator_id: search_api_fulltext_op
             label: Suche
-            description: ''
+            description: 'Es werden alle angezeigten Spalten durchsucht, außer Aggregatorstatus. Nicht hervorgehoben wird die ID.'
             use_operator: false
             operator: search_api_fulltext_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: query
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
+              anonymous: anonymous
               authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              ddb_team: '0'
-              ddb_team_login_admin: '0'
             placeholder: Suchbegriff
           is_grouped: false
           group_info:
@@ -511,6 +505,7 @@ display:
           parse_mode: terms
           min_length: null
           fields:
+            - nid_search
             - title
             - title_1
             - title_2
@@ -569,6 +564,7 @@ display:
           empty_table: false
           caption: ''
           description: ''
+          class: ''
       row:
         type: fields
       query:
@@ -602,8 +598,9 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags:
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.aggregator'
+        - 'search_api_list:aggregator'
   page_1:
     id: page_1
     display_title: Page
@@ -632,5 +629,6 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags:
-        - 'config:field.storage.node.field_status'
+        - 'config:field.storage.node.field_record_status'
         - 'config:search_api.index.aggregator'
+        - 'search_api_list:aggregator'

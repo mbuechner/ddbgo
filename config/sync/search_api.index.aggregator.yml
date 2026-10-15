@@ -10,7 +10,7 @@ dependencies:
     - field.storage.node.field_region_ort
     - field.storage.node.field_sichtbarkeit
     - field.storage.node.field_sparten
-    - field.storage.node.field_status
+    - field.storage.node.field_record_status
     - field.storage.node.field_vertragskonstrukt
     - field.storage.node.field_vertragsstatus
     - search_api.server.default_server
@@ -42,11 +42,11 @@ field_settings:
   field_status:
     label: Status
     datasource_id: 'entity:node'
-    property_path: field_status
+    property_path: field_record_status
     type: string
     dependencies:
       config:
-        - field.storage.node.field_status
+        - field.storage.node.field_record_status
   name:
     label: 'Datenformat » Taxonomie-Begriff » Name'
     datasource_id: 'entity:node'
@@ -125,6 +125,14 @@ field_settings:
     dependencies:
       module:
         - node
+  nid_search:
+    label: 'ID (Volltextsuche)'
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: text
+    dependencies:
+      module:
+        - node
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -144,6 +152,26 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: 'ddbgo_aggregator_kwe:title'
     type: text
+  vertragskonstrukt_search:
+    label: 'Vertragskonstrukt » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragskonstrukt:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_vertragskonstrukt
+      module:
+        - taxonomy
+  vertragsstatus_search:
+    label: 'Vertragsstatus » Taxonomie-Begriff » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_vertragsstatus:entity:name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_vertragsstatus
+      module:
+        - taxonomy
 datasource_settings:
   'entity:node':
     bundles:
@@ -158,6 +186,17 @@ processor_settings:
   aggregated_field: {  }
   ddbgo_aggregator_bestand: {  }
   ddbgo_aggregator_kwe: {  }
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<mark><strong>'
+    suffix: '</strong></mark>'
+    excerpt: false
+    excerpt_always: false
+    excerpt_length: 256
+    exclude_fields: {  }
+    highlight: always
+    highlight_partial: true
   ignorecase:
     weights:
       preprocess_index: -20
@@ -202,6 +241,6 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 50
-  index_directly: true
+  index_directly: false
   track_changes_in_references: true
 server: default_server

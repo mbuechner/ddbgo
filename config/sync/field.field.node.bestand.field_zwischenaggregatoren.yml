@@ -11,7 +11,7 @@ field_name: field_zwischenaggregatoren
 entity_type: node
 bundle: bestand
 label: Zwischenaggregator(en)
-description: ''
+description: 'Hier werden dem Bestand Zwischenaggregatoren zugeordnet. Eine Mehrfachauswahl ist möglich.'
 required: false
 translatable: false
 default_value: {  }
