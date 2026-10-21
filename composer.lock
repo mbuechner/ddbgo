@@ -2145,17 +2145,17 @@
         },
         {
             "name": "drupal/custom_formatters",
-            "version": "4.2.0",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/custom_formatters.git",
-                "reference": "4.2.0"
+                "reference": "4.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/custom_formatters-4.2.0.zip",
-                "reference": "4.2.0",
-                "shasum": "93c9ee9084d7644e00ca73b278b2af45e86615b7"
+                "url": "https://ftp.drupal.org/files/projects/custom_formatters-4.2.1.zip",
+                "reference": "4.2.1",
+                "shasum": "8d725d8b919bc9104b87c4ea212febfa92a97cc2"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9 || ^10 || ^11 || ^12",
@@ -2176,8 +2176,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "4.2.0",
-                    "datestamp": "1791473729",
+                    "version": "4.2.1",
+                    "datestamp": "1792604309",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
