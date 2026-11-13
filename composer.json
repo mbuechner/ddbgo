@@ -70,7 +70,7 @@
         "drupal/flood_control": "^3.0",
         "drupal/form_options_attributes": "^2.1",
         "drupal/gin": "^5.0",
-        "drupal/gin_everywhere": "^1.5",
+        "drupal/gin_everywhere": "^2.0",
         "drupal/gin_frontend": "^1.0@alpha",
         "drupal/gin_login": "^2.1",
         "drupal/gin_toolbar": "^3.0",
