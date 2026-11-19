@@ -100,7 +100,7 @@
         "drupal/toolbar_menu_clean": "^2.0",
         "drupal/ultimate_cron": "^2.0@beta",
         "drupal/unique_field_ajax": "^2.2",
-        "drupal/upgrade_status": "^4.3",
+        "drupal/upgrade_status": "^5.0",
         "drupal/user_switcher": "^1.0",
         "drupal/userprotect": "^1.4",
         "drush/drush": "^13.8",
